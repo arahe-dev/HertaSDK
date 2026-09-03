@@ -4,15 +4,15 @@ How one operation moves through the Herta runtime, in order.
 
 ## Operation lifecycle
 
-```text
-construction
-  → validate contract (resources exist, retry × effect is safe)
-  → admit (Wait or Reject)
-  → acquire SerializeBy key (if any)
-  → acquire resources (deterministic order)
-  → execute handler with cooperative timeout
-  → classify outcome → maybe retry (if contract allows)
-  → release in reverse order
+```mermaid
+flowchart TD
+    C["construction"] --> V["validate contract<br/>resources exist, retry × effect is safe"]
+    V --> A["admit<br/>Wait or Reject"]
+    A --> K["acquire SerializeBy key<br/>(if any)"]
+    K --> R["acquire resources<br/>deterministic order"]
+    R --> E["execute handler<br/>cooperative timeout"]
+    E --> O["classify outcome<br/>maybe retry, if contract allows"]
+    O --> Rel["release in reverse order"]
 ```
 
 Construction-time validation means an unsafe contract fails before serving —

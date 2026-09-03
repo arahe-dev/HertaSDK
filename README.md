@@ -5,11 +5,8 @@
 </p>
 
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/herta-wordmark-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="assets/herta-wordmark-light.svg" />
-    <img src="assets/herta-wordmark-light.svg" alt="HertaSDK" width="360" />
-  </picture>
+  <img src="assets/herta-wordmark-light.svg#gh-light-mode-only" alt="HertaSDK" width="360" />
+  <img src="assets/herta-wordmark-dark.svg#gh-dark-mode-only" alt="HertaSDK" width="360" />
 </p>
 
 **One execution model. Many heterogeneous operations.**
@@ -60,11 +57,10 @@ HertaSDK is a **local, in-process runtime** that owns execution policy — not
 business logic. An operation is a typed wrapper around a normal handler; the
 operation declares its execution contract and Herta enforces it:
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/execution-model-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="assets/execution-model-light.svg" />
-  <img src="assets/execution-model-light.svg" alt="Caller, Operation, Herta Runtime (resources, admission, serialization, timeout/retry, shutdown), then a normal Go handler" width="640" />
-</picture>
+<p align="center">
+  <img src="assets/execution-model-light.svg#gh-light-mode-only" alt="Caller, Operation, Herta Runtime (resources, admission, serialization, timeout/retry, shutdown), then a normal Go handler" width="640" />
+  <img src="assets/execution-model-dark.svg#gh-dark-mode-only" alt="Caller, Operation, Herta Runtime (resources, admission, serialization, timeout/retry, shutdown), then a normal Go handler" width="640" />
+</p>
 
 - **Operations remain normal Go functions.** Herta wraps them; it never owns
   what they compute, store, or return.
@@ -98,12 +94,14 @@ to reason about as a whole.
 
 With Herta, shared policy and shared resources stay explicit:
 
-```text
-Render ───────┐
-Events ───────┤
-Catalogue ────┼→  Herta Runtime  →  normal handlers
-Webhooks ─────┤
-Model calls ──┘
+```mermaid
+flowchart LR
+    Render --> Herta["Herta Runtime"]
+    Events --> Herta
+    Catalogue --> Herta
+    Webhooks --> Herta
+    ModelCalls["Model calls"] --> Herta
+    Herta --> Handlers["normal handlers"]
 ```
 
 Herta does **not** replace application-level business logic. It replaces the
@@ -115,11 +113,10 @@ Like nodes on a CAN bus, each worker runs asynchronously at its own pace —
 different speeds, different shapes — but all obey the same arbitration and
 error semantics:
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/heterogeneous-workers-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="assets/heterogeneous-workers-light.svg" />
-  <img src="assets/heterogeneous-workers-light.svg" alt="Five heterogeneous workers at independent rhythms sharing one Herta runtime for budgets, admission, and error semantics" width="640" />
-</picture>
+<p align="center">
+  <img src="assets/heterogeneous-workers-light.svg#gh-light-mode-only" alt="Five heterogeneous workers at independent rhythms sharing one Herta runtime for budgets, admission, and error semantics" width="640" />
+  <img src="assets/heterogeneous-workers-dark.svg#gh-dark-mode-only" alt="Five heterogeneous workers at independent rhythms sharing one Herta runtime for budgets, admission, and error semantics" width="640" />
+</p>
 
 ## Core model
 
@@ -144,29 +141,31 @@ Different operations may consume the **same** resource. A renderer budget of 8
 is shared by every render call regardless of caller; a `db-write` budget is
 shared by events and catalogue writes alike.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/resource-arbitration-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="assets/resource-arbitration-light.svg" />
-  <img src="assets/resource-arbitration-light.svg" alt="Render, events, catalogue, webhooks and model calls arbitrate through shared Herta budgets to normal handlers; 20 concurrent renders against capacity 8 peak at exactly 8" width="640" />
-</picture>
+<p align="center">
+  <img src="assets/resource-arbitration-light.svg#gh-light-mode-only" alt="Render, events, catalogue, webhooks and model calls arbitrate through shared Herta budgets to normal handlers; 20 concurrent renders against capacity 8 peak at exactly 8" width="640" />
+  <img src="assets/resource-arbitration-dark.svg#gh-dark-mode-only" alt="Render, events, catalogue, webhooks and model calls arbitrate through shared Herta budgets to normal handlers; 20 concurrent renders against capacity 8 peak at exactly 8" width="640" />
+</p>
 
-Concrete behavior, measured in the internal reference implementation:
+Concrete behavior, measured in the internal reference implementation
+(`renderer` capacity = 8, 20 concurrent render calls, measured peak inside
+the provider: **exactly 8**):
 
-```text
-renderer capacity = 8
-
-20 concurrent render calls
-  → Herta
-  → no more than 8 inside the provider simultaneously
-  → measured peak execution: exactly 8
+```mermaid
+flowchart LR
+    subgraph callers ["20 concurrent render calls"]
+        direction TB
+        R1["render ×20"]
+    end
+    R1 --> Herta["Herta Runtime<br/>renderer capacity = 8"]
+    Herta -->|"at most 8 inside<br/>peak measured: exactly 8"| Provider["provider"]
 ```
 
-And across subsystems:
+And across subsystems sharing one budget:
 
-```text
-Events ─────────┐
-                ├→  db-write budget
-Catalogue ──────┘
+```mermaid
+flowchart LR
+    Events --> DB["db-write budget<br/>capacity = 4"]
+    Catalogue --> DB
 ```
 
 Herta V0 arbitrates **per process**. It does not coordinate resources globally
@@ -176,10 +175,11 @@ across processes — see [docs/resource-arbitration.md](docs/resource-arbitratio
 
 Some operations must serialize per key while staying concurrent across keys:
 
-```text
-CatalogueReplace(brand=A)
-CatalogueReplace(brand=A)   ← serializes with the first
-CatalogueReplace(brand=B)   ← executes concurrently
+```mermaid
+flowchart LR
+    A1["CatalogueReplace<br/>brand = A"] --> A2["CatalogueReplace<br/>brand = A"]
+    B["CatalogueReplace<br/>brand = B"] --> Exec["executes concurrently"]
+    A2 --> Serial["serializes with the first"]
 ```
 
 `SerializeBy(key)` gives same-key serial / different-key concurrent execution.
@@ -191,11 +191,12 @@ waiting work must not hoard scarce resources.
 Retry decisions depend on **both** what happened and whether repeating is safe.
 The important case is a contract the runtime rejects at construction:
 
-```text
-Effect  = NonIdempotent
-Outcome = Uncertain
-Retry configured for Uncertain
-  → invalid contract, rejected before serving
+```mermaid
+flowchart TD
+    E["Effect = NonIdempotent"] --> C["Retry configured for Uncertain"]
+    O["Outcome = Uncertain"] --> C
+    C --> X{"contract check"}
+    X -->|"invalid"| R["rejected before serving"]
 ```
 
 Why: the external operation may already have executed, consumed quota, charged
@@ -215,11 +216,11 @@ Full treatment in [docs/failure-semantics.md](docs/failure-semantics.md).
 
 ## Lifecycle
 
-```text
-Shutdown()
-  ├─ stop admitting new operations
-  ├─ wake operations waiting for admission / resources / keys
-  └─ drain operations already executing
+```mermaid
+flowchart TD
+    S["Shutdown()"] --> A["stop admitting new operations"]
+    A --> W["wake waiters<br/>admission / resources / keys"]
+    W --> D["drain operations<br/>already executing"]
 ```
 
 - Timeouts are cooperative `context.Context` deadlines.

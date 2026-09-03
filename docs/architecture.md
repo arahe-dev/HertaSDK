@@ -5,27 +5,14 @@ through a Herta-guarded service.
 
 ## Runtime boundary
 
-```text
-┌─────────────────────────────────────────────┐
-│ Process                                     │
-│                                             │
-│  Transport / framework                      │  ← above Herta
-│  (ConnectRPC, HTTP handlers, CLI)           │
-│        │ parses, authenticates, routes      │
-│        ▼                                    │
-│  Domain handler                             │  ← above Herta
-│        │ builds typed input                 │
-│        ▼                                    │
-│  ┌──────────────────────────────────────┐   │
-│  │ Herta Runtime                        │   │
-│  │  admission → key → resources →       │   │
-│  │  timeout → retry → release           │   │
-│  └──────────────────────────────────────┘   │
-│        │ executes with contract             │
-│        ▼                                    │
-│  Domain service → provider / database       │  ← below Herta
-│                                             │
-└─────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph Process
+        direction TB
+        Transport["Transport / framework<br/>(ConnectRPC, HTTP handlers, CLI)<br/>parses, authenticates, routes"] --> Handler["Domain handler<br/>builds typed input"]
+        Handler --> Herta["Herta Runtime<br/>admission → key → resources<br/>timeout → retry → release"]
+        Herta --> Service["Domain service → provider / database"]
+    end
 ```
 
 Herta is not transport. It never sees HTTP, never parses requests, never owns
@@ -48,8 +35,9 @@ returns a typed output or a classified error.
 
 ## Example integration
 
-```text
-ConnectRPC/HTTP → domain handler → Herta → domain service → provider/database
+```mermaid
+flowchart LR
+    T["ConnectRPC/HTTP"] --> H["domain handler"] --> He["Herta"] --> S["domain service"] --> P["provider/database"]
 ```
 
 Concretely: an HTTP handler parses a render request, builds the render

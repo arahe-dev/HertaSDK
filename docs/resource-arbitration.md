@@ -8,10 +8,14 @@ invent its own semaphore.
 
 A resource is a named capacity with a weight system:
 
-```text
-renderer   capacity = 8
-db-write   capacity = 4
-model-call capacity = 2
+```mermaid
+flowchart LR
+    subgraph budgets ["named budgets"]
+        direction TB
+        R["renderer · capacity 8"]
+        D["db-write · capacity 4"]
+        M["model-call · capacity 2"]
+    end
 ```
 
 Operations declare claims: `{ renderer: 1 }`, `{ db-write: 2 }`. The runtime
@@ -31,12 +35,12 @@ and validated at construction (positive, finite, within budget).
 
 ## Heterogeneous operations consuming the same resource
 
-```text
-Events ─────────┐
-                ├→  db-write (capacity 4)
-Catalogue ──────┘
-
-Render ×20 ──→  renderer (capacity 8)  →  peak inside: exactly 8
+```mermaid
+flowchart LR
+    Events --> DB["db-write<br/>capacity 4"]
+    Catalogue --> DB
+    Renders["Render ×20"] --> R["renderer<br/>capacity 8"]
+    R -->|"peak inside: exactly 8"| P["provider"]
 ```
 
 Measured in the internal reference implementation: 20 concurrent render calls
