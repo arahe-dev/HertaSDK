@@ -1,12 +1,16 @@
 <div align="center">
 
-<img src="https://media.tenor.com/0bNCyjlohGQAAAAj/honkai-star-rail-hsr.gif" alt="Herta" width="180" />
+<p align="center">
+  <img src="https://media.tenor.com/0bNCyjlohGQAAAAj/honkai-star-rail-hsr.gif" alt="Herta" width="180" />
+</p>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/herta-wordmark-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="assets/herta-wordmark-light.svg" />
-  <img src="assets/herta-wordmark-light.svg" alt="HertaSDK" width="360" />
-</picture>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/herta-wordmark-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="assets/herta-wordmark-light.svg" />
+    <img src="assets/herta-wordmark-light.svg" alt="HertaSDK" width="360" />
+  </picture>
+</p>
 
 **One execution model. Many heterogeneous operations.**
 
@@ -106,6 +110,16 @@ Herta does **not** replace application-level business logic. It replaces the
 five slightly-different semaphores, the four slightly-different retry loops,
 and the three slightly-different shutdown paths with one contract the whole
 process obeys.
+
+Like nodes on a CAN bus, each worker runs asynchronously at its own pace —
+different speeds, different shapes — but all obey the same arbitration and
+error semantics:
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/heterogeneous-workers-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="assets/heterogeneous-workers-light.svg" />
+  <img src="assets/heterogeneous-workers-light.svg" alt="Five heterogeneous workers at independent rhythms sharing one Herta runtime for budgets, admission, and error semantics" width="640" />
+</picture>
 
 ## Core model
 
