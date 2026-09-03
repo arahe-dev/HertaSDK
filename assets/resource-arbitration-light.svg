@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="340" viewBox="0 0 640 340" role="img" aria-labelledby="ral-title ral-desc">
+  <title id="ral-title">Shared resource arbitration</title>
+  <desc id="ral-desc">Heterogeneous operations share named finite budgets. Render, events, catalogue, webhooks and model calls arbitrate through one runtime to normal handlers.</desc>
+  <rect width="640" height="340" fill="#ffffff"/>
+  <defs>
+    <marker id="ral-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#444444"/>
+    </marker>
+  </defs>
+  <g font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <g font-size="13" font-weight="600" fill="#111111">
+      <rect x="24" y="34" width="150" height="34" rx="8" fill="#f4f5f7" stroke="#111111" stroke-width="1.5"/>
+      <text x="99" y="56" text-anchor="middle">Render</text>
+      <rect x="24" y="78" width="150" height="34" rx="8" fill="#f4f5f7" stroke="#111111" stroke-width="1.5"/>
+      <text x="99" y="100" text-anchor="middle">Events</text>
+      <rect x="24" y="122" width="150" height="34" rx="8" fill="#f4f5f7" stroke="#111111" stroke-width="1.5"/>
+      <text x="99" y="144" text-anchor="middle">Catalogue</text>
+      <rect x="24" y="166" width="150" height="34" rx="8" fill="#f4f5f7" stroke="#111111" stroke-width="1.5"/>
+      <text x="99" y="188" text-anchor="middle">Webhooks</text>
+      <rect x="24" y="210" width="150" height="34" rx="8" fill="#f4f5f7" stroke="#111111" stroke-width="1.5"/>
+      <text x="99" y="232" text-anchor="middle">Model calls</text>
+    </g>
+    <g stroke="#444444" stroke-width="1.5">
+      <line x1="174" y1="51" x2="252" y2="120" marker-end="url(#ral-arrow)"/>
+      <line x1="174" y1="95" x2="252" y2="140" marker-end="url(#ral-arrow)"/>
+      <line x1="174" y1="139" x2="252" y2="155" marker-end="url(#ral-arrow)"/>
+      <line x1="174" y1="183" x2="252" y2="172" marker-end="url(#ral-arrow)"/>
+      <line x1="174" y1="227" x2="252" y2="193" marker-end="url(#ral-arrow)"/>
+    </g>
+    <rect x="252" y="96" width="200" height="118" rx="12" fill="none" stroke="#111111" stroke-width="2"/>
+    <text x="352" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#111111">Herta Runtime</text>
+    <text x="352" y="142" text-anchor="middle" font-size="13" fill="#333333">renderer capacity = 8</text>
+    <text x="352" y="162" text-anchor="middle" font-size="13" fill="#333333">db-write budget</text>
+    <text x="352" y="182" text-anchor="middle" font-size="13" fill="#333333">weighted, named</text>
+    <line x1="280" y1="192" x2="424" y2="192" stroke="#111111" stroke-width="1" stroke-dasharray="5 4" opacity="0.45"/>
+    <text x="352" y="207" text-anchor="middle" font-size="12" fill="#555555">never more than 8 inside</text>
+    <line x1="452" y1="155" x2="500" y2="155" stroke="#444444" stroke-width="1.6" marker-end="url(#ral-arrow)"/>
+    <rect x="500" y="122" width="116" height="66" rx="9" fill="#f4f5f7" stroke="#111111" stroke-width="1.6"/>
+    <text x="558" y="148" text-anchor="middle" font-size="13" font-weight="650" fill="#111111">normal</text>
+    <text x="558" y="167" text-anchor="middle" font-size="13" font-weight="650" fill="#111111">handlers</text>
+    <rect x="252" y="250" width="200" height="62" rx="10" fill="#eef3ff" stroke="#2f6feb" stroke-width="1.6"/>
+    <text x="352" y="273" text-anchor="middle" font-size="13" fill="#111111">20 concurrent renders</text>
+    <text x="352" y="293" text-anchor="middle" font-size="13" font-weight="650" fill="#1f4488">peak inside: exactly 8</text>
+  </g>
+</svg>

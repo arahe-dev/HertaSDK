@@ -1,0 +1,41 @@
+name: Feature request
+description: Suggest a design discussion or documentation improvement
+title: "[proposal]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem or workload motivates this?
+      description: Concrete workloads beat abstract wishes. What would declare what contract?
+      placeholder: My image pipeline has three stages sharing one GPU budget...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What are you proposing?
+      description: A design question, a docs addition, or an extraction criterion.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Execution model
+        - Failure semantics
+        - Resource arbitration
+        - Keyed serialization
+        - Lifecycle / shutdown
+        - Public API shape
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This is not a request for distributed scheduling, durability, transports, or other out-of-scope concerns

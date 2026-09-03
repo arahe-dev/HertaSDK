@@ -1,0 +1,34 @@
+name: Bug report
+description: Report a problem with the repository (docs, diagrams, metadata)
+title: "[docs]: "
+labels: ["documentation"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What is wrong, and where? Link the file and section.
+      placeholder: docs/failure-semantics.md says X, but the README says Y.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      description: What should it say instead?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Browser/OS, theme (light/dark) for rendering issues, anything else relevant.
+      placeholder: GitHub dark mode, Windows, diagram text unreadable...
+    validations:
+      required: false
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This is about the repository/docs, not the unreleased implementation

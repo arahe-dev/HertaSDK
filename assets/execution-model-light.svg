@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-labelledby="eml-title eml-desc">
+  <title id="eml-title">HertaSDK execution model</title>
+  <desc id="eml-desc">Caller invokes a typed Operation, the Herta runtime arbitrates resources, admission, keyed serialization, timeout and retry contracts, then runs a normal Go handler.</desc>
+  <rect width="640" height="360" fill="#ffffff"/>
+  <defs>
+    <marker id="eml-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#444444"/>
+    </marker>
+  </defs>
+  <g font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <rect x="230" y="14" width="180" height="40" rx="9" fill="#f4f5f7" stroke="#111111" stroke-width="1.6"/>
+    <text x="320" y="39" text-anchor="middle" font-size="15" font-weight="650" fill="#111111">Caller</text>
+    <rect x="212" y="76" width="216" height="40" rx="9" fill="#f4f5f7" stroke="#111111" stroke-width="1.6"/>
+    <text x="320" y="101" text-anchor="middle" font-size="15" font-weight="650" fill="#111111">Operation[I, O]</text>
+    <rect x="150" y="138" width="340" height="118" rx="12" fill="none" stroke="#111111" stroke-width="2"/>
+    <text x="320" y="160" text-anchor="middle" font-size="15" font-weight="700" fill="#111111">Herta Runtime</text>
+    <text x="320" y="182" text-anchor="middle" font-size="13" fill="#333333">Resource budgets · Admission policy</text>
+    <text x="320" y="202" text-anchor="middle" font-size="13" fill="#333333">SerializeBy(key) · Timeout / retry contract</text>
+    <text x="320" y="222" text-anchor="middle" font-size="13" fill="#333333">Shutdown / lifecycle</text>
+    <line x1="176" y1="231" x2="464" y2="231" stroke="#111111" stroke-width="1" stroke-dasharray="5 4" opacity="0.45"/>
+    <text x="320" y="247" text-anchor="middle" font-size="12" fill="#555555">shared local capacity — one environment</text>
+    <rect x="212" y="278" width="216" height="40" rx="9" fill="#f4f5f7" stroke="#111111" stroke-width="1.6"/>
+    <text x="320" y="303" text-anchor="middle" font-size="15" font-weight="650" fill="#111111">Normal Go handler</text>
+    <line x1="320" y1="54" x2="320" y2="74" stroke="#444444" stroke-width="1.6" marker-end="url(#eml-arrow)"/>
+    <line x1="320" y1="116" x2="320" y2="136" stroke="#444444" stroke-width="1.6" marker-end="url(#eml-arrow)"/>
+    <line x1="320" y1="256" x2="320" y2="276" stroke="#444444" stroke-width="1.6" marker-end="url(#eml-arrow)"/>
+  </g>
+</svg>
