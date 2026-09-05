@@ -16,7 +16,7 @@ ordinary Go functions and declare what they consume, what side effects they
 produce, and what failure means — the runtime validates those contracts and
 arbitrates shared local capacity across otherwise-independent subsystems.
 
-![Go](https://img.shields.io/badge/Go-%3E%3D1.22-00ADD8?logo=go&logoColor=white)
+![Go](https://img.shields.io/badge/Go-%3E%3D1.27.1-00ADD8?logo=go&logoColor=white)
 ![Status: v0.1.0](https://img.shields.io/badge/status-v0.1.0-brightgreen)
 ![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)
 
