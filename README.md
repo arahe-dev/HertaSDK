@@ -17,16 +17,22 @@ produce, and what failure means — the runtime validates those contracts and
 arbitrates shared local capacity across otherwise-independent subsystems.
 
 ![Go](https://img.shields.io/badge/Go-%3E%3D1.22-00ADD8?logo=go&logoColor=white)
-![Status: pre-alpha — extraction in progress](https://img.shields.io/badge/status-pre--alpha%20%E2%80%A2%20extraction%20in%20progress-6e7681)
+![Status: v0.1.0](https://img.shields.io/badge/status-v0.1.0-brightgreen)
 ![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)
 
 </div>
 
-> **Status.** The execution model is implemented and proven internally. The
-> public Go package is being extracted and is intentionally **not published
-> yet** — there is no installable module, no API stability promise, and no
-> public alpha until real-world consumer validation and extraction complete.
-> See [ROADMAP.md](ROADMAP.md).
+> **Status.** HertaSDK **v0.1.0** is an installable Go module:
+>
+> ```sh
+> go get github.com/arahe-dev/hertasdk@v0.1.0
+> ```
+>
+> The V0 execution contract is frozen: `Wait` / `Reject` admission, shared
+> weighted resources, keyed serialization, `Effect` / `Outcome` failure
+> semantics, bounded safe retries, cooperative timeouts, shutdown/drain, and
+> atomic stats. **Queue is explicitly NOT part of V0.** See
+> [ROADMAP.md](ROADMAP.md) and [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -40,7 +46,7 @@ arbitrates shared local capacity across otherwise-independent subsystems.
 - [Failure semantics](#failure-semantics)
 - [Lifecycle](#lifecycle)
 - [What Herta is NOT](#what-herta-is-not)
-- [Conceptual API](#conceptual-api)
+- [Quickstart (real API)](#quickstart-real-api)
 - [Current validation](#current-validation)
 - [Roadmap](#roadmap)
 - [Design principles](#design-principles)
@@ -231,69 +237,133 @@ flowchart TD
 
 ## What Herta is NOT
 
-> Herta is **not** a queue, durable scheduler, transport, sidecar, broker,
-> workflow engine, distributed semaphore, or actor framework.
+Herta is not:
 
-It is an in-process execution contract. There is no network, no daemon, no
-durable state, no cross-process coordination. If you need those, Herta is the
-wrong tool — deliberately.
+- a message broker
+- a durable queue
+- a workflow engine
+- a service mesh
+- an RPC framework
+- an actor framework
+- a distributed semaphore
+- a daemon
+- a scheduler
+- a sidecar
 
-## Conceptual API
+Herta is **process-local by design.** It arbitrates capacity inside one
+process and does not coordinate a global capacity across processes:
 
-> **Conceptual API — the public Go API is still being extracted and may
-> change.** This does not compile against any released package, because no
-> package is released.
-
-```go
-// Illustrative only. Names, signatures, and package layout are not final.
-runtime := herta.NewRuntime(herta.RuntimeConfig{ /* budgets, ... */ })
-
-render := herta.NewOperation(herta.Policy{
-    Resources: []herta.ResourceClaim{{ Name: "renderer", Weight: 1 }},
-    Admission: herta.Wait,
-    Effect:    herta.Idempotent,
-    // ...
-}, renderHandler)
-
-result, err := render.Do(ctx, request)
+```text
+capacity 8 × 1 process ≈ 8 local slots
+capacity 8 × 5 processes ≈ 40 independent local slots
 ```
 
-What this sketch is meant to convey: the handler is ordinary; the policy is
-explicit; the runtime does the arbitrating. Nothing more.
+Herta does NOT coordinate a global capacity across those five processes.
+Global quotas and provider limits are the application's deployment
+responsibility — enforce them at the shared provider, not in Herta.
+
+V0 Queue is deliberately descoped until a real consumer proves it is
+needed: `Wait` (block for capacity) plus the caller's own context deadline
+covers the same need today.
+
+## Quickstart (real API)
+
+Install:
+
+```sh
+go get github.com/arahe-dev/hertasdk@v0.1.0
+```
+
+Runnable example in [`examples/quickstart`](examples/quickstart/main.go)
+(`go run ./examples/quickstart`):
+
+```go
+rt, _ := hertasdk.NewRuntime(hertasdk.ResourceSpec{Name: "worker", Capacity: 4})
+
+// Idempotent operation: safe to retry Transient failures, waits for capacity.
+render, _ := hertasdk.NewOperation(rt, "render",
+    func(ctx context.Context, job string) (string, error) {
+        if job == "flaky" {
+            return "", hertasdk.Fail(hertasdk.Transient, errors.New("upstream hiccup"))
+        }
+        return "rendered:" + job, nil
+    },
+    hertasdk.Policy[string]{
+        Effect:    hertasdk.Idempotent,
+        Resources: []hertasdk.Requirement{{Name: "worker", Units: 1}},
+        Admission: hertasdk.Wait,
+        Retry:     hertasdk.RetryPolicy{MaxAttempts: 3, On: map[hertasdk.Outcome]bool{hertasdk.Transient: true}},
+    })
+
+// Non-idempotent operation: fails fast when busy, retries nothing.
+charge, _ := hertasdk.NewOperation(rt, "charge",
+    func(ctx context.Context, customer string) (string, error) {
+        return "charged:" + customer, nil
+    },
+    hertasdk.Policy[string]{
+        Effect:    hertasdk.NonIdempotent,
+        Resources: []hertasdk.Requirement{{Name: "worker", Units: 1}},
+        Admission: hertasdk.Reject,
+    })
+
+out, err := render.Do(ctx, "job-42")
+fmt.Println(out, err)
+fmt.Println(rt.Stats())
+```
+
+The package name is `execution` (imported as
+`hertasdk "github.com/arahe-dev/hertasdk"` above for readability). The
+handler is ordinary; the policy is explicit; the runtime does the
+arbitrating. Nothing more.
 
 ## Current validation
 
-Internal V0 (reference implementation, **not in this repository**):
+HertaSDK v0.1.0 is implemented, extracted, consumer-validated, and frozen.
+Release evidence:
 
-- 22 proof tests, ~94% statement coverage
-- Go race detector clean
-- 20 concurrent calls against capacity 8 → observed peak **exactly 8**
-- Shared DB budget across heterogeneous operations
-- Keyed serialization (same-key serial, different-key concurrent)
-- Shutdown/admission race hammer
-- Partial-acquire rollback
+- Render consumer validated
+- Events consumer validated
+- CatalogueReplace consumer validated
+- CatalogueReplace landed without Herta semantic changes
+- 20 concurrent operations against capacity 8 peak at exactly 8
+- Shared resource budget across heterogeneous operations
+- Same-key serialization / cross-key parallelism
+- Partial acquisition rollback
+- Caller cancellation
 - Panic cleanup
-- Unsafe retry combinations rejected at construction
+- Shutdown/drain
+- Construction validation
+- Heavy race hammer (200 iterations of 16 goroutines × 50 calls against
+  racing shutdown, asserting `Admitted == Finished` every iteration)
+- Go race detector enforced in Linux CI (`go test -race -count=1 ./...`
+  in [.github/workflows/ci.yml](.github/workflows/ci.yml))
+- Benchmarks included (`BenchmarkContention`, `BenchmarkKeyedSerialization`,
+  `BenchmarkMultiResource`, `BenchmarkRetryOverhead`) — benchmarks exist and
+  execute; no performance numbers are claimed here.
 
-> These results are from the internal reference implementation; the public
-> repository does not contain the implementation yet.
+The runtime was validated against independent render, event-ingestion, and
+catalogue-replacement workloads before extraction. The public
+API/documentation remain application-domain neutral.
 
 ## Roadmap
 
-- [x] Execution model designed
-- [x] Internal Go V0 implemented
-- [x] Concurrency/lifecycle proof suite
-- [x] Race-clean reference implementation
-- [ ] Validate against real Mirai Render workload
-- [ ] Validate Events and Catalogue workloads
-- [ ] External heterogeneous validation workload
-- [ ] Extract stable public Go package
-- [ ] Publish Go alpha
-- [ ] Benchmarks against conventional composition
+- [x] Go V0 implemented
+- [x] Race-clean proof suite
+- [x] Render workload validation
+- [x] Events workload validation
+- [x] CatalogueReplace third-consumer validation
+- [x] Stable public Go extraction
+- [x] Runnable quickstart
+- [x] Baseline benchmarks
+- [x] v0.1.0
+- [ ] Additional real-world consumers
+- [ ] Improve benchmark corpus when evidence warrants
 - [ ] Evaluate Rust/Tower prototype
-- [ ] Consider language-neutral execution contract specification
+- [ ] Evaluate language-neutral spec only after multi-language evidence
 
-No dates are promised. Details in [ROADMAP.md](ROADMAP.md).
+Explicit non-goals: Queue without consumer evidence, distributed Herta,
+durable workflow execution, transport ownership. No dates are promised.
+Details in [ROADMAP.md](ROADMAP.md).
 
 ## Design principles
 

@@ -1,55 +1,50 @@
 # Roadmap
 
-HertaSDK's execution model is designed, implemented, and proven internally.
-The public repository and Go API are being extracted. No dates are promised —
-each gate below must actually pass before the next begins.
+HertaSDK v0.1.0 is implemented, extracted, consumer-validated, and frozen.
+No dates are promised — each future gate below must actually pass before the
+next begins.
 
 ## Where things stand
 
-- **Execution model:** designed and proven in an internal Go V0 reference
-  implementation (22 proof tests, ~94% statement coverage, race-clean).
-- **Public repository:** this shell — concepts, contracts, and extraction
-  criteria. No implementation source.
-- **Public API extraction:** in progress. Names, signatures, and package
-  layout are not final.
+- **Go V0:** implemented and frozen at v0.1.0 in this repository.
+- **Proof suite:** race-clean (22 execution/proof tests plus the heavy race
+  hammer; Go race detector enforced in Linux CI).
+- **Consumer validation:** render, event-ingestion, and catalogue-replacement
+  workloads validated before extraction. CatalogueReplace landed without Herta
+  semantic changes.
+- **Public module:** `github.com/arahe-dev/hertasdk`, installable via
+  `go get github.com/arahe-dev/hertasdk@v0.1.0`.
+- **Quickstart:** runnable at `examples/quickstart`
+  (`go run ./examples/quickstart`).
+- **Benchmarks:** baseline corpus included
+  (`BenchmarkContention`, `BenchmarkKeyedSerialization`,
+  `BenchmarkMultiResource`, `BenchmarkRetryOverhead`).
 
-## Extraction gates
+## Completed
 
-Each gate is a real validation workload, not a paperwork step:
+- [x] Go V0 implemented
+- [x] Race-clean proof suite
+- [x] Render workload validation
+- [x] Events workload validation
+- [x] CatalogueReplace third-consumer validation
+- [x] Stable public Go extraction
+- [x] Runnable quickstart
+- [x] Baseline benchmarks
+- [x] v0.1.0
 
-- [x] Execution model designed
-- [x] Internal Go V0 implemented
-- [x] Concurrency/lifecycle proof suite (22 tests, race-clean)
-- [x] Capacity behavior proven (20 concurrent / capacity 8 → peak exactly 8)
-- [ ] Validate against real Mirai Render workload
-- [ ] Validate Events and Catalogue workloads
-- [ ] External heterogeneous validation workload (outside the original codebase)
-- [ ] Extract stable public Go package from the proven core
+## Future
 
-## Alpha criteria
-
-The public alpha ships only when all of these hold:
-
-1. The extracted package passes the full proof suite unmodified in behavior.
-2. At least two heterogeneous real-world workloads run on the public package
-   (not the internal reference).
-3. The public API is frozen for the alpha series, with documented Effect /
-   Outcome contracts and construction-time validation behavior.
-4. Supply-chain hygiene is in place: pinned toolchain, verified `go.sum`,
-   minimal dependencies, security policy for the module.
-
-Then:
-
-- [ ] Publish Go alpha (module path, version tag, install instructions)
-- [ ] Benchmarks against conventional composition (semaphore + retry-lib
-  baselines, with published methodology — no numbers without it)
-
-## Beyond alpha (exploratory, not committed)
-
+- [ ] Additional real-world consumers
+- [ ] Improve benchmark corpus when evidence warrants
 - [ ] Evaluate Rust/Tower prototype
-- [ ] Consider a language-neutral execution contract specification
+- [ ] Evaluate language-neutral spec only after multi-language evidence
 
-## Explicitly out of scope
+## Explicit non-goals
+
+- Queue without consumer evidence
+- Distributed Herta
+- Durable workflow execution
+- Transport ownership
 
 No speculative distributed features: no global resource coordination, no
 durable scheduling, no transport, no service mesh behavior. Herta remains

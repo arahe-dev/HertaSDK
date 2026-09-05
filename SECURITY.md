@@ -1,18 +1,16 @@
 # Security Policy
 
-HertaSDK is currently **pre-alpha** with no released package. This policy
-covers the repository itself (docs, assets, workflows) and sets expectations
-for the future public package.
+HertaSDK v0.1.0 is a released Go module (`github.com/arahe-dev/hertasdk`).
+This policy covers the repository, the module, and the supply chain around
+them.
 
 ## Supported versions
 
-There are no supported releases yet. Security fixes will be tracked against
-the upcoming public alpha once it exists; until then, advisories do not apply
-to any installable artifact because none exists.
-
 | Version | Supported |
 |---|---|
-| (pre-alpha, unreleased) | N/A — no installable package |
+| v0.1.0 | Supported |
+
+Security fixes are tracked against the latest tagged release.
 
 ## Reporting a vulnerability
 
@@ -26,7 +24,7 @@ What to expect:
 
 - Acknowledgment within **5 business days**.
 - A private fix or correction before any public disclosure, where the issue
-  affects future implementation guidance.
+  affects the module or future implementation guidance.
 - Credit in the fix notes if you want it.
 
 Please do not open a public issue for a suspected vulnerability — use email
@@ -34,9 +32,8 @@ first.
 
 ## Scope notes
 
-- HertaSDK is an in-process runtime. Its future threat model concerns local
+- HertaSDK is an in-process runtime. Its threat model concerns local
   resource exhaustion, contract misuse, and unsafe retry semantics — not
   network attack surface. There is deliberately no network code in scope.
-- Dependency and supply-chain hygiene will be documented when the Go module
-  is published (pinned toolchain, `go.sum` verification, minimal
-  dependencies).
+- Supply-chain hygiene: pinned toolchain via `go.mod`, verified `go.sum`,
+  minimal dependencies (only `golang.org/x/sync`).

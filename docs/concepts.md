@@ -4,8 +4,9 @@ The six primitives of HertaSDK. One execution model, many heterogeneous
 operations — every primitive below exists to make shared in-process execution
 explicit and checkable.
 
-> Status: the execution model is proven internally; the public Go API is being
-> extracted and may change. Names here describe concepts, not final identifiers.
+> Status: **v0.1.0 — frozen contract.** The names below are the real,
+> installed public API (`github.com/arahe-dev/hertasdk`). The V0 execution
+> contract will not change without consumer evidence.
 
 ## Runtime
 
