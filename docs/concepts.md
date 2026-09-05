@@ -70,7 +70,11 @@ Whether repeating the operation is safe:
 | `Idempotent` | Repeating has the same effect as doing once. | Safe to repeat. |
 | `NonIdempotent` | Repeating may change state, spend quota, or charge money. | Repeat only with proof it did not execute. |
 
-Effect is declared by the operation author — the runtime cannot infer it.
+Effect is declared by the operation author — the runtime cannot infer it,
+and it will not guess. The zero value of `Effect` is `EffectUnknown`
+(**not** `Pure`): since v0.2.0, a `Policy` without an explicit `Effect`
+fails construction with `ErrEffectRequired`. If semantics matter, absence
+of semantics must not itself have semantics.
 
 ## Outcome
 

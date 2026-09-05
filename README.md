@@ -17,15 +17,15 @@ produce, and what failure means — the runtime validates those contracts and
 arbitrates shared local capacity across otherwise-independent subsystems.
 
 ![Go](https://img.shields.io/badge/Go-%3E%3D1.27.1-00ADD8?logo=go&logoColor=white)
-![Status: v0.1.0](https://img.shields.io/badge/status-v0.1.0-brightgreen)
+![Status: v0.2.0](https://img.shields.io/badge/status-v0.2.0-brightgreen)
 ![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)
 
 </div>
 
-> **Status.** HertaSDK **v0.1.0** is an installable Go module:
+> **Status.** HertaSDK **v0.2.0** is an installable Go module:
 >
 > ```sh
-> go get github.com/arahe-dev/hertasdk@v0.1.0
+> go get github.com/arahe-dev/hertasdk@v0.2.0
 > ```
 >
 > The V0 execution contract is frozen: `Wait` / `Reject` admission, shared
@@ -132,7 +132,7 @@ error semantics:
 | `Operation[I, O]` | Typed wrapper around a normal handler. Carries a `Policy`. |
 | `Resource` | A named finite local capacity (e.g. `renderer`, `db-write`). Weighted. |
 | `Policy` | Resources, admission (`Wait`/`Reject`), timeout, retry, optional `SerializeBy(key)`. |
-| `Effect` | Side-effect class: `Pure`, `Idempotent`, `NonIdempotent`. |
+| `Effect` | Side-effect class: `Pure`, `Idempotent`, `NonIdempotent`. The zero value is `EffectUnknown` — omitting `Effect` is a construction error (`ErrEffectRequired`), never a silent claim of safety. |
 | `Outcome` | Failure meaning: `Success`, `Transient`, `Permanent`, `Throttled`, `Uncertain`. |
 
 Effect says **whether repeating is safe**. Outcome says **what happened**.
@@ -271,7 +271,7 @@ covers the same need today.
 Install:
 
 ```sh
-go get github.com/arahe-dev/hertasdk@v0.1.0
+go get github.com/arahe-dev/hertasdk@v0.2.0
 ```
 
 Runnable example in [`examples/quickstart`](examples/quickstart/main.go)
@@ -318,7 +318,7 @@ arbitrating. Nothing more.
 
 ## Current validation
 
-HertaSDK v0.1.0 is implemented, extracted, consumer-validated, and frozen.
+HertaSDK v0.2.0 is implemented, extracted, consumer-validated, and frozen.
 Release evidence:
 
 - Render consumer validated
@@ -355,7 +355,7 @@ API/documentation remain application-domain neutral.
 - [x] Stable public Go extraction
 - [x] Runnable quickstart
 - [x] Baseline benchmarks
-- [x] v0.1.0
+- [x] v0.2.0
 - [ ] Additional real-world consumers
 - [ ] Improve benchmark corpus when evidence warrants
 - [ ] Evaluate Rust/Tower prototype

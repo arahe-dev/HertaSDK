@@ -108,11 +108,11 @@ func TestNewOperationValidation(t *testing.T) {
 		label  string
 		policy Policy[int]
 	}{
-		{"unknown resource", Policy[int]{Resources: []Requirement{{Name: "nope", Units: 1}}}},
-		{"zero units", Policy[int]{Resources: []Requirement{{Name: "r", Units: 0}}}},
-		{"negative units", Policy[int]{Resources: []Requirement{{Name: "r", Units: -1}}}},
-		{"units above capacity", Policy[int]{Resources: []Requirement{{Name: "r", Units: 3}}}},
-		{"duplicate resource", Policy[int]{Resources: []Requirement{{Name: "r", Units: 1}, {Name: "r", Units: 1}}}},
+		{"unknown resource", Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "nope", Units: 1}}}},
+		{"zero units", Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: 0}}}},
+		{"negative units", Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: -1}}}},
+		{"units above capacity", Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: 3}}}},
+		{"duplicate resource", Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: 1}, {Name: "r", Units: 1}}}},
 		{"unsafe retry contract", Policy[int]{Effect: NonIdempotent, Retry: RetryPolicy{MaxAttempts: 2, On: map[Outcome]bool{Uncertain: true}}}},
 	}
 	for _, tc := range cases {
@@ -121,13 +121,13 @@ func TestNewOperationValidation(t *testing.T) {
 		}
 	}
 
-	if _, err := NewOperation[int, int](rt, "", func(ctx context.Context, i int) (int, error) { return i, nil }, Policy[int]{}); err == nil {
+	if _, err := NewOperation[int, int](rt, "", func(ctx context.Context, i int) (int, error) { return i, nil }, Policy[int]{Effect: Pure}); err == nil {
 		t.Error("empty name: want construction error")
 	}
-	if _, err := NewOperation[int, int](rt, "op", nil, Policy[int]{}); err == nil {
+	if _, err := NewOperation[int, int](rt, "op", nil, Policy[int]{Effect: Pure}); err == nil {
 		t.Error("nil handler: want construction error")
 	}
-	if _, err := NewOperation[int, int](nil, "op", func(ctx context.Context, i int) (int, error) { return i, nil }, Policy[int]{}); err == nil {
+	if _, err := NewOperation[int, int](nil, "op", func(ctx context.Context, i int) (int, error) { return i, nil }, Policy[int]{Effect: Pure}); err == nil {
 		t.Error("nil runtime: want construction error")
 	}
 }
@@ -168,7 +168,7 @@ func TestCapacityLimitHeldUnderLoad(t *testing.T) {
 			release.wait()
 			return 1, nil
 		},
-		Policy[int]{
+		Policy[int]{Effect: Pure,
 			Resources: []Requirement{{Name: "renderer", Units: 1}},
 			Admission: Wait,
 			Timeout:   5 * time.Second,
@@ -200,14 +200,14 @@ func TestRejectAdmissionFailsFast(t *testing.T) {
 	release := newGate()
 	holder := mustOperation(t, rt, "hold",
 		func(ctx context.Context, _ int) (int, error) { release.wait(); return 0, nil },
-		Policy[int]{Resources: []Requirement{{Name: "renderer", Units: 1}}, Admission: Wait})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "renderer", Units: 1}}, Admission: Wait})
 	holderDone := make(chan struct{})
 	go func() { _, _ = holder.Do(context.Background(), 0); close(holderDone) }()
 	time.Sleep(50 * time.Millisecond) // holder owns capacity now
 
 	reject := mustOperation(t, rt, "render",
 		func(ctx context.Context, _ int) (int, error) { return 0, nil },
-		Policy[int]{Resources: []Requirement{{Name: "renderer", Units: 1}}, Admission: Reject})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "renderer", Units: 1}}, Admission: Reject})
 
 	start := time.Now()
 	_, err := reject.Do(context.Background(), 0)
@@ -331,14 +331,14 @@ func TestWaitingCallerCancellationLeavesClean(t *testing.T) {
 	release := newGate()
 	holder := mustOperation(t, rt, "hold",
 		func(ctx context.Context, _ int) (int, error) { release.waitCtx(ctx); return 0, ctx.Err() },
-		Policy[int]{Resources: []Requirement{{Name: "renderer", Units: 1}}, Admission: Wait})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "renderer", Units: 1}}, Admission: Wait})
 	holderDone := make(chan struct{})
 	go func() { _, _ = holder.Do(context.Background(), 0); close(holderDone) }()
 	time.Sleep(50 * time.Millisecond)
 
 	waiter := mustOperation(t, rt, "waiter",
 		func(ctx context.Context, _ int) (int, error) { return 0, nil },
-		Policy[int]{Resources: []Requirement{{Name: "renderer", Units: 1}}, Admission: Wait})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "renderer", Units: 1}}, Admission: Wait})
 
 	ctx, cancel := context.WithCancel(context.Background())
 	done := make(chan error, 1)
@@ -361,7 +361,7 @@ func TestWaitingCallerCancellationLeavesClean(t *testing.T) {
 	<-holderDone
 	probe := mustOperation(t, rt, "probe",
 		func(ctx context.Context, _ int) (int, error) { return 0, nil },
-		Policy[int]{Resources: []Requirement{{Name: "renderer", Units: 1}}, Admission: Reject})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "renderer", Units: 1}}, Admission: Reject})
 	if _, err := probe.Do(context.Background(), 0); err != nil {
 		t.Fatalf("capacity leaked after cancellation: %v", err)
 	}
@@ -375,7 +375,7 @@ func TestPanicReleasesEverythingAndPropagates(t *testing.T) {
 
 	op := mustOperation(t, rt, "boom",
 		func(ctx context.Context, _ string) (int, error) { panic("programmer bug") },
-		Policy[string]{
+		Policy[string]{Effect: Pure,
 			Resources:    []Requirement{{Name: "renderer", Units: 1}, {Name: "db-write", Units: 1}},
 			Admission:    Wait,
 			SerializeKey: func(string) string { return "brand-1" },
@@ -393,7 +393,7 @@ func TestPanicReleasesEverythingAndPropagates(t *testing.T) {
 	// Both resources are back: a Reject probe takes one unit of each.
 	probe := mustOperation(t, rt, "probe",
 		func(ctx context.Context, _ string) (int, error) { return 0, nil },
-		Policy[string]{
+		Policy[string]{Effect: Pure,
 			Resources: []Requirement{{Name: "renderer", Units: 1}, {Name: "db-write", Units: 1}},
 			Admission: Reject,
 		})
@@ -404,7 +404,7 @@ func TestPanicReleasesEverythingAndPropagates(t *testing.T) {
 	// The key was released: another op acquires the same key.
 	withKey := mustOperation(t, rt, "withkey",
 		func(ctx context.Context, _ string) (int, error) { return 0, nil },
-		Policy[string]{SerializeKey: func(s string) string { return "brand-1" }})
+		Policy[string]{Effect: Pure, SerializeKey: func(s string) string { return "brand-1" }})
 	if _, err := withKey.Do(context.Background(), ""); err != nil {
 		t.Fatalf("key leaked after panic: %v", err)
 	}
@@ -425,7 +425,7 @@ func TestShutdownRejectsNewAndDrainsActive(t *testing.T) {
 			mu.Unlock()
 			return 0, nil
 		},
-		Policy[int]{Resources: []Requirement{{Name: "db-write", Units: 1}}, Admission: Wait})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "db-write", Units: 1}}, Admission: Wait})
 
 	const active = 3
 	var wg sync.WaitGroup
@@ -473,7 +473,7 @@ func TestRaceHammerDoVsShutdown(t *testing.T) {
 		rt := mustRuntime(t, ResourceSpec{Name: "r", Capacity: 4})
 		op := mustOperation(t, rt, "spin",
 			func(ctx context.Context, _ int) (int, error) { return iter, nil },
-			Policy[int]{Resources: []Requirement{{Name: "r", Units: 1}}, Admission: Wait})
+			Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: 1}}, Admission: Wait})
 
 		var wg sync.WaitGroup
 		for g := 0; g < 8; g++ {
@@ -511,14 +511,14 @@ func TestPartialAcquireRollsBack(t *testing.T) {
 
 	holder := mustOperation(t, rt, "hold-b",
 		func(ctx context.Context, _ int) (int, error) { release.wait(); return 0, nil },
-		Policy[int]{Resources: []Requirement{{Name: "b", Units: 1}}, Admission: Wait})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "b", Units: 1}}, Admission: Wait})
 	holderDone := make(chan struct{})
 	go func() { _, _ = holder.Do(context.Background(), 0); close(holderDone) }()
 	time.Sleep(50 * time.Millisecond) // holder owns b
 
 	victim := mustOperation(t, rt, "needs-a-and-b",
 		func(ctx context.Context, _ int) (int, error) { return 0, nil },
-		Policy[int]{Resources: []Requirement{{Name: "a", Units: 1}, {Name: "b", Units: 1}}, Admission: Reject})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "a", Units: 1}, {Name: "b", Units: 1}}, Admission: Reject})
 	_, err := victim.Do(context.Background(), 0)
 	if !errors.Is(err, ErrOverloaded) {
 		t.Fatalf("want ErrOverloaded, got %v", err)
@@ -527,14 +527,14 @@ func TestPartialAcquireRollsBack(t *testing.T) {
 	// Rollback proof: 'a' must be free right now (Reject probe succeeds).
 	probeA := mustOperation(t, rt, "probe-a",
 		func(ctx context.Context, _ int) (int, error) { return 0, nil },
-		Policy[int]{Resources: []Requirement{{Name: "a", Units: 1}}, Admission: Reject})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "a", Units: 1}}, Admission: Reject})
 	if _, err := probeA.Do(context.Background(), 0); err != nil {
 		t.Fatalf("'a' leaked after partial-acquire failure: %v", err)
 	}
 	// And 'b' is still held by the holder (Reject probe fails).
 	probeB := mustOperation(t, rt, "probe-b",
 		func(ctx context.Context, _ int) (int, error) { return 0, nil },
-		Policy[int]{Resources: []Requirement{{Name: "b", Units: 1}}, Admission: Reject})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "b", Units: 1}}, Admission: Reject})
 	if _, err := probeB.Do(context.Background(), 0); !errors.Is(err, ErrOverloaded) {
 		t.Fatalf("'b' should still be held, got %v", err)
 	}
@@ -554,14 +554,14 @@ func TestGlobalOrderingPreventsHoldAndWaitStarvation(t *testing.T) {
 
 	aHolder := mustOperation(t, rt, "hold-a",
 		func(ctx context.Context, _ int) (int, error) { release.wait(); return 0, nil },
-		Policy[int]{Resources: []Requirement{{Name: "a", Units: 1}}, Admission: Wait})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "a", Units: 1}}, Admission: Wait})
 	aHolderDone := make(chan struct{})
 	go func() { _, _ = aHolder.Do(context.Background(), 0); close(aHolderDone) }()
 	time.Sleep(50 * time.Millisecond)
 
 	victim := mustOperation(t, rt, "needs-b-then-a",
 		func(ctx context.Context, _ int) (int, error) { return 0, nil },
-		Policy[int]{Resources: []Requirement{{Name: "b", Units: 1}, {Name: "a", Units: 1}}, Admission: Wait})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "b", Units: 1}, {Name: "a", Units: 1}}, Admission: Wait})
 	victimDone := make(chan struct{})
 	go func() { _, _ = victim.Do(context.Background(), 0); close(victimDone) }()
 	time.Sleep(50 * time.Millisecond) // victim blocked on 'a' (global first)
@@ -570,7 +570,7 @@ func TestGlobalOrderingPreventsHoldAndWaitStarvation(t *testing.T) {
 	// waiting on 'a' — and this b-only op would block. Global order ⇒ free.
 	bOnly := mustOperation(t, rt, "needs-b",
 		func(ctx context.Context, _ int) (int, error) { return 0, nil },
-		Policy[int]{Resources: []Requirement{{Name: "b", Units: 1}}, Admission: Reject})
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "b", Units: 1}}, Admission: Reject})
 	if _, err := bOnly.Do(context.Background(), 0); err != nil {
 		t.Fatalf("victim holds 'b' while waiting — global ordering broken: %v", err)
 	}
@@ -589,7 +589,7 @@ func TestUnclassifiedErrorIsPermanentAndNotRetried(t *testing.T) {
 			calls++
 			return 0, errors.New("some plain error")
 		},
-		Policy[int]{
+		Policy[int]{Effect: Pure,
 			Resources: []Requirement{{Name: "r", Units: 1}},
 			Retry:     RetryPolicy{MaxAttempts: 5, On: map[Outcome]bool{Transient: true}},
 		})
@@ -668,7 +668,7 @@ func TestCallerCancellationAbortsRetryLoop(t *testing.T) {
 				return 0, Fail(Transient, ctx.Err())
 			}
 		},
-		Policy[int]{
+		Policy[int]{Effect: Pure,
 			Resources: []Requirement{{Name: "r", Units: 1}},
 			Retry:     RetryPolicy{MaxAttempts: 10, On: map[Outcome]bool{Transient: true}},
 		})
@@ -693,14 +693,14 @@ func TestShutdownWakesAdmissionWaiters(t *testing.T) {
 		release := newGate()
 		holder := mustOperation(t, rt, "hold",
 			func(ctx context.Context, _ int) (int, error) { release.waitCtx(ctx); return 0, ctx.Err() },
-			Policy[int]{Resources: []Requirement{{Name: "r", Units: 1}}, Admission: Wait})
+			Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: 1}}, Admission: Wait})
 		holderDone := make(chan struct{})
 		go func() { _, _ = holder.Do(context.Background(), 0); close(holderDone) }()
 		time.Sleep(50 * time.Millisecond)
 
 		waiter := mustOperation(t, rt, "waiter",
 			func(ctx context.Context, _ int) (int, error) { return 0, nil },
-			Policy[int]{Resources: []Requirement{{Name: "r", Units: 1}}, Admission: Wait})
+			Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: 1}}, Admission: Wait})
 		errCh := make(chan error, 1)
 		go func() { _, err := waiter.Do(context.Background(), 0); errCh <- err }()
 		time.Sleep(50 * time.Millisecond)
@@ -723,14 +723,14 @@ func TestShutdownWakesAdmissionWaiters(t *testing.T) {
 		release := newGate()
 		holder := mustOperation(t, rt, "hold",
 			func(ctx context.Context, _ string) (int, error) { release.waitCtx(ctx); return 0, ctx.Err() },
-			Policy[string]{SerializeKey: func(s string) string { return s }})
+			Policy[string]{Effect: Pure, SerializeKey: func(s string) string { return s }})
 		holderDone := make(chan struct{})
 		go func() { _, _ = holder.Do(context.Background(), "A"); close(holderDone) }()
 		time.Sleep(50 * time.Millisecond)
 
 		waiter := mustOperation(t, rt, "waiter",
 			func(ctx context.Context, _ string) (int, error) { return 0, nil },
-			Policy[string]{SerializeKey: func(s string) string { return s }})
+			Policy[string]{Effect: Pure, SerializeKey: func(s string) string { return s }})
 		errCh := make(chan error, 1)
 		go func() { _, err := waiter.Do(context.Background(), "A"); errCh <- err }()
 		time.Sleep(50 * time.Millisecond)
@@ -828,7 +828,7 @@ func TestMaxAttemptsNormalization(t *testing.T) {
 				calls++
 				return 0, Fail(Transient, errors.New("always transient"))
 			},
-			Policy[int]{
+			Policy[int]{Effect: Pure,
 				Resources: []Requirement{{Name: "r", Units: 1}},
 				Retry:     RetryPolicy{MaxAttempts: ma, On: map[Outcome]bool{Transient: true}},
 			})
@@ -851,7 +851,7 @@ func TestEmptyKeyMeansNoSerialization(t *testing.T) {
 			release.wait()
 			return 0, nil
 		},
-		Policy[string]{SerializeKey: func(string) string { return "" }})
+		Policy[string]{Effect: Pure, SerializeKey: func(string) string { return "" }})
 	var wg sync.WaitGroup
 	for i := 0; i < 4; i++ {
 		wg.Add(1)
@@ -892,7 +892,7 @@ func TestStatsCounters(t *testing.T) {
 		func(ctx context.Context, _ int) (int, error) {
 			return 0, Fail(Transient, errors.New("x"))
 		},
-		Policy[int]{
+		Policy[int]{Effect: Pure,
 			Resources: []Requirement{{Name: "r", Units: 1}},
 			Retry:     RetryPolicy{MaxAttempts: 2, On: map[Outcome]bool{Transient: true}},
 		})

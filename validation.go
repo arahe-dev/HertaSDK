@@ -12,6 +12,25 @@ var (
 	// semantics could duplicate side effects (e.g. NonIdempotent +
 	// retry on Uncertain).
 	ErrUnsafeRetry = errors.New("execution: unsafe retry contract")
+	// ErrEffectRequired is returned by NewOperation when the Policy's
+	// Effect is the zero value (EffectUnknown): a Policy that forgot to
+	// declare its semantic class must fail at construction, not silently
+	// claim the strongest retry-safety semantics.
+	ErrEffectRequired = errors.New("execution: effect must be declared (Pure, Idempotent, or NonIdempotent)")
+	// ErrInvalidEffect is returned by NewOperation for an out-of-range
+	// Effect value (not one of EffectUnknown/Pure/Idempotent/NonIdempotent).
+	ErrInvalidEffect = errors.New("execution: invalid effect value")
+	// ErrInvalidRetryPolicy is returned by NewOperation when the retry
+	// policy requests behavior the V0 contract does not implement —
+	// e.g. On[Throttled] = true (Herta has no backoff/jitter, so a
+	// throttled retry would only hammer the refusing resource), or On
+	// entries for outcomes that can never be retried (Success,
+	// Permanent, or invalid outcome values).
+	ErrInvalidRetryPolicy = errors.New("execution: invalid retry policy")
+	// ErrInvalidOutcome is returned by Fail when asked to manufacture a
+	// Failure carrying an invalid Outcome (out-of-range, or Success with
+	// a non-nil error — a "successful failure" is a caller bug).
+	ErrInvalidOutcome = errors.New("execution: invalid outcome")
 	// ErrOverloaded is returned by Do when Reject admission finds no
 	// capacity. Always wrapped: Fail(Throttled, ErrOverloaded) — so both
 	// errors.Is(err, ErrOverloaded) and OutcomeOf(err) == Throttled work.
@@ -28,6 +47,19 @@ func validateOperation[I any](rt *Runtime, name string, p Policy[I]) error {
 	if name == "" {
 		return errors.New("execution: operation name must not be empty")
 	}
+
+	// Effect is a declared contract, not an implied default. The zero
+	// value is EffectUnknown — omission is a construction error, never a
+	// silent claim of Pure retry-safety.
+	switch p.Effect {
+	case EffectUnknown:
+		return fmt.Errorf("%w: operation %q", ErrEffectRequired, name)
+	case Pure, Idempotent, NonIdempotent:
+		// Declared: proceed.
+	default:
+		return fmt.Errorf("%w: operation %q has Effect %d", ErrInvalidEffect, name, int(p.Effect))
+	}
+
 	seen := map[string]bool{}
 	for _, req := range p.Resources {
 		if seen[req.Name] {
@@ -48,6 +80,31 @@ func validateOperation[I any](rt *Runtime, name string, p Policy[I]) error {
 		}
 	}
 
+	// RetryPolicy.On must only request behavior the V0 contract actually
+	// implements. Policies the executor would silently ignore are
+	// rejected instead — silence is how contracts rot.
+	for o, want := range p.Retry.On {
+		if !want {
+			continue // false entries are inert and legal
+		}
+		switch o {
+		case Throttled:
+			// Observable but not automatically retryable in V0: Herta has
+			// no backoff/jitter, so a throttled retry would only hammer
+			// the resource that just refused us.
+			return fmt.Errorf("%w: operation %q requests retry on Throttled; Throttled is observable but not retryable in V0 (no backoff semantics)", ErrInvalidRetryPolicy, name)
+		case Success, Permanent:
+			// Can never be retried by contract; asking for it is a bug.
+			return fmt.Errorf("%w: operation %q requests retry on %s, which is never retryable", ErrInvalidRetryPolicy, name, o)
+		case Transient, Uncertain:
+			// The actionable V0 entries (Uncertain still gated by the
+			// Effect safety check below and isSafeRetry).
+		default:
+			// Unrecognized Outcome value in the map.
+			return fmt.Errorf("%w: operation %q has an invalid Outcome value (%d) in Retry.On", ErrInvalidRetryPolicy, name, int(o))
+		}
+	}
+
 	if p.Effect == NonIdempotent && p.Retry.mayRetry(Uncertain) {
 		return fmt.Errorf(
 			"%w: operation %q is non-idempotent and cannot automatically retry uncertain outcomes",
@@ -64,8 +121,10 @@ func isSafeRetry(e Effect, o Outcome) bool {
 	switch o {
 	case Success, Permanent, Throttled:
 		// Success: nothing to retry. Permanent: will never succeed by
-		// repeating. Throttled: safe but pointless to hammer; capacity is
-		// the problem, not the failure.
+		// repeating. Throttled: NOT retried in V0 — Herta has no
+		// backoff/jitter semantics, so an immediate retry would only
+		// hammer the resource that just refused us (construction rejects
+		// On[Throttled] = true for the same reason).
 		return false
 	case Transient:
 		// Transient failure of any Effect is safe to retry: the attempt

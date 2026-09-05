@@ -1,19 +1,19 @@
 # Roadmap
 
-HertaSDK v0.1.0 is implemented, extracted, consumer-validated, and frozen.
+HertaSDK v0.2.0 is implemented, extracted, consumer-validated, and frozen.
 No dates are promised — each future gate below must actually pass before the
 next begins.
 
 ## Where things stand
 
-- **Go V0:** implemented and frozen at v0.1.0 in this repository.
+- **Go V0:** implemented and frozen at v0.1.0; API safety hardened at v0.2.0.
 - **Proof suite:** race-clean (22 execution/proof tests plus the heavy race
   hammer; Go race detector enforced in Linux CI).
 - **Consumer validation:** render, event-ingestion, and catalogue-replacement
   workloads validated before extraction. CatalogueReplace landed without Herta
   semantic changes.
 - **Public module:** `github.com/arahe-dev/hertasdk`, installable via
-  `go get github.com/arahe-dev/hertasdk@v0.1.0`.
+  `go get github.com/arahe-dev/hertasdk@v0.2.0`.
 - **Quickstart:** runnable at `examples/quickstart`
   (`go run ./examples/quickstart`).
 - **Benchmarks:** baseline corpus included
@@ -31,6 +31,7 @@ next begins.
 - [x] Runnable quickstart
 - [x] Baseline benchmarks
 - [x] v0.1.0
+- [x] v0.2.0 API safety hardening (Effect must be declared; explicit enum/retry-policy validation)
 
 ## Future
 

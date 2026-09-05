@@ -12,12 +12,18 @@ Every attempt ends in exactly one outcome:
 | `Success` | Done. No retry. |
 | `Transient` | Retryable, if the policy allows and `Effect` permits. |
 | `Permanent` | Never retried. |
-| `Throttled` | Not retried blindly — back off, the budget said no. |
+| `Throttled` | **Not retried in V0.** Herta has no backoff/jitter semantics, so an immediate retry would only hammer the resource that just refused us. `RetryPolicy.On[Throttled] = true` is rejected at construction. |
 | `Uncertain` | Retryable **only** if `Effect` is `Pure` or `Idempotent`. Never for `NonIdempotent`. |
 
-Classification happens inside the runtime from provider signals (status codes,
-timeout vs. cancellation, explicit markers). Anything the runtime cannot
-classify stays unclassified — and unclassified Go errors are treated
+Since v0.2.0 the retry policy must only request what the contract implements:
+`On` entries for `Throttled`, `Success`, `Permanent`, or unrecognized
+`Outcome` values are construction errors (`ErrInvalidRetryPolicy`), not
+silently ignored settings. The actionable entries in V0 are `Transient`,
+and `Uncertain` where the `Effect` permits it.
+
+Classification is the **handler's** (or its provider adapter's) job — the
+code closest to the external system tags errors with `Fail(outcome, err)`.
+Anything untagged is unclassified — and unclassified Go errors are treated
 conservatively: **no speculative retry**.
 
 ## Retry safety

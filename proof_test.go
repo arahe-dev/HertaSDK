@@ -18,7 +18,7 @@ func TestRaceHammerHeavy(t *testing.T) {
 		rt := mustRuntime(t, ResourceSpec{Name: "r", Capacity: 4})
 		op := mustOperation(t, rt, "spin",
 			func(ctx context.Context, _ int) (int, error) { return iter, nil },
-			Policy[int]{Resources: []Requirement{{Name: "r", Units: 1}}, Admission: Wait})
+			Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: 1}}, Admission: Wait})
 
 		var wg sync.WaitGroup
 		for g := 0; g < 16; g++ {
@@ -88,56 +88,56 @@ func TestConstructionValidationTable(t *testing.T) {
 				rt:      nil,
 				name:    "op",
 				handler: okHandler,
-				policy:  Policy[int]{},
+				policy:  Policy[int]{Effect: Pure},
 			},
 			{
 				label:   "empty name",
 				rt:      rt,
 				name:    "",
 				handler: okHandler,
-				policy:  Policy[int]{},
+				policy:  Policy[int]{Effect: Pure},
 			},
 			{
 				label:   "nil handler",
 				rt:      rt,
 				name:    "op",
 				handler: nil,
-				policy:  Policy[int]{},
+				policy:  Policy[int]{Effect: Pure},
 			},
 			{
 				label:   "unknown resource",
 				rt:      rt,
 				name:    "op",
 				handler: okHandler,
-				policy:  Policy[int]{Resources: []Requirement{{Name: "nope", Units: 1}}},
+				policy:  Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "nope", Units: 1}}},
 			},
 			{
 				label:   "zero units",
 				rt:      rt,
 				name:    "op",
 				handler: okHandler,
-				policy:  Policy[int]{Resources: []Requirement{{Name: "r", Units: 0}}},
+				policy:  Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: 0}}},
 			},
 			{
 				label:   "negative units",
 				rt:      rt,
 				name:    "op",
 				handler: okHandler,
-				policy:  Policy[int]{Resources: []Requirement{{Name: "r", Units: -1}}},
+				policy:  Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: -1}}},
 			},
 			{
 				label:   "over-capacity units",
 				rt:      rt,
 				name:    "op",
 				handler: okHandler,
-				policy:  Policy[int]{Resources: []Requirement{{Name: "r", Units: 3}}},
+				policy:  Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: 3}}},
 			},
 			{
 				label:   "duplicate resource requirement",
 				rt:      rt,
 				name:    "op",
 				handler: okHandler,
-				policy: Policy[int]{Resources: []Requirement{
+				policy: Policy[int]{Effect: Pure, Resources: []Requirement{
 					{Name: "r", Units: 1},
 					{Name: "r", Units: 1},
 				}},
@@ -153,6 +153,70 @@ func TestConstructionValidationTable(t *testing.T) {
 				},
 				sentinel: ErrUnsafeRetry,
 			},
+			{
+				// v0.2.0: omission is a contract error, not silent Pure.
+				label:    "Effect omitted (EffectUnknown)",
+				rt:       rt,
+				name:     "op",
+				handler:  okHandler,
+				policy:   Policy[int]{},
+				sentinel: ErrEffectRequired,
+			},
+			{
+				label:    "invalid Effect value",
+				rt:       rt,
+				name:     "op",
+				handler:  okHandler,
+				policy:   Policy[int]{Effect: Effect(42)},
+				sentinel: ErrInvalidEffect,
+			},
+			{
+				// v0.2.0: Throttled is observable but not retryable in V0
+				// (no backoff semantics); requesting it is a construction
+				// error instead of silently ignored policy.
+				label:   "retry on Throttled",
+				rt:      rt,
+				name:    "op",
+				handler: okHandler,
+				policy: Policy[int]{
+					Effect: Idempotent,
+					Retry:  RetryPolicy{MaxAttempts: 2, On: map[Outcome]bool{Throttled: true}},
+				},
+				sentinel: ErrInvalidRetryPolicy,
+			},
+			{
+				label:   "retry on Success",
+				rt:      rt,
+				name:    "op",
+				handler: okHandler,
+				policy: Policy[int]{
+					Effect: Idempotent,
+					Retry:  RetryPolicy{MaxAttempts: 2, On: map[Outcome]bool{Success: true}},
+				},
+				sentinel: ErrInvalidRetryPolicy,
+			},
+			{
+				label:   "retry on Permanent",
+				rt:      rt,
+				name:    "op",
+				handler: okHandler,
+				policy: Policy[int]{
+					Effect: Idempotent,
+					Retry:  RetryPolicy{MaxAttempts: 2, On: map[Outcome]bool{Permanent: true}},
+				},
+				sentinel: ErrInvalidRetryPolicy,
+			},
+			{
+				label:   "invalid Outcome value in Retry.On",
+				rt:      rt,
+				name:    "op",
+				handler: okHandler,
+				policy: Policy[int]{
+					Effect: Idempotent,
+					Retry:  RetryPolicy{MaxAttempts: 2, On: map[Outcome]bool{Outcome(99): true}},
+				},
+				sentinel: ErrInvalidRetryPolicy,
+			},
 		}
 		for _, tc := range cases {
 			t.Run(tc.label, func(t *testing.T) {
@@ -166,4 +230,43 @@ func TestConstructionValidationTable(t *testing.T) {
 			})
 		}
 	})
+}
+
+// TestFailNormalizesInvalidOutcome proves the v0.2.0 normalization: an
+// invalid Outcome can never be manufactured into a Failure. A "successful
+// failure" (Fail(Success, err)) is a caller bug and is normalized to
+// Permanent (never retried); out-of-range Outcome values likewise. The
+// cause stays reachable via Unwrap; legitimate verdicts, Fail(_, nil)==nil,
+// and OutcomeOf(nil)==Success are untouched.
+func TestFailNormalizesInvalidOutcome(t *testing.T) {
+	boom := errors.New("boom")
+
+	successful := Fail(Success, boom)
+	if got := OutcomeOf(successful); got != Permanent {
+		t.Fatalf("Fail(Success, err) must normalize to Permanent, got %v", got)
+	}
+	if !errors.Is(successful, boom) {
+		t.Fatal("normalization must preserve the cause via Unwrap")
+	}
+
+	invalid := Fail(Outcome(42), boom)
+	if got := OutcomeOf(invalid); got != Permanent {
+		t.Fatalf("Fail(Outcome(42), err) must normalize to Permanent, got %v", got)
+	}
+	if !errors.Is(invalid, boom) {
+		t.Fatal("normalization must preserve the cause via Unwrap")
+	}
+
+	if got := OutcomeOf(Fail(Transient, boom)); got != Transient {
+		t.Fatalf("valid verdict must be recorded verbatim, got %v", got)
+	}
+	if Fail(Transient, nil) != nil {
+		t.Fatal("Fail(_, nil) must remain nil")
+	}
+	if OutcomeOf(nil) != Success {
+		t.Fatal("OutcomeOf(nil) must remain Success")
+	}
+	if EffectUnknown.String() != "EffectUnknown" || Pure.String() != "Pure" || NonIdempotent.String() != "NonIdempotent" {
+		t.Fatal("Effect.String rendering broken")
+	}
 }

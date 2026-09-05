@@ -58,6 +58,13 @@ func (f *Failure) Unwrap() error { return f.Err }
 
 // Fail tags err with an Outcome. Fail(_, nil) returns nil so handlers can
 // write `return execution.Fail(...)` unconditionally.
+//
+// Normalization (v0.2.0): an invalid Outcome cannot be manufactured into a
+// Failure. Fail(Success, err) means "the attempt succeeded with an error",
+// which is a caller bug — the verdict is normalized to Permanent (nobody
+// vouched for it) with the original error preserved via Unwrap, so
+// errors.Is still reaches the cause. Out-of-range Outcome values are
+// normalized the same way. OutcomeOf(nil) == Success is untouched.
 func Fail(o Outcome, err error) error {
 	if err == nil {
 		return nil
@@ -67,6 +74,17 @@ func Fail(o Outcome, err error) error {
 	var f *Failure
 	if errors.As(err, &f) {
 		return err
+	}
+	switch o {
+	case Transient, Permanent, Throttled, Uncertain:
+		// A vouched-for classification: record it verbatim.
+	case Success:
+		// A successful failure is a caller bug: normalize to Permanent
+		// (never retried) instead of manufacturing nonsense.
+		o = Permanent
+	default:
+		// Out-of-range Outcome: same conservative normalization.
+		o = Permanent
 	}
 	return &Failure{Outcome: o, Err: err}
 }

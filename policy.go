@@ -2,6 +2,7 @@ package execution
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -10,11 +11,20 @@ type Handler[I any, O any] func(context.Context, I) (O, error)
 
 // Effect declares an operation's semantic class — the minimum information
 // Herta needs to say "this retry policy is unsafe".
+//
+// The zero value is EffectUnknown, NOT Pure: omission is a contract error,
+// not silent consent. If semantics matter, absence of semantics must not
+// itself have semantics — a Policy without an explicit Effect fails at
+// construction (NewOperation), never at request time.
 type Effect int
 
 const (
+	// EffectUnknown is the zero value of Effect. It is rejected at
+	// construction: a Policy that forgot to declare its semantic class
+	// must not default to the strongest retry-safety claim (Pure).
+	EffectUnknown Effect = iota
 	// Pure: calculation/transformation; no external side effects.
-	Pure Effect = iota
+	Pure
 	// Idempotent: repeating is safe (write keyed by unique event_id,
 	// PUT-like update, same-brand catalogue replace).
 	Idempotent
@@ -22,6 +32,32 @@ const (
 	// provider call, send message, charge customer).
 	NonIdempotent
 )
+
+// String renders the effect name (also makes %s formatting valid).
+func (e Effect) String() string {
+	switch e {
+	case EffectUnknown:
+		return "EffectUnknown"
+	case Pure:
+		return "Pure"
+	case Idempotent:
+		return "Idempotent"
+	case NonIdempotent:
+		return "NonIdempotent"
+	default:
+		return fmt.Sprintf("Effect(%d)", int(e))
+	}
+}
+
+// valid reports whether e is a declared semantic class.
+func (e Effect) valid() bool {
+	switch e {
+	case Pure, Idempotent, NonIdempotent:
+		return true
+	default:
+		return false
+	}
+}
 
 // Requirement is one resource demand: `Units` of the named Resource.
 // Units must be > 0 and <= capacity (validated at construction).
@@ -65,7 +101,8 @@ type AdmissionMode int
 
 const (
 	// Wait blocks until capacity is available, the caller's context is
-	// done, or runtime shutdown begins.
+	// done, or runtime shutdown begins. Wait is deliberately the zero
+	// value: the conservative default is to block, never to shed.
 	Wait AdmissionMode = iota
 	// Reject fails immediately with ErrOverloaded (Throttled) when the
 	// requested capacity is not immediately available.
@@ -80,10 +117,22 @@ const (
 
 // RetryPolicy: MaxAttempts is the TOTAL number of attempts.
 // 0 → 1 attempt. 1 → 1 attempt. N → at most N attempts. No backoff in V0.
+//
+// On maps Outcome → "may retry". In V0 the only actionable entries are:
+//
+//   - Transient: always retryable when the Effect permits the retry to be
+//     safe (isSafeRetry).
+//   - Uncertain: actionable only for Pure/Idempotent operations.
+//
+// Throttled is OBSERVABLE but NOT automatically retryable in V0 — Herta has
+// no backoff/jitter semantics, so a throttled retry would only hammer the
+// resource that just refused us. On[Throttled] = true is rejected at
+// construction rather than silently ignored. Success/Permanent are never
+// retryable regardless of On.
 type RetryPolicy struct {
 	MaxAttempts int
-	// On maps Outcome → "may retry". Only Transient/Throttled/Uncertain
-	// are meaningful; Success/Permanent never retry.
+	// On maps Outcome → "may retry" (see the V0 actionability rules
+	// above).
 	On map[Outcome]bool
 }
 

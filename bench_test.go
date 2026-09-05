@@ -18,7 +18,7 @@ func BenchmarkContention(b *testing.B) {
 			counter.Add(1)
 			return 0, nil
 		},
-		Policy[int]{
+		Policy[int]{Effect: Pure,
 			Resources: []Requirement{{Name: "worker", Units: 1}},
 			Admission: Wait,
 		})
@@ -49,7 +49,7 @@ func BenchmarkKeyedSerialization(b *testing.B) {
 			counter.Add(1)
 			return 0, nil
 		},
-		Policy[int]{
+		Policy[int]{Effect: Pure,
 			Resources: []Requirement{{Name: "worker", Units: 1}},
 			Admission: Wait,
 			SerializeKey: func(i int) string {
@@ -103,7 +103,7 @@ func BenchmarkMultiResource(b *testing.B) {
 			counter.Add(1)
 			return 0, nil
 		},
-		Policy[int]{
+		Policy[int]{Effect: Pure,
 			Resources: []Requirement{
 				{Name: "cpu", Units: 1},
 				{Name: "io", Units: 1},
