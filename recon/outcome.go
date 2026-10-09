@@ -41,14 +41,31 @@ type Failure struct {
 	Err     error
 }
 
+// Error and Unwrap accept a nil *Failure: a handler that returns one by
+// mistake (var f *Failure; return v, f) must not crash its caller.
 func (f *Failure) Error() string {
+	if f == nil {
+		return "execution: <nil failure>"
+	}
 	if f.Err == nil {
 		return fmt.Sprintf("execution: failure(%s)", f.Outcome)
 	}
 	return f.Err.Error()
 }
 
-func (f *Failure) Unwrap() error { return f.Err }
+func (f *Failure) Unwrap() error {
+	if f == nil {
+		return nil
+	}
+	return f.Err
+}
+
+// tagged returns the first Failure in err's chain. A nil *Failure tags
+// nothing: absence of semantics has no semantics, so it reads as untagged.
+func tagged(err error) (*Failure, bool) {
+	f, ok := errors.AsType[*Failure](err)
+	return f, ok && f != nil
+}
 
 // Fail tags err with o. Fail(_, nil) is nil. An error that already carries
 // a Failure is returned unchanged: the verdict closest to the failure wins.
@@ -58,7 +75,7 @@ func Fail(o Outcome, err error) error {
 	if err == nil {
 		return nil
 	}
-	if _, tagged := errors.AsType[*Failure](err); tagged {
+	if _, ok := tagged(err); ok {
 		return err
 	}
 	switch o {
@@ -75,7 +92,7 @@ func OutcomeOf(err error) Outcome {
 	if err == nil {
 		return Success
 	}
-	if f, ok := errors.AsType[*Failure](err); ok {
+	if f, ok := tagged(err); ok {
 		return f.Outcome
 	}
 	return Permanent
@@ -87,7 +104,7 @@ func OutcomeOf(err error) Outcome {
 // ending its context is never promoted (Δ4). promoted reports that the
 // returned error must be tagged Uncertain.
 func classify(err error, expired bool) (o Outcome, promoted bool) {
-	if f, ok := errors.AsType[*Failure](err); ok {
+	if f, ok := tagged(err); ok {
 		return f.Outcome, false
 	}
 	if expired && !errors.Is(err, context.Canceled) {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"runtime"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -279,6 +280,78 @@ func TestContractRendering(t *testing.T) {
 	} {
 		if got != want {
 			t.Errorf("rendered %q, want %q", got, want)
+		}
+	}
+}
+
+// A handler that returns a nil *Failure by mistake (var f *Failure;
+// return v, f) hands Do a non-nil error with no verdict. It must read as
+// untagged: Permanent, never retried, and safe to print, wrap and inspect.
+func TestContractTypedNilFailure(t *testing.T) {
+	var nilFailure *Failure
+	var err error = nilFailure
+	if o := OutcomeOf(err); o != Permanent {
+		t.Fatalf("OutcomeOf(nil *Failure) = %v, want Permanent", o)
+	}
+	if o := OutcomeOf(Fail(Transient, err)); o != Transient {
+		t.Fatalf("Fail(Transient, nil *Failure) reads %v, want Transient", o)
+	}
+	_ = err.Error()
+	_ = errors.Is(err, context.Canceled)
+
+	rt := mustRuntime(t, ResourceSpec{Name: "r", Capacity: 1})
+	var calls atomic.Int32
+	op := mustOperation(t, rt, "mistake",
+		func(context.Context, int) (int, error) { calls.Add(1); return 0, nilFailure },
+		Policy[int]{Effect: Idempotent, Resources: []Requirement{{Name: "r", Units: 1}},
+			Retry: RetryPolicy{MaxAttempts: 3, On: map[Outcome]bool{Transient: true, Uncertain: true}}})
+	_, err = op.Do(context.Background(), 0)
+	if err == nil || OutcomeOf(err) != Permanent {
+		t.Fatalf("Do = %v (%v), want a Permanent error", err, OutcomeOf(err))
+	}
+	if n := calls.Load(); n != 1 {
+		t.Fatalf("handler ran %d times, want 1 (untagged is never retried)", n)
+	}
+	if s := rt.Stats(); s.Finished != s.Admitted || s.Retried != 0 {
+		t.Fatalf("stats %+v: call not settled", s)
+	}
+}
+
+// Stats reads its counters in reverse increment order, so no snapshot taken
+// under load shows Started or Finished above Admitted.
+func TestContractStatsSnapshotOrdered(t *testing.T) {
+	rt := mustRuntime(t, ResourceSpec{Name: "r", Capacity: 4})
+	op := mustOperation(t, rt, "op",
+		func(_ context.Context, i int) (int, error) { return i, nil },
+		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: 1}}})
+	var stop atomic.Bool
+	var wg sync.WaitGroup
+	for range runtime.GOMAXPROCS(0) {
+		wg.Go(func() {
+			for !stop.Load() {
+				_, _ = op.Do(context.Background(), 0)
+			}
+		})
+	}
+	defer func() { stop.Store(true); wg.Wait() }()
+	for end := time.Now().Add(200 * time.Millisecond); time.Now().Before(end); {
+		if s := rt.Stats(); s.Started > s.Admitted || s.Finished > s.Admitted {
+			t.Fatalf("snapshot %+v shows more started or finished than admitted", s)
+		}
+	}
+}
+
+// When Retry.On names several outcomes that can never be retried, the
+// lowest one is reported, whatever the map's iteration order.
+func TestContractRetryTableReportsLowestInvalid(t *testing.T) {
+	rt := mustRuntime(t, ResourceSpec{Name: "r", Capacity: 1})
+	on := map[Outcome]bool{Throttled: true, Permanent: true, Success: true}
+	for range 50 {
+		_, err := NewOperation(rt, "op",
+			func(_ context.Context, i int) (int, error) { return i, nil },
+			Policy[int]{Effect: Pure, Retry: RetryPolicy{MaxAttempts: 2, On: on}})
+		if !errors.Is(err, ErrInvalidRetryPolicy) || !strings.Contains(err.Error(), "retry on Success") {
+			t.Fatalf("got %v, want ErrInvalidRetryPolicy naming Success", err)
 		}
 	}
 }

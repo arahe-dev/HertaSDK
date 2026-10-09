@@ -189,6 +189,7 @@ Further rules:
 | 10 | one goroutine plus about 10 allocations per `Do` | 0 goroutines; allocations per §10 |
 
 | 11 | a `Reject` overload is reported as `ErrRuntimeStopping` (still counted in `Rejected`) when `Shutdown` began after the call passed the gate | reported as `Fail(Throttled, ErrOverloaded)`, per §4 step 3 (Amendment 6) |
+| 12 | a nil `*Failure` returned as an error (`var f *Failure; return v, f`) panics in `OutcomeOf`, `Do`, `Error` and `Unwrap` | read as untagged: `Permanent`, never retried; `Error` and `Unwrap` are nil-safe |
 
 Any other observed difference is a **bug in recon**, unless it is nondeterministic in v0.2 (for example, which waiter wins a tie under `Shutdown`).
 

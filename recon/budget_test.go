@@ -50,8 +50,8 @@ func TestBudgetKeyedAllocations(t *testing.T) {
 		t.Skip("sync.Pool drops items under -race")
 	}
 	got := allocsPerDo(t, uncontendedOp(t, 0, func(int) string { return "brand-1" }))
-	if got > 1 {
-		t.Fatalf("keyed Do: %v allocs, budget 1", got)
+	if got != 0 {
+		t.Fatalf("keyed Do: %v allocs, want 0 amortized (key entries are pooled)", got)
 	}
 	t.Logf("keyed Do: %v allocs amortized", got)
 }

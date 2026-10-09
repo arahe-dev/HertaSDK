@@ -179,6 +179,9 @@ func TestGoroutineCost(t *testing.T) {
 //
 // Verdict: asserts the uncontended atomic Add beats RLock+RUnlock; logs
 // uncontended and 20-way contended costs of atomic, Mutex and RWMutex.
+// raceEnabled is set by race_test.go under -race.
+var raceEnabled bool
+
 func TestAtomicVsLocks(t *testing.T) {
 	var n atomic.Int64
 	var mu sync.Mutex
@@ -196,6 +199,9 @@ func TestAtomicVsLocks(t *testing.T) {
 		solo[op.name] = nsPerOp(2000000, op.f)
 		par := parallelNs(runtime.GOMAXPROCS(0), 200000, op.f)
 		t.Logf("%-14s uncontended %5.1f ns   %d-way contended %6.1f ns/op", op.name, solo[op.name], runtime.GOMAXPROCS(0), par)
+	}
+	if raceEnabled {
+		return // the race detector instruments atomics and locks unequally
 	}
 	if solo["atomic.Add"] >= solo["RWMutex.RLock"] {
 		t.Errorf("atomic.Add (%.1f ns) is not cheaper than RLock+RUnlock (%.1f ns)", solo["atomic.Add"], solo["RWMutex.RLock"])
