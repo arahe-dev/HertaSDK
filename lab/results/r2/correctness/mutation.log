@@ -1,0 +1,187 @@
+baseline build: ok 0.9s
+baseline own: ok 5.4s
+baseline lab: ok 26.5s
+baseline race: ok 13.4s
+baseline race-lab: ok 8.3s
+[1/164] #39 recon/errors.go:45 stmt-delete compile 0.7s
+[2/164] #42 recon/errors.go:41 int-off killed(own/fail TestContractRejectedCountsOverloadAndStopping) 6.8s
+[3/164] #37 recon/errors.go:40 cond-negate killed(own/fail TestContractRejectedCountsOverloadAndStopping) 6.8s
+[4/164] #38 recon/errors.go:41 stmt-delete killed(own/fail TestContractRejectedCountsOverloadAndStopping) 7.1s
+[5/164] #41 recon/errors.go:41 int-off killed(own/fail TestContractRejectedCountsOverloadAndStopping) 7.1s
+[6/164] #43 recon/errors.go:46 err-nil killed(own/fail TestContractRejectedCountsOverloadAndStopping) 6.5s
+[7/164] #48 recon/errors.go:62 err-nil killed(own/fail TestContractNonIdempotentRetriesOnlyTransient) 7.3s
+[8/164] #44 recon/errors.go:48 cond-negate killed(own/fail TestDelta6CallerErrorBeatsShutdown) 8.0s
+[9/164] #47 recon/errors.go:60 err-nil killed(own/fail TestDelta3PlainErrorAfterAttemptDeadlineIsRetried) 7.7s
+[10/164] #46 recon/errors.go:51 err-nil killed(own/fail TestShutdownWakesAdmissionWaiters,TestShutdownWakesAdmissionWaiters/resource_waiter) 10.6s
+[11/164] #45 recon/errors.go:49 err-nil killed(lab/fail TestKeyReclamation,TestKeyReclamation/recon,TestDifferential) 25.5s
+[12/164] #40 recon/errors.go:41 stmt-swap survived 60.2s
+[13/164] #97 recon/keys.go:101 stmt-delete killed(own/fail TestBudgetKeyedAllocations) 5.5s
+[14/164] #69 recon/keys.go:51 int-off survived 66.7s
+[15/164] #77 recon/keys.go:59 stmt-delete survived 68.1s
+[16/164] #85 recon/keys.go:74 stmt-delete survived 65.6s
+[17/164] #161 recon/outcome.go:50 cond-negate killed(own/panic TestContractRendering) 3.8s
+[18/164] #160 recon/outcome.go:47 cond-negate killed(own/fail TestContractRendering) 6.5s
+[19/164] #162 recon/outcome.go:57 cond-negate killed(own/fail TestContractRejectedCountsOverloadAndStopping) 7.4s
+[20/164] #95 recon/keys.go:100 stmt-delete survived 63.2s
+[21/164] #163 recon/outcome.go:60 err-nil killed(own/fail TestContractRejectedCountsOverloadAndStopping) 6.5s
+[22/164] #164 recon/outcome.go:67 cond-logic killed(own/panic TestContractTypedNilFailure) 3.3s
+[23/164] #165 recon/outcome.go:67 cond-negate killed(own/fail TestBudgetRetryAddsNoAllocations) 5.9s
+[24/164] #166 recon/outcome.go:75 cond-negate killed(own/fail TestBudgetRetryAddsNoAllocations) 5.6s
+[25/164] #169 recon/outcome.go:86 err-nil killed(own/fail TestBudgetRetryAddsNoAllocations) 6.4s
+[26/164] #167 recon/outcome.go:79 err-nil killed(own/fail TestFailureContract) 10.8s
+[27/164] #70 recon/keys.go:51 int-off survived 97.8s
+[28/164] #168 recon/outcome.go:84 stmt-delete killed(own/fail TestFailNormalizesInvalidOutcome) 11.8s
+[29/164] #171 recon/outcome.go:108 bool-flip killed(own/fail TestBudgetRetryAddsNoAllocations) 4.8s
+[30/164] #170 recon/outcome.go:92 cond-negate killed(own/fail TestContractRejectedCountsOverloadAndStopping) 5.6s
+[31/164] #172 recon/outcome.go:110 cond-logic killed(own/fail TestContractTypedNilFailure) 5.7s
+[32/164] #176 recon/outcome.go:122 stmt-delete compile 0.4s
+[33/164] #173 recon/outcome.go:110 cond-not killed(own/fail TestContractEveryAttemptGetsAFreshDeadline) 6.0s
+[34/164] #175 recon/outcome.go:113 bool-flip killed(own/fail TestContractTypedNilFailure) 6.4s
+[35/164] #174 recon/outcome.go:111 bool-flip killed(own/fail TestDelta3PlainErrorAfterAttemptDeadlineIsRetried) 6.8s
+[36/164] #177 recon/outcome.go:122 int-off killed(own/fail TestBudgetRetryAddsNoAllocations) 5.9s
+[37/164] #178 recon/outcome.go:122 int-off killed(own/fail TestBudgetRetryAddsNoAllocations) 6.5s
+[38/164] #180 recon/outcome.go:129 cond-negate killed(own/fail TestBudgetRetryAddsNoAllocations) 7.1s
+[39/164] #179 recon/outcome.go:129 cond-logic killed(own/fail TestContractRetryNeedsOn) 7.5s
+[40/164] #102 recon/keys.go:95 stmt-swap survived 61.9s
+[41/164] #184 recon/outcome.go:129 cond-negate killed(own/fail TestBudgetRetryAddsNoAllocations) 7.3s
+[42/164] #185 recon/outcome.go:129 int-off killed(own/fail TestBudgetRetryAddsNoAllocations) 7.5s
+[43/164] #186 recon/outcome.go:129 int-off killed(own/fail TestBudgetRetryAddsNoAllocations) 8.4s
+[44/164] #188 recon/outcome.go:129 int-off compile 0.6s
+[45/164] #187 recon/outcome.go:129 int-off killed(own/fail TestContractRetryNeedsOn) 8.8s
+[46/164] #125 recon/operation.go:61 int-off survived 65.9s
+[47/164] #190 recon/resource.go:44 cond-logic killed(own/fail TestResourceCancelledMiddleKeepsOrder) 11.5s
+[48/164] #191 recon/resource.go:44 cond-logic killed(own/fail TestResourceHeadOfLineBlocks) 11.4s
+[49/164] #182 recon/outcome.go:129 int-off survived 66.7s
+[50/164] #181 recon/outcome.go:129 cond-boundary survived 68.2s
+[51/164] #183 recon/outcome.go:129 int-off survived 66.0s
+[52/164] #197 recon/resource.go:44 cond-boundary killed(own/fail TestResourceCancelledMiddleKeepsOrder) 10.6s
+[53/164] #192 recon/resource.go:44 cond-negate killed(own/timeout TestBudgetBlockedWaiter) 63.3s
+[54/164] #198 recon/resource.go:44 cond-negate killed(own/fail TestResourceGrantsInArrivalOrder) 10.1s
+[55/164] #193 recon/resource.go:44 cond-boundary killed(own/timeout TestBudgetBlockedWaiter) 63.3s
+[56/164] #194 recon/resource.go:44 int-off killed(own/fail TestResourceFastReject) 68.1s
+[57/164] #200 recon/resource.go:46 stmt-delete killed(own/fail TestResourceGrantsInArrivalOrder) 10.3s
+[58/164] #195 recon/resource.go:44 int-off killed(own/timeout TestBudgetBlockedWaiter) 63.3s
+[59/164] #196 recon/resource.go:44 cond-negate killed(own/timeout TestBudgetBlockedWaiter) 63.5s
+[60/164] #204 recon/resource.go:60 stmt-delete killed(own/crash ) 3.6s
+[61/164] #206 recon/resource.go:58 bool-flip killed(own/fail TestContractRejectedCountsOverloadAndStopping) 5.9s
+[62/164] #199 recon/resource.go:45 stmt-delete killed(own/timeout TestBudgetBlockedWaiter) 62.8s
+[63/164] #207 recon/resource.go:61 cond-logic killed(own/fail TestResourceAccountingUnderChurn) 11.2s
+[64/164] #201 recon/resource.go:45 stmt-swap survived 61.4s
+[65/164] #203 recon/resource.go:52 int-off survived 59.8s
+[66/164] #202 recon/resource.go:52 int-off survived 63.8s
+[67/164] #205 recon/resource.go:66 stmt-delete killed(own/timeout TestBudgetBlockedWaiter) 63.5s
+[68/164] #208 recon/resource.go:61 cond-negate killed(own/timeout TestBudgetBlockedWaiter) 63.3s
+[69/164] #209 recon/resource.go:61 int-off killed(own/timeout TestBudgetBlockedWaiter) 63.4s
+[70/164] #210 recon/resource.go:61 int-off killed(own/timeout TestBudgetBlockedWaiter) 63.2s
+[71/164] #216 recon/resource.go:74 stmt-delete killed(own/crash ) 2.9s
+[72/164] #214 recon/resource.go:64 stmt-delete killed(own/fail TestResourceDoneBeforeQueueingFailsAtOnce) 10.2s
+[73/164] #211 recon/resource.go:61 cond-negate killed(own/timeout TestBudgetBlockedWaiter) 62.9s
+[74/164] #212 recon/resource.go:61 cond-boundary killed(own/timeout TestBudgetBlockedWaiter) 62.7s
+[75/164] #215 recon/resource.go:63 stmt-swap killed(own/fail TestResourceDoneBeforeQueueingFailsAtOnce) 10.3s
+[76/164] #218 recon/resource.go:88 stmt-delete killed(own/fail TestResourceHeadOfLineBlocks) 11.3s
+[77/164] #213 recon/resource.go:63 stmt-delete killed(own/timeout TestBudgetBlockedWaiter) 62.8s
+[78/164] #221 recon/resource.go:88 stmt-swap killed(race/fail TestBudgetBlockedWaiter) 50.5s
+[79/164] #217 recon/resource.go:87 stmt-delete killed(own/timeout TestBudgetBlockedWaiter) 63.4s
+[80/164] #219 recon/resource.go:87 stmt-swap killed(own/timeout TestResourceAccountingUnderChurn) 63.4s
+[81/164] #220 recon/resource.go:89 stmt-delete killed(own/timeout TestBudgetBlockedWaiter) 63.4s
+[82/164] #222 recon/resource.go:75 cond-logic killed(own/timeout TestBudgetBlockedWaiter) 63.0s
+[83/164] #223 recon/resource.go:75 cond-negate killed(own/timeout TestBudgetUncontendedAllocatesNothing) 63.2s
+[84/164] #224 recon/resource.go:75 int-off killed(own/timeout TestBudgetUncontendedAllocatesNothing) 63.4s
+[85/164] #225 recon/resource.go:75 int-off killed(own/timeout TestBudgetUncontendedAllocatesNothing) 63.1s
+[86/164] #226 recon/resource.go:75 cond-negate killed(own/timeout TestBudgetUncontendedAllocatesNothing) 63.2s
+[87/164] #227 recon/resource.go:75 cond-boundary killed(own/timeout TestBudgetRetryAddsNoAllocations) 63.2s
+[88/164] #233 recon/resource.go:79 bool-flip killed(own/fail TestBudgetUncontendedAllocatesNothing) 6.0s
+[89/164] #228 recon/resource.go:76 stmt-delete killed(own/timeout TestBudgetBlockedWaiter) 63.0s
+[90/164] #232 recon/resource.go:77 stmt-swap killed(race/fail TestBudgetNoGoroutinesPerDo) 44.9s
+[91/164] #236 recon/resource.go:84 bool-flip killed(own/fail TestResourceCloseWithdrawsWaiters) 10.9s
+[92/164] #231 recon/resource.go:78 stmt-delete killed(own/timeout TestBudgetUncontendedAllocatesNothing) 63.1s
+[93/164] #237 recon/resource.go:92 cond-logic killed(own/fail TestShutdownWakesAdmissionWaiters,TestShutdownWakesAdmissionWaiters/resource_waiter) 9.4s
+[94/164] #239 recon/resource.go:92 cond-negate killed(own/fail TestBudgetBlockedWaiter) 5.1s
+[95/164] #238 recon/resource.go:92 cond-logic killed(own/fail TestShutdownWakesAdmissionWaiters,TestShutdownWakesAdmissionWaiters/resource_waiter) 9.1s
+[96/164] #234 recon/resource.go:82 cond-logic killed(own/timeout TestResourceCloseWithdrawsWaiters) 63.6s
+[97/164] #235 recon/resource.go:83 stmt-delete killed(own/timeout TestResourceCloseWithdrawsWaiters) 63.0s
+[98/164] #240 recon/resource.go:92 cond-not killed(own/fail TestBudgetBlockedWaiter) 4.9s
+[99/164] #243 recon/resource.go:102 stmt-delete killed(own/crash ) 2.9s
+[100/164] #242 recon/resource.go:94 stmt-delete killed(own/fail TestWaitingCallerCancellationLeavesClean) 7.4s
+[101/164] #246 recon/resource.go:104 defer-delete killed(own/fail TestResourceCancelledHeadReexaminesQueue) 10.4s
+[102/164] #247 recon/resource.go:104 defer-inline killed(own/fail TestResourceCancelledHeadReexaminesQueue) 10.5s
+[103/164] #241 recon/resource.go:93 cond-not killed(own/timeout TestBudgetBlockedWaiter) 62.8s
+[104/164] #244 recon/resource.go:103 defer-delete killed(own/timeout TestDelta2FinishedVisibleWhenShutdownReturns) 62.5s
+[105/164] #250 recon/resource.go:107 stmt-delete killed(own/fail TestWaitingCallerCancellationLeavesClean) 7.8s
+[106/164] #248 recon/resource.go:103 stmt-swap killed(race/fail TestDelta6CallerErrorBeatsShutdown) 47.8s
+[107/164] #229 recon/resource.go:77 stmt-delete killed(race/timeout TestResourceAccountingUnderChurn) 190.6s
+[108/164] #251 recon/resource.go:106 cond-negate killed(lab/fail TestHeadCancelReexamines,TestHeadCancelReexamines/recon,TestBudgetSemaphore,TestBudgetSemaphore/recon,TestDifferential) 19.9s
+[109/164] #245 recon/resource.go:103 defer-inline killed(lab/fail TestBudgetUnderContention,TestBudgetUnderContention/recon) 97.4s
+[110/164] #230 recon/resource.go:76 stmt-swap killed(race/timeout TestResourceAccountingUnderChurn) 192.3s
+[111/164] #255 recon/resource.go:116 cond-negate killed(own/fail TestResourceCancelledHeadReexaminesQueue) 10.9s
+[112/164] #256 recon/resource.go:117 stmt-delete killed(own/fail TestResourceCancelledHeadReexaminesQueue) 10.6s
+[113/164] #249 recon/resource.go:105 cond-negate killed(own/timeout TestDelta6CallerErrorBeatsShutdown) 63.2s
+[114/164] #259 recon/resource.go:123 stmt-delete killed(own/crash ) 2.8s
+[115/164] #252 recon/resource.go:109 stmt-delete killed(own/timeout TestResourceCancelledHeadReexaminesQueue) 62.9s
+[116/164] #254 recon/resource.go:114 stmt-delete survived 54.0s
+[117/164] #253 recon/resource.go:113 cond-not killed(own/timeout TestDelta2FinishedVisibleWhenShutdownReturns) 63.0s
+[118/164] #257 recon/resource.go:118 stmt-delete killed(own/timeout TestResourceGrantRacingCancelReturnsUnits) 63.1s
+[119/164] #258 recon/resource.go:117 stmt-swap killed(own/timeout TestResourceGrantRacingCancelReturnsUnits) 62.9s
+[120/164] #260 recon/resource.go:124 stmt-delete killed(own/timeout TestBudgetUncontendedAllocatesNothing) 63.0s
+[121/164] #261 recon/resource.go:123 stmt-swap killed(own/timeout TestResourceAccountingUnderChurn) 63.1s
+[122/164] #262 recon/resource.go:125 stmt-delete killed(own/timeout TestBudgetBlockedWaiter) 62.9s
+[123/164] #268 recon/resource.go:132 cond-logic killed(own/panic TestBudgetUncontendedAllocatesNothing) 2.6s
+[124/164] #269 recon/resource.go:132 cond-negate killed(own/panic TestBudgetUncontendedAllocatesNothing) 2.9s
+[125/164] #263 recon/resource.go:124 stmt-swap killed(own/timeout TestBudgetBlockedWaiter) 63.0s
+[126/164] #264 recon/resource.go:126 stmt-delete killed(own/timeout TestBudgetBlockedWaiter) 63.1s
+[127/164] #267 recon/resource.go:126 stmt-swap killed(race/fail TestBudgetBlockedWaiter) 42.9s
+[128/164] #265 recon/resource.go:125 stmt-swap killed(own/timeout TestResourceAccountingUnderChurn) 63.0s
+[129/164] #266 recon/resource.go:127 stmt-delete killed(own/timeout TestBudgetUncontendedAllocatesNothing) 62.5s
+[130/164] #270 recon/resource.go:132 cond-negate killed(own/timeout TestBudgetBlockedWaiter) 62.7s
+[131/164] #271 recon/resource.go:132 cond-boundary killed(own/timeout TestBudgetBlockedWaiter) 62.8s
+[132/164] #277 recon/resource.go:141 stmt-delete killed(own/crash ) 3.5s
+[133/164] #272 recon/resource.go:133 stmt-delete killed(own/timeout TestBudgetBlockedWaiter) 63.2s
+[134/164] #274 recon/resource.go:133 stmt-swap survived 55.6s
+[135/164] #273 recon/resource.go:134 stmt-delete killed(own/timeout TestBudgetBlockedWaiter) 63.1s
+[136/164] #280 recon/resource.go:143 stmt-delete killed(own/fail TestShutdownWakesAdmissionWaiters,TestShutdownWakesAdmissionWaiters/resource_waiter) 11.5s
+[137/164] #275 recon/resource.go:135 stmt-delete killed(own/timeout TestBudgetBlockedWaiter) 63.4s
+[138/164] #282 recon/resource.go:144 stmt-delete killed(own/fail TestResourceFastReject) 11.3s
+[139/164] #276 recon/resource.go:134 stmt-swap survived 57.1s
+[140/164] #278 recon/resource.go:142 stmt-delete killed(own/timeout TestResourceCloseWithdrawsWaiters) 63.5s
+[141/164] #279 recon/resource.go:141 stmt-swap killed(race/fail TestDelta2FinishedVisibleWhenShutdownReturns) 44.6s
+[142/164] #281 recon/resource.go:142 stmt-swap survived 55.5s
+[143/164] #283 recon/resource.go:143 stmt-swap survived 55.4s
+[144/164] #285 recon/resource.go:144 stmt-swap killed(race/fail TestDelta2FinishedVisibleWhenShutdownReturns) 47.5s
+[145/164] #284 recon/resource.go:145 stmt-delete killed(own/timeout TestDelta2FinishedVisibleWhenShutdownReturns) 63.2s
+[146/164] #294 recon/runtime.go:12 int-off survived 58.8s
+[147/164] #286 recon/resource.go:142 bool-flip killed(own/timeout TestResourceCloseWithdrawsWaiters) 63.3s
+[148/164] #306 recon/runtime.go:67 stmt-swap survived 58.3s
+[149/164] #328 recon/runtime.go:107 stmt-swap survived 58.8s
+[150/164] #333 recon/runtime.go:127 stmt-swap survived 60.2s
+[151/164] #383 recon/validate.go:77 cond-negate killed(own/fail TestContractRetryTableReportsLowestInvalid) 6.0s
+[152/164] #335 recon/runtime.go:128 stmt-swap survived 73.2s
+[153/164] #337 recon/runtime.go:129 stmt-swap survived 58.9s
+[154/164] #339 recon/runtime.go:130 stmt-swap survived 59.3s
+[155/164] #373 recon/validate.go:71 int-off survived 56.7s
+[156/164] #374 recon/validate.go:71 int-off survived 63.0s
+[157/164] #384 recon/validate.go:77 cond-boundary survived 60.8s
+[158/164] #387 recon/validate.go:82 int-off survived 57.3s
+[159/164] #392 recon/validate.go:85 int-off survived 62.6s
+[160/164] #397 recon/waiter.go:27 int-off survived 61.8s
+[161/164] #412 recon/waiter.go:77 stmt-swap survived 63.6s
+[162/164] #416 recon/waiter.go:92 stmt-delete survived 61.6s
+[163/164] #418 recon/waiter.go:92 stmt-swap survived 62.9s
+[164/164] #428 recon/waiter.go:99 stmt-swap survived 57.4s
+428 mutants (164 judged) in 19m39s
+v0.2-recon: 373 killed, 4 survived, 32 equivalent, 19 compile; score 98.9%
+mutate: 4 mutants survived; see C:\hertasdk\lab\mutate\results\recon\summary.md
+exit status 1
+| operator | orig | recon |
+|---|---:|---:|
+| cond-negate | 100.0% (40/40, 0 eq) | 100.0% (73/73, 0 eq) |
+| cond-boundary | 100.0% (11/11, 3 eq) | 100.0% (10/10, 2 eq) |
+| cond-logic | 100.0% (7/7, 0 eq) | 100.0% (21/21, 0 eq) |
+| cond-not | 100.0% (8/8, 0 eq) | 100.0% (14/14, 0 eq) |
+| stmt-delete | 100.0% (49/49, 1 eq) | 100.0% (104/104, 5 eq) |
+| stmt-swap | 100.0% (6/6, 8 eq) | 86.2% (25/29, 12 eq) |
+| bool-flip | 100.0% (8/8, 4 eq) | 100.0% (23/23, 0 eq) |
+| err-nil | 100.0% (36/36, 0 eq) | 100.0% (39/39, 0 eq) |
+| int-off | 100.0% (61/61, 4 eq) | 100.0% (54/54, 13 eq) |
+| defer-delete | 100.0% (5/5, 0 eq) | 100.0% (4/4, 0 eq) |
+| defer-inline | 100.0% (7/7, 0 eq) | 100.0% (6/6, 0 eq) |
+| **all** | **100.0% (238/238, 20 eq)** | **98.9% (373/377, 32 eq)** |

@@ -1,0 +1,95 @@
+swapped in recon: ./attempt.go ./doc.go ./errors.go ./keys.go ./operation.go ./outcome.go ./policy.go ./resource.go ./runtime.go ./validate.go ./waiter.go 
+== base: build, vet internal/execution, test -count=2 -race
+   37s
+== recon: build, vet internal/execution, test -count=2 -race
+   34s
+| package | v0.2.0 fork | recon | tests pass/fail/skip (v0.2.0 fork) | (recon) | seconds (v0.2.0 fork) | (recon) |
+|---|---|---|---:|---:|---:|---:|
+| internal/catalogue | ok | ok | 10/0/4 | 10/0/4 | 7.7 | 7.8 |
+| internal/events | ok | ok | 27/0/10 | 27/0/10 | 9.1 | 9.1 |
+| internal/execution | ok | ok | 24/0/0 | 24/0/0 | 6.1 | 7.2 |
+| internal/handoff | ok | ok | 32/0/10 | 32/0/10 | 8.3 | 7.9 |
+| internal/loadlab/cloudrun | ok | ok | 6/0/0 | 6/0/0 | 2.8 | 3.1 |
+| internal/loadlab/cloudsql | ok | ok | 2/0/0 | 2/0/0 | 2.8 | 3.1 |
+| internal/loadlab/invariants | ok | ok | 5/0/0 | 5/0/0 | 2.8 | 3.1 |
+| internal/loadlab/metrics | ok | ok | 3/0/0 | 3/0/0 | 2.8 | 3.1 |
+| internal/loadlab/physical | ok | ok | 3/0/1 | 3/0/1 | 10.1 | 10.7 |
+| internal/loadlab/pricing | ok | ok | 4/0/0 | 4/0/0 | 3.1 | 3.4 |
+| internal/loadlab/projection | ok | ok | 5/0/0 | 5/0/0 | 2.8 | 3.1 |
+| internal/loadlab/recommendation | ok | ok | 1/0/0 | 1/0/0 | 2.8 | 3.1 |
+| internal/loadlab/sim | ok | ok | 1/0/0 | 1/0/0 | 2.9 | 3.1 |
+| internal/loadlab/vto | ok | ok | 5/0/0 | 5/0/0 | 2.8 | 3.1 |
+| internal/loadlab/workload | ok | ok | 3/0/0 | 3/0/0 | 2.8 | 3.1 |
+| internal/platform/httpserver | ok | ok | 2/0/0 | 2/0/0 | 4.3 | 4.6 |
+| internal/recommendation | ok | ok | 20/0/0 | 20/0/0 | 5.9 | 7.3 |
+| internal/render | ok | ok | 37/0/0 | 37/0/0 | 9.5 | 10.8 |
+| tests | ok | ok | 1/0/2 | 1/0/2 | 8.0 | 7.0 |
+
+21 packages have no test files.
+
+### Tests whose result differs
+
+None: every test has the same result in both runs.
+
+### Skipped in both runs
+
+- 1 tests: `catalogue_slice_test.go:118: MIRAI_TEST_DATABASE_URL not set; skipping local-slice proof (needs real Postgres)`
+  - tests.TestLocalSliceSeedRecommendResolveRender
+- 1 tests: `handoff_slice_test.go:74: MIRAI_TEST_DATABASE_URL not set; skipping local-slice proof (needs real Postgres)`
+  - tests.TestHandoffSliceRecommendCreateResolveArriveOutcome
+- 1 tests: `pgstore_test.go:108: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/handoff.TestPGCreateReturnsMXCode
+- 1 tests: `pgstore_test.go:113: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/events.TestPGReceivedAtIsServerTime
+- 1 tests: `pgstore_test.go:126: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/handoff.TestPGExactReplayReturnsSameHandoff
+- 1 tests: `pgstore_test.go:136: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/events.TestPGReplayIsDuplicateNoSecondRow
+- 1 tests: `pgstore_test.go:150: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/handoff.TestPGConflictingReplayRejectedOriginalUntouched
+- 1 tests: `pgstore_test.go:151: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/catalogue.TestPGCatalogueReplaceThroughHerta
+- 1 tests: `pgstore_test.go:158: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/events.TestPGCollisionReportedOriginalUntouched
+- 1 tests: `pgstore_test.go:177: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/handoff.TestPGReferenceCodeCollisionRetriesInsideStore
+- 1 tests: `pgstore_test.go:186: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/events.TestPGBatchAtomicRollbackOnFailure
+- 1 tests: `pgstore_test.go:192: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/catalogue.TestPGConcurrentSameBrandExactlyOneCommitter
+- 1 tests: `pgstore_test.go:210: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/events.TestPGLateArrivingOldEventKeepsOccurredAt
+- 1 tests: `pgstore_test.go:219: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/handoff.TestPGLookupByReference
+- 1 tests: `pgstore_test.go:229: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/events.TestPGAttributesRoundTrip
+- 1 tests: `pgstore_test.go:239: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/handoff.TestPGArrivalOutcomeTransitionRules
+- 1 tests: `pgstore_test.go:263: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/events.TestPGConcurrentIngestion
+- 1 tests: `pgstore_test.go:297: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/events.TestPGCrossSubsystemResourceIsolation
+- 1 tests: `pgstore_test.go:306: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/handoff.TestPGNoSaleOutcomeClosesAsNoSale
+- 1 tests: `pgstore_test.go:326: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/handoff.TestPGHistoryIsAppendOnly
+- 1 tests: `pgstore_test.go:369: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/handoff.TestPGConcurrentCreation
+- 1 tests: `pgstore_test.go:65: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/catalogue.TestPGFirstPublicationExactlyOnce
+- 1 tests: `pgstore_test.go:74: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/handoff.TestPGMigrationShape
+- 1 tests: `pgstore_test.go:76: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/events.TestPGSingleInsertExactlyOnce
+- 1 tests: `pgstore_test.go:92: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/catalogue.TestPGCASReplaceAndConflictShapes
+- 1 tests: `pgstore_test.go:94: MIRAI_TEST_DATABASE_URL not set; skipping real-PostgreSQL integration tests`
+  - internal/events.TestPGOccurredAtSurvivesExactly
+- 1 tests: `proof_test.go:27: no live bridge: Get "http://127.0.0.1:8080/healthz": dial tcp 127.0.0.1:8080: connectex: No connection could be made because the target machine actively refused it.`
+  - internal/loadlab/physical.TestRenderCapacityProof
+
+### Consumer probes (events_probe_test.go)
+
+| probe | v0.2.0 fork | recon |
+|---|---|---|
+| delta6 events code for a waiter cancelled as Shutdown begins (200 runs) | canceled=1 internal=199  | canceled=200  |

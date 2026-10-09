@@ -318,26 +318,40 @@ func TestContractTypedNilFailure(t *testing.T) {
 }
 
 // Stats reads its counters in reverse increment order, so no snapshot taken
-// under load shows Started or Finished above Admitted.
+// under load shows Started or Finished above Admitted. The window a wrong
+// order opens is a few nanoseconds, so half the processors call Do on the
+// fastest path while the other half take snapshots.
 func TestContractStatsSnapshotOrdered(t *testing.T) {
-	rt := mustRuntime(t, ResourceSpec{Name: "r", Capacity: 4})
+	rt := mustRuntime(t, ResourceSpec{Name: "r", Capacity: 1})
 	op := mustOperation(t, rt, "op",
 		func(_ context.Context, i int) (int, error) { return i, nil },
-		Policy[int]{Effect: Pure, Resources: []Requirement{{Name: "r", Units: 1}}})
+		Policy[int]{Effect: Pure})
+	half := max(runtime.GOMAXPROCS(0)/2, 1)
 	var stop atomic.Bool
-	var wg sync.WaitGroup
-	for range runtime.GOMAXPROCS(0) {
-		wg.Go(func() {
+	var bad atomic.Pointer[Stats]
+	var callers, readers sync.WaitGroup
+	for range half {
+		callers.Go(func() {
 			for !stop.Load() {
 				_, _ = op.Do(context.Background(), 0)
 			}
 		})
 	}
-	defer func() { stop.Store(true); wg.Wait() }()
-	for end := time.Now().Add(200 * time.Millisecond); time.Now().Before(end); {
-		if s := rt.Stats(); s.Started > s.Admitted || s.Finished > s.Admitted {
-			t.Fatalf("snapshot %+v shows more started or finished than admitted", s)
-		}
+	for range half {
+		readers.Go(func() {
+			for range 2_000_000 {
+				if s := rt.Stats(); s.Started > s.Admitted || s.Finished > s.Admitted {
+					bad.Store(&s)
+					return
+				}
+			}
+		})
+	}
+	readers.Wait()
+	stop.Store(true)
+	callers.Wait()
+	if s := bad.Load(); s != nil {
+		t.Fatalf("snapshot %+v shows more started or finished than admitted", *s)
 	}
 }
 

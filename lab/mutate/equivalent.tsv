@@ -59,3 +59,6 @@ recon/waiter.go|(*waitq).remove|stmt-swap|swap|w.prev, w.next = nil, nil ⇄ q.l
 recon/waiter.go|(*waitq).closeAll|stmt-swap|swap|q.remove(w) ⇄ w.wake(withdrawn)|0	Under the owner's lock; the woken goroutine reads only w.state and needs the lock to touch the queue.
 recon/keys.go|(*KeyLocker).handOff|stmt-delete|e.key = ""||0	lock overwrites e.key on every Get; the reset only lets a pooled entry drop its last key string sooner.
 recon/validate.go|retryTable|int-off|0|1|1	The set returned beside an error is discarded by NewOperation.
+recon/errors.go|(*Runtime).refused|stmt-swap|swap|rt.stats.rejected.Add(1) ⇄ runtime.Gosched()|0	Both happen before the refusal is returned; the contract orders neither the count nor the yield against the other.
+recon/resource.go|(*Resource).sync|stmt-swap|swap|r.isFull = f ⇄ r.full.Store(f)|0	Both writes run under r.mu; isFull is read only under r.mu, so their order is unobservable.
+recon/resource.go|(*Resource).close|stmt-swap|swap|r.q.closeAll() ⇄ r.sync()|0	closed is already true when sync runs, so full is set either way; both run under r.mu.

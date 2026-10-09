@@ -1,0 +1,324 @@
+=== RUN   TestDifferential
+    differential_test.go:53: 100000 scenarios, 4994175 steps; 43997 scenarios (44.0%) end differently under the §8 deltas
+    differential_test.go:55: results by class (v0.2 model): map[nil:772933 overloaded:353284 stopping:679336 canceled:464675 other:508704]
+--- PASS: TestDifferential (307.51s)
+=== RUN   TestDifferentialPower
+    differential_test.go:97: v0.2 caught in all 740 delta-exercising scenarios; smallest:
+        resources: [{a 1}]
+        op0 Pure admission=Wait resources=[] keyed=true timeout=0s attempts=3 on=[Transient]
+        op1 NonIdempotent admission=Wait resources=[{a 1}] keyed=false timeout=0s attempts=1 on=[Transient]
+        op2 Pure admission=Reject resources=[] keyed=true timeout=1h0m0s attempts=1 on=[]
+        c10: op0 key="" precancel=true deadline=0s script=[hold ctx-err ok]
+         0. Start(c10)
+--- PASS: TestDifferentialPower (1.38s)
+=== RUN   TestInvariantsUnderLoad
+=== RUN   TestInvariantsUnderLoad/orig
+    load_test.go:35: 128000 calls map[nil:68323 overloaded:24175 other:35502]; stats {Admitted:128000 Rejected:24175 Started:103825 Finished:128000 Retried:6392}
+    load_test.go:35: 128000 calls map[nil:62501 overloaded:36522 other:28977]; stats {Admitted:128000 Rejected:36522 Started:91478 Finished:128000 Retried:9178}
+    load_test.go:35: 128000 calls map[nil:64198 overloaded:31936 other:31866]; stats {Admitted:128000 Rejected:31936 Started:96064 Finished:128000 Retried:7841}
+    load_test.go:35: 128000 calls map[nil:30430 overloaded:81889 other:15681]; stats {Admitted:128000 Rejected:81889 Started:46111 Finished:128000 Retried:3058}
+    load_test.go:35: 128000 calls map[nil:52297 overloaded:51676 other:24027]; stats {Admitted:128000 Rejected:51676 Started:76324 Finished:128000 Retried:8111}
+    load_test.go:35: 128000 calls map[nil:55918 overloaded:49200 other:22882]; stats {Admitted:128000 Rejected:49200 Started:78800 Finished:128000 Retried:11375}
+    load_test.go:35: 128000 calls map[nil:54479 overloaded:45772 other:27749]; stats {Admitted:128000 Rejected:45772 Started:82228 Finished:128000 Retried:5866}
+    load_test.go:35: 128000 calls map[nil:73563 overloaded:23882 other:30555]; stats {Admitted:128000 Rejected:23882 Started:104118 Finished:128000 Retried:14876}
+    load_test.go:35: 128000 calls map[nil:59392 overloaded:31918 other:36690]; stats {Admitted:128000 Rejected:31918 Started:96082 Finished:128000 Retried:0}
+    load_test.go:35: 128000 calls map[nil:50979 overloaded:55011 other:22010]; stats {Admitted:128000 Rejected:55011 Started:72989 Finished:128000 Retried:9283}
+    load_test.go:35: 128000 calls map[nil:82291 overloaded:5272 other:40437]; stats {Admitted:128000 Rejected:5272 Started:122728 Finished:128000 Retried:10062}
+    load_test.go:35: 128000 calls map[nil:63370 overloaded:31927 other:32703]; stats {Admitted:128000 Rejected:31927 Started:96073 Finished:128000 Retried:6083}
+    load_test.go:35: 128000 calls map[nil:39468 overloaded:68679 other:19853]; stats {Admitted:128000 Rejected:68679 Started:59321 Finished:128000 Retried:4321}
+    load_test.go:35: 128000 calls map[nil:78246 overloaded:15946 other:33808]; stats {Admitted:128000 Rejected:15946 Started:112054 Finished:128000 Retried:14179}
+    load_test.go:35: 128000 calls map[nil:55402 overloaded:42840 other:29758]; stats {Admitted:128000 Rejected:42840 Started:85160 Finished:128000 Retried:4516}
+    load_test.go:35: 128000 calls map[nil:83827 overloaded:5053 other:39120]; stats {Admitted:128000 Rejected:5053 Started:122947 Finished:128000 Retried:12069}
+    load_test.go:35: 128000 calls map[nil:67765 overloaded:29404 other:30831]; stats {Admitted:128000 Rejected:29404 Started:98596 Finished:128000 Retried:10688}
+    load_test.go:35: 128000 calls map[nil:62334 overloaded:31903 other:33763]; stats {Admitted:128000 Rejected:31903 Started:96097 Finished:128000 Retried:4357}
+    load_test.go:35: 128000 calls map[nil:79879 overloaded:15974 other:32147]; stats {Admitted:128000 Rejected:15974 Started:112026 Finished:128000 Retried:17048}
+    load_test.go:35: 128000 calls map[nil:54770 overloaded:47252 other:25978]; stats {Admitted:128000 Rejected:47252 Started:80748 Finished:128000 Retried:7951}
+    load_test.go:35: 128000 calls map[nil:89304 overloaded:9239 other:29457]; stats {Admitted:128000 Rejected:9239 Started:118761 Finished:128000 Retried:25410}
+    load_test.go:35: 128000 calls map[nil:69724 overloaded:15550 other:42726]; stats {Admitted:128000 Rejected:15550 Started:112450 Finished:128000 Retried:0}
+    load_test.go:35: 128000 calls map[nil:69530 overloaded:29738 other:28732]; stats {Admitted:128000 Rejected:29738 Started:98262 Finished:128000 Retried:14028}
+    load_test.go:35: 128000 calls map[nil:54893 overloaded:45504 other:27603]; stats {Admitted:128000 Rejected:45504 Started:82496 Finished:128000 Retried:6038}
+    load_test.go:35: 128000 calls map[nil:78453 overloaded:8394 other:41153]; stats {Admitted:128000 Rejected:8394 Started:119606 Finished:128000 Retried:6816}
+    load_test.go:35: 128000 calls map[nil:59441 overloaded:31897 other:36662]; stats {Admitted:128000 Rejected:31897 Started:96103 Finished:128000 Retried:0}
+    load_test.go:35: 128000 calls map[nil:70268 overloaded:19527 other:38205]; stats {Admitted:128000 Rejected:19527 Started:108473 Finished:128000 Retried:4887}
+    load_test.go:35: 128000 calls map[nil:66300 overloaded:29563 other:32137]; stats {Admitted:128000 Rejected:29563 Started:98437 Finished:128000 Retried:8534}
+    load_test.go:35: 128000 calls map[nil:86893 other:41107]; stats {Admitted:128000 Rejected:0 Started:128000 Finished:128000 Retried:12801}
+    load_test.go:35: 128000 calls map[nil:34843 overloaded:76781 other:16376]; stats {Admitted:128000 Rejected:76781 Started:51219 Finished:128000 Retried:4772}
+=== RUN   TestInvariantsUnderLoad/recon
+    load_test.go:35: 128000 calls map[nil:75297 overloaded:9326 other:43377]; stats {Admitted:128000 Rejected:9326 Started:118674 Finished:128000 Retried:2821}
+    load_test.go:35: 128000 calls map[nil:61423 overloaded:30611 other:35966]; stats {Admitted:128000 Rejected:30611 Started:97389 Finished:128000 Retried:1633}
+    load_test.go:35: 128000 calls map[nil:93873 other:34127]; stats {Admitted:128000 Rejected:0 Started:128000 Finished:128000 Retried:23513}
+    load_test.go:35: 128000 calls map[nil:84310 other:43690]; stats {Admitted:128000 Rejected:0 Started:128000 Finished:128000 Retried:7866}
+    load_test.go:35: 128000 calls map[nil:86905 overloaded:3056 other:38039]; stats {Admitted:128000 Rejected:3056 Started:124944 Finished:128000 Retried:14998}
+    load_test.go:35: 128000 calls map[nil:57695 overloaded:48015 other:22290]; stats {Admitted:128000 Rejected:48015 Started:79985 Finished:128000 Retried:13217}
+    load_test.go:35: 128000 calls map[nil:80446 overloaded:11947 other:35607]; stats {Admitted:128000 Rejected:11947 Started:116053 Finished:128000 Retried:13043}
+    load_test.go:35: 128000 calls map[nil:79934 overloaded:16012 other:32054]; stats {Admitted:128000 Rejected:16012 Started:111988 Finished:128000 Retried:16856}
+    load_test.go:35: 128000 calls map[nil:53218 overloaded:47980 other:26802]; stats {Admitted:128000 Rejected:47980 Started:80020 Finished:128000 Retried:6012}
+    load_test.go:35: 128000 calls map[nil:71122 overloaded:19812 other:37066]; stats {Admitted:128000 Rejected:19812 Started:108188 Finished:128000 Retried:6386}
+    load_test.go:35: 128000 calls map[nil:71644 overloaded:21121 other:35235]; stats {Admitted:128000 Rejected:21121 Started:106879 Finished:128000 Retried:8847}
+    load_test.go:35: 128000 calls map[nil:53349 overloaded:43592 other:31059]; stats {Admitted:128000 Rejected:43592 Started:84408 Finished:128000 Retried:1693}
+    load_test.go:35: 128000 calls map[nil:72858 overloaded:28729 other:26413]; stats {Admitted:128000 Rejected:28729 Started:99271 Finished:128000 Retried:18194}
+    load_test.go:35: 128000 calls map[nil:52215 overloaded:47926 other:27859]; stats {Admitted:128000 Rejected:47926 Started:80074 Finished:128000 Retried:4358}
+    load_test.go:35: 128000 calls map[nil:76479 overloaded:15800 other:35721]; stats {Admitted:128000 Rejected:15800 Started:112200 Finished:128000 Retried:11462}
+    load_test.go:35: 128000 calls map[nil:64107 overloaded:30653 other:33240]; stats {Admitted:128000 Rejected:30653 Started:97347 Finished:128000 Retried:6057}
+    load_test.go:35: 128000 calls map[nil:70732 overloaded:19461 other:37807]; stats {Admitted:128000 Rejected:19461 Started:108539 Finished:128000 Retried:5079}
+    load_test.go:35: 128000 calls map[nil:69245 overloaded:26353 other:32402]; stats {Admitted:128000 Rejected:26353 Started:101647 Finished:128000 Retried:9922}
+    load_test.go:35: 128000 calls map[nil:62258 overloaded:31832 other:33910]; stats {Admitted:128000 Rejected:31832 Started:96168 Finished:128000 Retried:4360}
+    load_test.go:35: 128000 calls map[nil:79692 overloaded:9322 other:38986]; stats {Admitted:128000 Rejected:9322 Started:118678 Finished:128000 Retried:10146}
+    load_test.go:35: 128000 calls map[nil:71312 overloaded:24201 other:32487]; stats {Admitted:128000 Rejected:24201 Started:103799 Finished:128000 Retried:11549}
+    load_test.go:35: 128000 calls map[nil:84833 other:43167]; stats {Admitted:128000 Rejected:0 Started:128000 Finished:128000 Retried:8623}
+    load_test.go:35: 128000 calls map[nil:59916 overloaded:40907 other:27177]; stats {Admitted:128000 Rejected:40907 Started:87093 Finished:128000 Retried:9240}
+    load_test.go:35: 128000 calls map[nil:56577 overloaded:45478 other:25945]; stats {Admitted:128000 Rejected:45478 Started:82522 Finished:128000 Retried:8620}
+    load_test.go:35: 128000 calls map[nil:74721 overloaded:16004 other:37275]; stats {Admitted:128000 Rejected:16004 Started:111996 Finished:128000 Retried:8517}
+    load_test.go:35: 128000 calls map[nil:61853 overloaded:35182 other:30965]; stats {Admitted:128000 Rejected:35182 Started:92818 Finished:128000 Retried:7031}
+    load_test.go:35: 128000 calls map[nil:68591 overloaded:27989 other:31420]; stats {Admitted:128000 Rejected:27989 Started:100011 Finished:128000 Retried:10695}
+    load_test.go:35: 128000 calls map[nil:79092 overloaded:15083 other:33825]; stats {Admitted:128000 Rejected:15083 Started:112917 Finished:128000 Retried:14626}
+    load_test.go:35: 128000 calls map[nil:94146 overloaded:5103 other:28751]; stats {Admitted:128000 Rejected:5103 Started:122897 Finished:128000 Retried:28921}
+    load_test.go:35: 128000 calls map[nil:86520 other:41480]; stats {Admitted:128000 Rejected:0 Started:128000 Finished:128000 Retried:11287}
+--- PASS: TestInvariantsUnderLoad (2131.19s)
+    --- PASS: TestInvariantsUnderLoad/orig (1008.30s)
+    --- PASS: TestInvariantsUnderLoad/recon (1122.88s)
+=== RUN   TestChaos
+=== RUN   TestChaos/orig
+    load_test.go:49: 128000 calls map[nil:1792 overloaded:530 stopping:124009 canceled:298 deadline:519 other:852]; stats {Admitted:4053 Rejected:124477 Started:2649 Finished:4053 Retried:109}
+    load_test.go:49: 128000 calls map[nil:396 stopping:127201 canceled:81 deadline:141 other:181]; stats {Admitted:861 Rejected:127139 Started:577 Finished:861 Retried:2}
+    load_test.go:49: 128000 calls map[nil:2248 overloaded:1296 stopping:122297 canceled:405 deadline:715 other:1039]; stats {Admitted:5766 Rejected:123530 Started:3292 Finished:5766 Retried:284}
+    load_test.go:49: 128000 calls map[nil:1225 overloaded:422 stopping:125447 canceled:141 deadline:302 other:463]; stats {Admitted:2616 Rejected:125806 Started:1695 Finished:2616 Retried:213}
+    load_test.go:49: 128000 calls map[nil:2018 overloaded:504 stopping:123913 canceled:209 deadline:426 other:930]; stats {Admitted:4148 Rejected:124356 Started:2955 Finished:4148 Retried:159}
+    load_test.go:49: 128000 calls map[nil:677 overloaded:763 stopping:126104 canceled:62 deadline:147 other:247]; stats {Admitted:1958 Rejected:126805 Started:927 Finished:1958 Retried:103}
+    load_test.go:49: 128000 calls map[nil:216 overloaded:340 stopping:127174 canceled:56 deadline:108 other:106]; stats {Admitted:888 Rejected:127452 Started:322 Finished:888 Retried:6}
+    load_test.go:49: 128000 calls map[nil:180 overloaded:114 stopping:127543 canceled:26 deadline:53 other:84]; stats {Admitted:519 Rejected:127595 Started:264 Finished:519 Retried:17}
+    load_test.go:49: 128000 calls map[nil:2010 overloaded:514 stopping:123922 canceled:222 deadline:403 other:929]; stats {Admitted:4139 Rejected:124375 Started:2940 Finished:4139 Retried:146}
+    load_test.go:49: 128000 calls map[nil:7948 overloaded:7798 stopping:107277 canceled:658 deadline:1193 other:3126]; stats {Admitted:20783 Rejected:115015 Started:11132 Finished:20783 Retried:1144}
+    load_test.go:49: 1 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:2408 overloaded:755 stopping:122569 canceled:424 deadline:711 other:1133]; stats {Admitted:5493 Rejected:123263 Started:3550 Finished:5493 Retried:179}
+    load_test.go:49: 4 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:1906 overloaded:2569 stopping:121695 canceled:356 deadline:581 other:893]; stats {Admitted:6365 Rejected:124208 Started:2805 Finished:6365 Retried:132}
+    load_test.go:49: 128000 calls map[nil:2514 overloaded:2544 stopping:121171 canceled:266 deadline:463 other:1042]; stats {Admitted:6882 Rejected:123662 Started:3572 Finished:6882 Retried:253}
+    load_test.go:49: 128000 calls map[nil:4115 overloaded:1026 stopping:120036 canceled:414 deadline:702 other:1707]; stats {Admitted:8026 Rejected:121000 Started:5843 Finished:8026 Retried:539}
+    load_test.go:49: 128000 calls map[nil:3279 overloaded:3736 stopping:118069 canceled:484 deadline:914 other:1518]; stats {Admitted:9991 Rejected:121745 Started:4810 Finished:9991 Retried:208}
+    load_test.go:49: 128000 calls map[nil:2157 overloaded:1384 stopping:122563 canceled:309 deadline:613 other:974]; stats {Admitted:5498 Rejected:123886 Started:3134 Finished:5498 Retried:181}
+    load_test.go:49: 128000 calls map[nil:3490 overloaded:810 stopping:121147 canceled:362 deadline:663 other:1528]; stats {Admitted:6914 Rejected:121896 Started:5033 Finished:6914 Retried:359}
+    load_test.go:49: 128000 calls map[nil:2162 overloaded:302 stopping:123459 canceled:386 deadline:664 other:1027]; stats {Admitted:4604 Rejected:123698 Started:3193 Finished:4604 Retried:163}
+    load_test.go:49: 128000 calls map[nil:1431 overloaded:1350 stopping:124315 canceled:139 deadline:234 other:531]; stats {Admitted:3748 Rejected:125602 Started:1974 Finished:3748 Retried:247}
+    load_test.go:49: 128000 calls map[nil:1168 overloaded:597 stopping:125225 canceled:173 deadline:369 other:468]; stats {Admitted:2837 Rejected:125760 Started:1637 Finished:2837 Retried:71}
+    load_test.go:49: 128000 calls map[nil:1871 overloaded:1937 stopping:123014 canceled:173 deadline:327 other:678]; stats {Admitted:5045 Rejected:124892 Started:2552 Finished:5045 Retried:275}
+    load_test.go:49: 1 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:3177 overloaded:4062 stopping:117206 canceled:740 deadline:1395 other:1420]; stats {Admitted:10856 Rejected:121207 Started:4600 Finished:10856 Retried:219}
+    load_test.go:49: 128000 calls map[nil:2258 overloaded:606 stopping:123023 canceled:401 deadline:701 other:1011]; stats {Admitted:5035 Rejected:123571 Started:3270 Finished:5035 Retried:147}
+    load_test.go:49: 1 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:2659 overloaded:1036 stopping:121951 canceled:428 deadline:781 other:1145]; stats {Admitted:6107 Rejected:122930 Started:3813 Finished:6107 Retried:309}
+    load_test.go:49: 128000 calls map[nil:680 stopping:126858 canceled:93 deadline:131 other:238]; stats {Admitted:1202 Rejected:126798 Started:920 Finished:1202 Retried:122}
+    load_test.go:49: 128000 calls map[nil:1430 stopping:125463 canceled:144 deadline:299 other:664]; stats {Admitted:2600 Rejected:125400 Started:2096 Finished:2600 Retried:76}
+    load_test.go:49: 128000 calls map[nil:2339 overloaded:660 stopping:122674 canceled:438 deadline:831 other:1058]; stats {Admitted:5389 Rejected:123271 Started:3397 Finished:5389 Retried:122}
+    load_test.go:49: 128000 calls map[nil:2211 overloaded:287 stopping:123512 canceled:373 deadline:641 other:976]; stats {Admitted:4546 Rejected:123741 Started:3189 Finished:4546 Retried:176}
+    load_test.go:49: 1 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:4540 overloaded:1997 stopping:117462 canceled:794 deadline:1354 other:1853]; stats {Admitted:10599 Rejected:119399 Started:6417 Finished:10599 Retried:563}
+    load_test.go:49: 128000 calls map[nil:1786 overloaded:189 stopping:124840 canceled:194 deadline:322 other:669]; stats {Admitted:3220 Rejected:124969 Started:2462 Finished:3220 Retried:273}
+    load_test.go:49: 128000 calls map[nil:2298 overloaded:915 stopping:123038 canceled:238 deadline:402 other:1109]; stats {Admitted:5024 Rejected:123891 Started:3408 Finished:5024 Retried:88}
+    load_test.go:49: 128000 calls map[nil:2356 overloaded:360 stopping:123356 canceled:242 deadline:418 other:1268]; stats {Admitted:4705 Rejected:123655 Started:3628 Finished:4705 Retried:55}
+    load_test.go:49: 128000 calls map[nil:992 overloaded:347 stopping:125861 canceled:105 deadline:181 other:514]; stats {Admitted:2202 Rejected:126145 Started:1506 Finished:2202 Retried:37}
+    load_test.go:49: 128000 calls map[nil:862 overloaded:153 stopping:126164 canceled:150 deadline:298 other:373]; stats {Admitted:1898 Rejected:126255 Started:1237 Finished:1898 Retried:95}
+    load_test.go:49: 4 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:5571 overloaded:863 stopping:116282 canceled:905 deadline:1653 other:2726]; stats {Admitted:11777 Rejected:117090 Started:8300 Finished:11777 Retried:212}
+    load_test.go:49: 128000 calls map[nil:1878 stopping:124699 canceled:202 deadline:336 other:885]; stats {Admitted:3361 Rejected:124639 Started:2764 Finished:3361 Retried:188}
+    load_test.go:49: 128000 calls map[nil:255 overloaded:104 stopping:127375 canceled:50 deadline:84 other:132]; stats {Admitted:686 Rejected:127418 Started:387 Finished:686 Retried:19}
+    load_test.go:49: 128000 calls map[nil:3291 stopping:121512 canceled:571 deadline:946 other:1680]; stats {Admitted:6549 Rejected:121451 Started:4971 Finished:6549 Retried:105}
+    load_test.go:49: 128000 calls map[nil:3457 stopping:122029 canceled:420 deadline:826 other:1268]; stats {Admitted:6033 Rejected:121967 Started:4748 Finished:6033 Retried:659}
+    load_test.go:49: 128000 calls map[nil:460 overloaded:384 stopping:126825 canceled:77 deadline:118 other:136]; stats {Admitted:1238 Rejected:127146 Started:597 Finished:1238 Retried:66}
+    load_test.go:49: 128000 calls map[nil:1253 overloaded:349 stopping:125319 canceled:228 deadline:419 other:432]; stats {Admitted:2744 Rejected:125605 Started:1685 Finished:2744 Retried:259}
+    load_test.go:49: 128000 calls map[nil:4541 overloaded:1200 stopping:118057 canceled:663 deadline:1240 other:2299]; stats {Admitted:10004 Rejected:119196 Started:6840 Finished:10004 Retried:134}
+    load_test.go:49: 128000 calls map[nil:3351 overloaded:1779 stopping:120057 canceled:471 deadline:839 other:1503]; stats {Admitted:8005 Rejected:121774 Started:4863 Finished:8005 Retried:308}
+    load_test.go:49: 128000 calls map[nil:1526 overloaded:832 stopping:124184 canceled:247 deadline:447 other:764]; stats {Admitted:3879 Rejected:124953 Started:2290 Finished:3879 Retried:103}
+    load_test.go:49: 128000 calls map[nil:1791 overloaded:1057 stopping:123963 canceled:184 deadline:304 other:701]; stats {Admitted:4098 Rejected:124959 Started:2506 Finished:4098 Retried:310}
+    load_test.go:49: 128000 calls map[nil:1551 overloaded:910 stopping:123919 canceled:299 deadline:597 other:724]; stats {Admitted:4143 Rejected:124767 Started:2276 Finished:4143 Retried:94}
+    load_test.go:49: 128000 calls map[nil:1034 stopping:126161 canceled:149 deadline:252 other:404]; stats {Admitted:1898 Rejected:126102 Started:1440 Finished:1898 Retried:121}
+    load_test.go:49: 128000 calls map[nil:1296 overloaded:203 stopping:125287 canceled:254 deadline:403 other:557]; stats {Admitted:2775 Rejected:125428 Started:1855 Finished:2775 Retried:129}
+    load_test.go:49: 128000 calls map[nil:1601 overloaded:503 stopping:124585 canceled:196 deadline:350 other:765]; stats {Admitted:3477 Rejected:125026 Started:2366 Finished:3477 Retried:101}
+    load_test.go:49: 128000 calls map[nil:5594 overloaded:3143 stopping:114582 canceled:699 deadline:1160 other:2822]; stats {Admitted:13477 Rejected:117666 Started:8416 Finished:13477 Retried:203}
+    load_test.go:49: 128000 calls map[nil:2495 overloaded:183 stopping:122898 canceled:418 deadline:750 other:1256]; stats {Admitted:5165 Rejected:123018 Started:3752 Finished:5165 Retried:98}
+    load_test.go:49: 128000 calls map[nil:2982 overloaded:868 stopping:121610 canceled:461 deadline:797 other:1282]; stats {Admitted:6453 Rejected:122415 Started:4273 Finished:6453 Retried:255}
+    load_test.go:49: 128000 calls map[nil:2273 overloaded:581 stopping:123345 canceled:346 deadline:617 other:838]; stats {Admitted:4718 Rejected:123863 Started:3116 Finished:4718 Retried:367}
+    load_test.go:49: 3 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:2658 overloaded:852 stopping:122257 canceled:429 deadline:882 other:922]; stats {Admitted:5802 Rejected:123053 Started:3589 Finished:5802 Retried:501}
+    load_test.go:49: 1 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:2926 overloaded:5076 stopping:116954 canceled:567 deadline:1028 other:1449]; stats {Admitted:11108 Rejected:121969 Started:4376 Finished:11108 Retried:178}
+    load_test.go:49: 128000 calls map[nil:467 overloaded:159 stopping:126907 canceled:107 deadline:165 other:195]; stats {Admitted:1155 Rejected:127004 Started:662 Finished:1155 Retried:32}
+    load_test.go:49: 128000 calls map[nil:147 overloaded:40 stopping:127672 canceled:28 deadline:55 other:58]; stats {Admitted:389 Rejected:127651 Started:206 Finished:389 Retried:15}
+    load_test.go:49: 128000 calls map[nil:302 overloaded:44 stopping:127347 canceled:64 deadline:104 other:139]; stats {Admitted:714 Rejected:127330 Started:441 Finished:714 Retried:2}
+    load_test.go:49: 4 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:1187 overloaded:676 stopping:125120 canceled:162 deadline:339 other:516]; stats {Admitted:2940 Rejected:125740 Started:1706 Finished:2940 Retried:138}
+    load_test.go:49: 128000 calls map[nil:4749 overloaded:2503 stopping:117201 canceled:531 deadline:1000 other:2016]; stats {Admitted:10857 Rejected:119646 Started:6803 Finished:10857 Retried:581}
+    load_test.go:49: 2 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:1132 overloaded:126 stopping:125844 canceled:144 deadline:251 other:503]; stats {Admitted:2219 Rejected:125909 Started:1642 Finished:2219 Retried:117}
+    load_test.go:49: 128000 calls map[nil:1220 overloaded:278 stopping:125468 canceled:179 deadline:316 other:539]; stats {Admitted:2590 Rejected:125688 Started:1763 Finished:2590 Retried:80}
+    load_test.go:49: 128000 calls map[nil:1364 overloaded:1502 stopping:123799 canceled:264 deadline:458 other:613]; stats {Admitted:4264 Rejected:125238 Started:1978 Finished:4264 Retried:152}
+    load_test.go:49: 128000 calls map[nil:2658 overloaded:1190 stopping:122046 canceled:350 deadline:690 other:1066]; stats {Admitted:6015 Rejected:123175 Started:3726 Finished:6015 Retried:370}
+    load_test.go:49: 128000 calls map[nil:599 overloaded:426 stopping:126471 canceled:87 deadline:176 other:241]; stats {Admitted:1590 Rejected:126836 Started:840 Finished:1590 Retried:58}
+    load_test.go:49: 128000 calls map[nil:558 overloaded:121 stopping:126925 canceled:56 deadline:111 other:229]; stats {Admitted:1136 Rejected:126985 Started:787 Finished:1136 Retried:43}
+    load_test.go:49: 128000 calls map[nil:5085 overloaded:3149 stopping:114960 canceled:824 deadline:1464 other:2518]; stats {Admitted:13100 Rejected:118049 Started:7604 Finished:13100 Retried:343}
+    load_test.go:49: 128000 calls map[nil:2719 overloaded:360 stopping:122683 canceled:381 deadline:741 other:1116]; stats {Admitted:5379 Rejected:122981 Started:3843 Finished:5379 Retried:347}
+    load_test.go:49: 128000 calls map[nil:4227 overloaded:2278 stopping:117388 canceled:754 deadline:1366 other:1987]; stats {Admitted:10673 Rejected:119605 Started:6218 Finished:10673 Retried:167}
+    load_test.go:49: 3 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:891 overloaded:1076 stopping:124888 canceled:249 deadline:425 other:471]; stats {Admitted:3175 Rejected:125904 Started:1362 Finished:3175 Retried:19}
+    load_test.go:49: 9 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:2029 overloaded:1418 stopping:122814 canceled:337 deadline:606 other:796]; stats {Admitted:5249 Rejected:124178 Started:2833 Finished:5249 Retried:269}
+    load_test.go:49: 128000 calls map[nil:2216 stopping:123708 canceled:329 deadline:608 other:1139]; stats {Admitted:4353 Rejected:123647 Started:3358 Finished:4353 Retried:70}
+    load_test.go:49: 128000 calls map[nil:1973 overloaded:871 stopping:123389 canceled:300 deadline:468 other:999]; stats {Admitted:4672 Rejected:124199 Started:2979 Finished:4672 Retried:152}
+    load_test.go:49: 128000 calls map[nil:548 overloaded:331 stopping:126642 canceled:72 deadline:136 other:271]; stats {Admitted:1421 Rejected:126910 Started:819 Finished:1421 Retried:71}
+    load_test.go:49: 128000 calls map[nil:3082 overloaded:1946 stopping:120114 canceled:469 deadline:920 other:1469]; stats {Admitted:7945 Rejected:122001 Started:4558 Finished:7945 Retried:135}
+    load_test.go:49: 128000 calls map[nil:2696 overloaded:1139 stopping:121668 canceled:538 deadline:941 other:1018]; stats {Admitted:6388 Rejected:122751 Started:3721 Finished:6388 Retried:405}
+    load_test.go:49: 1 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:949 overloaded:514 stopping:125627 canceled:193 deadline:337 other:380]; stats {Admitted:2435 Rejected:126080 Started:1330 Finished:2435 Retried:111}
+    load_test.go:49: 128000 calls map[nil:1730 overloaded:624 stopping:124418 canceled:198 deadline:333 other:697]; stats {Admitted:3644 Rejected:124980 Started:2428 Finished:3644 Retried:188}
+    load_test.go:49: 128000 calls map[nil:1073 overloaded:654 stopping:125466 canceled:133 deadline:229 other:445]; stats {Admitted:2592 Rejected:126062 Started:1524 Finished:2592 Retried:120}
+    load_test.go:49: 128000 calls map[nil:2372 overloaded:911 stopping:122760 canceled:395 deadline:729 other:833]; stats {Admitted:5291 Rejected:123620 Started:3216 Finished:5291 Retried:418}
+    load_test.go:49: 128000 calls map[nil:4015 overloaded:829 stopping:120154 canceled:435 deadline:721 other:1846]; stats {Admitted:7907 Rejected:120922 Started:5870 Finished:7907 Retried:149}
+    load_test.go:49: 128000 calls map[nil:2280 stopping:123947 canceled:305 deadline:634 other:834]; stats {Admitted:4115 Rejected:123885 Started:3130 Finished:4115 Retried:296}
+    load_test.go:49: 128000 calls map[nil:759 overloaded:646 stopping:125993 canceled:74 deadline:144 other:384]; stats {Admitted:2070 Rejected:126576 Started:1143 Finished:2070 Retried:4}
+    load_test.go:49: 128000 calls map[nil:2009 overloaded:1277 stopping:122999 canceled:322 deadline:564 other:829]; stats {Admitted:5061 Rejected:124216 Started:2844 Finished:5061 Retried:205}
+    load_test.go:49: 128000 calls map[nil:2522 overloaded:1292 stopping:122467 canceled:232 deadline:401 other:1086]; stats {Admitted:5591 Rejected:123701 Started:3614 Finished:5591 Retried:228}
+    load_test.go:49: 128000 calls map[nil:2734 overloaded:6392 stopping:116395 canceled:435 deadline:908 other:1136]; stats {Admitted:11668 Rejected:122724 Started:3870 Finished:11668 Retried:340}
+    load_test.go:49: 1 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:955 overloaded:162 stopping:125987 canceled:135 deadline:255 other:506]; stats {Admitted:2074 Rejected:126089 Started:1467 Finished:2074 Retried:40}
+    load_test.go:49: 128000 calls map[nil:1572 overloaded:308 stopping:124696 canceled:230 deadline:433 other:761]; stats {Admitted:3366 Rejected:124942 Started:2337 Finished:3366 Retried:135}
+    load_test.go:49: 3 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:2599 overloaded:2410 stopping:120560 canceled:447 deadline:760 other:1224]; stats {Admitted:7501 Rejected:122912 Started:3829 Finished:7501 Retried:187}
+    load_test.go:49: 128000 calls map[nil:2690 overloaded:3528 stopping:120056 canceled:252 deadline:383 other:1091]; stats {Admitted:8006 Rejected:123522 Started:3793 Finished:8006 Retried:386}
+    load_test.go:49: 128000 calls map[nil:1548 overloaded:843 stopping:124362 canceled:196 deadline:363 other:688]; stats {Admitted:3697 Rejected:125146 Started:2240 Finished:3697 Retried:98}
+    load_test.go:49: 128000 calls map[nil:4170 overloaded:1103 stopping:118967 canceled:649 deadline:1163 other:1948]; stats {Admitted:9094 Rejected:120009 Started:6127 Finished:9094 Retried:321}
+    load_test.go:49: 128000 calls map[nil:2106 overloaded:1060 stopping:123006 canceled:246 deadline:482 other:1100]; stats {Admitted:5057 Rejected:124003 Started:3207 Finished:5057 Retried:109}
+    load_test.go:49: 128000 calls map[nil:1359 overloaded:359 stopping:125251 canceled:140 deadline:276 other:615]; stats {Admitted:2810 Rejected:125549 Started:1980 Finished:2810 Retried:106}
+    load_test.go:49: 2 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:1771 overloaded:1646 stopping:122842 canceled:328 deadline:613 other:800]; stats {Admitted:5220 Rejected:124428 Started:2574 Finished:5220 Retried:157}
+    load_test.go:49: 128000 calls map[nil:2275 overloaded:1051 stopping:122476 canceled:344 deadline:631 other:1223]; stats {Admitted:5586 Rejected:123465 Started:3498 Finished:5586 Retried:6}
+    load_test.go:49: 128000 calls map[nil:1553 overloaded:636 stopping:124708 canceled:167 deadline:322 other:614]; stats {Admitted:3353 Rejected:125283 Started:2172 Finished:3353 Retried:206}
+    load_test.go:49: 1 overloads were reported as ErrRuntimeStopping
+    load_test.go:49: 128000 calls map[nil:3196 overloaded:1902 stopping:119837 canceled:536 deadline:944 other:1585]; stats {Admitted:8226 Rejected:121677 Started:4782 Finished:8226 Retried:123}
+    load_test.go:49: 128000 calls map[nil:1460 stopping:125472 canceled:205 deadline:320 other:543]; stats {Admitted:2588 Rejected:125412 Started:2008 Finished:2588 Retried:231}
+    load_test.go:49: 128000 calls map[nil:2739 stopping:123349 canceled:292 deadline:558 other:1062]; stats {Admitted:4709 Rejected:123291 Started:3811 Finished:4709 Retried:366}
+=== RUN   TestChaos/recon
+    load_test.go:49: 128000 calls map[nil:1416 overloaded:2328 stopping:123398 canceled:170 deadline:262 other:426]; stats {Admitted:4660 Rejected:125668 Started:1857 Finished:4660 Retried:262}
+    load_test.go:49: 128000 calls map[nil:3734 overloaded:1540 stopping:120780 canceled:364 deadline:553 other:1029]; stats {Admitted:7282 Rejected:122258 Started:4795 Finished:7282 Retried:952}
+    load_test.go:49: 128000 calls map[nil:939 overloaded:391 stopping:125842 canceled:125 deadline:231 other:472]; stats {Admitted:2221 Rejected:126170 Started:1411 Finished:2221 Retried:90}
+    load_test.go:49: 128000 calls map[nil:161 overloaded:51 stopping:127662 canceled:25 deadline:45 other:56]; stats {Admitted:400 Rejected:127651 Started:218 Finished:400 Retried:16}
+    load_test.go:49: 128000 calls map[nil:3194 overloaded:2132 stopping:119621 canceled:529 deadline:1064 other:1460]; stats {Admitted:8441 Rejected:121691 Started:4654 Finished:8441 Retried:281}
+    load_test.go:49: 128000 calls map[nil:1305 overloaded:730 stopping:125063 canceled:148 deadline:239 other:515]; stats {Admitted:2999 Rejected:125731 Started:1825 Finished:2999 Retried:211}
+    load_test.go:49: 128000 calls map[nil:1431 overloaded:1293 stopping:124217 canceled:193 deadline:318 other:548]; stats {Admitted:3846 Rejected:125447 Started:1979 Finished:3846 Retried:205}
+    load_test.go:49: 128000 calls map[nil:254 overloaded:209 stopping:127296 canceled:39 deadline:89 other:113]; stats {Admitted:766 Rejected:127443 Started:367 Finished:766 Retried:0}
+    load_test.go:49: 128000 calls map[nil:2463 overloaded:1545 stopping:121892 canceled:281 deadline:578 other:1241]; stats {Admitted:6169 Rejected:123376 Started:3704 Finished:6169 Retried:113}
+    load_test.go:49: 128000 calls map[nil:4954 overloaded:2824 stopping:116991 canceled:408 deadline:770 other:2053]; stats {Admitted:11070 Rejected:119754 Started:7023 Finished:11070 Retried:662}
+    load_test.go:49: 128000 calls map[nil:2028 overloaded:2375 stopping:121747 canceled:322 deadline:590 other:938]; stats {Admitted:6315 Rejected:124060 Started:2971 Finished:6315 Retried:95}
+    load_test.go:49: 128000 calls map[nil:896 overloaded:344 stopping:126081 canceled:90 deadline:167 other:422]; stats {Admitted:1982 Rejected:126362 Started:1322 Finished:1982 Retried:57}
+    load_test.go:49: 128000 calls map[nil:3674 overloaded:1476 stopping:120437 canceled:341 deadline:526 other:1546]; stats {Admitted:7621 Rejected:121855 Started:5242 Finished:7621 Retried:510}
+    load_test.go:49: 128000 calls map[nil:1650 overloaded:829 stopping:124316 canceled:158 deadline:273 other:774]; stats {Admitted:3747 Rejected:125082 Started:2424 Finished:3747 Retried:167}
+    load_test.go:49: 128000 calls map[nil:2268 overloaded:3398 stopping:120344 canceled:250 deadline:474 other:1266]; stats {Admitted:7715 Rejected:123683 Started:3534 Finished:7715 Retried:48}
+    load_test.go:49: 128000 calls map[nil:1119 stopping:125974 canceled:137 deadline:272 other:498]; stats {Admitted:2089 Rejected:125911 Started:1621 Finished:2089 Retried:106}
+    load_test.go:49: 128000 calls map[nil:1840 overloaded:493 stopping:124106 canceled:254 deadline:458 other:849]; stats {Admitted:3956 Rejected:124537 Started:2690 Finished:3956 Retried:175}
+    load_test.go:49: 128000 calls map[nil:1653 overloaded:962 stopping:123970 canceled:204 deadline:418 other:793]; stats {Admitted:4092 Rejected:124870 Started:2451 Finished:4092 Retried:116}
+    load_test.go:49: 128000 calls map[nil:2538 overloaded:2790 stopping:120527 canceled:316 deadline:508 other:1321]; stats {Admitted:7536 Rejected:123254 Started:3859 Finished:7536 Retried:39}
+    load_test.go:49: 128000 calls map[nil:3078 stopping:122728 canceled:269 deadline:397 other:1528]; stats {Admitted:5331 Rejected:122669 Started:4620 Finished:5331 Retried:182}
+    load_test.go:49: 128000 calls map[nil:3021 overloaded:3861 stopping:118738 canceled:358 deadline:674 other:1348]; stats {Admitted:9324 Rejected:122537 Started:4369 Finished:9324 Retried:282}
+    load_test.go:49: 128000 calls map[nil:596 overloaded:588 stopping:126352 canceled:64 deadline:133 other:267]; stats {Admitted:1709 Rejected:126879 Started:865 Finished:1709 Retried:40}
+    load_test.go:49: 128000 calls map[nil:804 overloaded:229 stopping:126271 canceled:127 deadline:235 other:334]; stats {Admitted:1792 Rejected:126437 Started:1140 Finished:1792 Retried:98}
+    load_test.go:49: 128000 calls map[nil:2748 overloaded:594 stopping:122809 canceled:244 deadline:400 other:1205]; stats {Admitted:5253 Rejected:123341 Started:3963 Finished:5253 Retried:186}
+    load_test.go:49: 128000 calls map[nil:368 overloaded:19 stopping:127272 canceled:54 deadline:133 other:154]; stats {Admitted:790 Rejected:127229 Started:522 Finished:790 Retried:50}
+    load_test.go:49: 128000 calls map[nil:299 overloaded:219 stopping:127173 canceled:68 deadline:102 other:139]; stats {Admitted:890 Rejected:127329 Started:438 Finished:890 Retried:11}
+    load_test.go:49: 128000 calls map[nil:3238 overloaded:1868 stopping:120428 canceled:442 deadline:813 other:1211]; stats {Admitted:7635 Rejected:122233 Started:4462 Finished:7635 Retried:489}
+    load_test.go:49: 128000 calls map[nil:1402 overloaded:384 stopping:125039 canceled:201 deadline:370 other:604]; stats {Admitted:3024 Rejected:125360 Started:2009 Finished:3024 Retried:164}
+    load_test.go:49: 128000 calls map[nil:922 overloaded:242 stopping:126145 canceled:99 deadline:183 other:409]; stats {Admitted:1918 Rejected:126324 Started:1331 Finished:1918 Retried:109}
+    load_test.go:49: 128000 calls map[nil:2247 overloaded:980 stopping:122596 canceled:396 deadline:723 other:1058]; stats {Admitted:5467 Rejected:123513 Started:3309 Finished:5467 Retried:145}
+    load_test.go:49: 128000 calls map[nil:1777 stopping:124939 canceled:181 deadline:333 other:770]; stats {Admitted:3122 Rejected:124878 Started:2559 Finished:3122 Retried:167}
+    load_test.go:49: 128000 calls map[nil:3304 overloaded:3327 stopping:119121 canceled:328 deadline:619 other:1301]; stats {Admitted:8942 Rejected:122385 Started:4624 Finished:8942 Retried:407}
+    load_test.go:49: 128000 calls map[nil:2256 overloaded:2181 stopping:121656 canceled:332 deadline:608 other:967]; stats {Admitted:6407 Rejected:123774 Started:3234 Finished:6407 Retried:270}
+    load_test.go:49: 128000 calls map[nil:3151 overloaded:827 stopping:121539 canceled:370 deadline:762 other:1351]; stats {Admitted:6523 Rejected:122304 Started:4517 Finished:6523 Retried:359}
+    load_test.go:49: 128000 calls map[nil:2665 overloaded:2819 stopping:120386 canceled:363 deadline:623 other:1144]; stats {Admitted:7675 Rejected:123144 Started:3819 Finished:7675 Retried:300}
+    load_test.go:49: 128000 calls map[nil:1542 overloaded:386 stopping:124683 canceled:246 deadline:435 other:708]; stats {Admitted:3379 Rejected:125007 Started:2258 Finished:3379 Retried:142}
+    load_test.go:49: 128000 calls map[nil:2919 overloaded:3232 stopping:119444 canceled:406 deadline:770 other:1229]; stats {Admitted:8618 Rejected:122614 Started:4155 Finished:8618 Retried:318}
+    load_test.go:49: 128000 calls map[nil:243 overloaded:71 stopping:127477 canceled:34 deadline:74 other:101]; stats {Admitted:586 Rejected:127485 Started:345 Finished:586 Retried:32}
+    load_test.go:49: 128000 calls map[nil:1704 overloaded:789 stopping:124159 canceled:210 deadline:377 other:761]; stats {Admitted:3903 Rejected:124886 Started:2471 Finished:3903 Retried:172}
+    load_test.go:49: 128000 calls map[nil:793 overloaded:843 stopping:125764 canceled:117 deadline:188 other:295]; stats {Admitted:2298 Rejected:126545 Started:1089 Finished:2298 Retried:103}
+    load_test.go:49: 128000 calls map[nil:1203 overloaded:824 stopping:124928 canceled:157 deadline:304 other:584]; stats {Admitted:3135 Rejected:125689 Started:1788 Finished:3135 Retried:72}
+    load_test.go:49: 128000 calls map[nil:1903 overloaded:2345 stopping:122294 canceled:241 deadline:396 other:821]; stats {Admitted:5767 Rejected:124578 Started:2733 Finished:5767 Retried:211}
+    load_test.go:49: 128000 calls map[nil:1526 stopping:125332 canceled:192 deadline:341 other:609]; stats {Admitted:2731 Rejected:125269 Started:2141 Finished:2731 Retried:176}
+    load_test.go:49: 128000 calls map[nil:3288 overloaded:1569 stopping:120505 canceled:509 deadline:901 other:1228]; stats {Admitted:7558 Rejected:122011 Started:4526 Finished:7558 Retried:438}
+    load_test.go:49: 128000 calls map[nil:3091 overloaded:706 stopping:121985 canceled:345 deadline:688 other:1185]; stats {Admitted:6077 Rejected:122629 Started:4276 Finished:6077 Retried:416}
+    load_test.go:49: 128000 calls map[nil:881 overloaded:230 stopping:126129 canceled:148 deadline:220 other:392]; stats {Admitted:1934 Rejected:126296 Started:1273 Finished:1934 Retried:84}
+    load_test.go:49: 128000 calls map[nil:2561 overloaded:4547 stopping:118762 canceled:422 deadline:686 other:1022]; stats {Admitted:9300 Rejected:123247 Started:3586 Finished:9300 Retried:362}
+    load_test.go:49: 128000 calls map[nil:2741 stopping:123150 canceled:369 deadline:625 other:1115]; stats {Admitted:4913 Rejected:123087 Started:3861 Finished:4913 Retried:347}
+    load_test.go:49: 128000 calls map[nil:1072 overloaded:733 stopping:125123 canceled:187 deadline:382 other:503]; stats {Admitted:2940 Rejected:125793 Started:1575 Finished:2940 Retried:71}
+    load_test.go:49: 128000 calls map[nil:3170 overloaded:731 stopping:122321 canceled:254 deadline:408 other:1116]; stats {Admitted:5741 Rejected:122990 Started:4305 Finished:5741 Retried:528}
+    load_test.go:49: 128000 calls map[nil:777 overloaded:805 stopping:125688 canceled:120 deadline:207 other:403]; stats {Admitted:2373 Rejected:126432 Started:1180 Finished:2373 Retried:24}
+    load_test.go:49: 128000 calls map[nil:2133 overloaded:930 stopping:122957 canceled:314 deadline:678 other:988]; stats {Admitted:5106 Rejected:123824 Started:3121 Finished:5106 Retried:181}
+    load_test.go:49: 128000 calls map[nil:322 overloaded:437 stopping:126957 canceled:70 deadline:125 other:89]; stats {Admitted:1106 Rejected:127331 Started:411 Finished:1106 Retried:69}
+    load_test.go:49: 128000 calls map[nil:261 overloaded:209 stopping:127273 canceled:49 deadline:73 other:135]; stats {Admitted:789 Rejected:127420 Started:399 Finished:789 Retried:23}
+    load_test.go:49: 128000 calls map[nil:2547 overloaded:1605 stopping:121625 canceled:349 deadline:632 other:1242]; stats {Admitted:6435 Rejected:123170 Started:3794 Finished:6435 Retried:117}
+    load_test.go:49: 128000 calls map[nil:4600 overloaded:4681 stopping:115031 canceled:626 deadline:1156 other:1906]; stats {Admitted:13030 Rejected:119651 Started:6537 Finished:13030 Retried:485}
+    load_test.go:49: 128000 calls map[nil:1883 overloaded:735 stopping:124117 canceled:227 deadline:366 other:672]; stats {Admitted:3946 Rejected:124789 Started:2562 Finished:3946 Retried:292}
+    load_test.go:49: 128000 calls map[nil:894 overloaded:533 stopping:125795 canceled:95 deadline:185 other:498]; stats {Admitted:2268 Rejected:126265 Started:1392 Finished:2268 Retried:0}
+    load_test.go:49: 128000 calls map[nil:1940 overloaded:498 stopping:124091 canceled:207 deadline:430 other:834]; stats {Admitted:3971 Rejected:124527 Started:2777 Finished:3971 Retried:182}
+    load_test.go:49: 128000 calls map[nil:2136 overloaded:1115 stopping:123097 canceled:249 deadline:543 other:860]; stats {Admitted:4966 Rejected:124149 Started:3005 Finished:4966 Retried:289}
+    load_test.go:49: 128000 calls map[nil:2947 stopping:122786 canceled:409 deadline:756 other:1102]; stats {Admitted:5276 Rejected:122724 Started:4067 Finished:5276 Retried:480}
+    load_test.go:49: 128000 calls map[nil:1906 stopping:124563 canceled:211 deadline:439 other:881]; stats {Admitted:3500 Rejected:124500 Started:2788 Finished:3500 Retried:116}
+    load_test.go:49: 128000 calls map[nil:540 overloaded:244 stopping:126763 canceled:75 deadline:167 other:211]; stats {Admitted:1299 Rejected:126945 Started:752 Finished:1299 Retried:60}
+    load_test.go:49: 128000 calls map[nil:1294 overloaded:703 stopping:124985 canceled:150 deadline:261 other:607]; stats {Admitted:3078 Rejected:125625 Started:1901 Finished:3078 Retried:91}
+    load_test.go:49: 128000 calls map[nil:3416 overloaded:834 stopping:121186 canceled:404 deadline:749 other:1411]; stats {Admitted:6876 Rejected:121958 Started:4841 Finished:6876 Retried:485}
+    load_test.go:49: 128000 calls map[nil:2710 overloaded:1790 stopping:120885 canceled:454 deadline:783 other:1378]; stats {Admitted:7178 Rejected:122612 Started:4088 Finished:7178 Retried:155}
+    load_test.go:49: 128000 calls map[nil:4294 overloaded:4718 stopping:115965 canceled:330 deadline:671 other:2022]; stats {Admitted:12097 Rejected:120621 Started:6316 Finished:12097 Retried:259}
+    load_test.go:49: 128000 calls map[nil:3361 overloaded:1157 stopping:120892 canceled:398 deadline:739 other:1453]; stats {Admitted:7168 Rejected:121989 Started:4831 Finished:7168 Retried:382}
+    load_test.go:49: 128000 calls map[nil:3560 overloaded:3004 stopping:118557 canceled:445 deadline:723 other:1711]; stats {Admitted:9504 Rejected:121500 Started:5271 Finished:9504 Retried:228}
+    load_test.go:49: 128000 calls map[nil:1667 overloaded:1150 stopping:123583 canceled:247 deadline:474 other:879]; stats {Admitted:4480 Rejected:124670 Started:2546 Finished:4480 Retried:23}
+    load_test.go:49: 128000 calls map[nil:1339 overloaded:358 stopping:125152 canceled:188 deadline:307 other:656]; stats {Admitted:2911 Rejected:125447 Started:1998 Finished:2911 Retried:63}
+    load_test.go:49: 128000 calls map[nil:1160 overloaded:734 stopping:125170 canceled:162 deadline:305 other:469]; stats {Admitted:2892 Rejected:125842 Started:1637 Finished:2892 Retried:93}
+    load_test.go:49: 128000 calls map[nil:950 overloaded:1149 stopping:125182 canceled:118 deadline:244 other:357]; stats {Admitted:2880 Rejected:126269 Started:1311 Finished:2880 Retried:91}
+    load_test.go:49: 128000 calls map[nil:2820 overloaded:4856 stopping:118256 canceled:354 deadline:638 other:1076]; stats {Admitted:9805 Rejected:123051 Started:3910 Finished:9805 Retried:430}
+    load_test.go:49: 128000 calls map[nil:2875 overloaded:3881 stopping:118795 canceled:351 deadline:646 other:1452]; stats {Admitted:9267 Rejected:122614 Started:4327 Finished:9267 Retried:90}
+    load_test.go:49: 128000 calls map[nil:2302 overloaded:665 stopping:122937 canceled:387 deadline:693 other:1016]; stats {Admitted:5126 Rejected:123539 Started:3319 Finished:5126 Retried:177}
+    load_test.go:49: 128000 calls map[nil:751 overloaded:13 stopping:126703 canceled:85 deadline:126 other:322]; stats {Admitted:1360 Rejected:126653 Started:1077 Finished:1360 Retried:98}
+    load_test.go:49: 128000 calls map[nil:911 overloaded:572 stopping:125698 canceled:139 deadline:220 other:460]; stats {Admitted:2365 Rejected:126207 Started:1371 Finished:2365 Retried:27}
+    load_test.go:49: 128000 calls map[nil:467 overloaded:490 stopping:126644 canceled:61 deadline:97 other:241]; stats {Admitted:1419 Rejected:127071 Started:708 Finished:1419 Retried:21}
+    load_test.go:49: 128000 calls map[nil:1548 overloaded:690 stopping:124633 canceled:186 deadline:344 other:599]; stats {Admitted:3428 Rejected:125262 Started:2153 Finished:3428 Retried:204}
+    load_test.go:49: 128000 calls map[nil:1675 stopping:124710 canceled:319 deadline:651 other:645]; stats {Admitted:3352 Rejected:124648 Started:2326 Finished:3352 Retried:239}
+    load_test.go:49: 128000 calls map[nil:5601 overloaded:3113 stopping:115146 canceled:519 deadline:903 other:2718]; stats {Admitted:12914 Rejected:118199 Started:8319 Finished:12914 Retried:273}
+    load_test.go:49: 128000 calls map[nil:2502 stopping:123410 canceled:360 deadline:698 other:1030]; stats {Admitted:4653 Rejected:123347 Started:3537 Finished:4653 Retried:310}
+    load_test.go:49: 128000 calls map[nil:2904 overloaded:798 stopping:121710 canceled:431 deadline:750 other:1407]; stats {Admitted:6351 Rejected:122447 Started:4313 Finished:6351 Retried:104}
+    load_test.go:49: 128000 calls map[nil:1093 overloaded:233 stopping:125782 canceled:129 deadline:239 other:524]; stats {Admitted:2281 Rejected:125952 Started:1617 Finished:2281 Retried:27}
+    load_test.go:49: 128000 calls map[nil:1553 overloaded:1468 stopping:123971 canceled:141 deadline:266 other:601]; stats {Admitted:4092 Rejected:125376 Started:2173 Finished:4092 Retried:227}
+    load_test.go:49: 128000 calls map[nil:2330 overloaded:383 stopping:123155 canceled:395 deadline:683 other:1054]; stats {Admitted:4908 Rejected:123475 Started:3386 Finished:4908 Retried:203}
+    load_test.go:49: 128000 calls map[nil:402 stopping:127225 canceled:69 deadline:112 other:192]; stats {Admitted:837 Rejected:127163 Started:595 Finished:837 Retried:32}
+    load_test.go:49: 128000 calls map[nil:1193 overloaded:739 stopping:125088 canceled:177 deadline:296 other:507]; stats {Admitted:2974 Rejected:125765 Started:1700 Finished:2974 Retried:98}
+    load_test.go:49: 128000 calls map[nil:1325 overloaded:370 stopping:125120 canceled:189 deadline:375 other:621]; stats {Admitted:2941 Rejected:125429 Started:1948 Finished:2941 Retried:133}
+    load_test.go:49: 128000 calls map[nil:413 overloaded:123 stopping:127084 canceled:61 deadline:122 other:197]; stats {Admitted:977 Rejected:127146 Started:613 Finished:977 Retried:18}
+    load_test.go:49: 128000 calls map[nil:677 overloaded:193 stopping:126509 canceled:127 deadline:214 other:280]; stats {Admitted:1554 Rejected:126639 Started:957 Finished:1554 Retried:65}
+    load_test.go:49: 128000 calls map[nil:4678 overloaded:2586 stopping:117890 canceled:549 deadline:967 other:1330]; stats {Admitted:10171 Rejected:120415 Started:6038 Finished:10171 Retried:1010}
+    load_test.go:49: 128000 calls map[nil:1596 overloaded:844 stopping:124427 canceled:223 deadline:390 other:520]; stats {Admitted:3635 Rejected:125209 Started:2118 Finished:3635 Retried:221}
+    load_test.go:49: 128000 calls map[nil:412 stopping:127179 canceled:79 deadline:133 other:197]; stats {Admitted:884 Rejected:127116 Started:609 Finished:884 Retried:15}
+    load_test.go:49: 128000 calls map[nil:1923 overloaded:595 stopping:123780 canceled:293 deadline:531 other:878]; stats {Admitted:4283 Rejected:124312 Started:2805 Finished:4283 Retried:193}
+    load_test.go:49: 128000 calls map[nil:1242 overloaded:341 stopping:125284 canceled:166 deadline:356 other:611]; stats {Admitted:2779 Rejected:125562 Started:1853 Finished:2779 Retried:70}
+    load_test.go:49: 128000 calls map[nil:749 overloaded:554 stopping:125976 canceled:127 deadline:199 other:395]; stats {Admitted:2086 Rejected:126468 Started:1144 Finished:2086 Retried:45}
+    load_test.go:49: 128000 calls map[nil:1530 overloaded:847 stopping:124642 canceled:156 deadline:272 other:553]; stats {Admitted:3419 Rejected:125428 Started:2090 Finished:3419 Retried:266}
+    load_test.go:49: 128000 calls map[nil:3336 overloaded:1206 stopping:120751 canceled:383 deadline:714 other:1610]; stats {Admitted:7310 Rejected:121896 Started:4955 Finished:7310 Retried:166}
+--- PASS: TestChaos (168.20s)
+    --- PASS: TestChaos/orig (85.83s)
+    --- PASS: TestChaos/recon (82.37s)
+=== RUN   TestSynctestProbe
+--- PASS: TestSynctestProbe (0.00s)
+=== RUN   TestMiraiTwin
+=== RUN   TestMiraiTwin/orig
+    twin_test.go:126: 780499 calls map[nil:762125 overloaded:2825 stopping:95 deadline:597 other:14857]; stats {Admitted:780404 Rejected:2920 Started:777579 Finished:780404 Retried:21567}
+    twin_test.go:127: db-write admission wait: n=150000 p50=6.5µs p90=19.7µs p99=1.0755ms max=4.8771ms
+    twin_test.go:128: render admission wait:   n=50000 p50=5.2µs p90=12.1µs p99=29.1µs max=1.4529ms; overloads 0.36% of all calls; drain took 36.2544ms
+    twin_test.go:136: live heap (B): early mean 2870867, late mean 3169620
+    twin_test.go:137: goroutines: early mean 16, late mean 17
+    twin_test.go:139: heap samples (MB): [1.3 1.5 1.6 1.7 1.8 1.9 2.0 2.1 2.2 2.4 2.4 2.5 2.5 2.5 2.5 2.6 2.6 2.6 2.6 2.7 2.7 2.7 2.7 2.7 2.9 2.8 2.9 2.8 2.9 2.8 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.1 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0]
+=== RUN   TestMiraiTwin/recon
+    twin_test.go:126: 781764 calls map[nil:763601 overloaded:3015 stopping:3 deadline:606 other:14539]; stats {Admitted:781761 Rejected:3018 Started:778746 Finished:781761 Retried:21728}
+    twin_test.go:127: db-write admission wait: n=150000 p50=4.3µs p90=13µs p99=1.0953ms max=4.2257ms
+    twin_test.go:128: render admission wait:   n=50000 p50=3.4µs p90=7.3µs p99=18.1µs max=1.3378ms; overloads 0.39% of all calls; drain took 1.6688ms
+    twin_test.go:136: live heap (B): early mean 2840852, late mean 3155706
+    twin_test.go:137: goroutines: early mean 13, late mean 12
+    twin_test.go:139: heap samples (MB): [1.3 1.4 1.6 1.6 1.8 1.9 2.0 2.1 2.2 2.4 2.4 2.5 2.5 2.5 2.5 2.6 2.6 2.6 2.6 2.7 2.7 2.7 2.7 2.7 2.8 2.8 2.8 2.8 2.8 2.8 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0]
+--- PASS: TestMiraiTwin (600.52s)
+    --- PASS: TestMiraiTwin/orig (300.26s)
+    --- PASS: TestMiraiTwin/recon (300.27s)
+PASS
+ok  	github.com/arahe-dev/hertasdk/lab/system	3210.171s
