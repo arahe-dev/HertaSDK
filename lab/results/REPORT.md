@@ -93,7 +93,19 @@ The keyed `Reject` cell compares two different behaviors, not two speeds (`keyed
 - **Every recon refusal in that cell is "key held"** (about 990k per run, none from a full budget). That is the contract working.
 - **Like for like, recon is faster:** recon keyed `Wait` delivers 1.29–1.32 M/s against v0.2's keyed "Reject" at 0.68 M/s, which is 1.9×.
 
-**Callers.** Never retry `Reject` in a tight in-process loop; back off, or at least yield. v1.0's `Backoff` gives callers the tool. No admission policy can protect a non-blocking spin loop without slowing every rejection.
+**Spinning callers, root cause and fix.** The root cause is lock-holder preemption under Go's two-lane run queues: preempted holders go to the global queue, while mutex-woken spinners take `runnext`. See [`ROOT-CAUSE.md`](r1/reject-probe/ROOT-CAUSE.md).
+- **Fix:** recon now yields the processor once on every `Reject` refusal (`refused()` in `recon/errors.go`; CONTRACT §4.1). Results, outcomes and counts are unchanged.
+- **Measured** (spin shape is now judged by `TestRejectUnderLoad`, 3 of 3 runs passing):
+
+| Spinning callers | v0.2 | recon |
+|---:|---:|---:|
+| 64 | 285k/s | 1.60M/s (5.6×) |
+| 256 | 57–112k/s | **0.997–1.13M/s** (up to 17×) |
+
+At 256 callers, fairness goes from 0.33 to 1.00, and scheduler p99 from 134 to 1.3 ms.
+- **Cost:** a refusal takes about 157 ns (v0.2: 1,870 ns). Server-shape refusal latency is p50 about 5 µs and p99 up to 0.6 ms at 1,024 in flight. Successful and uncontended calls are unchanged (59 ns).
+
+Callers should still back off after a refusal; yielding is a mitigation, not backpressure. v1.0's `Backoff` gives callers the tool.
 
 Related: `err_rate` reads "worse" in the DoE tables, because recon refuses correctly where v0.2 blocked (Δ1). Use goodput to judge `Reject` workloads.
 

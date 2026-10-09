@@ -45,11 +45,10 @@ var rejectShapes = []rejectShape{
 	{"yield", true, func(op impl.Op, callers int, window time.Duration) uint64 {
 		return closedLoop(op, callers, window, runtime.Gosched)
 	}},
-	// In-process callers that retry at once. They never block, so once they
-	// outnumber GOMAXPROCS they starve the calls holding capacity; cheaper
-	// refusals starve harder. Measured to document the hazard, not judged:
-	// no admission policy can protect a non-blocking spin loop.
-	{"spin", false, func(op impl.Op, callers int, window time.Duration) uint64 {
+	// In-process callers that retry at once. Without the refusal yield
+	// (CONTRACT §4.1) they starve preempted holders once they outnumber
+	// GOMAXPROCS (lab/results/r1/reject-probe/ROOT-CAUSE.md).
+	{"spin", true, func(op impl.Op, callers int, window time.Duration) uint64 {
 		return closedLoop(op, callers, window, func() {})
 	}},
 }
@@ -77,8 +76,8 @@ func closedLoop(op impl.Op, callers int, window time.Duration, onRefused func())
 
 // TestRejectUnderLoad drives a Reject budget of 4 far past capacity and
 // measures the calls that get through. Implementations alternate within
-// each replicate, so machine drift lands on both equally. Under realistic
-// callers (server, yield) recon must deliver at least 0.9× v0.2.
+// each replicate, so machine drift lands on both equally. Under every
+// caller shape recon must deliver at least 0.9× v0.2.
 func TestRejectUnderLoad(t *testing.T) {
 	callers := workload.Scale([]int{64, 256}, []int{16, 64, 256, 1024})
 	window := workload.Scale(300*time.Millisecond, time.Second)

@@ -1,0 +1,57 @@
+package probe
+
+import (
+	"context"
+	"fmt"
+	"slices"
+	"sync"
+	"testing"
+	"time"
+
+	"probe/tsc"
+)
+
+// TestRefusalLatency: server shape; how long does a refused request take to
+// learn it was refused (Do start -> Do return), recon vs yield-on-full?
+func TestRefusalLatency(t *testing.T) {
+	h := func(_ context.Context, i int) (int, error) { return i, nil }
+	for _, n := range []int{64, 256, 1024} {
+		for _, im := range []struct {
+			name string
+			mk   mkOp
+		}{{"recon", reconOp}, {"vg", vgOp}} {
+			do, over := im.mk(h)
+			var mu sync.Mutex
+			var rej, ok []uint64
+			inflight := make(chan struct{}, n)
+			for end := time.Now().Add(600 * time.Millisecond); time.Now().Before(end); {
+				inflight <- struct{}{}
+				go func() {
+					t0 := tsc.Ticks()
+					_, err := do(context.Background(), 0)
+					d := tsc.Ticks() - t0
+					mu.Lock()
+					if err == nil {
+						ok = append(ok, d)
+					} else if over(err) {
+						rej = append(rej, d)
+					}
+					mu.Unlock()
+					<-inflight
+				}()
+			}
+			for range n {
+				inflight <- struct{}{}
+			}
+			q := func(xs []uint64, f float64) string {
+				if len(xs) == 0 {
+					return "-"
+				}
+				slices.Sort(xs)
+				return time.Duration(tsc.NS(xs[int(f*float64(len(xs)-1))])).Round(100 * time.Nanosecond).String()
+			}
+			fmt.Printf("inflight=%-5d %-5s refused/s=%8.0f refusal p50=%-7s p99=%-8s p99.9=%-8s | ok/s=%8.0f ok p99=%-8s\n",
+				n, im.name, float64(len(rej))/0.6, q(rej, .5), q(rej, .99), q(rej, .999), float64(len(ok))/0.6, q(ok, .99))
+		}
+	}
+}

@@ -1,0 +1,169 @@
+package probe
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"os"
+	"runtime"
+	rtm "runtime/metrics"
+	"slices"
+	"sync"
+	"sync/atomic"
+	"testing"
+	"time"
+
+	orig "github.com/arahe-dev/hertasdk"
+	recon "github.com/arahe-dev/hertasdk/recon"
+	"probe/tsc"
+)
+
+// one client's private record, padded so clients never share a line.
+type rec struct {
+	start uint64   // TSC at handler entry of the current call
+	holds []uint64 // hold durations in ticks (handler entry -> Do return)
+	ok    uint64
+	_     [64]byte
+}
+
+type mkOp func(h func(context.Context, int) (int, error)) (func(context.Context, int) (int, error), func(error) bool)
+
+func origOp(h func(context.Context, int) (int, error)) (func(context.Context, int) (int, error), func(error) bool) {
+	rt, _ := orig.NewRuntime(orig.ResourceSpec{Name: "r", Capacity: 4})
+	op, err := orig.NewOperation(rt, "op", h, orig.Policy[int]{Effect: orig.Idempotent, Admission: orig.Reject, Resources: []orig.Requirement{{Name: "r", Units: 1}}})
+	must(err)
+	return op.Do, func(e error) bool { return errors.Is(e, orig.ErrOverloaded) }
+}
+
+func reconOp(h func(context.Context, int) (int, error)) (func(context.Context, int) (int, error), func(error) bool) {
+	rt, _ := recon.NewRuntime(recon.ResourceSpec{Name: "r", Capacity: 4})
+	op, err := recon.NewOperation(rt, "op", h, recon.Policy[int]{Effect: recon.Idempotent, Admission: recon.Reject, Resources: []recon.Requirement{{Name: "r", Units: 1}}})
+	must(err)
+	return op.Do, func(e error) bool { return errors.Is(e, recon.ErrOverloaded) }
+}
+
+func schedLat() *rtm.Float64Histogram {
+	s := []rtm.Sample{{Name: "/sched/latencies:seconds"}}
+	rtm.Read(s)
+	return s[0].Value.Float64Histogram()
+}
+
+func gcCycles() uint64 {
+	s := []rtm.Sample{{Name: "/gc/cycles/total:gc-cycles"}}
+	rtm.Read(s)
+	return s[0].Value.Uint64()
+}
+
+// histDelta returns quantiles of (b - a) for the runtime histograms.
+func histDelta(a, b *rtm.Float64Histogram, qs ...float64) []float64 {
+	var total uint64
+	d := make([]uint64, len(b.Counts))
+	for i := range b.Counts {
+		d[i] = b.Counts[i] - a.Counts[i]
+		total += d[i]
+	}
+	out := make([]float64, len(qs))
+	for j, q := range qs {
+		target, cum := uint64(q*float64(total)), uint64(0)
+		for i, c := range d {
+			cum += c
+			if cum >= target && c > 0 {
+				out[j] = b.Buckets[i+1]
+				break
+			}
+		}
+	}
+	return out
+}
+
+func runRoot(name string, mk mkOp, clients int, spin bool, window time.Duration) {
+	recs := make([]rec, clients)
+	for i := range recs {
+		recs[i].holds = make([]uint64, 0, 1<<16)
+	}
+	var cur atomic.Pointer[rec]
+	_ = cur
+	do, over := mk(func(ctx context.Context, i int) (int, error) {
+		recs[i].start = tsc.Ticks()
+		return i, nil
+	})
+	var stop atomic.Bool
+	var wg sync.WaitGroup
+	gc0, lat0 := gcCycles(), schedLat()
+	for c := range clients {
+		wg.Go(func() {
+			r := &recs[c]
+			for !stop.Load() {
+				_, err := do(context.Background(), c)
+				if err == nil {
+					d := tsc.Ticks() - r.start
+					r.ok++
+					if len(r.holds) < cap(r.holds) {
+						r.holds = append(r.holds, d)
+					}
+				} else if over(err) && !spin {
+					runtime.Gosched()
+				}
+			}
+		})
+	}
+	time.Sleep(window)
+	stop.Store(true)
+	wg.Wait()
+	gc1, lat1 := gcCycles(), schedLat()
+
+	var all []uint64
+	var ok uint64
+	var counts []float64
+	for i := range recs {
+		all = append(all, recs[i].holds...)
+		ok += recs[i].ok
+		counts = append(counts, float64(recs[i].ok))
+	}
+	slices.Sort(all)
+	q := func(f float64) string {
+		if len(all) == 0 {
+			return "-"
+		}
+		return time.Duration(tsc.NS(all[int(f*float64(len(all)-1))])).Round(100 * time.Nanosecond).String()
+	}
+	// share of total hold time spent in holds > 1ms
+	var tot, long float64
+	for _, h := range all {
+		ns := tsc.NS(h)
+		tot += ns
+		if ns > 1e6 {
+			long += ns
+		}
+	}
+	// Jain fairness across clients
+	var s, s2 float64
+	for _, x := range counts {
+		s += x
+		s2 += x * x
+	}
+	jain := s * s / (float64(len(counts)) * s2)
+	sl := histDelta(lat0, lat1, 0.5, 0.99, 0.999)
+	mode := "yield"
+	if spin {
+		mode = "spin"
+	}
+	fmt.Printf("%-5s %-5s c=%-4d ok/s=%8.0f  hold p50=%-7s p99=%-8s p99.9=%-8s max=%-8s  holds>1ms=%5.1f%% of hold-time  sched-lat p50=%-6s p99=%-7s p99.9=%-7s  gc/s=%5.0f  jain=%.2f\n",
+		name, mode, clients, float64(ok)/window.Seconds(), q(0.5), q(0.99), q(0.999), q(1),
+		100*long/max(tot, 1), dur(sl[0]), dur(sl[1]), dur(sl[2]), float64(gc1-gc0)/window.Seconds(), jain)
+}
+
+func dur(s float64) string { return time.Duration(s * 1e9).Round(time.Microsecond).String() }
+
+func TestRoot(t *testing.T) {
+	window := 800 * time.Millisecond
+	for _, c := range []int{16, 256} {
+		for _, spin := range []bool{true, false} {
+			runRoot("orig", origOp, c, spin, window)
+			runtime.GC()
+			runRoot("recon", reconOp, c, spin, window)
+			runtime.GC()
+		}
+	}
+	_ = os.Getenv
+}

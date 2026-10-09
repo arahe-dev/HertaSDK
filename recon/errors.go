@@ -3,6 +3,7 @@ package execution
 import (
 	"context"
 	"errors"
+	"runtime"
 )
 
 // Construction errors: an unsafe contract fails in NewOperation, never
@@ -38,6 +39,10 @@ var (
 func (rt *Runtime) refused(ctx context.Context, mode AdmissionMode) error {
 	if mode == Reject {
 		rt.stats.rejected.Add(1)
+		// Yield once: a caller that retries a refusal at once is waiting,
+		// and must not hoard the CPU the holders need to finish
+		// (CONTRACT §4.1; lab/results/r1/reject-probe/ROOT-CAUSE.md).
+		runtime.Gosched()
 		return &Failure{Outcome: Throttled, Err: ErrOverloaded}
 	}
 	if err := ctx.Err(); err != nil {

@@ -1,0 +1,36 @@
+// Package tsc is the lab's TSC clock, exported for probes.
+package tsc
+
+import (
+	"sync"
+	"time"
+)
+
+// Ticks reads the time-stamp counter.
+func Ticks() uint64
+
+var (
+	once      sync.Once
+	nsPerTick float64
+)
+
+// NS converts a tick delta to nanoseconds.
+func NS(d uint64) float64 {
+	once.Do(func() {
+		edge := func() (time.Time, uint64) {
+			last := time.Now()
+			for {
+				now, k := time.Now(), Ticks()
+				if now != last {
+					return now, k
+				}
+			}
+		}
+		t0, k0 := edge()
+		for time.Since(t0) < 50*time.Millisecond {
+		}
+		t1, k1 := edge()
+		nsPerTick = float64(t1.Sub(t0)) / float64(k1-k0)
+	})
+	return float64(d) * nsPerTick
+}

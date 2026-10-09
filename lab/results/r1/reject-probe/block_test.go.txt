@@ -1,0 +1,22 @@
+package probe
+
+import (
+	"os"
+	"runtime"
+	"runtime/pprof"
+	"testing"
+	"time"
+)
+
+// TestBlockProfile: where do goroutines block during a recon spin storm?
+func TestBlockProfile(t *testing.T) {
+	runtime.SetBlockProfileRate(1)
+	runtime.SetMutexProfileFraction(1)
+	runRoot("recon", reconOp, 256, true, 800*time.Millisecond)
+	f, _ := os.Create("block.out")
+	pprof.Lookup("block").WriteTo(f, 0)
+	f.Close()
+	g, _ := os.Create("mutex.out")
+	pprof.Lookup("mutex").WriteTo(g, 0)
+	g.Close()
+}
