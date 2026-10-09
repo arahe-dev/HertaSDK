@@ -45,6 +45,13 @@ type Workload struct {
 	// uniform random time in [0, 2·Service + 50µs).
 	CancelRate float64
 
+	// SpinOnRefusal makes closed-loop callers retry at once after a
+	// Throttled refusal. By default they yield the processor first, as a
+	// real client backs off: a pure spin loop starves the calls holding
+	// capacity once callers outnumber GOMAXPROCS, which measures the Go
+	// scheduler rather than the runtime (lab/results/r1/reject-probe).
+	SpinOnRefusal bool
+
 	Seed uint64
 }
 

@@ -1,0 +1,78 @@
+package probe
+
+import (
+	"context"
+	"fmt"
+	"runtime"
+	"sort"
+	"sync"
+	"sync/atomic"
+	"testing"
+	"time"
+)
+
+// stormLat is storm with an optional yield after each rejection, and records
+// the latency of successful calls (a proxy for how long holders wait to run).
+func stormLat(do doer, isOverload func(error) bool, clients int, yield bool, window time.Duration) (okPerS float64, p50, p99 time.Duration) {
+	var stop atomic.Bool
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+	var lats []time.Duration
+	var nOK atomic.Uint64
+	for i := 0; i < clients; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			local := make([]time.Duration, 0, 1024)
+			for !stop.Load() {
+				t := time.Now()
+				_, err := do(context.Background(), 0)
+				if err == nil {
+					nOK.Add(1)
+					if len(local) < cap(local) {
+						local = append(local, time.Since(t))
+					}
+				} else if isOverload(err) && yield {
+					runtime.Gosched()
+				}
+			}
+			mu.Lock()
+			lats = append(lats, local...)
+			mu.Unlock()
+		}()
+	}
+	time.Sleep(window)
+	stop.Store(true)
+	wg.Wait()
+	sort.Slice(lats, func(i, j int) bool { return lats[i] < lats[j] })
+	q := func(f float64) time.Duration {
+		if len(lats) == 0 {
+			return 0
+		}
+		return lats[int(f*float64(len(lats)-1))]
+	}
+	return float64(nOK.Load()) / window.Seconds(), q(0.5), q(0.99)
+}
+
+func TestStarvation(t *testing.T) {
+	fmt.Printf("GOMAXPROCS=%d\n", runtime.GOMAXPROCS(0))
+	for _, yield := range []bool{false, true} {
+		for _, c := range []int{20, 64, 256} {
+			line := fmt.Sprintf("yield=%-5v clients=%-4d |", yield, c)
+			for _, im := range pick() {
+				var oks []float64
+				var p99s []time.Duration
+				for r := 0; r < 3; r++ {
+					do, ov, _ := im.mk(4, nil)
+					ok, _, p99 := stormLat(do, ov, c, yield, 500*time.Millisecond)
+					oks = append(oks, ok)
+					p99s = append(p99s, p99)
+					runtime.GC()
+				}
+				sort.Slice(p99s, func(i, j int) bool { return p99s[i] < p99s[j] })
+				line += fmt.Sprintf(" %s=%6.0fk p99=%-7v", im.name, median(oks)/1e3, p99s[1].Round(time.Microsecond))
+			}
+			fmt.Println(line)
+		}
+	}
+}

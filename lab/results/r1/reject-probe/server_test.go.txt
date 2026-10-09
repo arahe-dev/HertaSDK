@@ -1,0 +1,51 @@
+package probe
+
+import (
+	"context"
+	"fmt"
+	"runtime"
+	"sync/atomic"
+	"testing"
+	"time"
+)
+
+// serverLoad models a server: every request is its own goroutine that makes
+// one Do call and exits (a rejection becomes a 429 to a remote client). A
+// dispatcher keeps `inflight` requests outstanding.
+func serverLoad(do doer, inflight int, window time.Duration) (okPerS, rejPerS float64) {
+	var nOK, nRej atomic.Uint64
+	sem := make(chan struct{}, inflight)
+	stop := time.Now().Add(window)
+	for time.Now().Before(stop) {
+		sem <- struct{}{}
+		go func() {
+			if _, err := do(context.Background(), 0); err == nil {
+				nOK.Add(1)
+			} else {
+				nRej.Add(1)
+			}
+			<-sem
+		}()
+	}
+	for i := 0; i < inflight; i++ {
+		sem <- struct{}{}
+	}
+	return float64(nOK.Load()) / window.Seconds(), float64(nRej.Load()) / window.Seconds()
+}
+
+func TestServerShape(t *testing.T) {
+	for _, n := range []int{16, 64, 256, 1024} {
+		line := fmt.Sprintf("inflight=%-5d |", n)
+		for _, im := range pick() {
+			var oks []float64
+			for r := 0; r < 3; r++ {
+				do, _, _ := im.mk(4, nil)
+				ok, _ := serverLoad(do, n, 500*time.Millisecond)
+				oks = append(oks, ok)
+				runtime.GC()
+			}
+			line += fmt.Sprintf(" %s=%6.0fk", im.name, median(oks)/1e3)
+		}
+		fmt.Println(line)
+	}
+}

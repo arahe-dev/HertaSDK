@@ -27,6 +27,18 @@ func assertAccount(t *testing.T, r *Resource, cur int64, waiting int) {
 	if r.cur != cur || r.q.len != waiting {
 		t.Fatalf("%v: in use %d, waiting %d; want %d, %d", r, r.cur, r.q.len, cur, waiting)
 	}
+	assertFull(t, r)
+}
+
+// assertFull checks the fast-reject flag against the state it mirrors.
+// Caller holds r.mu.
+func assertFull(t *testing.T, r *Resource) {
+	t.Helper()
+	want := r.q.len > 0 || r.closed || r.cur >= r.size
+	if r.full.Load() != want || r.isFull != want {
+		t.Fatalf("%v: full=%v (copy %v), want %v (in use %d, waiting %d, closed %v)",
+			r, r.full.Load(), r.isFull, want, r.cur, r.q.len, r.closed)
+	}
 }
 
 func TestResourceGrantsInArrivalOrder(t *testing.T) {
@@ -192,19 +204,78 @@ func TestResourceAccountingUnderChurn(t *testing.T) {
 				if g == 0 && i == 1000 {
 					r.close() // withdraw whoever is queued mid-churn
 				}
-				if r.acquire(ctx, n) {
+				got := false
+				if rng.IntN(2) == 0 {
+					got = r.tryAcquire(n)
+				} else {
+					got = r.acquire(ctx, n)
+				}
+				if got {
 					r.mu.Lock()
 					bad := r.cur < n || r.cur > size
+					assertFull(t, r)
 					r.mu.Unlock()
 					if bad {
 						t.Error("accounting out of range while holding")
 					}
 					r.release(n)
 				}
+				r.mu.Lock()
+				assertFull(t, r)
+				r.mu.Unlock()
 				cancel()
 			}
 		}()
 	}
 	wg.Wait()
 	assertAccount(t, r, 0, 0)
+}
+
+// TestResourceFastReject pins down when tryAcquire answers from the full
+// flag without the lock: only when nothing at all can be granted. A request
+// that merely does not fit still takes the locked path and still fails.
+func TestResourceFastReject(t *testing.T) {
+	r := newResource("r", 4)
+	if !r.tryAcquire(3) {
+		t.Fatal("3 of 4 free units refused")
+	}
+	assertAccount(t, r, 3, 0) // not full: one unit left
+	if r.tryAcquire(2) {
+		t.Fatal("granted 2 units with 1 free")
+	}
+	if !r.tryAcquire(1) {
+		t.Fatal("refused the last free unit")
+	}
+	assertAccount(t, r, 4, 0) // full
+	if r.tryAcquire(1) {
+		t.Fatal("granted a unit while full")
+	}
+	r.release(2)
+	assertAccount(t, r, 2, 0) // no longer full
+	if !r.tryAcquire(1) {
+		t.Fatal("refused a unit after release")
+	}
+
+	// A queued waiter makes the resource full even with units free:
+	// Reject must not overtake it (CONTRACT §4.1).
+	got := acquireAsync(t, r, context.Background(), 2)
+	assertAccount(t, r, 3, 1)
+	if r.tryAcquire(1) {
+		t.Fatal("Reject overtook a queued waiter")
+	}
+	r.release(1)
+	if !<-got {
+		t.Fatal("waiter not granted")
+	}
+	assertAccount(t, r, 4, 0)
+	r.release(4)
+	assertAccount(t, r, 0, 0)
+
+	r.close()
+	r.mu.Lock()
+	assertFull(t, r)
+	r.mu.Unlock()
+	if r.tryAcquire(1) {
+		t.Fatal("granted a unit after close")
+	}
 }

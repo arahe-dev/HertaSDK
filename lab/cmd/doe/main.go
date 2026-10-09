@@ -30,7 +30,7 @@ type config struct {
 	reps                                     int
 	dur, warmup                              time.Duration
 	seed                                     uint64
-	quick, full, wide, quiet                 bool
+	quick, full, wide, quiet, spin           bool
 }
 
 func main() {
@@ -49,6 +49,7 @@ func main() {
 	flag.BoolVar(&c.quick, "quick", false, "preset: 300ms windows, 100ms warm-up (screen < 3 min)")
 	flag.BoolVar(&c.full, "full", false, "preset: 3s windows, 1s warm-up, 5 reps, 64-run screen")
 	flag.BoolVar(&c.quiet, "q", false, "no per-trial progress")
+	flag.BoolVar(&c.spin, "spin", false, "closed-loop callers retry at once after a refusal (default: yield first)")
 	flag.Parse()
 	if err := run(c); err != nil {
 		fmt.Fprintln(os.Stderr, "doe:", err)
@@ -132,6 +133,7 @@ func run(c config) error {
 func experiment(c config, arms []doe.Arm) (*doe.Experiment, error) {
 	window := func(w doe.Workload) doe.Workload {
 		w.Warmup, w.Duration = c.warmup, c.dur
+		w.SpinOnRefusal = c.spin
 		return w
 	}
 	switch c.design {

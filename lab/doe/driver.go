@@ -45,12 +45,19 @@ func (e *engine) caller(id int, arrivals <-chan int64) {
 		pick = func() int32 { return int32(rng.IntN(e.w.Keys)) }
 	}
 	if arrivals == nil {
-		for !e.stop.Load() && !e.call(id, rng, pick, 0) {
+		for !e.stop.Load() {
+			stopping, refused := e.call(id, rng, pick, 0)
+			if stopping {
+				return
+			}
+			if refused && !e.w.SpinOnRefusal {
+				runtime.Gosched()
+			}
 		}
 		return
 	}
 	for t0 := range arrivals {
-		if e.call(id, rng, pick, t0) {
+		if stopping, _ := e.call(id, rng, pick, t0); stopping {
 			return
 		}
 	}
@@ -59,8 +66,9 @@ func (e *engine) caller(id int, arrivals <-chan int64) {
 // call issues one Do on behalf of caller id. t0 is the scheduled arrival in
 // open-loop mode, 0 in closed-loop mode (arrival = Do start). It reports
 // whether the runtime is stopping: a caller then stops, as a real client
-// would, instead of spinning on refusals and starving the drain of CPU.
-func (e *engine) call(id int, rng *rand.Rand, pick func() int32, t0 int64) (stopping bool) {
+// would, instead of spinning on refusals and starving the drain of CPU. It
+// also reports whether the call was refused for overload.
+func (e *engine) call(id int, rng *rand.Rand, pick func() int32, t0 int64) (stopping, refused bool) {
 	s := &e.slots[id]
 	s.key, s.units, s.entered = pick(), 1, 0
 	op := e.ops[0]
@@ -84,7 +92,8 @@ func (e *engine) call(id int, rng *rand.Rand, pick func() int32, t0 int64) (stop
 		s.done++
 		e.rec.call(id, e.im, t0, tDo, s.entered, t1, err)
 	}
-	return err != nil && e.im.Classify(err) == impl.ClassStopping
+	c := e.im.Classify(err)
+	return c == impl.ClassStopping, c == impl.ClassOverloaded
 }
 
 // dispatch emits Poisson arrivals at Rate until stop, never blocking: a full

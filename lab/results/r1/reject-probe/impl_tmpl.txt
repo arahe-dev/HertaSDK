@@ -1,0 +1,10 @@
+func mkPKG(c int64, hold <-chan struct{}) (doer, func(error) bool, func()) {
+	rt, _ := PKG.NewRuntime(PKG.ResourceSpec{Name: "r", Capacity: c})
+	pol := PKG.Policy[int]{Effect: PKG.Idempotent, Admission: PKG.Reject, Resources: []PKG.Requirement{{Name: "r", Units: 1}}}
+	op, err := PKG.NewOperation(rt, "op", func(_ context.Context, i int) (int, error) { return i, nil }, pol)
+	must(err)
+	blk, err := PKG.NewOperation(rt, "blk", func(_ context.Context, i int) (int, error) { <-hold; return i, nil }, pol)
+	must(err)
+	park := func() { go blk.Do(context.Background(), 0) }
+	return op.Do, func(e error) bool { return errors.Is(e, PKG.ErrOverloaded) }, park
+}

@@ -55,7 +55,7 @@ func runRows(x *Experiment, trials []Trial) [][]string {
 	head = append(head, Symbols(x.Factors)...)
 	head = append(head, "clients", "rate", "capacity", "resources", "heavy_frac", "service_us",
 		"admission", "keys", "zipf_s", "timeout_us", "fail_rate", "max_attempts", "cancel_rate",
-		"took_ms", "err")
+		"on_refusal", "took_ms", "err")
 	for _, rs := range Responses {
 		head = append(head, rs.Name)
 	}
@@ -71,7 +71,8 @@ func runRows(x *Experiment, trials []Trial) [][]string {
 			strconv.Itoa(w.Resources), f64(w.HeavyFrac), f64(w.Service.Seconds()*1e6),
 			[]string{"wait", "reject"}[w.Admission], strconv.Itoa(w.Keys), f64(w.ZipfS),
 			f64(w.Timeout.Seconds()*1e6), f64(w.FailRate), strconv.Itoa(w.MaxAttempts),
-			f64(w.CancelRate), f64(t.Took.Seconds()*1e3), t.Res.Err)
+			f64(w.CancelRate), []string{"yield", "spin"}[b2i(w.SpinOnRefusal)],
+			f64(t.Took.Seconds()*1e3), t.Res.Err)
 		for _, rs := range Responses {
 			row = append(row, f64(rs.Value(&t.Res)))
 		}
@@ -172,4 +173,11 @@ func summarize(x *Experiment, an Analysis, meta Meta) Summary {
 			num(c.P99), num(c.P999), num(c.Allocs), num(c.PeakGoroutines), num(c.ErrRate)})
 	}
 	return s
+}
+
+func b2i(b bool) int {
+	if b {
+		return 1
+	}
+	return 0
 }

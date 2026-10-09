@@ -4,6 +4,7 @@ import (
 	"context"
 	"strconv"
 	"sync"
+	"sync/atomic"
 )
 
 // Resource is a named finite capacity: a weighted semaphore with a strict
@@ -20,6 +21,12 @@ import (
 // Units in use (cur) and queued waiters (q.len) are exact at every unlock.
 // Once closed by Shutdown, the queue is empty and admits no new waiter.
 type Resource struct {
+	// full is set while nothing can be granted at once (all units in use,
+	// a queue, or closed). It is written under mu only when that changes,
+	// so the uncontended path never stores it, and a Reject against a full
+	// resource fails with one atomic load, without touching mu.
+	full   atomic.Bool
+	isFull bool // mu-guarded copy of full, to skip redundant stores
 	mu     sync.Mutex
 	cur    int64
 	q      waitq
@@ -32,6 +39,14 @@ func newResource(name string, capacity int64) *Resource {
 	return &Resource{name: name, size: capacity}
 }
 
+// sync publishes full when it changes. Caller holds mu.
+func (r *Resource) sync() {
+	if f := r.q.len > 0 || r.closed || r.cur >= r.size; f != r.isFull {
+		r.isFull = f
+		r.full.Store(f)
+	}
+}
+
 // String renders "name(capacity)".
 func (r *Resource) String() string {
 	return r.name + "(" + strconv.FormatInt(r.size, 10) + ")"
@@ -39,10 +54,14 @@ func (r *Resource) String() string {
 
 // tryAcquire takes n units only if they fit and nobody is queued.
 func (r *Resource) tryAcquire(n int64) bool {
+	if r.full.Load() {
+		return false
+	}
 	r.mu.Lock()
 	ok := r.q.len == 0 && r.size-r.cur >= n
 	if ok {
 		r.cur += n
+		r.sync()
 	}
 	r.mu.Unlock()
 	return ok
@@ -55,6 +74,7 @@ func (r *Resource) acquire(ctx context.Context, n int64) bool {
 	r.mu.Lock()
 	if r.q.len == 0 && r.size-r.cur >= n {
 		r.cur += n
+		r.sync()
 		r.mu.Unlock()
 		return true
 	}
@@ -65,6 +85,7 @@ func (r *Resource) acquire(ctx context.Context, n int64) bool {
 	}
 	w := newWaiter(n)
 	r.q.push(w)
+	r.sync()
 	r.mu.Unlock()
 
 	woken := w.park(done)
@@ -80,6 +101,7 @@ func (r *Resource) acquire(ctx context.Context, n int64) bool {
 func (r *Resource) leave(w *waiter, woken bool) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	defer r.sync()
 	if w.state == waiting {
 		head := r.q.head == w
 		r.q.remove(w)
@@ -101,6 +123,7 @@ func (r *Resource) release(n int64) {
 	r.mu.Lock()
 	r.cur -= n
 	r.grant()
+	r.sync()
 	r.mu.Unlock()
 }
 
@@ -118,5 +141,6 @@ func (r *Resource) close() {
 	r.mu.Lock()
 	r.closed = true
 	r.q.closeAll()
+	r.sync()
 	r.mu.Unlock()
 }
