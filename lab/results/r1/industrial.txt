@@ -1,0 +1,44 @@
+    drain_test.go:45: metrics: callers=1024 drain_max_ms=4.572 drain_p50_ms=2.574 exit_max_ms=4.586 exit_p50_ms=2.595 reps=20 service_ms=2 stats_lag_reps=0
+    drain_test.go:45: metrics: callers=1024 drain_max_ms=3.014 drain_p50_ms=2.276 exit_max_ms=3.044 exit_p50_ms=2.299 reps=20 service_ms=2 stats_lag_reps=0
+    drain_test.go:45: metrics: callers=1024 drain_max_ms=5.367 drain_p50_ms=2.532 exit_max_ms=5.396 exit_p50_ms=2.56 reps=20 service_ms=2 stats_lag_reps=0
+    drain_test.go:45: metrics: callers=1024 drain_max_ms=3.302 drain_p50_ms=2.308 exit_max_ms=3.356 exit_p50_ms=2.358 reps=20 service_ms=2 stats_lag_reps=0
+--- PASS: TestDrainUnderLoad (1.79s)
+    --- PASS: TestDrainUnderLoad/budget (0.89s)
+        --- PASS: TestDrainUnderLoad/budget/orig (0.46s)
+        --- PASS: TestDrainUnderLoad/budget/recon (0.43s)
+    --- PASS: TestDrainUnderLoad/key (0.90s)
+        --- PASS: TestDrainUnderLoad/key/orig (0.48s)
+        --- PASS: TestDrainUnderLoad/key/recon (0.43s)
+    goroutines_test.go:62: metrics: contended_cancellable_goroutines_per_do=1 contended_goroutines_per_do=1 uncontended_goroutines_per_do=1 uncontended_timeout_goroutines_per_do=1
+    goroutines_test.go:62: metrics: contended_cancellable_goroutines_per_do=0 contended_goroutines_per_do=0 uncontended_goroutines_per_do=0 uncontended_timeout_goroutines_per_do=0
+--- PASS: TestGoroutinesPerDo (2.02s)
+    --- PASS: TestGoroutinesPerDo/orig (1.41s)
+    --- PASS: TestGoroutinesPerDo/recon (0.61s)
+    keys_test.go:39: metrics: extra_allocs_per_keyed_call=3.002 heap_B_per_held_key=181 held_keys=1e+04 idle_B_per_key=1.589 keyed_calls_per_s=5.838e+05 keys=1e+06 peak_extra_heap_MB=39.94 retained_KB=1552 unkeyed_calls_per_s=1.557e+06
+    keys_test.go:39: metrics: extra_allocs_per_keyed_call=0.00014 heap_B_per_held_key=89.64 held_keys=1e+04 idle_B_per_key=-0.003624 keyed_calls_per_s=2.2e+06 keys=1e+06 peak_extra_heap_MB=5.405 retained_KB=-3.539 unkeyed_calls_per_s=3.261e+06
+--- PASS: TestManyUniqueKeys (4.15s)
+    --- PASS: TestManyUniqueKeys/orig (2.90s)
+    --- PASS: TestManyUniqueKeys/recon (1.20s)
+    soak_test.go:73: metrics: calls=1.555e+05 db_p99_drift=1.017 db_p99_early_ms=3.916 db_p99_late_ms=3.981 drain_ms=1.382 goroutines_early=17.67 goroutines_late=18 heap_early_MB=10.59 heap_late_MB=10.58 heap_peak_MB=10.61 ok_frac=0.9771 render_p99_early_ms=4.358 render_p99_late_ms=4.358 render_shed_frac=0.003568
+    soak_test.go:73: metrics: calls=1.561e+05 db_p99_drift=1.043 db_p99_early_ms=3.85 db_p99_late_ms=4.014 drain_ms=2.577 goroutines_early=12.33 goroutines_late=11.33 heap_early_MB=10.57 heap_late_MB=10.57 heap_peak_MB=10.58 ok_frac=0.9773 render_p99_early_ms=4.358 render_p99_late_ms=4.358 render_shed_frac=0.003601
+--- PASS: TestSoak (120.04s)
+    --- PASS: TestSoak/orig (60.02s)
+    --- PASS: TestSoak/recon (60.02s)
+    spike_test.go:46: metrics: arrivals=8.404e+04 backlog_cleared_ms=101.4 burst_goodput_per_s=6578 burst_p50_ms=101.3 burst_p99_ms=102.8 burst_shed_frac=0.671 goroutines_per_call=1.003 launch_lag_p99_ms=1.148 peak_extra_goroutines=4157 peak_heap_MB=37.7 post_p99_ms=2.741 pre_in_do_p99_ms=1.895 pre_p50_ms=1.468 pre_p99_ms=2.456 recovery_limit_ms=3.895 recovery_ms=150
+    spike_test.go:46: metrics: arrivals=8.394e+04 backlog_cleared_ms=101.2 burst_goodput_per_s=6632 burst_p50_ms=101.4 burst_p99_ms=102.7 burst_shed_frac=0.668 goroutines_per_call=0.001966 launch_lag_p99_ms=1.036 peak_extra_goroutines=2083 peak_heap_MB=29.01 post_p99_ms=2.482 pre_in_do_p99_ms=1.882 pre_p50_ms=1.487 pre_p99_ms=2.42 recovery_limit_ms=3.882 recovery_ms=150
+--- PASS: TestSpike (30.06s)
+    --- PASS: TestSpike/orig (15.03s)
+    --- PASS: TestSpike/recon (15.03s)
+    waiters_test.go:66: metrics: allocs_per_waiter=14.99 canceled_frac=1 goroutines_per_waiter=1 heap_B_per_waiter=859.7 process_allocs_per_waiter=15.96 process_heap_B_per_waiter=967.6 stack_B_per_waiter=7327 waiters=1e+04 withdraw_ms=10.04
+    waiters_test.go:66: metrics: allocs_per_waiter=1.989 canceled_frac=1 goroutines_per_waiter=0 heap_B_per_waiter=158.7 process_allocs_per_waiter=2.991 process_heap_B_per_waiter=271 stack_B_per_waiter=26.21 waiters=1e+04 withdraw_ms=12.02
+    waiters_test.go:66: metrics: allocs_per_waiter=10 canceled_frac=1 goroutines_per_waiter=1 heap_B_per_waiter=763.6 process_allocs_per_waiter=10.99 process_heap_B_per_waiter=873.8 stack_B_per_waiter=7927 waiters=1e+04 withdraw_ms=11.62
+    waiters_test.go:66: metrics: allocs_per_waiter=1.943 canceled_frac=1 goroutines_per_waiter=0 heap_B_per_waiter=153.6 process_allocs_per_waiter=2.972 process_heap_B_per_waiter=268.8 stack_B_per_waiter=170.4 waiters=1e+04 withdraw_ms=11.54
+--- PASS: TestMemoryPerWaiter (1.68s)
+    --- PASS: TestMemoryPerWaiter/budget (0.84s)
+        --- PASS: TestMemoryPerWaiter/budget/orig (0.47s)
+        --- PASS: TestMemoryPerWaiter/budget/recon (0.37s)
+    --- PASS: TestMemoryPerWaiter/key (0.84s)
+        --- PASS: TestMemoryPerWaiter/key/orig (0.41s)
+        --- PASS: TestMemoryPerWaiter/key/recon (0.43s)
+PASS
+ok  	github.com/arahe-dev/hertasdk/lab/industrial	161.336s
