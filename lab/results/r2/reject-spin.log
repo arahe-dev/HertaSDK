@@ -1,0 +1,18 @@
+doe full: 8 points × 2 arms × 5 reps = 80 trials of 300ms+1s → lab/results/r2/reject-spin
+
+response         arms               baseline    candidate  verdict  p
+throughput       orig→recon        8.329e+05    1.555e+06  better   6.06e-66
+goodput          orig→recon        6.077e+05    1.051e+06  better   8.41e-44
+lat_p50          orig→recon             9230         2946  better   1.28e-59
+lat_p99          orig→recon        2.761e+05    1.423e+05  better   1.86e-12
+lat_p999         orig→recon        1.178e+06    3.278e+05  better   1.17e-26
+wait_p99         orig→recon        1.949e+05    1.176e+05  better   1.33e-08
+allocs_op        orig→recon             11.9       0.7454  better   2.27e-154
+bytes_op         orig→recon            527.2        46.88  better   1.42e-148
+peak_goroutines  orig→recon             5625            0  better   3.62e-17
+err_rate         orig→recon           0.1207       0.2278  worse    6.3e-52
+cap_violations   orig→recon                0            0  same     NaN
+key_violations   orig→recon                0            0  same     NaN
+drain            orig→recon           0.1589      0.04266  better   1.33e-19
+
+80 trials (0 failed) in 110s → lab\results\r2\reject-spin\REPORT.md

@@ -1,5 +1,7 @@
 # v0.2-recon vs v0.2.0: results
 
+> **Latest:** the release-candidate verification ([`r2/REPORT.md`](r2/REPORT.md), 2026-10-10) supersedes the numbers below. Correctness: all gates pass, mutation score 100%. Performance: better than v0.2.0 on every like-for-like measure. This document keeps the r1 study and the `Reject` investigation.
+
 Run `r1`, 2026-10-09, go1.27.1 windows/amd64, i7-13650HX (20 threads), on an otherwise idle machine. Raw data is in [`r1/`](r1/).
 
 ## Conclusion

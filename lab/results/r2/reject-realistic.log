@@ -1,0 +1,18 @@
+doe full: 8 points × 2 arms × 5 reps = 80 trials of 300ms+1s → lab/results/r2/reject-realistic
+
+response         arms               baseline    candidate  verdict  p
+throughput       orig→recon        8.041e+05    1.455e+06  better   2.43e-74
+goodput          orig→recon        7.502e+05    1.081e+06  better   8.55e-56
+lat_p50          orig→recon             9304         2814  better   8.65e-76
+lat_p99          orig→recon        3.297e+05    1.243e+05  better   6.25e-49
+lat_p999         orig→recon         1.15e+06    2.534e+05  better   1.14e-81
+wait_p99         orig→recon        2.608e+05    1.014e+05  better   4.87e-55
+allocs_op        orig→recon            11.69       0.7044  better   2.24e-156
+bytes_op         orig→recon              524        45.74  better   4.17e-160
+peak_goroutines  orig→recon             1091            0  better   9.02e-14
+err_rate         orig→recon          0.05529       0.1898  worse    7.11e-70
+cap_violations   orig→recon                0            0  same     NaN
+key_violations   orig→recon                0            0  same     NaN
+drain            orig→recon           0.0944      0.04275  better   2.63e-08
+
+80 trials (0 failed) in 109s → lab\results\r2\reject-realistic\REPORT.md
