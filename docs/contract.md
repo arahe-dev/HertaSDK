@@ -174,7 +174,7 @@ Further rules:
 
 ## 8. Intentional deltas from v0.2.0 (the only allowed behavior differences)
 
-| Δ | v0.2.0 | recon |
+| Δ | v0.2.0 | hertasdk |
 |---|---|---|
 | 1 | `Reject` with a held key blocks | fails fast with `Fail(Throttled, ErrOverloaded)` |
 | 2 | `wg.Done()` runs before `finished++`, so `Finished` can lag after `Shutdown()==nil` | `Finished` is counted before the drain signal |
@@ -186,15 +186,14 @@ Further rules:
 | 8 | each timed-out `Shutdown` parks a goroutine until drain | no per-call goroutines |
 | 9 | `Started` counts calls whose handler never ran (pre-cancelled, no resources) | counted only when the handler runs |
 | 10 | one goroutine plus about 10 allocations per `Do` | 0 goroutines; allocations per §10 |
-
 | 11 | a `Reject` overload is reported as `ErrRuntimeStopping` (still counted in `Rejected`) when `Shutdown` began after the call passed the gate | reported as `Fail(Throttled, ErrOverloaded)`, per §4 step 3 (Amendment 6) |
 | 12 | a nil `*Failure` returned as an error (`var f *Failure; return v, f`) panics in `OutcomeOf`, `Do`, `Error` and `Unwrap` | read as untagged: `Permanent`, never retried; `Error` and `Unwrap` are nil-safe |
 
-Any other observed difference is a **bug in recon**, unless it is nondeterministic in v0.2 (for example, which waiter wins a tie under `Shutdown`).
+Any other observed difference is a **bug in hertasdk**, unless it is nondeterministic in v0.2 (for example, which waiter wins a tie under `Shutdown`).
 
 ## 9. Designed for v1.0 (internal architecture requirements)
 
-recon must make these v1.0 features additive, not a rewrite:
+hertasdk must make these v1.0 features additive, not a rewrite:
 
 - **Own budget semaphore**, with no `golang.org/x/sync` dependency. It exposes exact counts of waiters and units in use, which v1.0 needs for `Snapshot()`, `MaxWaiting` and `MaxWait`, and keeps room for all-or-nothing multi-resource acquisition.
 - **One admission path** (key, then resources), parameterized by mode, so that a bounded `Wait` (with `MaxWait` and `MaxWaiting`) slots in.
@@ -204,7 +203,7 @@ recon must make these v1.0 features additive, not a rewrite:
 - **No per-call goroutines**; context propagation via `context.AfterFunc` only where a waiter actually blocks.
 - **Package layout:** a handful of files, each owning one concern; no file over about 250 lines.
 
-## 10. Performance budgets (recon, measured on the reference machine)
+## 10. Performance budgets (hertasdk, measured on the reference machine)
 
 | Path | Budget |
 |---|---|
@@ -217,6 +216,8 @@ recon must make these v1.0 features additive, not a rewrite:
 | Retry attempt overhead | 0 allocs beyond the attempt context |
 
 ## 11. Amendments
+
+In this section, *orig* is v0.2.0 and *recon* is the name this package had while it was being reconstructed.
 
 Each amendment resolves a point where this document was silent, ambiguous or wrong about v0.2. Each one follows v0.2, except Amendment 6, which only names a v0.2 race. Each cites the evidence and the test that pins it.
 

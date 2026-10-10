@@ -16,23 +16,30 @@ ordinary Go functions and declare what they consume, what side effects they
 produce, and what failure means — the runtime validates those contracts and
 arbitrates shared local capacity across otherwise-independent subsystems.
 
-![Go](https://img.shields.io/badge/Go-%3E%3D1.27.1-00ADD8?logo=go&logoColor=white)
-![Status: v0.2.0](https://img.shields.io/badge/status-v0.2.0-brightgreen)
+![Go](https://img.shields.io/badge/Go-%3E%3D1.26-00ADD8?logo=go&logoColor=white)
+![Status: 1.0-next](https://img.shields.io/badge/status-1.0--next%20%C2%B7%20v1.0%20candidate-orange)
+![Dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)
 
 </div>
 
-> **Status.** HertaSDK **v0.2.0** is an installable Go module:
+> **Status.** HertaSDK **1.0-next** is the v1.0 candidate: the execution
+> contract rebuilt from first principles, with zero dependencies, the
+> package renamed to `hertasdk`, and twelve v0.2 defects fixed. It is
+> being hardened before it is locked as v1.0. The latest tagged release is
+> v0.2.0.
 >
 > ```sh
-> go get github.com/arahe-dev/hertasdk@v0.2.0
+> go get github.com/arahe-dev/hertasdk@main      # 1.0-next
+> go get github.com/arahe-dev/hertasdk@v0.2.0    # last tagged release
 > ```
 >
-> The V0 execution contract is frozen: `Wait` / `Reject` admission, shared
-> weighted resources, keyed serialization, `Effect` / `Outcome` failure
-> semantics, bounded safe retries, cooperative timeouts, shutdown/drain, and
-> atomic stats. **Queue is explicitly NOT part of V0.** See
-> [ROADMAP.md](ROADMAP.md) and [CHANGELOG.md](CHANGELOG.md).
+> The execution contract is defined in [docs/contract.md](docs/contract.md):
+> `Wait` / `Reject` admission, shared weighted resources, keyed
+> serialization, `Effect` / `Outcome` failure semantics, bounded safe
+> retries, cooperative timeouts, shutdown/drain, and atomic stats. **Queue
+> is explicitly not part of the contract.** See [ROADMAP.md](ROADMAP.md) and
+> [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -130,8 +137,8 @@ error semantics:
 |---|---|
 | `Runtime` | Execution authority and lifecycle owner. Owns budgets, admission, shutdown. |
 | `Operation[I, O]` | Typed wrapper around a normal handler. Carries a `Policy`. |
-| `Resource` | A named finite local capacity (e.g. `renderer`, `db-write`). Weighted. |
-| `Policy` | Resources, admission (`Wait`/`Reject`), timeout, retry, optional `SerializeBy(key)`. |
+| `Resource` | A named finite local capacity (e.g. `renderer`, `db-write`), declared as a `ResourceSpec`. Weighted. |
+| `Policy` | Resources, admission (`Wait`/`Reject`), timeout, retry, optional `SerializeKey func(I) string`. |
 | `Effect` | Side-effect class: `Pure`, `Idempotent`, `NonIdempotent`. The zero value is `EffectUnknown` — omitting `Effect` is a construction error (`ErrEffectRequired`), never a silent claim of safety. |
 | `Outcome` | Failure meaning: `Success`, `Transient`, `Permanent`, `Throttled`, `Uncertain`. |
 
@@ -152,9 +159,9 @@ shared by events and catalogue writes alike.
   <img src="assets/resource-arbitration-dark.svg#gh-dark-mode-only" alt="Render, events, catalogue, webhooks and model calls arbitrate through shared Herta budgets to normal handlers; 20 concurrent renders against capacity 8 peak at exactly 8" width="640" />
 </p>
 
-Concrete behavior, measured in the internal reference implementation
-(`renderer` capacity = 8, 20 concurrent render calls, measured peak inside
-the provider: **exactly 8**):
+Concrete behavior, proven by `TestCapacityLimitHeldUnderLoad` (`renderer`
+capacity = 8, 20 concurrent render calls, measured peak inside the
+provider: **exactly 8**):
 
 ```mermaid
 flowchart LR
@@ -174,7 +181,13 @@ flowchart LR
     Catalogue --> DB
 ```
 
-Herta V0 arbitrates **per process**. It does not coordinate resources globally
+Each budget is a strict FIFO queue: a request is granted at once only if it
+fits **and** nobody is waiting, so heavy requests never starve. A `Reject`
+call that cannot be granted fails at once with `Throttled` and yields the
+processor once, so a caller retrying in a tight loop cannot starve the
+calls holding capacity.
+
+Herta arbitrates **per process**. It does not coordinate resources globally
 across processes — see [docs/resource-arbitration.md](docs/resource-arbitration.md).
 
 ## Keyed serialization
@@ -188,9 +201,11 @@ flowchart LR
     A2 --> Serial["serializes with the first"]
 ```
 
-`SerializeBy(key)` gives same-key serial / different-key concurrent execution.
-Same-key waiters hold **zero downstream resource capacity** while waiting —
-waiting work must not hoard scarce resources.
+`SerializeKey` (a `func(I) string`; an empty key means no serialization)
+gives same-key serial / different-key concurrent execution. Same-key waiters
+hold **zero downstream resource capacity** while waiting — waiting work must
+not hoard scarce resources. Under `Reject`, a call whose key is held fails
+fast instead of waiting.
 
 ## Failure semantics
 
@@ -212,11 +227,16 @@ money, or changed state. Retrying it speculatively is not a transport decision
 Rules:
 
 - Unclassified Go errors are treated **conservatively**: they do not trigger
-  speculative retries.
+  speculative retries. A nil `*Failure` returned by mistake reads as
+  unclassified too, never as a crash.
 - Unsafe retry combinations (e.g. retrying `Uncertain` on a `NonIdempotent`
   operation) fail construction-time validation.
-- Caller cancellation is honored; per-attempt timeouts are cooperative
-  contexts, not goroutine termination.
+- An unclassified error after the attempt's own deadline is `Uncertain`
+  for every `Effect`; it is retried only where `Uncertain` retries are safe.
+- `Transient` is the adapter's word that the attempt did not take effect.
+  Herta trusts it, so tag it only where that is true.
+- Caller cancellation is honored and never retried; per-attempt timeouts are
+  cooperative contexts, not goroutine termination.
 
 Full treatment in [docs/failure-semantics.md](docs/failure-semantics.md).
 
@@ -229,11 +249,13 @@ flowchart TD
     W --> D["drain operations<br/>already executing"]
 ```
 
+- `Shutdown` returns only once everything admitted has drained; it is
+  idempotent and safe to call concurrently, and costs no goroutines.
 - Timeouts are cooperative `context.Context` deadlines.
 - Panics release runtime-owned resources, then re-panic — cleanup without
   swallowing the failure.
-- Stats are atomic; lifecycle behavior is race-clean under the Go race
-  detector.
+- Stats are atomic and read in a consistent order; lifecycle behavior is
+  race-clean under the Go race detector.
 
 ## What Herta is NOT
 
@@ -262,16 +284,16 @@ Herta does NOT coordinate a global capacity across those five processes.
 Global quotas and provider limits are the application's deployment
 responsibility — enforce them at the shared provider, not in Herta.
 
-V0 Queue is deliberately descoped until a real consumer proves it is
-needed: `Wait` (block for capacity) plus the caller's own context deadline
-covers the same need today.
+Queue admission is deliberately descoped until a real consumer proves it is
+needed: today, `Wait` (block for capacity) plus the caller's own context
+deadline bounds how long a call waits.
 
 ## Quickstart (real API)
 
 Install:
 
 ```sh
-go get github.com/arahe-dev/hertasdk@v0.2.0
+go get github.com/arahe-dev/hertasdk@main
 ```
 
 Runnable example in [`examples/quickstart`](examples/quickstart/main.go)
@@ -311,39 +333,45 @@ fmt.Println(out, err)
 fmt.Println(rt.Stats())
 ```
 
-The package name is `execution` (imported as
-`hertasdk "github.com/arahe-dev/hertasdk"` above for readability). The
-handler is ordinary; the policy is explicit; the runtime does the
+The package name is `hertasdk`, the same as the last element of its import
+path. The handler is ordinary; the policy is explicit; the runtime does the
 arbitrating. Nothing more.
 
 ## Current validation
 
-HertaSDK v0.2.0 is implemented, extracted, consumer-validated, and frozen.
-Release evidence:
+HertaSDK 1.0-next was rebuilt from first principles against a written
+contract ([docs/contract.md](docs/contract.md)) and checked against v0.2.0,
+which is kept frozen in [`lab/v02`](lab/v02) as the reference. The
+evidence lives in the [`lab/`](lab) module, which does not ship with the
+package. The full report is [lab/results/r2/REPORT.md](lab/results/r2/REPORT.md).
 
-- Render consumer validated
-- Events consumer validated
-- CatalogueReplace consumer validated
-- CatalogueReplace landed without Herta semantic changes
-- 20 concurrent operations against capacity 8 peak at exactly 8
-- Shared resource budget across heterogeneous operations
-- Same-key serialization / cross-key parallelism
-- Partial acquisition rollback
-- Caller cancellation
-- Panic cleanup
-- Shutdown/drain
-- Construction validation
-- Heavy race hammer (200 iterations of 16 goroutines × 50 calls against
-  racing shutdown, asserting `Admitted == Finished` every iteration)
-- Go race detector enforced in Linux CI (`go test -race -count=1 ./...`
-  in [.github/workflows/ci.yml](.github/workflows/ci.yml))
-- Benchmarks included (`BenchmarkContention`, `BenchmarkKeyedSerialization`,
-  `BenchmarkMultiResource`, `BenchmarkRetryOverhead`) — benchmarks exist and
-  execute; no performance numbers are claimed here.
+**Correctness**
 
-The runtime was validated against independent render, event-ingestion, and
-catalogue-replacement workloads before extraction. The public
-API/documentation remain application-domain neutral.
+- v0.2.0's own test suite passes against `hertasdk`
+- 75 tests, **100% statement coverage**, race-clean under the Go race detector
+- 100,000-scenario differential run against a reference model of the contract
+- Invariants under load (30 rounds) and chaos (100 rounds: cancellations,
+  panics, racing shutdowns) with zero violations
+- **100% mutation score**: 394 of 394 mutants killed
+- The real consumer's test suite (render, events, catalogue, handoff) runs
+  identically with `hertasdk` in place of v0.2.0
+- Twelve v0.2 defects fixed, each pinned by a test; see [CHANGELOG.md](CHANGELOG.md)
+
+**Performance against v0.2.0** (quiet machine, methodology in
+[lab/results/r2](lab/results/r2/REPORT.md))
+
+| | v0.2.0 | 1.0-next |
+|---|---:|---:|
+| uncontended `Do` | 893 ns · 10 allocs | **59 ns · 0 allocs** |
+| `Do` with a per-attempt timeout | 1,465 ns · 14 allocs | **350 ns · 4 allocs** |
+| keyed `Do` | 1,107 ns · 13 allocs | **103 ns · 0 allocs** |
+| goroutines per call | 1 | **0** |
+| memory per waiting call | 848 B + 7.7 KB stack | **157 B** |
+| 1M unique keys: calls/s · peak heap | 0.71 M · 41.5 MB | **3.03 M · 6.0 MB** |
+| mixed-load throughput · p99 latency | 243k/s · 889 µs | **417k/s · 346 µs** |
+
+20 concurrent operations against capacity 8 still peak at exactly 8. The
+runtime has no dependencies beyond the Go standard library.
 
 ## Roadmap
 
@@ -356,6 +384,10 @@ API/documentation remain application-domain neutral.
 - [x] Runnable quickstart
 - [x] Baseline benchmarks
 - [x] v0.2.0
+- [x] First-principles reconstruction against a written contract (1.0-next)
+- [x] Comparison lab: differential, chaos, mutation, DoE and industrial suites
+- [x] Zero dependencies; package renamed `hertasdk`
+- [ ] Harden 1.0-next and lock it as **v1.0**
 - [ ] Additional real-world consumers
 - [ ] Improve benchmark corpus when evidence warrants
 - [ ] Evaluate Rust/Tower prototype
@@ -386,11 +418,13 @@ compatibility or affiliation.
 
 ## Docs
 
+- [docs/contract.md](docs/contract.md) — the normative execution contract (admission, retry, shutdown, stats, deltas from v0.2)
 - [docs/concepts.md](docs/concepts.md) — Runtime, Operation, Resource, Policy, Effect, Outcome
 - [docs/execution-model.md](docs/execution-model.md) — lifecycle, admission, ordering, rollback, timeout, shutdown
 - [docs/failure-semantics.md](docs/failure-semantics.md) — classification, retry safety, Uncertain, cancellation
 - [docs/resource-arbitration.md](docs/resource-arbitration.md) — shared budgets, weighting, per-process scope
 - [docs/architecture.md](docs/architecture.md) — runtime boundary, integration shape, what Herta is not
+- [lab/](lab) — the comparison lab and its results ([lab/results/REPORT.md](lab/results/REPORT.md))
 
 ## Contributing / Security
 

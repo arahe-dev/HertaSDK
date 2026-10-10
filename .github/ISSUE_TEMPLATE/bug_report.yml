@@ -1,29 +1,29 @@
 name: Bug report
-description: Report a problem with the repository (docs, diagrams, metadata)
-title: "[docs]: "
-labels: ["documentation"]
+description: Report a problem with the runtime or the repository (docs, diagrams, metadata)
+title: "[bug]: "
+labels: ["bug"]
 body:
   - type: textarea
     id: what-happened
     attributes:
       label: What happened?
-      description: What is wrong, and where? Link the file and section.
-      placeholder: docs/failure-semantics.md says X, but the README says Y.
+      description: What is wrong, and where? For the runtime, a minimal Policy, handler and call; for docs, link the file and section.
+      placeholder: A Reject call with a held key returned … ; or docs/failure-semantics.md says X, but the README says Y.
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
       label: What did you expect?
-      description: What should it say instead?
+      description: What should happen (or what should the docs say) instead? Cite docs/contract.md if it applies.
     validations:
       required: true
   - type: textarea
     id: context
     attributes:
       label: Context
-      description: Browser/OS, theme (light/dark) for rendering issues, anything else relevant.
-      placeholder: GitHub dark mode, Windows, diagram text unreadable...
+      description: Go version, OS, and version of hertasdk (commit or tag); browser and theme (light/dark) for rendering issues.
+      placeholder: go1.27.1 linux/amd64, hertasdk main@abc1234 ...
     validations:
       required: false
   - type: checkboxes
@@ -31,4 +31,4 @@ body:
     attributes:
       label: Scope check
       options:
-        - label: This is about the repository/docs, not the unreleased implementation
+        - label: I checked the behavior against docs/contract.md

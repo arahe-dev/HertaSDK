@@ -1,8 +1,9 @@
 # Contributing to HertaSDK
 
-Thanks for your interest. HertaSDK v0.1.0 is an installable Go module
-(`go get github.com/arahe-dev/hertasdk@v0.1.0`) with a frozen V0 execution
-contract — see [README.md](README.md), [ROADMAP.md](ROADMAP.md), and
+Thanks for your interest. HertaSDK 1.0-next is the v1.0 candidate of an
+installable Go module (`go get github.com/arahe-dev/hertasdk@main`); its
+execution contract is [docs/contract.md](docs/contract.md). See
+[README.md](README.md), [ROADMAP.md](ROADMAP.md), and
 [CHANGELOG.md](CHANGELOG.md).
 
 ## What is useful right now
@@ -12,19 +13,20 @@ contract — see [README.md](README.md), [ROADMAP.md](ROADMAP.md), and
   valuable input — they gate every future contract change.
 - **Documentation.** Typo fixes, clarifications, and better explanations are
   welcome. Keep the tone technical and precise; avoid marketing language.
-  Ground claims in the frozen v0.1.0 API; do not invent features.
+  Ground claims in the current API and docs/contract.md; do not invent
+  features.
 - **Benchmark corpus.** Additional benchmarks are welcome when they come with
   methodology — no performance numbers without it.
 
 ## What is not useful
 
-- Contract redesigns without consumer evidence. The V0 contract is frozen;
-  Queue, priority admission, dynamic resource profiles, distributed
+- Contract redesigns without consumer evidence. The contract changes only
+  with evidence; Queue, priority admission, dynamic resource profiles, distributed
   coordination, durability, and transports are explicitly out of scope until a
   real consumer proves they are needed (see "Explicit non-goals" in
   [ROADMAP.md](ROADMAP.md)).
-- Parallel runtime reimplementations. The frozen runtime is authoritative;
-  behavioral changes will not be merged.
+- Parallel runtime reimplementations. Behavioral changes must come with a
+  contract change and the lab evidence for it.
 - Feature requests for distributed coordination, durability, transports, or
   other out-of-scope concerns (see "What Herta is NOT" in the README).
 
@@ -35,15 +37,16 @@ contract — see [README.md](README.md), [ROADMAP.md](ROADMAP.md), and
    templates.
 2. **Small, focused PRs.** One concern per PR. Docs PRs should keep both
    English quality and link validity.
-3. **Do not change execution semantics.** Runtime changes must preserve the
-   frozen V0 contract; `go test -count=1 ./...` and
-   `go test -race -count=1 ./...` must pass.
+3. **Do not change execution semantics silently.** Runtime changes must
+   preserve [docs/contract.md](docs/contract.md), or change it explicitly.
+   `go test -race -count=1 .` must pass with 100% coverage, and so must the
+   lab's quick tier (`cd lab && go test -race -count=1 ./...`).
 
 ## Style
 
-- Go code samples must compile against the released v0.1.0 API.
-- Diagrams are hand-maintained SVG with light and dark variants; Mermaid is
-  not used for README diagrams.
+- Go code samples must compile against the current `hertasdk` API.
+- Diagrams are hand-maintained SVG with light and dark variants, or Mermaid
+  flowcharts; keep both readable in GitHub light and dark mode.
 - Keep claims factual and verifiable. No adoption claims, no benchmarks
   without methodology, no superlatives.
 

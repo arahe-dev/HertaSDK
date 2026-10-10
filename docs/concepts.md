@@ -4,9 +4,9 @@ The six primitives of HertaSDK. One execution model, many heterogeneous
 operations — every primitive below exists to make shared in-process execution
 explicit and checkable.
 
-> Status: **v0.1.0 — frozen contract.** The names below are the real,
-> installed public API (`github.com/arahe-dev/hertasdk`). The V0 execution
-> contract will not change without consumer evidence.
+> Status: **1.0-next — the v1.0 candidate.** The names below are the real
+> public API of package `hertasdk` (`github.com/arahe-dev/hertasdk`). The
+> normative definition is [contract.md](contract.md); this page explains it.
 
 ## Runtime
 
@@ -17,8 +17,8 @@ The execution authority and lifecycle owner for one process.
 - Arbitrates execution across otherwise-independent subsystems.
 - Owns shutdown: reject new work, wake waiters, drain active handlers.
 
-There is exactly one runtime per process in V0. It is local: no network, no
-daemon, no cross-process coordination.
+One runtime per process is the intended shape; nothing enforces it. It is
+local: no network, no daemon, no cross-process coordination.
 
 ## Operation[I, O]
 
@@ -42,7 +42,7 @@ A named finite local capacity.
 - Weighted: an operation may consume more than one unit.
 - Shared: different operations may consume the same resource. This is the
   point — see [resource-arbitration.md](resource-arbitration.md).
-- Local: V0 budgets are per process. There is no global coordination.
+- Local: budgets are per process. There is no global coordination.
 
 ## Policy
 
@@ -50,12 +50,15 @@ Everything the runtime needs to execute an operation safely:
 
 - **Resources**: which named budgets, what weights. Acquired deterministically
   (fixed order) with rollback after partial acquisition.
-- **Admission**: `Wait` (queue for capacity) or `Reject` (fail fast when full).
+- **Admission**: `Wait` (queue, first in first out, for capacity) or
+  `Reject` (fail fast with `Throttled` when the claim cannot be granted now).
 - **Timeout**: cooperative per-attempt `context.Context` deadline.
 - **Retry**: which outcomes may be retried — validated against `Effect` at
-  construction. Unsafe combinations are rejected before serving.
-- **SerializeBy(key)** (optional): same-key serial, different-key concurrent.
-  Key waiters hold no downstream capacity while waiting.
+  construction. Unsafe combinations are rejected before serving, and the
+  retry table is copied, so later edits to the caller's map change nothing.
+- **SerializeKey** (optional `func(I) string`): same-key serial,
+  different-key concurrent; an empty key means no serialization. Key waiters
+  hold no downstream capacity while waiting.
 
 Ordering: key acquisition happens **before** resource acquisition, so a waiter
 on a key never holds scarce downstream capacity.
@@ -68,7 +71,7 @@ Whether repeating the operation is safe:
 |---|---|---|
 | `Pure` | No observable side effects. | Safe to repeat. |
 | `Idempotent` | Repeating has the same effect as doing once. | Safe to repeat. |
-| `NonIdempotent` | Repeating may change state, spend quota, or charge money. | Repeat only with proof it did not execute. |
+| `NonIdempotent` | Repeating may change state, spend quota, or charge money. | Repeat only `Transient` failures, which the adapter vouches did not execute. |
 
 Effect is declared by the operation author — the runtime cannot infer it,
 and it will not guess. The zero value of `Effect` is `EffectUnknown`

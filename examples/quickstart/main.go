@@ -1,4 +1,4 @@
-// Command quickstart demonstrates the Herta V0 execution model: one
+// Command quickstart demonstrates the Herta execution model: one
 // Runtime with a finite resource budget shared by heterogeneous
 // operations with different policies.
 package main
