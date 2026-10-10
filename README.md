@@ -25,7 +25,8 @@ arbitrates shared local capacity across otherwise-independent subsystems.
 
 > **Status.** HertaSDK **1.0-next** is the v1.0 candidate: the execution
 > contract rebuilt from first principles, with zero dependencies, the
-> package renamed to `hertasdk`, and twelve v0.2 defects fixed. It is
+> package renamed to `hertasdk` (source-breaking: see the
+> [upgrade notes](CHANGELOG.md#upgrade-notes)), and twelve v0.2 defects fixed. It is
 > being hardened before it is locked as v1.0. It is tagged as the
 > pre-release `v1.0.0-next`, so `@latest` still resolves to v0.2.0:
 >
@@ -357,7 +358,8 @@ package. The full report is [lab/results/r2/REPORT.md](lab/results/r2/REPORT.md)
   identically with `hertasdk` in place of v0.2.0
 - Twelve v0.2 defects fixed, each pinned by a test; see [CHANGELOG.md](CHANGELOG.md)
 
-**Performance against v0.2.0** (quiet machine, methodology in
+**Performance against v0.2.0** (one quiet Windows 11 machine,
+i7-13650HX; Linux numbers are not published yet; methodology in
 [lab/results/r2](lab/results/r2/REPORT.md))
 
 | | v0.2.0 | 1.0-next |
@@ -387,7 +389,9 @@ runtime has no dependencies beyond the Go standard library.
 - [x] First-principles reconstruction against a written contract (1.0-next)
 - [x] Comparison lab: differential, chaos, mutation, DoE and industrial suites
 - [x] Zero dependencies; package renamed `hertasdk`
-- [ ] Harden 1.0-next and lock it as **v1.0**
+- [ ] Harden 1.0-next and lock it as **v1.0**, after a real consumer's
+  database-backed suite passes on `hertasdk` (so far Postgres-backed
+  consumer tests have only been skipped, not run)
 - [ ] Additional real-world consumers
 - [ ] Improve benchmark corpus when evidence warrants
 - [ ] Evaluate Rust/Tower prototype

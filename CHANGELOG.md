@@ -55,6 +55,10 @@ Each fix is a row of the contract's §8 and is pinned by a test.
   without taking its lock. Callers that retry a refusal in a tight loop can
   no longer starve the calls holding capacity: with 256 such callers,
   successful calls went from about 3k/s to about 1M/s (v0.2.0: 57–112k/s).
+  The cost falls only on refused calls: a refusal takes about 0.16 µs
+  instead of 0.05 µs, and under heavy saturation a refused caller may learn
+  of its refusal up to one scheduling round later (p99 about 0.6 ms with
+  1,024 requests in flight, server-shaped). Successful calls are unaffected.
 - [docs/contract.md](docs/contract.md): the normative contract, including
   FIFO and head-of-line semantics, multi-resource holding and the deltas
   from v0.2.0.
@@ -78,8 +82,18 @@ Measured against v0.2.0 on a quiet machine
 
 ### Upgrade notes
 
-- Import `github.com/arahe-dev/hertasdk` and refer to it as `hertasdk.`;
-  code that aliased it as `execution` keeps working with the alias.
+**Source-breaking:** code written against v0.2.0 refers to the package as
+`execution`, and that name no longer exists. Either keep your code and pin
+the old name with an import alias:
+
+```go
+import execution "github.com/arahe-dev/hertasdk"
+```
+
+or rename the uses: `execution.NewRuntime(...)` becomes
+`hertasdk.NewRuntime(...)`, and so on for every identifier. The exported
+names and signatures are otherwise unchanged.
+
 - If you match error text, the prefix is now `hertasdk:`. Prefer
   `errors.Is` with the exported sentinels.
 - Keyed `Reject` callers now receive `Throttled` refusals where v0.2.0
