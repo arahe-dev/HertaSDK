@@ -47,7 +47,9 @@ pass before the next begins.
 
 ## Future
 
-- [ ] Harden 1.0-next and lock it as **v1.0**
+- [ ] Harden 1.0-next and lock it as **v1.0**, after a real consumer's
+  database-backed suite passes on `hertasdk` (so far Postgres-backed
+  consumer tests have only been skipped, not run)
 - [ ] Additional real-world consumers
 - [ ] Improve benchmark corpus when evidence warrants
 - [ ] Evaluate Rust/Tower prototype

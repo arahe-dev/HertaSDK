@@ -106,7 +106,7 @@ Mutating the caller's `Policy`, its slice or its map afterwards has no effect.
 - A request is granted immediately only if it fits **and no one is queued**. Otherwise `Wait` enqueues it and `Reject` fails.
 - On release, waiters are granted from the head of the queue for as long as each one fits. A waiter that doesn't fit blocks everyone behind it. This head-of-line behavior is intended: it prevents heavy requests from starving.
 - A waiter that cancels is removed. If it was at the head, the waiters behind it are re-examined.
-- **A `Reject` refusal yields the processor once (`runtime.Gosched`) before returning.** This applies whether a budget or a key refused the call. It changes no result, outcome or count. It exists because a caller that retries a refusal at once is waiting, and must not hoard the CPU the holders need to finish (A3; evidence in `lab/results/r1/reject-probe/ROOT-CAUSE.md`).
+- **A `Reject` refusal yields the processor once (`runtime.Gosched`) before returning.** This applies whether a budget or a key refused the call. It changes no result, outcome or count. It exists because a caller that retries a refusal at once is waiting, and must not hoard the CPU the holders need to finish (A3; evidence in `lab/results/r1/reject-probe/ROOT-CAUSE.md`). The trade-off: a refusal costs about 0.1 µs more, and under heavy saturation it may reach its caller up to one scheduling round later (p99 about 0.6 ms with 1,024 requests in flight); successful calls are unaffected.
 
 ### 4.2 Keys
 - Keys give per-key mutual exclusion with FIFO hand-off.
