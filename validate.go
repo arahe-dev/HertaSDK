@@ -1,4 +1,4 @@
-package execution
+package hertasdk
 
 import (
 	"errors"
@@ -10,18 +10,18 @@ import (
 
 func validateSpecs(specs []ResourceSpec) error {
 	if len(specs) == 0 {
-		return errors.New("execution: runtime requires at least one resource")
+		return errors.New("hertasdk: runtime requires at least one resource")
 	}
 	seen := make(map[string]bool, len(specs))
 	for _, s := range specs {
 		if s.Name == "" {
-			return errors.New("execution: resource name must not be empty")
+			return errors.New("hertasdk: resource name must not be empty")
 		}
 		if s.Capacity <= 0 {
-			return fmt.Errorf("execution: resource %q capacity must be > 0, got %d", s.Name, s.Capacity)
+			return fmt.Errorf("hertasdk: resource %q capacity must be > 0, got %d", s.Name, s.Capacity)
 		}
 		if seen[s.Name] {
-			return fmt.Errorf("execution: duplicate resource %q", s.Name)
+			return fmt.Errorf("hertasdk: duplicate resource %q", s.Name)
 		}
 		seen[s.Name] = true
 	}
@@ -45,18 +45,18 @@ func resolveClaims(rt *Runtime, name string, reqs []Requirement) ([]claim, error
 	seen := make(map[string]bool, len(reqs))
 	for _, req := range reqs {
 		if seen[req.Name] {
-			return nil, fmt.Errorf("execution: operation %q lists resource %q twice", name, req.Name)
+			return nil, fmt.Errorf("hertasdk: operation %q lists resource %q twice", name, req.Name)
 		}
 		seen[req.Name] = true
 		r, ok := rt.budgets[req.Name]
 		if !ok {
-			return nil, fmt.Errorf("execution: operation %q requires unknown resource %q", name, req.Name)
+			return nil, fmt.Errorf("hertasdk: operation %q requires unknown resource %q", name, req.Name)
 		}
 		if req.Units <= 0 {
-			return nil, fmt.Errorf("execution: operation %q resource %q units must be > 0, got %d", name, req.Name, req.Units)
+			return nil, fmt.Errorf("hertasdk: operation %q resource %q units must be > 0, got %d", name, req.Name, req.Units)
 		}
 		if req.Units > r.size {
-			return nil, fmt.Errorf("execution: operation %q requires %d units of %s, capacity is %d",
+			return nil, fmt.Errorf("hertasdk: operation %q requires %d units of %s, capacity is %d",
 				name, req.Units, r.name, r.size)
 		}
 		claims = append(claims, claim{r: r, n: req.Units})

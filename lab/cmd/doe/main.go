@@ -1,14 +1,14 @@
 // Command doe runs a Design-of-Experiments study of Herta implementations.
 //
-//	go run ./lab/cmd/doe -design screen -impls orig,recon -reps 3 -dur 2s
-//	go run ./lab/cmd/doe -quick                       # whole screen in < 3 min
-//	go run ./lab/cmd/doe -full                        # 64-run screen, 5 reps, 3s windows
-//	go run ./lab/cmd/doe -design full -from lab/results/<screen>/summary.json
-//	go run ./lab/cmd/doe -design sweep -sweep clients,capacity
-//	go run ./lab/cmd/doe -design ab -impls a=orig,b=orig   # A/A noise calibration
+//	go run ./cmd/doe -design screen -impls orig,recon -reps 3 -dur 2s
+//	go run ./cmd/doe -quick                       # whole screen in < 3 min
+//	go run ./cmd/doe -full                        # 64-run screen, 5 reps, 3s windows
+//	go run ./cmd/doe -design full -from results/<screen>/summary.json
+//	go run ./cmd/doe -design sweep -sweep clients,capacity
+//	go run ./cmd/doe -design ab -impls a=orig,b=orig   # A/A noise calibration
 //
 // -impls defaults to $LAB_IMPLS, else "orig,recon"; the first arm is the
-// baseline. Results go to -out (default lab/results/<run-id>/): runs.csv,
+// baseline. Results go to -out (default results/<run-id>/, inside lab/): runs.csv,
 // effects.csv, summary.json and REPORT.md.
 package main
 
@@ -40,7 +40,7 @@ func main() {
 	flag.IntVar(&c.reps, "reps", 3, "replicates per (point, arm)")
 	flag.DurationVar(&c.dur, "dur", 2*time.Second, "measurement window per trial")
 	flag.DurationVar(&c.warmup, "warmup", 500*time.Millisecond, "warm-up before each window")
-	flag.StringVar(&c.out, "out", "", "output directory (default lab/results/<run-id>)")
+	flag.StringVar(&c.out, "out", "", "output directory (default results/<run-id>, relative to lab/)")
 	flag.StringVar(&c.factors, "factors", "", "full: factors by symbol or name, e.g. A,B,keys")
 	flag.StringVar(&c.from, "from", "", "full: pick the most significant factors from a screen's summary.json")
 	flag.StringVar(&c.sweep, "sweep", strings.Join(doe.SweepAxes, ","), "sweep: axes to sweep")
@@ -93,7 +93,7 @@ func run(c config) error {
 	start := time.Now()
 	id := start.Format("20060102-150405") + "-" + c.design + "-" + armTag(arms)
 	if c.out == "" {
-		c.out = filepath.Join("lab", "results", id)
+		c.out = filepath.Join("results", id)
 	}
 
 	trials := x.Plan()
@@ -107,7 +107,7 @@ func run(c config) error {
 	an := doe.Analyze(x, trials)
 
 	meta := doe.Meta{
-		ID: id, Kind: c.design, Command: "go run ./lab/cmd/doe " + strings.Join(os.Args[1:], " "),
+		ID: id, Kind: c.design, Command: "go run ./cmd/doe " + strings.Join(os.Args[1:], " "),
 		Started: start.Format(time.RFC3339), Go: runtime.Version(), OS: runtime.GOOS, Arch: runtime.GOARCH,
 		CPUs: runtime.NumCPU(), GOMAXPROCS: runtime.GOMAXPROCS(0), Reps: c.reps, Seed: c.seed,
 		WarmupMs: ms(c.warmup), DurationMs: ms(c.dur), Trials: len(trials),

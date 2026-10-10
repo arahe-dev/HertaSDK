@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Mutation-tests v0.2.0 (orig, the root package) and v0.2-recon with the
+# Mutation-tests v0.2.0 (orig, frozen in lab/v02) and hertasdk (the root) with the
 # same four-stage kill cascade, then prints the side-by-side score table.
 #
 #   own  the package's own tests; -short skips wall-clock latency budgets,
@@ -35,22 +35,20 @@ JOBS=${JOBS:-6}
 which=${1:-both}
 shift || true
 
-lab="./lab/assume ./lab/model ./lab/system ./lab/mutate"
-# The platform assumptions measure Go and the machine, never Herta, so no
-# mutant can change them; under the run's load they only add noise.
-platform='^(TestClockResolution|TestTimerResolution|TestContextCosts|TestGoroutineCost|TestAtomicVsLocks|TestGoroutineSettling|TestGCTailLatency)$'
-mutate() { (cd "$here/../.." && go run ./lab/mutate/cmd/mutate "$@"); }
+# The lab is its own module (lab/go.mod), so its suites run under go -C lab.
+lab="./assume ./model ./system ./mutate"
+# Skipped as kill oracles: the platform assumptions measure Go and the
+# machine, never Herta; TestMiraiTwin judges latency SLOs, which the run's
+# own load breaks, and has never been a mutant's sole killer. Both only add
+# noise here.
+platform='^(TestClockResolution|TestTimerResolution|TestContextCosts|TestGoroutineCost|TestAtomicVsLocks|TestGoroutineSettling|TestGCTailLatency|TestMiraiTwin)$'
+mutate() { (cd "$here" && go run ./cmd/mutate "$@"); }
 
-target() { # $1=name  $2=package dir  $3=title  $4...=extra flags
-  local name=$1 dir=$2 title=$3 pkg=./$2/
+target() { # $1=name  $2=package dir from the repo root  $3=title  $4...=extra flags
+  local name=$1 dir=$2 title=$3 own="go test" pkg=.
   shift 3
-  [ "$dir" = . ] && pkg=.
-  mutate run -root "$ROOT" -pkg "$dir" -title "$title" -triage "$here/equivalent.tsv" \
-    -stage "own: go test -count=1 -short -failfast -vet=off -timeout=60s $pkg" \
-    -stage "lab: LAB_IMPLS=$name go test -count=1 -failfast -vet=off -timeout=150s -skip $platform $lab" \
-    -stage "race: go test -race -count=2 -short -failfast -vet=off -timeout=150s $pkg" \
-    -stage "race-lab: LAB_IMPLS=$name go test -race -count=3 -failfast -vet=off -timeout=150s -run ^TestGapCancelStorm$ ./lab/mutate" \
-    -out "$OUT/$name" -work "$WORK/$name" -j "$JOBS" "$@"
+  case $dir in lab/*) own="go -C lab test" pkg=./${dir#lab/}/ ;; esac
+  mutate run -root "$ROOT" -pkg "$dir" -title "$title" -triage "$here/equivalent.tsv"     -stage "own: $own -count=1 -short -failfast -vet=off -timeout=60s $pkg"     -stage "lab: LAB_IMPLS=$name go -C lab test -count=1 -failfast -vet=off -timeout=150s -skip $platform $lab"     -stage "race: $own -race -count=2 -short -failfast -vet=off -timeout=150s $pkg"     -stage "race-lab: LAB_IMPLS=$name go -C lab test -race -count=3 -failfast -vet=off -timeout=150s -run ^TestGapCancelStorm$ ./mutate"     -out "$OUT/$name" -work "$WORK/$name" -j "$JOBS" "$@"
 }
 
 case $which in
@@ -58,8 +56,8 @@ orig | recon | both) ;;
 *) echo "usage: $0 [orig|recon|both] [flags]" >&2; exit 2 ;;
 esac
 status=0
-if [ "$which" != recon ]; then target orig . "v0.2.0 (orig)" "$@" || status=1; fi
-if [ "$which" != orig ]; then target recon recon "v0.2-recon" "$@" || status=1; fi
+if [ "$which" != recon ]; then target orig lab/v02 "v0.2.0 (orig, lab/v02)" "$@" || status=1; fi
+if [ "$which" != orig ]; then target recon . "hertasdk (v1.0-next)" "$@" || status=1; fi
 if [ -f "$OUT/orig/run.json" ] && [ -f "$OUT/recon/run.json" ]; then
   mutate compare "orig=$OUT/orig" "recon=$OUT/recon"
 fi

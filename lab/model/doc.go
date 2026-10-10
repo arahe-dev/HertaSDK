@@ -1,6 +1,6 @@
 // Package model holds the lab's reference semantics: small, obviously
 // correct, single-threaded models of every Herta subsystem, written straight
-// from recon/CONTRACT.md.
+// from docs/contract.md.
 //
 //   - Sem      the weighted FIFO budget semaphore (§4.1)
 //   - Keys     the per-key FIFO locker (§4.2)

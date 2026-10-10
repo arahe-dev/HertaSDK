@@ -1,4 +1,4 @@
-package execution
+package hertasdk
 
 import (
 	"context"
@@ -11,26 +11,26 @@ import (
 var (
 	// ErrUnsafeRetry: the retry table could duplicate a side effect
 	// (NonIdempotent with On[Uncertain]).
-	ErrUnsafeRetry = errors.New("execution: unsafe retry contract")
+	ErrUnsafeRetry = errors.New("hertasdk: unsafe retry contract")
 	// ErrEffectRequired: Policy.Effect was left as EffectUnknown.
-	ErrEffectRequired = errors.New("execution: effect must be declared (Pure, Idempotent, or NonIdempotent)")
+	ErrEffectRequired = errors.New("hertasdk: effect must be declared (Pure, Idempotent, or NonIdempotent)")
 	// ErrInvalidEffect: Policy.Effect is out of range.
-	ErrInvalidEffect = errors.New("execution: invalid effect value")
+	ErrInvalidEffect = errors.New("hertasdk: invalid effect value")
 	// ErrInvalidRetryPolicy: Retry.On asks for Success, Permanent,
 	// Throttled or an out-of-range Outcome.
-	ErrInvalidRetryPolicy = errors.New("execution: invalid retry policy")
+	ErrInvalidRetryPolicy = errors.New("hertasdk: invalid retry policy")
 	// ErrInvalidOutcome is kept for API parity with v0.2; Fail normalizes
 	// instead of returning it.
-	ErrInvalidOutcome = errors.New("execution: invalid outcome")
+	ErrInvalidOutcome = errors.New("hertasdk: invalid outcome")
 )
 
 // Admission errors returned by Do.
 var (
 	// ErrOverloaded is always returned as Fail(Throttled, ErrOverloaded).
-	ErrOverloaded = errors.New("execution: overloaded")
+	ErrOverloaded = errors.New("hertasdk: overloaded")
 	// ErrRuntimeStopping is returned untagged (Permanent) once Shutdown has
 	// begun: new calls are refused and blocked waiters are withdrawn.
-	ErrRuntimeStopping = errors.New("execution: runtime is stopping")
+	ErrRuntimeStopping = errors.New("hertasdk: runtime is stopping")
 )
 
 // refused is the error for a call whose key or units were not granted.

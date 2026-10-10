@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 
-	h "github.com/arahe-dev/hertasdk"
+	h "github.com/arahe-dev/hertasdk/lab/v02"
 )
 
-// Orig is HertaSDK v0.2.0, the reference implementation.
+// Orig is HertaSDK v0.2.0, frozen in lab/v02 as the reference implementation.
 var Orig Impl = origImpl{}
 
 type origImpl struct{}

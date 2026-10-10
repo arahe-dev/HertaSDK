@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Real-consumer integration test: is v0.2-recon a drop-in replacement for
+# Real-consumer integration test: is hertasdk (the root package, called
+# recon in the lab) a drop-in replacement for
 # the v0.2.0 fork that mirai-backend vendors in internal/execution?
 #
 # It copies the consumer twice (never touching the original), swaps the
@@ -8,7 +9,7 @@
 # builds both offline, runs the whole test suite COUNT times on each, and
 # prints the package/test matrix. Postgres-backed tests skip without
 # MIRAI_TEST_DATABASE_URL; the matrix lists them with their reason.
-# Finally it injects probe/*_probe_test.go into both copies to show what
+# Finally it injects testdata/probe/*_probe_test.go into both copies to show what
 # the consumer itself observes of the CONTRACT §8 deltas.
 #
 # Usage: bash lab/integration/mirai.sh
@@ -17,7 +18,7 @@
 #        COUNT  go test -count (default 3: repeats expose flaky differences)
 #        RACE   1 adds -race (needs cgo and a C compiler)
 # Out:   $WORK/matrix.md, $WORK/{base,recon}.json (go test -json),
-#        $WORK/{base,recon}.probe (the probe/ tests injected into the consumer)
+#        $WORK/{base,recon}.probe (the testdata/probe/ tests injected into the consumer)
 # Exit:  non-zero if recon fails to build, or fails a package or test that
 #        the v0.2.0 baseline passes.
 set -euo pipefail
@@ -38,7 +39,8 @@ copy "$WORK/base"
 copy "$WORK/recon"
 exec_dir=$WORK/recon/internal/execution
 find "$exec_dir" -maxdepth 1 -name '*.go' ! -name '*_test.go' -delete
-find "$herta/recon" -maxdepth 1 -name '*.go' ! -name '*_test.go' -exec cp {} "$exec_dir/" \;
+find "$herta" -maxdepth 1 -name '*.go' ! -name '*_test.go' -exec cp {} "$exec_dir/" \;
+sed -i 's/^package hertasdk$/package execution/' "$exec_dir"/*.go # the fork's package name
 imports=$(cd "$WORK/recon" && go list -f '{{join .Imports " "}}' ./internal/execution)
 case " $imports " in *" golang.org/x/sync/"*) echo "recon must not import golang.org/x/sync: $imports" >&2; exit 1 ;; esac
 echo "swapped in recon: $(cd "$exec_dir" && ls ./*.go | grep -v _test | tr '\n' ' ')"
@@ -52,16 +54,16 @@ for t in base recon; do
   echo "   $(($(date +%s) - start))s"
 done
 
-(cd "$herta" && go run ./lab/integration/matrix -names "v0.2.0 fork,recon" \
+(go -C "$herta/lab" run ./integration/matrix -names "v0.2.0 fork,recon" \
   -trim github.com/mirai/mirai-backend/ "$WORK/base.json" "$WORK/recon.json") >"$WORK/matrix.md" || status=1
 
 # Probes: what the consumer observes of the §8 deltas through its own
 # error mapping. They pass on both implementations; the table shows how
 # the observations differ.
 {
-  printf '\n### Consumer probes (%s)\n\n| probe | v0.2.0 fork | recon |\n|---|---|---|\n' "$(ls "$here"/probe)"
+  printf '\n### Consumer probes (%s)\n\n| probe | v0.2.0 fork | recon |\n|---|---|---|\n' "$(ls "$here"/testdata/probe)"
   for t in base recon; do
-    cp "$here"/probe/*_probe_test.go "$WORK/$t/internal/events/"
+    cp "$here"/testdata/probe/*_probe_test.go "$WORK/$t/internal/events/"
     (cd "$WORK/$t" && go test -tags mirai_probe -run '^TestProbe' -count=1 -v ./internal/events/) >"$WORK/$t.probe" 2>&1 ||
       { echo "probe failed on $t" >&2; status=1; }
   done

@@ -1,4 +1,4 @@
-package execution
+package hertasdk
 
 // waiter is one blocked acquisition, queued intrusively in a waitq. Its
 // owner (a Resource or a KeyLocker) mutates it under the owner's lock and

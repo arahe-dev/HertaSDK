@@ -15,38 +15,38 @@ import (
 func main() {
 	ctx := context.Background()
 
-	rt, err := execution.NewRuntime(execution.ResourceSpec{Name: "worker", Capacity: 4})
+	rt, err := hertasdk.NewRuntime(hertasdk.ResourceSpec{Name: "worker", Capacity: 4})
 	if err != nil {
 		panic(err)
 	}
 
 	// Idempotent operation: safe to retry Transient failures, waits for capacity.
-	render, err := execution.NewOperation(rt, "render",
+	render, err := hertasdk.NewOperation(rt, "render",
 		func(ctx context.Context, job string) (string, error) {
 			if job == "flaky" {
-				return "", execution.Fail(execution.Transient, errors.New("upstream hiccup"))
+				return "", hertasdk.Fail(hertasdk.Transient, errors.New("upstream hiccup"))
 			}
 			return "rendered:" + job, nil
 		},
-		execution.Policy[string]{
-			Effect:    execution.Idempotent,
-			Resources: []execution.Requirement{{Name: "worker", Units: 1}},
-			Admission: execution.Wait,
-			Retry:     execution.RetryPolicy{MaxAttempts: 3, On: map[execution.Outcome]bool{execution.Transient: true}},
+		hertasdk.Policy[string]{
+			Effect:    hertasdk.Idempotent,
+			Resources: []hertasdk.Requirement{{Name: "worker", Units: 1}},
+			Admission: hertasdk.Wait,
+			Retry:     hertasdk.RetryPolicy{MaxAttempts: 3, On: map[hertasdk.Outcome]bool{hertasdk.Transient: true}},
 		})
 	if err != nil {
 		panic(err)
 	}
 
 	// Non-idempotent operation: fails fast when busy, retries nothing.
-	charge, err := execution.NewOperation(rt, "charge",
+	charge, err := hertasdk.NewOperation(rt, "charge",
 		func(ctx context.Context, customer string) (string, error) {
 			return "charged:" + customer, nil
 		},
-		execution.Policy[string]{
-			Effect:    execution.NonIdempotent,
-			Resources: []execution.Requirement{{Name: "worker", Units: 1}},
-			Admission: execution.Reject,
+		hertasdk.Policy[string]{
+			Effect:    hertasdk.NonIdempotent,
+			Resources: []hertasdk.Requirement{{Name: "worker", Units: 1}},
+			Admission: hertasdk.Reject,
 		})
 	if err != nil {
 		panic(err)
@@ -59,7 +59,7 @@ func main() {
 		go func(job string) {
 			defer wg.Done()
 			out, err := render.Do(ctx, job)
-			fmt.Printf("render(%s) -> %q, err=%v (outcome=%s)\n", job, out, err, execution.OutcomeOf(err))
+			fmt.Printf("render(%s) -> %q, err=%v (outcome=%s)\n", job, out, err, hertasdk.OutcomeOf(err))
 		}(j)
 	}
 	for _, c := range []string{"alice", "bob"} {
@@ -67,7 +67,7 @@ func main() {
 		go func(customer string) {
 			defer wg.Done()
 			out, err := charge.Do(ctx, customer)
-			fmt.Printf("charge(%s) -> %q, err=%v (outcome=%s)\n", customer, out, err, execution.OutcomeOf(err))
+			fmt.Printf("charge(%s) -> %q, err=%v (outcome=%s)\n", customer, out, err, hertasdk.OutcomeOf(err))
 		}(c)
 	}
 	wg.Wait()

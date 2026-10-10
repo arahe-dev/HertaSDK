@@ -135,7 +135,7 @@ func describe(r Result) string {
 }
 
 func baseline(ctx context.Context, cfg Config, ws string) error {
-	cmds := append([]Stage{buildStage(cfg.Pkg)}, cfg.Stages...)
+	cmds := append([]Stage{buildStage(cfg.Root, cfg.Pkg)}, cfg.Stages...)
 	for _, st := range cmds {
 		start := time.Now()
 		out, hung, err := execute(ctx, ws, st.Env, st.Args, cfg.Hang)
@@ -147,8 +147,24 @@ func baseline(ctx context.Context, cfg Config, ws string) error {
 	return nil
 }
 
-func buildStage(pkg string) Stage {
-	return Stage{Name: "build", Args: []string{"go", "build", "./" + strings.TrimPrefix(pkg, "./")}}
+// buildStage builds pkg from the module that contains it: the nearest
+// directory at or above pkg with a go.mod, so a package in a nested module
+// (lab/v02, in lab's module) builds with go -C.
+func buildStage(root, pkg string) Stage {
+	pkg = filepath.ToSlash(filepath.Clean(pkg))
+	mod := pkg
+	for mod != "." {
+		if _, err := os.Stat(filepath.Join(root, mod, "go.mod")); err == nil {
+			break
+		}
+		mod = path.Dir(mod)
+	}
+	rel := strings.TrimPrefix(strings.TrimPrefix(pkg, mod), "/")
+	args := []string{"go", "build", "./" + rel}
+	if mod != "." {
+		args = []string{"go", "-C", mod, "build", "./" + rel}
+	}
+	return Stage{Name: "build", Args: args}
 }
 
 // judge applies m in workspace ws, runs the cascade, and restores the file.
@@ -168,7 +184,7 @@ func judge(ctx context.Context, cfg Config, ws string, m Mutant, src []byte) (r 
 		}
 	}()
 
-	b := buildStage(cfg.Pkg)
+	b := buildStage(cfg.Root, cfg.Pkg)
 	if _, _, err := execute(ctx, ws, nil, b.Args, cfg.Hang); err != nil {
 		r.Status = Compile
 		return

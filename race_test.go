@@ -1,5 +1,5 @@
 //go:build race
 
-package execution
+package hertasdk
 
 func init() { raceEnabled = true }

@@ -3,7 +3,7 @@
 // their ratio, and the Mann-Whitney p-value. It is benchstat's core,
 // stdlib only.
 //
-//	go run ./lab/cmd/benchdiff -base orig=a.txt -cand recon=b.txt [-csv out.csv]
+//	go run ./cmd/benchdiff     (from lab/) -base orig=a.txt -cand recon=b.txt [-csv out.csv]
 //
 // A delta is called significant when p < alpha and the ratio interval
 // excludes 1.

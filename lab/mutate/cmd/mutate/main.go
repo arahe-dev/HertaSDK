@@ -2,8 +2,8 @@
 // stages, re-triages saved runs, and compares them.
 //
 //	mutate run -root . -pkg recon -out OUT -triage equivalent.tsv \
-//	    -stage 'own: go test -count=1 -short ./recon/' \
-//	    -stage 'lab: LAB_IMPLS=recon go test -count=1 ./lab/assume'
+//	    -stage 'own: go test -count=1 -short .' \
+//	    -stage 'lab: LAB_IMPLS=recon go -C lab test -count=1 ./assume'
 //	mutate report -out OUT -triage equivalent.tsv
 //	mutate compare orig=OUT1 recon=OUT2
 //

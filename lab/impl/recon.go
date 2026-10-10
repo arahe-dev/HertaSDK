@@ -6,10 +6,10 @@ import (
 	"context"
 	"errors"
 
-	h "github.com/arahe-dev/hertasdk/recon"
+	h "github.com/arahe-dev/hertasdk"
 )
 
-// Recon is v0.2-recon, the first-principles reconstruction.
+// Recon is the root package, hertasdk (v1.0-next): the first-principles reconstruction.
 var Recon Impl = reconImpl{}
 
 type reconImpl struct{}

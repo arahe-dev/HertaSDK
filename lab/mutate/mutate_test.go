@@ -248,3 +248,26 @@ func TestResume(t *testing.T) {
 		t.Errorf("Merge = %+v", got[:4])
 	}
 }
+
+// TestBuildStageFindsTheModule: a package in a nested module builds from
+// that module's directory with go -C.
+func TestBuildStageFindsTheModule(t *testing.T) {
+	root := t.TempDir()
+	for _, f := range []string{"go.mod", "lab/go.mod"} {
+		if err := os.MkdirAll(filepath.Join(root, filepath.Dir(f)), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(root, f), []byte("module m\n"), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for pkg, want := range map[string]string{
+		".":       "go build ./",
+		"lab/v02": "go -C lab build ./v02",
+		"lab":     "go -C lab build ./",
+	} {
+		if got := strings.Join(buildStage(root, pkg).Args, " "); got != want {
+			t.Errorf("buildStage(%q) = %q, want %q", pkg, got, want)
+		}
+	}
+}

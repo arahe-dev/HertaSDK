@@ -1,4 +1,4 @@
-package execution
+package hertasdk
 
 import (
 	"context"
@@ -275,7 +275,7 @@ func TestContractRendering(t *testing.T) {
 		Idempotent.String():                    "Idempotent",
 		Effect(7).String():                     "Effect(7)",
 		Fail(Throttled, cause).Error():         "cause",
-		(&Failure{Outcome: Uncertain}).Error(): "execution: failure(Uncertain)",
+		(&Failure{Outcome: Uncertain}).Error(): "hertasdk: failure(Uncertain)",
 		newResource("db-write", 4).String():    "db-write(4)",
 	} {
 		if got != want {

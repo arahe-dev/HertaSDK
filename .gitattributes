@@ -1,0 +1,2 @@
+# Go sources and docs use LF everywhere, whatever the checkout platform.
+* text=auto eol=lf

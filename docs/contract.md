@@ -1,12 +1,12 @@
-# Herta execution contract: v0.2-recon
+# HertaSDK execution contract (v1.0-next)
 
-This document defines the behavior `recon` is built and judged against. `recon` reconstructs HertaSDK v0.2.0 from first principles:
+This document is the normative contract of package `hertasdk`. It was written to reconstruct HertaSDK v0.2.0 from first principles, and that history still shapes it:
 
-- its **exported API is identical** to v0.2.0;
-- its **behavior is identical** except for the numbered deltas in §8 (each one a confirmed v0.2 defect);
-- its **internals are designed to carry v1.0** (§9) without restructuring.
+- the **exported API** is v0.2.0's, under the package name `hertasdk`;
+- the **behavior** is v0.2.0's, except for the numbered deltas in §8 (each one a confirmed v0.2 defect);
+- the **internals are designed to carry v1.0** (§9) without restructuring.
 
-When this document and v0.2 disagree, this document wins only where §8 says so. Otherwise v0.2's observable behavior is the oracle.
+When this document and v0.2 disagree, this document wins only where §8 says so. Otherwise v0.2's observable behavior is the oracle. v0.2.0 is kept, frozen, in `lab/v02` for that comparison.
 
 ## 1. Axioms
 
@@ -47,10 +47,9 @@ An uncontended call pays only for what it uses:
 | `Stats` | `{Admitted, Rejected, Started, Finished, Retried uint64}` |
 | Sentinels | `ErrUnsafeRetry`, `ErrEffectRequired`, `ErrInvalidEffect`, `ErrInvalidRetryPolicy`, `ErrInvalidOutcome`, `ErrOverloaded`, `ErrRuntimeStopping` |
 
-These rules also carry over unchanged:
-- Error message text uses the `execution:` prefix, the same as v0.2.
-- The package name is `execution`.
-- The v0.2 test files (`execution_test.go`, `proof_test.go`, `bench_test.go`) must compile and pass **byte-for-byte unchanged** in `recon/`.
+These rules carry over from v0.2, with the rename:
+- The package name is `hertasdk` (v0.2: `execution`), and error message text uses the `hertasdk:` prefix (v0.2: `execution:`).
+- v0.2's own test files (`execution_test.go`, `proof_test.go`, `bench_test.go`) pass against `hertasdk` with only their package line renamed. Until the rename they passed **byte-for-byte unchanged** (lab/results/r2/correctness).
 
 ## 3. Construction (`NewRuntime`, `NewOperation`)
 
@@ -225,7 +224,7 @@ Each amendment resolves a point where this document was silent, ambiguous or wro
 - **Rule:** if the caller's context is already done when admission reaches the key (in either mode) or a `Wait` claim, `Do` returns `ctx.Err()` untagged. It holds nothing, and `Rejected` is not counted. A `Reject` claim does not consult the context, so an unkeyed `Reject` call with a done context still reports overload when the units are taken.
 - **Why:** v0.2 acquires keys and `Wait` units through `x/sync/semaphore.Weighted.Acquire`. That call fails first on a done context, even when the semaphore is free (v0.22.0, `semaphore.go`: "We prefer to fail even if we could acquire"). `TryAcquire`, used for `Reject` units, never looks at a context. A3 points the same way: a caller that has given up must not hold capacity.
 - **Gap closed:** before this amendment the contract left a pre-cancelled keyed `Reject` call undefined. recon answered `Fail(Throttled, ErrOverloaded)` and counted `Rejected`, where v0.2 answers `context.Canceled`.
-- **Pinned by:** `recon/contract_test.go` `TestContractDoneCallerTakesNothing`; by `lab/assume` `TestDoneCallerTakesNothing`, where orig passes the same expectations; and by `lab/system` `TestDifferential`, whose generator now draws pre-cancelled keyed `Reject` calls. With the recon fix reverted, the differential fails within 30 steps.
+- **Pinned by:** `contract_test.go` `TestContractDoneCallerTakesNothing`; by `lab/assume` `TestDoneCallerTakesNothing`, where orig passes the same expectations; and by `lab/system` `TestDifferential`, whose generator now draws pre-cancelled keyed `Reject` calls. With the recon fix reverted, the differential fails within 30 steps.
 
 **Amendment 2. The outermost `*Failure` wins** (§5 step 4).
 - v0.2's `OutcomeOf` and `classify` use `errors.As`, which stops at the first `*Failure` in the chain.
@@ -244,7 +243,7 @@ Each amendment resolves a point where this document was silent, ambiguous or wro
 
 **Amendment 5. A `Reject` call refused because its key is held counts in `Rejected`** (§7, Δ1).
 - §7 counts "`Reject` overloads", and this refusal is one.
-- This is `model.KeyRejectCounted`. It is pinned by `lab/assume` (deltas ledger, Δ1) and `recon/delta_test.go` `TestDelta1RejectFailsFastOnHeldKey`.
+- This is `model.KeyRejectCounted`. It is pinned by `lab/assume` (deltas ledger, Δ1) and `delta_test.go` `TestDelta1RejectFailsFastOnHeldKey`.
 
 **Amendment 6. Δ11 names a v0.2 race; it adds no new behavior** (§8).
 - v0.2 passes every admission failure through `admissionError`. Once `Shutdown` has begun, that function rewrites a `Reject` overload into `ErrRuntimeStopping`, and `Rejected` is still counted.

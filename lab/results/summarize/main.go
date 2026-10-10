@@ -2,7 +2,7 @@
 // summary.json: the micro-benchmark comparison, each DoE study's summary,
 // the industrial and soak metrics, and how busy the machine was per stage.
 //
-//	go run ./lab/results/summarize lab/results/<run>
+//	go run ./results/summarize results/<run>     (from lab/)
 //
 // Inputs that a run did not produce are left out.
 package main
