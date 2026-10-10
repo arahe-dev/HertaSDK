@@ -8,7 +8,7 @@ them.
 
 | Version | Supported |
 |---|---|
-| 1.0-next (`main`) | Supported: the v1.0 candidate |
+| v1.0.0-next | Supported: the v1.0 candidate |
 | v0.2.0 | Supported until v1.0 is tagged |
 | v0.1.0 | Unsupported: an omitted `Effect` silently meant `Pure` |
 

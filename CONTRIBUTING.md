@@ -1,7 +1,7 @@
 # Contributing to HertaSDK
 
 Thanks for your interest. HertaSDK 1.0-next is the v1.0 candidate of an
-installable Go module (`go get github.com/arahe-dev/hertasdk@main`); its
+installable Go module (`go get github.com/arahe-dev/hertasdk@v1.0.0-next`); its
 execution contract is [docs/contract.md](docs/contract.md). See
 [README.md](README.md), [ROADMAP.md](ROADMAP.md), and
 [CHANGELOG.md](CHANGELOG.md).

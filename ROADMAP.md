@@ -20,8 +20,8 @@ pass before the next begins.
 - **Consumer validation:** render, event-ingestion, and catalogue-replacement
   workloads validated before extraction. CatalogueReplace landed without Herta
   semantic changes.
-- **Public module:** `github.com/arahe-dev/hertasdk`; `@main` is 1.0-next,
-  `@v0.2.0` the last tagged release.
+- **Public module:** `github.com/arahe-dev/hertasdk`; `@v1.0.0-next` is
+  1.0-next (a pre-release, so `@latest` is still `@v0.2.0`).
 - **Quickstart:** runnable at `examples/quickstart`
   (`go run ./examples/quickstart`).
 - **Benchmarks:** `BenchmarkContention`, `BenchmarkKeyedSerialization`,

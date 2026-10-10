@@ -26,12 +26,12 @@ arbitrates shared local capacity across otherwise-independent subsystems.
 > **Status.** HertaSDK **1.0-next** is the v1.0 candidate: the execution
 > contract rebuilt from first principles, with zero dependencies, the
 > package renamed to `hertasdk`, and twelve v0.2 defects fixed. It is
-> being hardened before it is locked as v1.0. The latest tagged release is
-> v0.2.0.
+> being hardened before it is locked as v1.0. It is tagged as the
+> pre-release `v1.0.0-next`, so `@latest` still resolves to v0.2.0:
 >
 > ```sh
-> go get github.com/arahe-dev/hertasdk@main      # 1.0-next
-> go get github.com/arahe-dev/hertasdk@v0.2.0    # last tagged release
+> go get github.com/arahe-dev/hertasdk@v1.0.0-next   # 1.0-next
+> go get github.com/arahe-dev/hertasdk@v0.2.0        # previous release
 > ```
 >
 > The execution contract is defined in [docs/contract.md](docs/contract.md):
@@ -293,7 +293,7 @@ deadline bounds how long a call waits.
 Install:
 
 ```sh
-go get github.com/arahe-dev/hertasdk@main
+go get github.com/arahe-dev/hertasdk@v1.0.0-next
 ```
 
 Runnable example in [`examples/quickstart`](examples/quickstart/main.go)
