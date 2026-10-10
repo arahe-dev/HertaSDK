@@ -1,0 +1,64 @@
+# Proven-equivalent mutants: no test can kill them because observable
+# behavior is unchanged. One "key<TAB>reason" per line; the key is
+# file|func|operator|from|to|nth as printed in summary.md. Every entry is a
+# claim a reviewer can check against the diff; a stale or killed entry is
+# reported by "mutate run" and "mutate report".
+
+# --- v0.2.0 (root package) ---
+lab/v02/keylock.go|(*KeyLocker).acquire|stmt-swap|swap|l.sem.Release(1) ⇄ kl.release(l)|0	The handler has returned when unlock runs; dropping the ref before releasing the semaphore can only orphan a semaphore nobody else will wait on, never admit two holders.
+lab/v02/operation.go|(*Operation).execute|stmt-delete|lastDeadlineExpired = false||0	The timed path reassigns it every attempt and the untimed path never sets it, so the reset is redundant.
+lab/v02/operation.go|(*Operation).execute|stmt-swap|swap|lastDeadlineExpired = attemptCtx.Err() == context.DeadlineExceeded ⇄ cancel()|0	Context errors are sticky: after an expired deadline cancel() leaves Err() == DeadlineExceeded, and before it Err() becomes Canceled, which also compares false. The code comment claiming the order matters is wrong.
+lab/v02/operation.go|(*Operation).acquireResources|stmt-swap|swap|acquired = append(acquired, res) ⇄ units = append(units, req.Units)|0	Two independent appends to parallel slices.
+lab/v02/operation.go|(*Operation).acquireResources|stmt-swap|swap|releaseAll() ⇄ op.runtime.stats.rejected.Add(1)|0	No contract orders the Rejected increment against the release of earlier claims; both happen before Do returns.
+lab/v02/operation.go|sortByRuntimeOrder|int-off|1|0|0	Starting the insertion sort at 0 adds one pass whose inner loop (j > 0) never runs.
+lab/v02/operation.go|sortByRuntimeOrder|cond-boundary|<|<=|1	Two requirements share a position only if they name the same resource, which construction rejects.
+lab/v02/policy.go|(Effect).valid|bool-flip|true|false|0	Effect.valid has no callers in v0.2 (dead code).
+lab/v02/policy.go|(Effect).valid|bool-flip|false|true|0	Effect.valid has no callers in v0.2 (dead code).
+lab/v02/policy.go|(RetryPolicy).attempts|cond-boundary|<=|<|0	MaxAttempts == 1 yields 1 through either branch.
+lab/v02/policy.go|(RetryPolicy).attempts|int-off|1|0|0	MaxAttempts == 1 yields 1 through either branch.
+lab/v02/runtime.go|NewRuntime|int-off|0|1|1	Capacity hint of make; the slice grows as needed.
+lab/v02/runtime.go|NewRuntime|stmt-swap|swap|resources[s.Name] = newResource(s.Name, s.Capacity) ⇄ order = append(order, s.Name)|0	Two independent writes inside construction.
+lab/v02/runtime.go|(*Runtime).end|stmt-swap|swap|rt.wg.Done() ⇄ rt.stats.finished.Add(1)|0	This is CONTRACT Δ2's fix. The Finished lag it removes is a race (about 1 in 20 000 drains), so no deterministic test can demand the defect, and the lab accepts both orders for v0.2.
+lab/v02/runtime.go|(*Runtime).begin|stmt-swap|swap|rt.wg.Add(1) ⇄ rt.stats.admitted.Add(1)|0	Both run under the read lock that Shutdown's write lock excludes; no observer can see the gap.
+lab/v02/runtime.go|(*Runtime).Shutdown|stmt-swap|swap|rt.accepting = false ⇄ rt.cancelWait()|0	Both run under the write lock; woken waiters test the closed stop channel, not accepting, and begin cannot run until the lock is released.
+lab/v02/runtime.go|sortStrings|int-off|1|0|0	Starting the insertion sort at 0 adds one pass whose inner loop (j > 0) never runs.
+lab/v02/runtime.go|sortStrings|cond-boundary|<|<=|1	Resource names are unique (duplicates fail construction), so no two compare equal.
+lab/v02/validation.go|isSafeRetry|bool-flip|false|true|0	Belt and braces: the retry table validated at construction never contains Success, Permanent or Throttled, so mayRetry is already false.
+lab/v02/validation.go|isSafeRetry|bool-flip|false|true|1	Belt and braces: an out-of-range Outcome cannot be in the retry table (construction rejects it), so mayRetry is already false.
+
+# --- v0.2-recon ---
+keys.go|(*KeyLocker).lock|int-off|1|2|0	A key waiter's n is never read; only Resource waiters use it.
+keys.go|(*KeyLocker).lock|int-off|1|0|0	A key waiter's n is never read; only Resource waiters use it.
+keys.go|(*KeyLocker).lock|stmt-delete|e = nil||0	admit ignores the entry whenever lock reports !ok.
+keys.go|(*KeyLocker).leave|stmt-delete|<-w.ready||0	Redundant since waiters stopped being pooled: w.state is read under the owner's lock, which ordered the owner's write, and the unread token dies with the waiter. Delete the statement.
+resource.go|(*Resource).leave|stmt-delete|<-w.ready||0	Redundant since waiters stopped being pooled: w.state is read under the owner's lock, which ordered the owner's write, and the unread token dies with the waiter. Delete the statement.
+keys.go|(*KeyLocker).handOff|stmt-swap|swap|e.q.remove(w) ⇄ w.wake(granted)|0	Both run under kl.mu; the woken goroutine reads only w.state, and re-enters the queue only through kl.mu.
+operation.go|NewOperation|int-off|1|0|0	attempts = 0 still runs one attempt: the loop stops when n >= attempts after the first.
+outcome.go|(outcomeSet).has|cond-boundary|<|<=|0	outcomeSet is a uint8: 1<<8 is 0, so o = 8 is false either way; the bound only guards negative shifts.
+outcome.go|(outcomeSet).has|int-off|8|9|0	outcomeSet is a uint8: 1<<8 is 0, so o = 8 is false either way; the bound only guards negative shifts.
+outcome.go|(outcomeSet).has|int-off|8|7|0	Bits 5 to 7 are never set: setOf is only called with valid outcomes.
+resource.go|(*Resource).String|int-off|10|11|0	No exported path yields a *Resource; String exists for API parity and recon's errors format r.name and r.size directly.
+resource.go|(*Resource).String|int-off|10|9|0	No exported path yields a *Resource; String exists for API parity and recon's errors format r.name and r.size directly.
+resource.go|(*Resource).grant|stmt-swap|swap|r.cur += w.n ⇄ r.q.remove(w)|0	remove does not touch w.n or r.cur; both run under r.mu.
+resource.go|(*Resource).grant|stmt-swap|swap|r.q.remove(w) ⇄ w.wake(granted)|0	Both run under r.mu; the woken goroutine reads only w.state, and touches the queue only through r.mu.
+resource.go|(*Resource).close|stmt-swap|swap|r.closed = true ⇄ r.q.closeAll()|0	Both run under r.mu; nothing observes closed in between.
+runtime.go||int-off|62|61|0	The drained bit only has to sit above any reachable in-flight count; 2^61 calls in flight is unreachable.
+runtime.go|(*Runtime).enter|stmt-swap|swap|rt.leave() ⇄ rt.stats.rejected.Add(1)|0	Both happen before Do returns ErrRuntimeStopping, and no contract orders Rejected against the drain signal (§6 orders only Finished).
+runtime.go|(*Runtime).Shutdown|stmt-swap|swap|rt.keys.close() ⇄ rt.markDrained()|0	markDrained acts only with nothing in flight, and then no key has a waiter to withdraw.
+runtime.go|(*Runtime).Stats|stmt-swap|swap|out.Finished = s.finished.Load() ⇄ out.Started = s.started.Load()|0	Admitted is still loaded after both, so neither can exceed it; Finished may legitimately exceed Started (withdrawals).
+runtime.go|(*Runtime).Stats|stmt-swap|swap|out.Admitted = s.admitted.Load() ⇄ out.Rejected = s.rejected.Load()|0	Rejected has no ordering promise; Admitted is still loaded after Started and Finished.
+runtime.go|(*Runtime).Stats|stmt-swap|swap|out.Rejected = s.rejected.Load() ⇄ out.Retried = s.retried.Load()|0	Rejected and Retried have no ordering promise.
+validate.go|retryTable|int-off|0|1|0	The initial bad outcome is overwritten before use: found is false until the first invalid key sets both.
+validate.go|retryTable|int-off|0|-1|0	The initial bad outcome is overwritten before use: found is false until the first invalid key sets both.
+validate.go|retryTable|cond-boundary|<|<=|0	Map keys are distinct, so o == bad never happens.
+validate.go|retryTable|int-off|0|1|2	The set returned beside an error is discarded by NewOperation.
+waiter.go|newWaiter|int-off|1|2|0	One token is ever sent per waiter; any buffer of at least 1 keeps wake non-blocking.
+waiter.go|(*waitq).push|stmt-swap|swap|q.tail = w ⇄ q.len++|0	Independent writes under the owner's lock.
+waiter.go|(*waitq).remove|stmt-delete|w.prev, w.next = nil, nil||0	A removed waiter is never queued or walked again (waiters are not reused), so its stale links are unreachable.
+waiter.go|(*waitq).remove|stmt-swap|swap|w.prev, w.next = nil, nil ⇄ q.len--|0	Independent writes under the owner's lock.
+waiter.go|(*waitq).closeAll|stmt-swap|swap|q.remove(w) ⇄ w.wake(withdrawn)|0	Under the owner's lock; the woken goroutine reads only w.state and needs the lock to touch the queue.
+keys.go|(*KeyLocker).handOff|stmt-delete|e.key = ""||0	lock overwrites e.key on every Get; the reset only lets a pooled entry drop its last key string sooner.
+validate.go|retryTable|int-off|0|1|1	The set returned beside an error is discarded by NewOperation.
+errors.go|(*Runtime).refused|stmt-swap|swap|rt.stats.rejected.Add(1) ⇄ runtime.Gosched()|0	Both happen before the refusal is returned; the contract orders neither the count nor the yield against the other.
+resource.go|(*Resource).sync|stmt-swap|swap|r.isFull = f ⇄ r.full.Store(f)|0	Both writes run under r.mu; isFull is read only under r.mu, so their order is unobservable.
+resource.go|(*Resource).close|stmt-swap|swap|r.q.closeAll() ⇄ r.sync()|0	closed is already true when sync runs, so full is set either way; both run under r.mu.

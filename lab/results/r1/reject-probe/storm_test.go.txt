@@ -1,0 +1,117 @@
+package probe
+
+import (
+	"context"
+	"fmt"
+	"os"
+	"runtime"
+	"strconv"
+	"sync"
+	"sync/atomic"
+	"testing"
+	"time"
+)
+
+// spinFor busy-waits about n iterations of a cheap loop (Windows' ~0.6ms
+// clock makes time-based spins useless below a millisecond).
+func spinFor(n int) {
+	x := 0
+	for i := 0; i < n; i++ {
+		x += i
+	}
+	sink.Add(int64(x))
+}
+
+var sink atomic.Int64
+
+func storm(do doer, isOverload func(error) bool, clients int, backoffIters int, window time.Duration) (ok, rej float64) {
+	var stop atomic.Bool
+	var wg sync.WaitGroup
+	var nOK, nRej atomic.Uint64
+	for i := 0; i < clients; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for !stop.Load() {
+				_, err := do(context.Background(), 0)
+				if err == nil {
+					nOK.Add(1)
+				} else if isOverload(err) {
+					nRej.Add(1)
+					spinFor(backoffIters)
+				}
+			}
+		}()
+	}
+	time.Sleep(window)
+	stop.Store(true)
+	wg.Wait()
+	s := window.Seconds()
+	return float64(nOK.Load()) / s, float64(nRej.Load()) / s
+}
+
+func env(k string, d int) int {
+	if v, err := strconv.Atoi(os.Getenv(k)); err == nil {
+		return v
+	}
+	return d
+}
+
+// TestStorm: clients × capacity × backoff grid, interleaved, REPS rounds.
+func TestStorm(t *testing.T) {
+	reps := env("REPS", 3)
+	clients := []int{16, 64, 256}
+	backoffs := []int{0, 200, 2000} // ~0, ~0.1µs, ~1µs of spinning
+	for _, c := range clients {
+		for _, b := range backoffs {
+			res := map[string][]float64{}
+			for r := 0; r < reps; r++ {
+				for _, im := range impls {
+					do, ov, _ := im.mk(4, nil)
+					ok, _ := storm(do, ov, c, b, 700*time.Millisecond)
+					res[im.name] = append(res[im.name], ok)
+					runtime.GC()
+				}
+			}
+			line := fmt.Sprintf("clients=%-4d backoff=%-5d |", c, b)
+			for _, im := range impls {
+				line += fmt.Sprintf(" %s=%7.0fk", im.name, median(res[im.name])/1e3)
+			}
+			fmt.Println(line)
+		}
+	}
+}
+
+func median(xs []float64) float64 {
+	s := append([]float64(nil), xs...)
+	for i := range s {
+		for j := i + 1; j < len(s); j++ {
+			if s[j] < s[i] {
+				s[i], s[j] = s[j], s[i]
+			}
+		}
+	}
+	return s[len(s)/2]
+}
+
+// BenchmarkReject: the cost of one rejection on a full resource, one goroutine.
+func BenchmarkReject(b *testing.B) {
+	for _, im := range impls {
+		b.Run(im.name, func(b *testing.B) {
+			hold := make(chan struct{})
+			defer close(hold)
+			do, ov, park := im.mk(1, hold)
+			park()
+			for { // wait until the single unit is held
+				if _, err := do(context.Background(), 0); ov(err) {
+					break
+				}
+			}
+			b.ReportAllocs()
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				do(context.Background(), 0)
+			}
+		})
+	}
+}

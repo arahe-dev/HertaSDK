@@ -1,0 +1,4141 @@
+{
+  "meta": {
+    "id": "20261009-232343-full-orig-recon",
+    "kind": "full",
+    "command": "go run ./lab/cmd/doe -design full -factors A,D,E -reps 5 -dur 1s -warmup 300ms -q -out lab/results/r1/reject-interaction",
+    "started": "2026-10-09T23:23:43+05:30",
+    "go": "go1.27.1",
+    "os": "windows",
+    "arch": "amd64",
+    "cpus": 20,
+    "gomaxprocs": 20,
+    "arms": [
+      "orig=orig",
+      "recon=recon"
+    ],
+    "reps": 5,
+    "seed": 1,
+    "warmup_ms": 300,
+    "duration_ms": 1000,
+    "trials": 80,
+    "failed_trials": 0,
+    "elapsed_s": 109.9659694
+  },
+  "design": {
+    "runs": 8,
+    "resolution": 0,
+    "factors": [
+      {
+        "symbol": "A",
+        "name": "clients",
+        "low": "8",
+        "high": "256"
+      },
+      {
+        "symbol": "D",
+        "name": "admission",
+        "low": "wait",
+        "high": "reject"
+      },
+      {
+        "symbol": "E",
+        "name": "keys",
+        "low": "none",
+        "high": "64·zipf1.2"
+      }
+    ]
+  },
+  "comparisons": [
+    {
+      "response": "throughput",
+      "unit": "ops/s",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 820803,
+      "candidate_mean": 1.69349e+06,
+      "effect": 1.04489,
+      "se": 0.0236059,
+      "p": 1.01813e-49,
+      "ratio": 2.06321,
+      "ci_lo": 1.99686,
+      "ci_hi": 2.13176,
+      "interactions": [
+        "DX"
+      ]
+    },
+    {
+      "response": "goodput",
+      "unit": "ops/s",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 608373,
+      "candidate_mean": 753502,
+      "effect": 0.308655,
+      "se": 0.036645,
+      "p": 5.80537e-12,
+      "ratio": 1.23855,
+      "ci_lo": 1.17727,
+      "ci_hi": 1.30302,
+      "interactions": [
+        "AX",
+        "DX"
+      ]
+    },
+    {
+      "response": "lat_p50",
+      "unit": "ns",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 9523.31,
+      "candidate_mean": 2587.96,
+      "effect": -1.87965,
+      "se": 0.0409036,
+      "p": 9.95673e-51,
+      "ratio": 0.27175,
+      "ci_lo": 0.256786,
+      "ci_hi": 0.287586,
+      "interactions": [
+        "EX",
+        "DX"
+      ]
+    },
+    {
+      "response": "lat_p90",
+      "unit": "ns",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 65460.5,
+      "candidate_mean": 28797.2,
+      "effect": -1.1847,
+      "se": 0.0304412,
+      "p": 2.8783e-46,
+      "ratio": 0.439917,
+      "ci_lo": 0.421759,
+      "ci_hi": 0.458857,
+      "interactions": [
+        "DX",
+        "EX",
+        "AX"
+      ]
+    },
+    {
+      "response": "lat_p99",
+      "unit": "ns",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 276611,
+      "candidate_mean": 239942,
+      "effect": -0.20517,
+      "se": 0.029066,
+      "p": 1.46718e-09,
+      "ratio": 0.867436,
+      "ci_lo": 0.833217,
+      "ci_hi": 0.903061,
+      "interactions": [
+        "DX",
+        "AX",
+        "EX"
+      ]
+    },
+    {
+      "response": "lat_p999",
+      "unit": "ns",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 1.17602e+06,
+      "candidate_mean": 651897,
+      "effect": -0.851197,
+      "se": 0.0929064,
+      "p": 2.95363e-13,
+      "ratio": 0.554325,
+      "ci_lo": 0.487408,
+      "ci_hi": 0.630429,
+      "interactions": [
+        "EX"
+      ]
+    },
+    {
+      "response": "lat_max",
+      "unit": "ns",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 1.26185e+07,
+      "candidate_mean": 5.93092e+06,
+      "effect": -1.08921,
+      "se": 0.0887778,
+      "p": 1.82647e-18,
+      "ratio": 0.470018,
+      "ci_lo": 0.415648,
+      "ci_hi": 0.5315,
+      "interactions": [
+        "EX",
+        "DX"
+      ]
+    },
+    {
+      "response": "wait_p50",
+      "unit": "ns",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 4830.15,
+      "candidate_mean": 1222,
+      "effect": -1.98282,
+      "se": 0.0414283,
+      "p": 7.91795e-52,
+      "ratio": 0.252995,
+      "ci_lo": 0.23889,
+      "ci_hi": 0.267932,
+      "interactions": [
+        "EX"
+      ]
+    },
+    {
+      "response": "wait_p99",
+      "unit": "ns",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "same",
+      "base_mean": 193708,
+      "candidate_mean": 181956,
+      "effect": -0.0902938,
+      "se": 0.0373471,
+      "p": 0.0184773,
+      "ratio": 0.939331,
+      "ci_lo": 0.891988,
+      "ci_hi": 0.989187,
+      "interactions": [
+        "DX",
+        "AX"
+      ]
+    },
+    {
+      "response": "exec_p50",
+      "unit": "ns",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 1243.26,
+      "candidate_mean": 411.828,
+      "effect": -1.59401,
+      "se": 0.0352147,
+      "p": 2.53955e-50,
+      "ratio": 0.331249,
+      "ci_lo": 0.315484,
+      "ci_hi": 0.347802,
+      "interactions": [
+        "EX",
+        "DX"
+      ]
+    },
+    {
+      "response": "exec_p99",
+      "unit": "ns",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "same",
+      "base_mean": 71732.8,
+      "candidate_mean": 69450,
+      "effect": -0.0466581,
+      "se": 0.0328583,
+      "p": 0.160467,
+      "ratio": 0.968176,
+      "ci_lo": 0.925112,
+      "ci_hi": 1.01325,
+      "interactions": [
+        "DX",
+        "EX",
+        "AX"
+      ]
+    },
+    {
+      "response": "allocs_op",
+      "unit": "allocs",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 11.908,
+      "candidate_mean": 0.801219,
+      "effect": -11.1068,
+      "se": 0.00732886,
+      "p": 1.73432e-147,
+      "ratio": null,
+      "ci_lo": -11.1215,
+      "ci_hi": -11.0922,
+      "interactions": [
+        "EX",
+        "AX",
+        "DX"
+      ]
+    },
+    {
+      "response": "bytes_op",
+      "unit": "B",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 527.611,
+      "candidate_mean": 48.1723,
+      "effect": -479.439,
+      "se": 0.277327,
+      "p": 3.79492e-151,
+      "ratio": null,
+      "ci_lo": -479.993,
+      "ci_hi": -478.885,
+      "interactions": [
+        "EX",
+        "DX",
+        "AX"
+      ]
+    },
+    {
+      "response": "peak_goroutines",
+      "unit": "goroutines",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 4857.85,
+      "candidate_mean": 0,
+      "effect": -4857.85,
+      "se": 748.094,
+      "p": 1.42635e-08,
+      "ratio": null,
+      "ci_lo": -6352.34,
+      "ci_hi": -3363.36,
+      "interactions": [
+        "EX",
+        "DX",
+        "AX"
+      ]
+    },
+    {
+      "response": "peak_heap",
+      "unit": "MiB",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "same",
+      "base_mean": 41.6719,
+      "candidate_mean": 35.2653,
+      "effect": -0.240823,
+      "se": 0.214962,
+      "p": 0.26677,
+      "ratio": 0.846262,
+      "ci_lo": 0.628393,
+      "ci_hi": 1.13967
+    },
+    {
+      "response": "gc_per_s",
+      "unit": "GC/s",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 33.4944,
+      "candidate_mean": 4.52487,
+      "effect": -28.9695,
+      "se": 8.23726,
+      "p": 0.000808652,
+      "ratio": null,
+      "ci_lo": -45.4253,
+      "ci_hi": -12.5137
+    },
+    {
+      "response": "err_rate",
+      "unit": "fraction",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "worse",
+      "base_mean": 0.120807,
+      "candidate_mean": 0.284137,
+      "effect": 0.16333,
+      "se": 0.00180341,
+      "p": 2.76948e-69,
+      "ratio": null,
+      "ci_lo": 0.159727,
+      "ci_hi": 0.166933,
+      "interactions": [
+        "DX",
+        "EX",
+        "AX"
+      ]
+    },
+    {
+      "response": "retries_op",
+      "unit": "retries",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "same",
+      "base_mean": 0,
+      "candidate_mean": 0,
+      "effect": 0,
+      "se": 0,
+      "p": null,
+      "ratio": null,
+      "ci_lo": 0,
+      "ci_hi": 0
+    },
+    {
+      "response": "fairness",
+      "unit": "jain",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 0.980057,
+      "candidate_mean": 0.998235,
+      "effect": 0.018178,
+      "se": 0.00128483,
+      "p": 2.25267e-21,
+      "ratio": null,
+      "ci_lo": 0.0156113,
+      "ci_hi": 0.0207447,
+      "interactions": [
+        "EX",
+        "AX",
+        "DX"
+      ]
+    },
+    {
+      "response": "cap_violations",
+      "unit": "count",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "same",
+      "base_mean": 0,
+      "candidate_mean": 0,
+      "effect": 0,
+      "se": 0,
+      "p": null,
+      "ratio": null,
+      "ci_lo": 0,
+      "ci_hi": 0
+    },
+    {
+      "response": "key_violations",
+      "unit": "count",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "same",
+      "base_mean": 0,
+      "candidate_mean": 0,
+      "effect": 0,
+      "se": 0,
+      "p": null,
+      "ratio": null,
+      "ci_lo": 0,
+      "ci_hi": 0
+    },
+    {
+      "response": "drain",
+      "unit": "ms",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "better",
+      "base_mean": 0.156431,
+      "candidate_mean": 0.0646431,
+      "effect": -1.27495,
+      "se": 0.1483,
+      "p": 2.86898e-12,
+      "ratio": 0.413238,
+      "ci_lo": 0.336524,
+      "ci_hi": 0.50744,
+      "interactions": [
+        "EX"
+      ]
+    },
+    {
+      "response": "stats_lag",
+      "unit": "calls",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "same",
+      "base_mean": 0,
+      "candidate_mean": 0,
+      "effect": 0,
+      "se": 0,
+      "p": null,
+      "ratio": null,
+      "ci_lo": 0,
+      "ci_hi": 0
+    },
+    {
+      "response": "residual_goroutines",
+      "unit": "goroutines",
+      "base": "orig",
+      "candidate": "recon",
+      "verdict": "same",
+      "base_mean": 0,
+      "candidate_mean": 0,
+      "effect": 0,
+      "se": 0,
+      "p": null,
+      "ratio": null,
+      "ci_lo": 0,
+      "ci_hi": 0
+    }
+  ],
+  "noise": [
+    {
+      "response": "throughput",
+      "scope": "orig",
+      "sd": 0.12744,
+      "cv": 0.0923534,
+      "df": 32
+    },
+    {
+      "response": "throughput",
+      "scope": "recon",
+      "sd": 0.0777731,
+      "cv": 0.0553877,
+      "df": 32
+    },
+    {
+      "response": "goodput",
+      "scope": "orig",
+      "sd": 0.201152,
+      "cv": 0.149616,
+      "df": 32
+    },
+    {
+      "response": "goodput",
+      "scope": "recon",
+      "sd": 0.115118,
+      "cv": 0.0830635,
+      "df": 32
+    },
+    {
+      "response": "lat_p50",
+      "scope": "orig",
+      "sd": 0.165811,
+      "cv": 0.121797,
+      "df": 32
+    },
+    {
+      "response": "lat_p50",
+      "scope": "recon",
+      "sd": 0.198572,
+      "cv": 0.147562,
+      "df": 32
+    },
+    {
+      "response": "lat_p90",
+      "scope": "orig",
+      "sd": 0.151045,
+      "cv": 0.110373,
+      "df": 32
+    },
+    {
+      "response": "lat_p90",
+      "scope": "recon",
+      "sd": 0.119382,
+      "cv": 0.0862698,
+      "df": 32
+    },
+    {
+      "response": "lat_p99",
+      "scope": "orig",
+      "sd": 0.168025,
+      "cv": 0.123519,
+      "df": 32
+    },
+    {
+      "response": "lat_p99",
+      "scope": "recon",
+      "sd": 0.0745726,
+      "cv": 0.053049,
+      "df": 32
+    },
+    {
+      "response": "lat_p999",
+      "scope": "orig",
+      "sd": 0.562758,
+      "cv": 0.477091,
+      "df": 32
+    },
+    {
+      "response": "lat_p999",
+      "scope": "recon",
+      "sd": 0.169018,
+      "cv": 0.124293,
+      "df": 32
+    },
+    {
+      "response": "lat_max",
+      "scope": "orig",
+      "sd": 0.404218,
+      "cv": 0.323371,
+      "df": 32
+    },
+    {
+      "response": "lat_max",
+      "scope": "recon",
+      "sd": 0.389702,
+      "cv": 0.310123,
+      "df": 32
+    },
+    {
+      "response": "wait_p50",
+      "scope": "orig",
+      "sd": 0.131126,
+      "cv": 0.095148,
+      "df": 32
+    },
+    {
+      "response": "wait_p50",
+      "scope": "recon",
+      "sd": 0.226844,
+      "cv": 0.170272,
+      "df": 32
+    },
+    {
+      "response": "wait_p99",
+      "scope": "orig",
+      "sd": 0.224057,
+      "cv": 0.168014,
+      "df": 32
+    },
+    {
+      "response": "wait_p99",
+      "scope": "recon",
+      "sd": 0.0747703,
+      "cv": 0.0531934,
+      "df": 32
+    },
+    {
+      "response": "exec_p50",
+      "scope": "orig",
+      "sd": 0.153213,
+      "cv": 0.112044,
+      "df": 32
+    },
+    {
+      "response": "exec_p50",
+      "scope": "recon",
+      "sd": 0.161643,
+      "cv": 0.11856,
+      "df": 32
+    },
+    {
+      "response": "exec_p99",
+      "scope": "orig",
+      "sd": 0.163948,
+      "cv": 0.120349,
+      "df": 32
+    },
+    {
+      "response": "exec_p99",
+      "scope": "recon",
+      "sd": 0.127702,
+      "cv": 0.0925522,
+      "df": 32
+    },
+    {
+      "response": "allocs_op",
+      "scope": "orig",
+      "sd": 0.0447486,
+      "cv": 0.00375785,
+      "df": 32
+    },
+    {
+      "response": "allocs_op",
+      "scope": "recon",
+      "sd": 0.0120851,
+      "cv": 0.0150834,
+      "df": 32
+    },
+    {
+      "response": "bytes_op",
+      "scope": "orig",
+      "sd": 1.49222,
+      "cv": 0.00282826,
+      "df": 32
+    },
+    {
+      "response": "bytes_op",
+      "scope": "recon",
+      "sd": 0.921782,
+      "cv": 0.0191351,
+      "df": 32
+    },
+    {
+      "response": "peak_goroutines",
+      "scope": "orig",
+      "sd": 4731.36,
+      "cv": 0.973962,
+      "df": 32
+    },
+    {
+      "response": "peak_goroutines",
+      "scope": "recon",
+      "sd": 0,
+      "cv": null,
+      "df": 32
+    },
+    {
+      "response": "peak_heap",
+      "scope": "orig",
+      "sd": 0.884156,
+      "cv": 0.845685,
+      "df": 32
+    },
+    {
+      "response": "peak_heap",
+      "scope": "recon",
+      "sd": 1.03277,
+      "cv": 1.04595,
+      "df": 32
+    },
+    {
+      "response": "gc_per_s",
+      "scope": "orig",
+      "sd": 51.5682,
+      "cv": 1.53961,
+      "df": 32
+    },
+    {
+      "response": "gc_per_s",
+      "scope": "recon",
+      "sd": 7.4038,
+      "cv": 1.63625,
+      "df": 32
+    },
+    {
+      "response": "err_rate",
+      "scope": "orig",
+      "sd": 0.0108672,
+      "cv": 0.0899548,
+      "df": 32
+    },
+    {
+      "response": "err_rate",
+      "scope": "recon",
+      "sd": 0.00346349,
+      "cv": 0.0121895,
+      "df": 32
+    },
+    {
+      "response": "retries_op",
+      "scope": "orig",
+      "sd": 0,
+      "cv": null,
+      "df": 32
+    },
+    {
+      "response": "retries_op",
+      "scope": "recon",
+      "sd": 0,
+      "cv": null,
+      "df": 32
+    },
+    {
+      "response": "fairness",
+      "scope": "orig",
+      "sd": 0.00807728,
+      "cv": 0.00824164,
+      "df": 32
+    },
+    {
+      "response": "fairness",
+      "scope": "recon",
+      "sd": 0.000888078,
+      "cv": 0.000889649,
+      "df": 32
+    },
+    {
+      "response": "cap_violations",
+      "scope": "orig",
+      "sd": 0,
+      "cv": null,
+      "df": 32
+    },
+    {
+      "response": "cap_violations",
+      "scope": "recon",
+      "sd": 0,
+      "cv": null,
+      "df": 32
+    },
+    {
+      "response": "key_violations",
+      "scope": "orig",
+      "sd": 0,
+      "cv": null,
+      "df": 32
+    },
+    {
+      "response": "key_violations",
+      "scope": "recon",
+      "sd": 0,
+      "cv": null,
+      "df": 32
+    },
+    {
+      "response": "drain",
+      "scope": "orig",
+      "sd": 0.852213,
+      "cv": 0.805268,
+      "df": 32
+    },
+    {
+      "response": "drain",
+      "scope": "recon",
+      "sd": 0.391727,
+      "cv": 0.311963,
+      "df": 32
+    },
+    {
+      "response": "stats_lag",
+      "scope": "orig",
+      "sd": 0,
+      "cv": null,
+      "df": 32
+    },
+    {
+      "response": "stats_lag",
+      "scope": "recon",
+      "sd": 0,
+      "cv": null,
+      "df": 32
+    },
+    {
+      "response": "residual_goroutines",
+      "scope": "orig",
+      "sd": 0,
+      "cv": null,
+      "df": 32
+    },
+    {
+      "response": "residual_goroutines",
+      "scope": "recon",
+      "sd": 0,
+      "cv": null,
+      "df": 32
+    }
+  ],
+  "top_effects": {
+    "allocs_op": [
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 1.55814,
+        "se": 0.0141508,
+        "p": 7.44906e-43,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": -1.42692,
+        "se": 0.0141508,
+        "p": 1.23414e-41,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 1.05614,
+        "se": 0.0141508,
+        "p": 1.80112e-37,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": -0.666872,
+        "se": 0.0141508,
+        "p": 3.86783e-31,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": 0.657475,
+        "se": 0.0141508,
+        "p": 6.05269e-31,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": -11.1068,
+        "se": 0.00732886,
+        "p": 1.73432e-147,
+        "ratio": null,
+        "lenth": "**",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "EX",
+        "estimate": -0.984813,
+        "se": 0.00732886,
+        "p": 3.4213e-80,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AE",
+        "estimate": -0.873232,
+        "se": 0.00732886,
+        "p": 7.30099e-77,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 0.852695,
+        "se": 0.00732886,
+        "p": 3.32575e-76,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": 0.573331,
+        "se": 0.00732886,
+        "p": 2.99863e-65,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 0.649246,
+        "se": 0.00382166,
+        "p": 7.1756e-49,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": -0.464635,
+        "se": 0.00382166,
+        "p": 3.14974e-44,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": -0.411482,
+        "se": 0.00382166,
+        "p": 1.52272e-42,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": 0.3918,
+        "se": 0.00382166,
+        "p": 7.2754e-42,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": -0.319547,
+        "se": 0.00382166,
+        "p": 4.83623e-39,
+        "ratio": null,
+        "significant": true
+      }
+    ],
+    "bytes_op": [
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 113.804,
+        "se": 0.471883,
+        "p": 9.77843e-54,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": -98.8404,
+        "se": 0.471883,
+        "p": 8.87644e-52,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": 98.2996,
+        "se": 0.471883,
+        "p": 1.05786e-51,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": -54.0811,
+        "se": 0.471883,
+        "p": 2.07576e-43,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 34.7279,
+        "se": 0.471883,
+        "p": 2.81594e-37,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": -479.439,
+        "se": 0.277327,
+        "p": 3.79492e-151,
+        "ratio": null,
+        "lenth": "**",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": -83.9349,
+        "se": 0.277327,
+        "p": 1.01053e-102,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "EX",
+        "estimate": -73.0825,
+        "se": 0.277327,
+        "p": 7.07555e-99,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DE",
+        "estimate": 65.097,
+        "se": 0.277327,
+        "p": 1.15511e-95,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": 40.7218,
+        "se": 0.277327,
+        "p": 1.19375e-82,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": -69.0293,
+        "se": 0.291493,
+        "p": 1.75204e-53,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": -32.3607,
+        "se": 0.291493,
+        "p": 5.73356e-43,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 32.1098,
+        "se": 0.291493,
+        "p": 7.35006e-43,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": 31.8944,
+        "se": 0.291493,
+        "p": 9.11163e-43,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": -22.8085,
+        "se": 0.291493,
+        "p": 4.00141e-38,
+        "ratio": null,
+        "significant": true
+      }
+    ],
+    "cap_violations": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      }
+    ],
+    "drain": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 4.5848,
+        "se": 0.269493,
+        "p": 1.36879e-17,
+        "ratio": 23.9973,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": -1.47528,
+        "se": 0.269493,
+        "p": 4.99738e-06,
+        "ratio": 0.359664,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "ADE",
+        "estimate": -1.36402,
+        "se": 0.269493,
+        "p": 1.66214e-05,
+        "ratio": 0.388498,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": -1.19246,
+        "se": 0.269493,
+        "p": 0.000104771,
+        "ratio": 0.437557,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 1.1606,
+        "se": 0.269493,
+        "p": 0.000146926,
+        "ratio": 2.23551,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 4.30875,
+        "se": 0.1483,
+        "p": 1.41003e-38,
+        "ratio": 19.8182,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": -1.27495,
+        "se": 0.1483,
+        "p": 2.86898e-12,
+        "ratio": 0.413238,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": 1.04784,
+        "se": 0.1483,
+        "p": 1.4269e-09,
+        "ratio": 2.06743,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DEX",
+        "estimate": 0.992494,
+        "se": 0.1483,
+        "p": 6.42575e-09,
+        "ratio": 1.98962,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": 0.987179,
+        "se": 0.1483,
+        "p": 7.4211e-09,
+        "ratio": 1.9823,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 4.0327,
+        "se": 0.123875,
+        "p": 4.20868e-26,
+        "ratio": 16.3668,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0.935069,
+        "se": 0.123875,
+        "p": 1.34771e-08,
+        "ratio": 1.91198,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0.922288,
+        "se": 0.123875,
+        "p": 1.79247e-08,
+        "ratio": 1.89512,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": 0.509711,
+        "se": 0.123875,
+        "p": 0.000253459,
+        "ratio": 1.42376,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 0.218973,
+        "se": 0.123875,
+        "p": 0.0866473,
+        "ratio": 1.16391,
+        "significant": false
+      }
+    ],
+    "err_rate": [
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 0.241615,
+        "se": 0.00343651,
+        "p": 1.20413e-36,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": -0.241563,
+        "se": 0.00343651,
+        "p": 1.21236e-36,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": -0.241563,
+        "se": 0.00343651,
+        "p": 1.21236e-36,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 0.208073,
+        "se": 0.00343651,
+        "p": 1.38868e-34,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": 0.208073,
+        "se": 0.00343651,
+        "p": 1.38868e-34,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": 0.404945,
+        "se": 0.00180341,
+        "p": 1.96927e-94,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 0.280811,
+        "se": 0.00180341,
+        "p": 2.82107e-84,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": 0.280811,
+        "se": 0.00180341,
+        "p": 2.82107e-84,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": 0.16333,
+        "se": 0.00180341,
+        "p": 2.76948e-69,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DX",
+        "estimate": 0.16333,
+        "se": 0.00180341,
+        "p": 2.76948e-69,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0.568275,
+        "se": 0.00109525,
+        "p": 2.21894e-64,
+        "ratio": null,
+        "lenth": "**",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 0.353549,
+        "se": 0.00109525,
+        "p": 8.71706e-58,
+        "ratio": null,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0.353549,
+        "se": 0.00109525,
+        "p": 8.71706e-58,
+        "ratio": null,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": -0.0496402,
+        "se": 0.00109525,
+        "p": 1.32404e-30,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "ADE",
+        "estimate": -0.0496402,
+        "se": 0.00109525,
+        "p": 1.32404e-30,
+        "ratio": null,
+        "significant": true
+      }
+    ],
+    "exec_p50": [
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 0.666643,
+        "se": 0.0484503,
+        "p": 5.49357e-15,
+        "ratio": 1.58738,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": -0.580491,
+        "se": 0.0484503,
+        "p": 2.28517e-13,
+        "ratio": 0.668736,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": 0.554864,
+        "se": 0.0484503,
+        "p": 7.43305e-13,
+        "ratio": 1.46903,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 0.505341,
+        "se": 0.0484503,
+        "p": 8.01105e-12,
+        "ratio": 1.41946,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": -0.483309,
+        "se": 0.0484503,
+        "p": 2.40808e-11,
+        "ratio": 0.715335,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": -1.59401,
+        "se": 0.0352147,
+        "p": 2.53955e-50,
+        "ratio": 0.331249,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "EX",
+        "estimate": -0.979601,
+        "se": 0.0352147,
+        "p": 1.86402e-37,
+        "ratio": 0.50712,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 0.605839,
+        "se": 0.0352147,
+        "p": 1.08381e-25,
+        "ratio": 1.52186,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DX",
+        "estimate": 0.504705,
+        "se": 0.0352147,
+        "p": 1.19782e-21,
+        "ratio": 1.41883,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DE",
+        "estimate": 0.382739,
+        "se": 0.0352147,
+        "p": 3.57465e-16,
+        "ratio": 1.30382,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": -1.29256,
+        "se": 0.0511161,
+        "p": 1.01494e-22,
+        "ratio": 0.408226,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 0.706337,
+        "se": 0.0511161,
+        "p": 4.88346e-15,
+        "ratio": 1.63166,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0.428918,
+        "se": 0.0511161,
+        "p": 1.37602e-09,
+        "ratio": 1.34622,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0.218703,
+        "se": 0.0511161,
+        "p": 0.000159166,
+        "ratio": 1.16369,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": 0.210615,
+        "se": 0.0511161,
+        "p": 0.000249474,
+        "ratio": 1.15718,
+        "significant": true
+      }
+    ],
+    "exec_p99": [
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 3.07193,
+        "se": 0.0518449,
+        "p": 2.75803e-34,
+        "ratio": 8.40899,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 2.61146,
+        "se": 0.0518449,
+        "p": 4.72273e-32,
+        "ratio": 6.1112,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": 2.50606,
+        "se": 0.0518449,
+        "p": 1.73577e-31,
+        "ratio": 5.68067,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": 1.3396,
+        "se": 0.0518449,
+        "p": 5.24817e-23,
+        "ratio": 2.53081,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": -1.32975,
+        "se": 0.0518449,
+        "p": 6.57633e-23,
+        "ratio": 0.397837,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 3.32034,
+        "se": 0.0328583,
+        "p": 2.62408e-72,
+        "ratio": 9.98903,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DX",
+        "estimate": 2.25982,
+        "se": 0.0328583,
+        "p": 1.03643e-61,
+        "ratio": 4.78932,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "ADX",
+        "estimate": 1.96974,
+        "se": 0.0328583,
+        "p": 5.97722e-58,
+        "ratio": 3.91696,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": 1.7454,
+        "se": 0.0328583,
+        "p": 1.18034e-54,
+        "ratio": 3.35287,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DE",
+        "estimate": 1.59487,
+        "se": 0.0328583,
+        "p": 3.30303e-52,
+        "ratio": 3.02068,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 4.02923,
+        "se": 0.040383,
+        "p": 1.72961e-41,
+        "ratio": 16.3275,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 3.18989,
+        "se": 0.040383,
+        "p": 2.96066e-38,
+        "ratio": 9.12542,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 3.04556,
+        "se": 0.040383,
+        "p": 1.29275e-37,
+        "ratio": 8.25669,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": 1.85014,
+        "se": 0.040383,
+        "p": 9.42076e-31,
+        "ratio": 3.60536,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": -0.592502,
+        "se": 0.040383,
+        "p": 9.24384e-16,
+        "ratio": 0.663192,
+        "significant": true
+      }
+    ],
+    "fairness": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": -0.0398064,
+        "se": 0.00255426,
+        "p": 1.68856e-16,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": 0.0394787,
+        "se": 0.00255426,
+        "p": 2.13463e-16,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "ADE",
+        "estimate": 0.0394783,
+        "se": 0.00255426,
+        "p": 2.13517e-16,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": -0.0394755,
+        "se": 0.00255426,
+        "p": 2.13946e-16,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": -0.039459,
+        "se": 0.00255426,
+        "p": 2.16494e-16,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": -0.0215916,
+        "se": 0.00128483,
+        "p": 3.72238e-25,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": -0.0213267,
+        "se": 0.00128483,
+        "p": 7.09387e-25,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": -0.0212628,
+        "se": 0.00128483,
+        "p": 8.29417e-25,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DE",
+        "estimate": 0.0200356,
+        "se": 0.00128483,
+        "p": 1.76868e-23,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "ADE",
+        "estimate": 0.0200343,
+        "se": 0.00128483,
+        "p": 1.77457e-23,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": -0.00337689,
+        "se": 0.000280835,
+        "p": 2.07801e-13,
+        "ratio": null,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": -0.00317791,
+        "se": 0.000280835,
+        "p": 1.01287e-12,
+        "ratio": null,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": -0.0030666,
+        "se": 0.000280835,
+        "p": 2.52408e-12,
+        "ratio": null,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": 0.00059252,
+        "se": 0.000280835,
+        "p": 0.0427828,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "ADE",
+        "estimate": 0.00059025,
+        "se": 0.000280835,
+        "p": 0.0435347,
+        "ratio": null,
+        "significant": false
+      }
+    ],
+    "gc_per_s": [
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": 24.1986,
+        "se": 16.3073,
+        "p": 0.147616,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": -23.4884,
+        "se": 16.3073,
+        "p": 0.159478,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": -15.8985,
+        "se": 16.3073,
+        "p": 0.336908,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "ADE",
+        "estimate": 6.70219,
+        "se": 16.3073,
+        "p": 0.683817,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 6.6985,
+        "se": 16.3073,
+        "p": 0.683981,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": -28.9695,
+        "se": 8.23726,
+        "p": 0.000808652,
+        "ratio": null,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": -14.3195,
+        "se": 8.23726,
+        "p": 0.0869518,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AEX",
+        "estimate": -12.3744,
+        "se": 8.23726,
+        "p": 0.137951,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AE",
+        "estimate": 11.8242,
+        "se": 8.23726,
+        "p": 0.156028,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "EX",
+        "estimate": 9.16888,
+        "se": 8.23726,
+        "p": 0.26983,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": -5.15066,
+        "se": 2.34129,
+        "p": 0.0351508,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 3.65056,
+        "se": 2.34129,
+        "p": 0.128783,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "ADE",
+        "estimate": -2.95054,
+        "se": 2.34129,
+        "p": 0.216702,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": -1.34924,
+        "se": 2.34129,
+        "p": 0.568457,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 1.24998,
+        "se": 2.34129,
+        "p": 0.597109,
+        "ratio": null,
+        "significant": false
+      }
+    ],
+    "goodput": [
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": 0.984378,
+        "se": 0.0636099,
+        "p": 2.06077e-16,
+        "ratio": 1.97846,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": -0.895381,
+        "se": 0.0636099,
+        "p": 2.93118e-15,
+        "ratio": 0.537605,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "ADE",
+        "estimate": 0.54559,
+        "se": 0.0636099,
+        "p": 8.41252e-10,
+        "ratio": 1.45962,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": -0.503974,
+        "se": 0.0636099,
+        "p": 4.83775e-09,
+        "ratio": 0.705162,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 0.262497,
+        "se": 0.0636099,
+        "p": 0.000245027,
+        "ratio": 1.19955,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": -1.47518,
+        "se": 0.036645,
+        "p": 3.59493e-47,
+        "ratio": 0.359689,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": -1.07042,
+        "se": 0.036645,
+        "p": 1.0242e-38,
+        "ratio": 0.47618,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AE",
+        "estimate": 0.996368,
+        "se": 0.036645,
+        "p": 7.1879e-37,
+        "ratio": 1.99497,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "ADE",
+        "estimate": 0.64075,
+        "se": 0.036645,
+        "p": 4.59466e-26,
+        "ratio": 1.55914,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AX",
+        "estimate": -0.579796,
+        "se": 0.036645,
+        "p": 8.4356e-24,
+        "ratio": 0.669058,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": -2.05497,
+        "se": 0.0364035,
+        "p": 1.28159e-33,
+        "ratio": 0.240653,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": -1.63687,
+        "se": 0.0364035,
+        "p": 1.70045e-30,
+        "ratio": 0.321553,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": 1.00836,
+        "se": 0.0364035,
+        "p": 6.21843e-24,
+        "ratio": 2.01162,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": -0.784595,
+        "se": 0.0364035,
+        "p": 1.27924e-20,
+        "ratio": 0.580515,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "ADE",
+        "estimate": 0.73591,
+        "se": 0.0364035,
+        "p": 8.671e-20,
+        "ratio": 1.66545,
+        "significant": true
+      }
+    ],
+    "key_violations": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      }
+    ],
+    "lat_max": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 1.68968,
+        "se": 0.127825,
+        "p": 1.64421e-14,
+        "ratio": 3.22586,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": -1.55091,
+        "se": 0.127825,
+        "p": 1.63878e-13,
+        "ratio": 0.341296,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "ADE",
+        "estimate": -1.48001,
+        "se": 0.127825,
+        "p": 5.59294e-13,
+        "ratio": 0.358487,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 1.41717,
+        "se": 0.127825,
+        "p": 1.7131e-12,
+        "ratio": 2.6706,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": 1.41351,
+        "se": 0.127825,
+        "p": 1.83011e-12,
+        "ratio": 2.66384,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 1.82719,
+        "se": 0.0887778,
+        "p": 6.40284e-30,
+        "ratio": 3.54845,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": 1.34168,
+        "se": 0.0887778,
+        "p": 8.62307e-23,
+        "ratio": 2.53446,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": -1.08921,
+        "se": 0.0887778,
+        "p": 1.82647e-18,
+        "ratio": 0.470018,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": 0.862775,
+        "se": 0.0887778,
+        "p": 3.21116e-14,
+        "ratio": 1.81853,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DEX",
+        "estimate": 0.849627,
+        "se": 0.0887778,
+        "p": 5.78214e-14,
+        "ratio": 1.80204,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 1.9647,
+        "se": 0.123235,
+        "p": 8.84173e-17,
+        "ratio": 3.90331,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 1.26985,
+        "se": 0.123235,
+        "p": 1.08329e-11,
+        "ratio": 2.41136,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0.308383,
+        "se": 0.123235,
+        "p": 0.0176376,
+        "ratio": 1.23832,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 0.168797,
+        "se": 0.123235,
+        "p": 0.180309,
+        "ratio": 1.12412,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": 0.148348,
+        "se": 0.123235,
+        "p": 0.237502,
+        "ratio": 1.1083,
+        "significant": false
+      }
+    ],
+    "lat_p50": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 2.47533,
+        "se": 0.0524342,
+        "p": 3.66122e-31,
+        "ratio": 5.56094,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": -2.08239,
+        "se": 0.0524342,
+        "p": 8.4452e-29,
+        "ratio": 0.236124,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": 2.01827,
+        "se": 0.0524342,
+        "p": 2.25197e-28,
+        "ratio": 4.05098,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": -1.88202,
+        "se": 0.0524342,
+        "p": 2.00729e-27,
+        "ratio": 0.271304,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "ADE",
+        "estimate": 1.82379,
+        "se": 0.0524342,
+        "p": 5.35527e-27,
+        "ratio": 3.54009,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 2.45871,
+        "se": 0.0409036,
+        "p": 5.0361e-58,
+        "ratio": 5.49724,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DE",
+        "estimate": 2.22399,
+        "se": 0.0409036,
+        "p": 2.74195e-55,
+        "ratio": 4.67182,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": -1.87965,
+        "se": 0.0409036,
+        "p": 9.95673e-51,
+        "ratio": 0.27175,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": -1.8581,
+        "se": 0.0409036,
+        "p": 2.03795e-50,
+        "ratio": 0.275839,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "ADE",
+        "estimate": 1.69867,
+        "se": 0.0409036,
+        "p": 5.27173e-48,
+        "ratio": 3.24602,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": -3.00467,
+        "se": 0.0627939,
+        "p": 2.39124e-31,
+        "ratio": 0.124596,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 2.44209,
+        "se": 0.0627939,
+        "p": 1.62995e-28,
+        "ratio": 5.43427,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": 2.4297,
+        "se": 0.0627939,
+        "p": 1.91171e-28,
+        "ratio": 5.38781,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": -1.63381,
+        "se": 0.0627939,
+        "p": 4.24372e-23,
+        "ratio": 0.322235,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "ADE",
+        "estimate": 1.57355,
+        "se": 0.0627939,
+        "p": 1.33753e-22,
+        "ratio": 2.97637,
+        "significant": true
+      }
+    ],
+    "lat_p90": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 3.7127,
+        "se": 0.0477645,
+        "p": 4.94343e-38,
+        "ratio": 13.111,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 2.50303,
+        "se": 0.0477645,
+        "p": 1.35112e-32,
+        "ratio": 5.66874,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": -2.04382,
+        "se": 0.0477645,
+        "p": 8.10434e-30,
+        "ratio": 0.242521,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": 2.03487,
+        "se": 0.0477645,
+        "p": 9.30456e-30,
+        "ratio": 4.09785,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": 1.49906,
+        "se": 0.0477645,
+        "p": 1.31191e-25,
+        "ratio": 2.82658,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 3.3944,
+        "se": 0.0304412,
+        "p": 4.98103e-75,
+        "ratio": 10.5152,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": -2.85426,
+        "se": 0.0304412,
+        "p": 3.05875e-70,
+        "ratio": 0.138287,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": 1.8296,
+        "se": 0.0304412,
+        "p": 5.07254e-58,
+        "ratio": 3.55439,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": -1.68485,
+        "se": 0.0304412,
+        "p": 8.98491e-56,
+        "ratio": 0.311035,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": -1.1847,
+        "se": 0.0304412,
+        "p": 2.8783e-46,
+        "ratio": 0.439917,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": -3.66471,
+        "se": 0.037752,
+        "p": 4.15275e-41,
+        "ratio": 0.078852,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 3.07611,
+        "se": 0.037752,
+        "p": 1.10153e-38,
+        "ratio": 8.43335,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": -1.95021,
+        "se": 0.037752,
+        "p": 2.12567e-32,
+        "ratio": 0.258779,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 1.15618,
+        "se": 0.037752,
+        "p": 2.80143e-25,
+        "ratio": 2.22867,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": 0.129292,
+        "se": 0.037752,
+        "p": 0.00170566,
+        "ratio": 1.09376,
+        "significant": true
+      }
+    ],
+    "lat_p99": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 5.09537,
+        "se": 0.053134,
+        "p": 6.12713e-41,
+        "ratio": 34.1868,
+        "lenth": "**",
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 0.849371,
+        "se": 0.053134,
+        "p": 8.19171e-17,
+        "ratio": 1.80172,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": -0.34879,
+        "se": 0.053134,
+        "p": 2.14077e-07,
+        "ratio": 0.785243,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": 0.340876,
+        "se": 0.053134,
+        "p": 3.2787e-07,
+        "ratio": 1.26653,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": 0.330132,
+        "se": 0.053134,
+        "p": 5.8639e-07,
+        "ratio": 1.25713,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 5.3779,
+        "se": 0.029066,
+        "p": 4.64311e-89,
+        "ratio": 41.5824,
+        "lenth": "**",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": 1.02982,
+        "se": 0.029066,
+        "p": 8.99868e-44,
+        "ratio": 2.04177,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": 0.819194,
+        "se": 0.029066,
+        "p": 8.59438e-38,
+        "ratio": 1.76442,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "ADX",
+        "estimate": 0.748964,
+        "se": 0.029066,
+        "p": 1.68483e-35,
+        "ratio": 1.68059,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DX",
+        "estimate": 0.623507,
+        "se": 0.029066,
+        "p": 6.3004e-31,
+        "ratio": 1.54062,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 5.66043,
+        "se": 0.0235819,
+        "p": 1.13757e-53,
+        "ratio": 50.5778,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 1.56816,
+        "se": 0.0235819,
+        "p": 7.07617e-36,
+        "ratio": 2.96526,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 1.21028,
+        "se": 0.0235819,
+        "p": 2.61318e-32,
+        "ratio": 2.31382,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "ADE",
+        "estimate": -1.11353,
+        "se": 0.0235819,
+        "p": 3.63375e-31,
+        "ratio": 0.462162,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0.898224,
+        "se": 0.0235819,
+        "p": 3.12938e-28,
+        "ratio": 1.86377,
+        "significant": true
+      }
+    ],
+    "lat_p999": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 5.87532,
+        "se": 0.17796,
+        "p": 2.71961e-26,
+        "ratio": 58.7013,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "ADE",
+        "estimate": -0.706349,
+        "se": 0.17796,
+        "p": 0.00038192,
+        "ratio": 0.612869,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": 0.559267,
+        "se": 0.17796,
+        "p": 0.00359648,
+        "ratio": 1.47352,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": -0.540669,
+        "se": 0.17796,
+        "p": 0.00471143,
+        "ratio": 0.687452,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 0.423516,
+        "se": 0.17796,
+        "p": 0.0234485,
+        "ratio": 1.34119,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 6.0044,
+        "se": 0.0929064,
+        "p": 5.24411e-60,
+        "ratio": 64.1953,
+        "lenth": "**",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": -0.851197,
+        "se": 0.0929064,
+        "p": 2.95363e-13,
+        "ratio": 0.554325,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DEX",
+        "estimate": 0.779252,
+        "se": 0.0929064,
+        "p": 6.69868e-12,
+        "ratio": 1.71624,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": 0.659483,
+        "se": 0.0929064,
+        "p": 1.25004e-09,
+        "ratio": 1.57952,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": 0.570619,
+        "se": 0.0929064,
+        "p": 5.78652e-08,
+        "ratio": 1.48516,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 6.13347,
+        "se": 0.0534482,
+        "p": 1.99185e-43,
+        "ratio": 70.2035,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": 1.01784,
+        "se": 0.0534482,
+        "p": 5.08392e-19,
+        "ratio": 2.02488,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": -0.778532,
+        "se": 0.0534482,
+        "p": 1.13199e-15,
+        "ratio": 0.58296,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0.759699,
+        "se": 0.0534482,
+        "p": 2.23838e-15,
+        "ratio": 1.69314,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0.717723,
+        "se": 0.0534482,
+        "p": 1.07077e-14,
+        "ratio": 1.64458,
+        "significant": true
+      }
+    ],
+    "peak_goroutines": [
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": -9059.8,
+        "se": 1496.19,
+        "p": 9.25088e-07,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 8908.1,
+        "se": 1496.19,
+        "p": 1.24054e-06,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": -8771.2,
+        "se": 1496.19,
+        "p": 1.61731e-06,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "ADE",
+        "estimate": -8031.7,
+        "se": 1496.19,
+        "p": 6.80727e-06,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": 7911.2,
+        "se": 1496.19,
+        "p": 8.60646e-06,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": -4857.85,
+        "se": 748.094,
+        "p": 1.42635e-08,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": -4529.9,
+        "se": 748.094,
+        "p": 8.14933e-08,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "EX",
+        "estimate": 4529.9,
+        "se": 748.094,
+        "p": 8.14933e-08,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": 4454.05,
+        "se": 748.094,
+        "p": 1.21502e-07,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DX",
+        "estimate": -4454.05,
+        "se": 748.094,
+        "p": 1.21502e-07,
+        "ratio": null,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      }
+    ],
+    "peak_heap": [
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": -0.521778,
+        "se": 0.279595,
+        "p": 0.0712026,
+        "ratio": 0.696513,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "ADE",
+        "estimate": -0.469474,
+        "se": 0.279595,
+        "p": 0.102868,
+        "ratio": 0.722228,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": -0.465611,
+        "se": 0.279595,
+        "p": 0.105613,
+        "ratio": 0.724164,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 0.384693,
+        "se": 0.279595,
+        "p": 0.178408,
+        "ratio": 1.30558,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": 0.256673,
+        "se": 0.279595,
+        "p": 0.365478,
+        "ratio": 1.19472,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 0.453483,
+        "se": 0.214962,
+        "p": 0.03881,
+        "ratio": 1.36934,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "ADEX",
+        "estimate": 0.410036,
+        "se": 0.214962,
+        "p": 0.060948,
+        "ratio": 1.32872,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DX",
+        "estimate": -0.317394,
+        "se": 0.214962,
+        "p": 0.144711,
+        "ratio": 0.802518,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AEX",
+        "estimate": 0.27198,
+        "se": 0.214962,
+        "p": 0.210371,
+        "ratio": 1.20746,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DE",
+        "estimate": -0.264005,
+        "se": 0.214962,
+        "p": 0.22389,
+        "ratio": 0.832773,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 0.522272,
+        "se": 0.326592,
+        "p": 0.119614,
+        "ratio": 1.43622,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": -0.424653,
+        "se": 0.326592,
+        "p": 0.202801,
+        "ratio": 0.745018,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "ADE",
+        "estimate": 0.350598,
+        "se": 0.326592,
+        "p": 0.291073,
+        "ratio": 1.27509,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 0.206328,
+        "se": 0.326592,
+        "p": 0.532031,
+        "ratio": 1.15375,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0.123074,
+        "se": 0.326592,
+        "p": 0.708778,
+        "ratio": 1.08905,
+        "significant": false
+      }
+    ],
+    "residual_goroutines": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      }
+    ],
+    "retries_op": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      }
+    ],
+    "stats_lag": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": 0,
+        "se": 0,
+        "p": null,
+        "ratio": null,
+        "significant": false
+      }
+    ],
+    "throughput": [
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": 0.702146,
+        "se": 0.0403,
+        "p": 6.86218e-18,
+        "ratio": 1.62692,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": -0.677589,
+        "se": 0.0403,
+        "p": 1.92272e-17,
+        "ratio": 0.625209,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": -0.601588,
+        "se": 0.0403,
+        "p": 5.69474e-16,
+        "ratio": 0.659028,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": 0.310072,
+        "se": 0.0403,
+        "p": 9.03009e-09,
+        "ratio": 1.23977,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "ADE",
+        "estimate": -0.268399,
+        "se": 0.0403,
+        "p": 1.6294e-07,
+        "ratio": 0.83024,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": 1.12709,
+        "se": 0.0236059,
+        "p": 9.20352e-52,
+        "ratio": 2.18417,
+        "lenth": "**",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": 1.04489,
+        "se": 0.0236059,
+        "p": 1.01813e-49,
+        "ratio": 2.06321,
+        "lenth": "**",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": -0.598356,
+        "se": 0.0236059,
+        "p": 4.39675e-35,
+        "ratio": 0.660506,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DE",
+        "estimate": -0.597382,
+        "se": 0.0236059,
+        "p": 4.83482e-35,
+        "ratio": 0.660952,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DX",
+        "estimate": 0.424942,
+        "se": 0.0236059,
+        "p": 9.73092e-27,
+        "ratio": 1.34252,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": 1.55203,
+        "se": 0.024594,
+        "p": 3.73354e-35,
+        "ratio": 2.9323,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": -0.595124,
+        "se": 0.024594,
+        "p": 3.87781e-22,
+        "ratio": 0.661987,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": -0.517175,
+        "se": 0.024594,
+        "p": 2.67473e-20,
+        "ratio": 0.698739,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 0.349175,
+        "se": 0.024594,
+        "p": 2.31031e-15,
+        "ratio": 1.27383,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AE",
+        "estimate": 0.238793,
+        "se": 0.024594,
+        "p": 4.64162e-11,
+        "ratio": 1.18,
+        "significant": true
+      }
+    ],
+    "wait_p50": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 2.38848,
+        "se": 0.0414656,
+        "p": 6.75748e-34,
+        "ratio": 5.23605,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": -2.15652,
+        "se": 0.0414656,
+        "p": 1.71774e-32,
+        "ratio": 0.224296,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": 2.1124,
+        "se": 0.0414656,
+        "p": 3.30283e-32,
+        "ratio": 4.32411,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AD",
+        "estimate": -2.04614,
+        "se": 0.0414656,
+        "p": 9.04511e-32,
+        "ratio": 0.242131,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "ADE",
+        "estimate": 2.00141,
+        "se": 0.0414656,
+        "p": 1.81825e-31,
+        "ratio": 4.0039,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 2.45254,
+        "se": 0.0414283,
+        "p": 1.31465e-57,
+        "ratio": 5.47378,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DE",
+        "estimate": 2.34237,
+        "se": 0.0414283,
+        "p": 2.35869e-56,
+        "ratio": 5.07135,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": -2.23306,
+        "se": 0.0414283,
+        "p": 4.7209e-55,
+        "ratio": 0.212707,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "D",
+        "estimate": -2.2268,
+        "se": 0.0414283,
+        "p": 5.62866e-55,
+        "ratio": 0.213632,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "X",
+        "estimate": -1.98282,
+        "se": 0.0414283,
+        "p": 7.91795e-52,
+        "ratio": 0.252995,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": -3.42435,
+        "se": 0.0717343,
+        "p": 2.5767e-31,
+        "ratio": 0.0931465,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": 2.57233,
+        "se": 0.0717343,
+        "p": 2.06716e-27,
+        "ratio": 5.94771,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 2.5166,
+        "se": 0.0717343,
+        "p": 4.09703e-27,
+        "ratio": 5.72231,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "D",
+        "estimate": -2.29708,
+        "se": 0.0717343,
+        "p": 7.02617e-26,
+        "ratio": 0.203474,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "ADE",
+        "estimate": 1.83971,
+        "se": 0.0717343,
+        "p": 6.59578e-23,
+        "ratio": 3.57937,
+        "significant": true
+      }
+    ],
+    "wait_p99": [
+      {
+        "scope": "orig",
+        "effect": "A",
+        "estimate": 4.83324,
+        "se": 0.070853,
+        "p": 3.14772e-36,
+        "ratio": 28.5069,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "E",
+        "estimate": 1.32913,
+        "se": 0.070853,
+        "p": 7.91857e-19,
+        "ratio": 2.51251,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "D",
+        "estimate": -0.881548,
+        "se": 0.070853,
+        "p": 8.40411e-14,
+        "ratio": 0.542785,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "DE",
+        "estimate": 0.866376,
+        "se": 0.070853,
+        "p": 1.33365e-13,
+        "ratio": 1.82308,
+        "significant": true
+      },
+      {
+        "scope": "orig",
+        "effect": "AE",
+        "estimate": 0.660181,
+        "se": 0.070853,
+        "p": 1.2411e-10,
+        "ratio": 1.58028,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "A",
+        "estimate": 5.21838,
+        "se": 0.0373471,
+        "p": 2.83314e-81,
+        "ratio": 37.2295,
+        "lenth": "**",
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "E",
+        "estimate": 1.30816,
+        "se": 0.0373471,
+        "p": 1.80753e-43,
+        "ratio": 2.47625,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "ADX",
+        "estimate": 0.889455,
+        "se": 0.0373471,
+        "p": 1.62961e-33,
+        "ratio": 1.85248,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "DE",
+        "estimate": 0.806029,
+        "se": 0.0373471,
+        "p": 4.47406e-31,
+        "ratio": 1.74839,
+        "significant": true
+      },
+      {
+        "scope": "orig vs recon",
+        "effect": "ADEX",
+        "estimate": -0.669443,
+        "se": 0.0373471,
+        "p": 1.22292e-26,
+        "ratio": 0.628749,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "A",
+        "estimate": 5.60351,
+        "se": 0.0236445,
+        "p": 1.71055e-53,
+        "ratio": 48.6212,
+        "lenth": "*",
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "AD",
+        "estimate": 1.36372,
+        "se": 0.0236445,
+        "p": 6.48481e-34,
+        "ratio": 2.57349,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "E",
+        "estimate": 1.28719,
+        "se": 0.0236445,
+        "p": 4.04334e-33,
+        "ratio": 2.44052,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "ADE",
+        "estimate": -0.978762,
+        "se": 0.0236445,
+        "p": 2.29745e-29,
+        "ratio": 0.507415,
+        "significant": true
+      },
+      {
+        "scope": "recon",
+        "effect": "DE",
+        "estimate": 0.745682,
+        "se": 0.0236445,
+        "p": 1.12829e-25,
+        "ratio": 1.67677,
+        "significant": true
+      }
+    ]
+  }
+}

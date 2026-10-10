@@ -15,7 +15,7 @@ body:
     id: proposal
     attributes:
       label: What are you proposing?
-      description: A design question, a docs addition, or an extraction criterion.
+      description: A design question, a docs addition, or a contract change (with the workload that needs it).
     validations:
       required: true
   - type: dropdown

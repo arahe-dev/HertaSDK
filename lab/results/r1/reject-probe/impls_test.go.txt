@@ -1,0 +1,114 @@
+package probe
+
+import (
+	"context"
+	"errors"
+	"os"
+	"strings"
+
+	orig "github.com/arahe-dev/hertasdk"
+	v0 "github.com/arahe-dev/hertasdk/recon"
+	va "probe/va"
+	vb "probe/vb"
+	vc "probe/vc"
+)
+
+type doer func(context.Context, int) (int, error)
+
+type impl struct {
+	name string
+	mk   func(c int64, hold <-chan struct{}) (doer, func(error) bool, func())
+}
+
+var impls = []impl{
+	{"orig", mkorig},
+	{"recon", mkv0},
+	{"A:fast-reject", mkva},
+	{"B:A+padding", mkvb},
+	{"C:full-flag", mkvc},
+}
+
+func must(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+func mkorig(c int64, hold <-chan struct{}) (doer, func(error) bool, func()) {
+	rt, _ := orig.NewRuntime(orig.ResourceSpec{Name: "r", Capacity: c})
+	pol := orig.Policy[int]{Effect: orig.Idempotent, Admission: orig.Reject, Resources: []orig.Requirement{{Name: "r", Units: 1}}}
+	op, err := orig.NewOperation(rt, "op", func(_ context.Context, i int) (int, error) { return i, nil }, pol)
+	must(err)
+	wpol := pol
+	wpol.Admission = orig.Wait
+	blk, err := orig.NewOperation(rt, "blk", func(_ context.Context, i int) (int, error) { <-hold; return i, nil }, wpol)
+	must(err)
+	park := func() { go blk.Do(context.Background(), 0) }
+	return op.Do, func(e error) bool { return errors.Is(e, orig.ErrOverloaded) }, park
+}
+
+func mkv0(c int64, hold <-chan struct{}) (doer, func(error) bool, func()) {
+	rt, _ := v0.NewRuntime(v0.ResourceSpec{Name: "r", Capacity: c})
+	pol := v0.Policy[int]{Effect: v0.Idempotent, Admission: v0.Reject, Resources: []v0.Requirement{{Name: "r", Units: 1}}}
+	op, err := v0.NewOperation(rt, "op", func(_ context.Context, i int) (int, error) { return i, nil }, pol)
+	must(err)
+	wpol := pol
+	wpol.Admission = v0.Wait
+	blk, err := v0.NewOperation(rt, "blk", func(_ context.Context, i int) (int, error) { <-hold; return i, nil }, wpol)
+	must(err)
+	park := func() { go blk.Do(context.Background(), 0) }
+	return op.Do, func(e error) bool { return errors.Is(e, v0.ErrOverloaded) }, park
+}
+
+func mkva(c int64, hold <-chan struct{}) (doer, func(error) bool, func()) {
+	rt, _ := va.NewRuntime(va.ResourceSpec{Name: "r", Capacity: c})
+	pol := va.Policy[int]{Effect: va.Idempotent, Admission: va.Reject, Resources: []va.Requirement{{Name: "r", Units: 1}}}
+	op, err := va.NewOperation(rt, "op", func(_ context.Context, i int) (int, error) { return i, nil }, pol)
+	must(err)
+	wpol := pol
+	wpol.Admission = va.Wait
+	blk, err := va.NewOperation(rt, "blk", func(_ context.Context, i int) (int, error) { <-hold; return i, nil }, wpol)
+	must(err)
+	park := func() { go blk.Do(context.Background(), 0) }
+	return op.Do, func(e error) bool { return errors.Is(e, va.ErrOverloaded) }, park
+}
+
+func mkvb(c int64, hold <-chan struct{}) (doer, func(error) bool, func()) {
+	rt, _ := vb.NewRuntime(vb.ResourceSpec{Name: "r", Capacity: c})
+	pol := vb.Policy[int]{Effect: vb.Idempotent, Admission: vb.Reject, Resources: []vb.Requirement{{Name: "r", Units: 1}}}
+	op, err := vb.NewOperation(rt, "op", func(_ context.Context, i int) (int, error) { return i, nil }, pol)
+	must(err)
+	wpol := pol
+	wpol.Admission = vb.Wait
+	blk, err := vb.NewOperation(rt, "blk", func(_ context.Context, i int) (int, error) { <-hold; return i, nil }, wpol)
+	must(err)
+	park := func() { go blk.Do(context.Background(), 0) }
+	return op.Do, func(e error) bool { return errors.Is(e, vb.ErrOverloaded) }, park
+}
+func mkvc(c int64, hold <-chan struct{}) (doer, func(error) bool, func()) {
+	rt, _ := vc.NewRuntime(vc.ResourceSpec{Name: "r", Capacity: c})
+	pol := vc.Policy[int]{Effect: vc.Idempotent, Admission: vc.Reject, Resources: []vc.Requirement{{Name: "r", Units: 1}}}
+	op, err := vc.NewOperation(rt, "op", func(_ context.Context, i int) (int, error) { return i, nil }, pol)
+	must(err)
+	wpol := pol
+	wpol.Admission = vc.Wait
+	blk, err := vc.NewOperation(rt, "blk", func(_ context.Context, i int) (int, error) { <-hold; return i, nil }, wpol)
+	must(err)
+	park := func() { go blk.Do(context.Background(), 0) }
+	return op.Do, func(e error) bool { return errors.Is(e, vc.ErrOverloaded) }, park
+}
+
+// pick returns the implementations named in $IMPLS (comma list), or all.
+func pick() []impl {
+	want := os.Getenv("IMPLS")
+	if want == "" {
+		return impls
+	}
+	var out []impl
+	for _, im := range impls {
+		if strings.Contains(","+want+",", ","+im.name+",") {
+			out = append(out, im)
+		}
+	}
+	return out
+}

@@ -1,0 +1,168 @@
+=== RUN   TestDrainUnderLoad
+=== RUN   TestDrainUnderLoad/budget
+=== RUN   TestDrainUnderLoad/budget/orig
+    drain_test.go:45: metrics: callers=1024 drain_max_ms=4.143 drain_p50_ms=2.624 exit_max_ms=4.167 exit_p50_ms=2.68 reps=20 service_ms=2 stats_lag_reps=0
+=== RUN   TestDrainUnderLoad/budget/recon
+    drain_test.go:45: metrics: callers=1024 drain_max_ms=2.688 drain_p50_ms=2.204 exit_max_ms=2.703 exit_p50_ms=2.219 reps=20 service_ms=2 stats_lag_reps=0
+=== RUN   TestDrainUnderLoad/key
+=== RUN   TestDrainUnderLoad/key/orig
+    drain_test.go:45: metrics: callers=1024 drain_max_ms=3.981 drain_p50_ms=2.634 exit_max_ms=3.993 exit_p50_ms=2.641 reps=20 service_ms=2 stats_lag_reps=0
+=== RUN   TestDrainUnderLoad/key/recon
+    drain_test.go:45: metrics: callers=1024 drain_max_ms=2.701 drain_p50_ms=2.123 exit_max_ms=2.738 exit_p50_ms=2.149 reps=20 service_ms=2 stats_lag_reps=0
+--- PASS: TestDrainUnderLoad (1.83s)
+    --- PASS: TestDrainUnderLoad/budget (0.93s)
+        --- PASS: TestDrainUnderLoad/budget/orig (0.49s)
+        --- PASS: TestDrainUnderLoad/budget/recon (0.43s)
+    --- PASS: TestDrainUnderLoad/key (0.91s)
+        --- PASS: TestDrainUnderLoad/key/orig (0.47s)
+        --- PASS: TestDrainUnderLoad/key/recon (0.44s)
+=== RUN   TestGoroutinesPerDo
+=== RUN   TestGoroutinesPerDo/orig
+    goroutines_test.go:62: metrics: contended_cancellable_goroutines_per_do=1 contended_goroutines_per_do=1 uncontended_goroutines_per_do=1 uncontended_timeout_goroutines_per_do=1
+=== RUN   TestGoroutinesPerDo/recon
+    goroutines_test.go:62: metrics: contended_cancellable_goroutines_per_do=0 contended_goroutines_per_do=0 uncontended_goroutines_per_do=0 uncontended_timeout_goroutines_per_do=0
+--- PASS: TestGoroutinesPerDo (1.81s)
+    --- PASS: TestGoroutinesPerDo/orig (1.28s)
+    --- PASS: TestGoroutinesPerDo/recon (0.54s)
+=== RUN   TestManyUniqueKeys
+=== RUN   TestManyUniqueKeys/orig
+    keys_test.go:39: metrics: extra_allocs_per_keyed_call=2.999 heap_B_per_held_key=185.6 held_keys=1e+04 idle_B_per_key=1.417 keyed_calls_per_s=7.102e+05 keys=1e+06 peak_extra_heap_MB=41.53 retained_KB=1384 unkeyed_calls_per_s=1.756e+06
+=== RUN   TestManyUniqueKeys/recon
+    keys_test.go:39: metrics: extra_allocs_per_keyed_call=0.000146 heap_B_per_held_key=90.06 held_keys=1e+04 idle_B_per_key=-0.02513 keyed_calls_per_s=3.032e+06 keys=1e+06 peak_extra_heap_MB=5.961 retained_KB=-24.54 unkeyed_calls_per_s=3.59e+06
+--- PASS: TestManyUniqueKeys (3.53s)
+    --- PASS: TestManyUniqueKeys/orig (2.47s)
+    --- PASS: TestManyUniqueKeys/recon (1.01s)
+=== RUN   TestRejectUnderLoad
+=== RUN   TestRejectUnderLoad/server/16
+=== RUN   TestRejectUnderLoad/server/16/orig
+    reject_test.go:103: metrics: callers=16 ok_per_s=1.164e+06
+=== RUN   TestRejectUnderLoad/server/16/recon
+    reject_test.go:103: metrics: callers=16 ok_per_s=1.68e+06
+=== RUN   TestRejectUnderLoad/server/64
+=== RUN   TestRejectUnderLoad/server/64/orig
+    reject_test.go:103: metrics: callers=64 ok_per_s=1.106e+06
+=== RUN   TestRejectUnderLoad/server/64/recon
+    reject_test.go:103: metrics: callers=64 ok_per_s=1.502e+06
+=== RUN   TestRejectUnderLoad/server/256
+=== RUN   TestRejectUnderLoad/server/256/orig
+    reject_test.go:103: metrics: callers=256 ok_per_s=1.08e+06
+=== RUN   TestRejectUnderLoad/server/256/recon
+    reject_test.go:103: metrics: callers=256 ok_per_s=1.467e+06
+=== RUN   TestRejectUnderLoad/server/1024
+=== RUN   TestRejectUnderLoad/server/1024/orig
+    reject_test.go:103: metrics: callers=1024 ok_per_s=1.106e+06
+=== RUN   TestRejectUnderLoad/server/1024/recon
+    reject_test.go:103: metrics: callers=1024 ok_per_s=1.438e+06
+=== RUN   TestRejectUnderLoad/yield/16
+=== RUN   TestRejectUnderLoad/yield/16/orig
+    reject_test.go:103: metrics: callers=16 ok_per_s=9.483e+05
+=== RUN   TestRejectUnderLoad/yield/16/recon
+    reject_test.go:103: metrics: callers=16 ok_per_s=2.039e+06
+=== RUN   TestRejectUnderLoad/yield/64
+=== RUN   TestRejectUnderLoad/yield/64/orig
+    reject_test.go:103: metrics: callers=64 ok_per_s=7.92e+05
+=== RUN   TestRejectUnderLoad/yield/64/recon
+    reject_test.go:103: metrics: callers=64 ok_per_s=1.954e+06
+=== RUN   TestRejectUnderLoad/yield/256
+=== RUN   TestRejectUnderLoad/yield/256/orig
+    reject_test.go:103: metrics: callers=256 ok_per_s=9.097e+05
+=== RUN   TestRejectUnderLoad/yield/256/recon
+    reject_test.go:103: metrics: callers=256 ok_per_s=1.625e+06
+=== RUN   TestRejectUnderLoad/yield/1024
+=== RUN   TestRejectUnderLoad/yield/1024/orig
+    reject_test.go:103: metrics: callers=1024 ok_per_s=6.471e+05
+=== RUN   TestRejectUnderLoad/yield/1024/recon
+    reject_test.go:103: metrics: callers=1024 ok_per_s=1.752e+06
+=== RUN   TestRejectUnderLoad/spin/16
+=== RUN   TestRejectUnderLoad/spin/16/orig
+    reject_test.go:103: metrics: callers=16 ok_per_s=9.103e+05
+=== RUN   TestRejectUnderLoad/spin/16/recon
+    reject_test.go:103: metrics: callers=16 ok_per_s=1.627e+06
+=== RUN   TestRejectUnderLoad/spin/64
+=== RUN   TestRejectUnderLoad/spin/64/orig
+    reject_test.go:103: metrics: callers=64 ok_per_s=3.305e+05
+=== RUN   TestRejectUnderLoad/spin/64/recon
+    reject_test.go:103: metrics: callers=64 ok_per_s=1.285e+06
+=== RUN   TestRejectUnderLoad/spin/256
+=== RUN   TestRejectUnderLoad/spin/256/orig
+    reject_test.go:103: metrics: callers=256 ok_per_s=1.725e+05
+=== RUN   TestRejectUnderLoad/spin/256/recon
+    reject_test.go:103: metrics: callers=256 ok_per_s=9.661e+05
+=== RUN   TestRejectUnderLoad/spin/1024
+=== RUN   TestRejectUnderLoad/spin/1024/orig
+    reject_test.go:103: metrics: callers=1024 ok_per_s=6.857e+04
+=== RUN   TestRejectUnderLoad/spin/1024/recon
+    reject_test.go:103: metrics: callers=1024 ok_per_s=1.009e+06
+--- PASS: TestRejectUnderLoad (121.13s)
+    --- PASS: TestRejectUnderLoad/server/16 (0.00s)
+        --- PASS: TestRejectUnderLoad/server/16/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/server/16/recon (0.00s)
+    --- PASS: TestRejectUnderLoad/server/64 (0.00s)
+        --- PASS: TestRejectUnderLoad/server/64/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/server/64/recon (0.00s)
+    --- PASS: TestRejectUnderLoad/server/256 (0.00s)
+        --- PASS: TestRejectUnderLoad/server/256/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/server/256/recon (0.00s)
+    --- PASS: TestRejectUnderLoad/server/1024 (0.00s)
+        --- PASS: TestRejectUnderLoad/server/1024/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/server/1024/recon (0.00s)
+    --- PASS: TestRejectUnderLoad/yield/16 (0.00s)
+        --- PASS: TestRejectUnderLoad/yield/16/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/yield/16/recon (0.00s)
+    --- PASS: TestRejectUnderLoad/yield/64 (0.00s)
+        --- PASS: TestRejectUnderLoad/yield/64/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/yield/64/recon (0.00s)
+    --- PASS: TestRejectUnderLoad/yield/256 (0.00s)
+        --- PASS: TestRejectUnderLoad/yield/256/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/yield/256/recon (0.00s)
+    --- PASS: TestRejectUnderLoad/yield/1024 (0.00s)
+        --- PASS: TestRejectUnderLoad/yield/1024/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/yield/1024/recon (0.00s)
+    --- PASS: TestRejectUnderLoad/spin/16 (0.00s)
+        --- PASS: TestRejectUnderLoad/spin/16/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/spin/16/recon (0.00s)
+    --- PASS: TestRejectUnderLoad/spin/64 (0.00s)
+        --- PASS: TestRejectUnderLoad/spin/64/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/spin/64/recon (0.00s)
+    --- PASS: TestRejectUnderLoad/spin/256 (0.00s)
+        --- PASS: TestRejectUnderLoad/spin/256/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/spin/256/recon (0.00s)
+    --- PASS: TestRejectUnderLoad/spin/1024 (0.00s)
+        --- PASS: TestRejectUnderLoad/spin/1024/orig (0.00s)
+        --- PASS: TestRejectUnderLoad/spin/1024/recon (0.00s)
+=== RUN   TestSoak
+=== RUN   TestSoak/orig
+    soak_test.go:73: metrics: calls=1.567e+05 db_p99_drift=1.033 db_p99_early_ms=3.981 db_p99_late_ms=4.112 drain_ms=135.4 goroutines_early=16.33 goroutines_late=24.33 heap_early_MB=73.8 heap_late_MB=73.8 heap_peak_MB=73.82 ok_frac=0.9747 render_p99_early_ms=4.293 render_p99_late_ms=4.293 render_shed_frac=0.003631
+=== RUN   TestSoak/recon
+    soak_test.go:73: metrics: calls=1.562e+05 db_p99_drift=1.05 db_p99_early_ms=3.916 db_p99_late_ms=4.112 drain_ms=71.11 goroutines_early=15 goroutines_late=13.33 heap_early_MB=73.77 heap_late_MB=73.78 heap_peak_MB=73.79 ok_frac=0.9748 render_p99_early_ms=4.227 render_p99_late_ms=4.227 render_shed_frac=0.004661
+--- PASS: TestSoak (120.33s)
+    --- PASS: TestSoak/orig (60.19s)
+    --- PASS: TestSoak/recon (60.14s)
+=== RUN   TestSpike
+=== RUN   TestSpike/orig
+    spike_test.go:46: metrics: arrivals=8.411e+04 backlog_cleared_ms=101.5 burst_goodput_per_s=6474 burst_p50_ms=101.3 burst_p99_ms=102.5 burst_shed_frac=0.6759 goroutines_per_call=1.002 launch_lag_p99_ms=0.9902 peak_extra_goroutines=2142 peak_heap_MB=154.4 post_p99_ms=2.585 pre_in_do_p99_ms=1.846 pre_p50_ms=1.484 pre_p99_ms=2.345 recovery_limit_ms=3.846 recovery_ms=5950
+=== RUN   TestSpike/recon
+    spike_test.go:46: metrics: arrivals=8.427e+04 backlog_cleared_ms=101.1 burst_goodput_per_s=6594 burst_p50_ms=101.3 burst_p99_ms=102.5 burst_shed_frac=0.6713 goroutines_per_call=0.001329 launch_lag_p99_ms=0.9619 peak_extra_goroutines=104 peak_heap_MB=144.2 post_p99_ms=2.335 pre_in_do_p99_ms=1.809 pre_p50_ms=1.471 pre_p99_ms=2.244 recovery_limit_ms=3.809 recovery_ms=150
+--- PASS: TestSpike (30.10s)
+    --- PASS: TestSpike/orig (15.05s)
+    --- PASS: TestSpike/recon (15.05s)
+=== RUN   TestMemoryPerWaiter
+=== RUN   TestMemoryPerWaiter/budget
+=== RUN   TestMemoryPerWaiter/budget/orig
+    waiters_test.go:66: metrics: allocs_per_waiter=14.91 canceled_frac=1 goroutines_per_waiter=1 heap_B_per_waiter=848.3 process_allocs_per_waiter=15.93 process_heap_B_per_waiter=963 stack_B_per_waiter=7694 waiters=1e+04 withdraw_ms=6.902
+=== RUN   TestMemoryPerWaiter/budget/recon
+    waiters_test.go:66: metrics: allocs_per_waiter=1.976 canceled_frac=1 goroutines_per_waiter=0 heap_B_per_waiter=157.3 process_allocs_per_waiter=2.94 process_heap_B_per_waiter=265.3 stack_B_per_waiter=226.1 waiters=1e+04 withdraw_ms=8.56
+=== RUN   TestMemoryPerWaiter/key
+=== RUN   TestMemoryPerWaiter/key/orig
+    waiters_test.go:66: metrics: allocs_per_waiter=9.957 canceled_frac=1 goroutines_per_waiter=1 heap_B_per_waiter=757.9 process_allocs_per_waiter=10.97 process_heap_B_per_waiter=871.7 stack_B_per_waiter=7776 waiters=1e+04 withdraw_ms=6.366
+=== RUN   TestMemoryPerWaiter/key/recon
+    waiters_test.go:66: metrics: allocs_per_waiter=1.962 canceled_frac=1 goroutines_per_waiter=0 heap_B_per_waiter=155.7 process_allocs_per_waiter=2.93 process_heap_B_per_waiter=264.1 stack_B_per_waiter=226.1 waiters=1e+04 withdraw_ms=7.385
+--- PASS: TestMemoryPerWaiter (2.46s)
+    --- PASS: TestMemoryPerWaiter/budget (1.24s)
+        --- PASS: TestMemoryPerWaiter/budget/orig (0.65s)
+        --- PASS: TestMemoryPerWaiter/budget/recon (0.59s)
+    --- PASS: TestMemoryPerWaiter/key (1.22s)
+        --- PASS: TestMemoryPerWaiter/key/orig (0.64s)
+        --- PASS: TestMemoryPerWaiter/key/recon (0.58s)
+PASS
+ok  	github.com/arahe-dev/hertasdk/lab/industrial	282.639s

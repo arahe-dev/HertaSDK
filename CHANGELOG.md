@@ -5,6 +5,86 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-next] - Unreleased
+
+The v1.0 candidate. The runtime was rebuilt from first principles against a
+written contract ([docs/contract.md](docs/contract.md)) and checked against
+v0.2.0 by a comparison lab ([lab/](lab)). It keeps v0.2.0's API and
+behavior except for the fixes listed below, and is laid out so v1.0's
+features slot in without a rewrite. It will be hardened before it is locked
+as v1.0.
+
+### Changed (breaking)
+
+- The package is named `hertasdk`, matching its import path (was
+  `execution`). Error messages use the `hertasdk:` prefix (was
+  `execution:`).
+- No dependencies: the runtime owns its weighted FIFO semaphore, and
+  `golang.org/x/sync` is gone.
+- Go 1.26 or later (`errors.AsType`), down from the 1.27.1 directive of
+  v0.2.0.
+
+### Fixed
+
+Each fix is a row of the contract's §8 and is pinned by a test.
+
+1. `Reject` with a held key no longer blocks; it fails fast with
+   `Fail(Throttled, ErrOverloaded)`.
+2. `Stats().Finished` is counted before the drain signal, so it equals
+   `Admitted` once `Shutdown` returns `nil`.
+3. One classifier drives both the retry decision and the returned error: a
+   plain error after the attempt deadline is `Uncertain` in both, and is
+   retried where `Uncertain` retries are allowed.
+4. An attempt ended by the caller's own deadline or cancellation is always
+   `Permanent` and never retried.
+5. `RetryPolicy.On` is copied at construction; editing the map later no
+   longer changes behavior or races.
+6. A waiter whose own context ended gets `ctx.Err()`, not
+   `ErrRuntimeStopping`, even if shutdown began meanwhile.
+7. The per-attempt context is cancelled on every path, including a panic.
+8. A `Shutdown` whose context expires no longer leaves a goroutine behind.
+9. `Stats.Started` counts only calls whose handler actually ran.
+10. No goroutine per `Do`, and no allocations on the uncontended path.
+11. A `Reject` overload is never reported as `ErrRuntimeStopping`.
+12. A nil `*Failure` returned as an error no longer panics; it reads as
+    unclassified (`Permanent`, never retried).
+
+### Added
+
+- `Reject` refusals yield the processor once, and a full budget refuses
+  without taking its lock. Callers that retry a refusal in a tight loop can
+  no longer starve the calls holding capacity: with 256 such callers,
+  successful calls went from about 3k/s to about 1M/s (v0.2.0: 57–112k/s).
+- [docs/contract.md](docs/contract.md): the normative contract, including
+  FIFO and head-of-line semantics, multi-resource holding and the deltas
+  from v0.2.0.
+- The [lab/](lab) module (not part of the package): v0.2.0 frozen in
+  `lab/v02`, plus assumption, model, differential, chaos, industrial,
+  design-of-experiments, mutation and real-consumer suites.
+- CI runs the package on Go 1.26 and stable, with a 100% coverage gate, and
+  runs the lab's quick tier.
+
+### Performance
+
+Measured against v0.2.0 on a quiet machine
+([lab/results/r2](lab/results/r2/REPORT.md)):
+
+- uncontended `Do`: 893 ns / 10 allocs → 59 ns / 0 allocs;
+- `Do` with a timeout: 1,465 ns / 14 allocs → 350 ns / 4 allocs;
+- 0 goroutines per call (was 1); 157 B per waiting call (was 848 B plus a
+  7.7 KB stack);
+- mixed-load throughput ×1.72, p99 latency ×0.39;
+- all 72 benchmark comparisons better.
+
+### Upgrade notes
+
+- Import `github.com/arahe-dev/hertasdk` and refer to it as `hertasdk.`;
+  code that aliased it as `execution` keeps working with the alias.
+- If you match error text, the prefix is now `hertasdk:`. Prefer
+  `errors.Is` with the exported sentinels.
+- Keyed `Reject` callers now receive `Throttled` refusals where v0.2.0
+  blocked on the key (fix 1).
+
 ## [0.2.0] - 2026-09-05
 
 API safety hardening. One rule drove every change: **if semantics matter,

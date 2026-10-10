@@ -1,48 +1,146 @@
-package execution
+package hertasdk
 
 import (
 	"context"
-	"fmt"
-
-	"golang.org/x/sync/semaphore"
+	"strconv"
+	"sync"
+	"sync/atomic"
 )
 
-// Resource is a named weighted semaphore: a finite capacity shared across
-// operations. Deliberately thin over golang.org/x/sync/semaphore — Herta
-// does not write its own semaphore.
+// Resource is a named finite capacity: a weighted semaphore with a strict
+// FIFO queue, the same semantics as golang.org/x/sync/semaphore made
+// explicit (CONTRACT §4.1).
+//
+//   - A request is granted at once only if it fits and nobody is queued.
+//   - Release grants from the head for as long as each waiter fits; a head
+//     that does not fit blocks everyone behind it, so heavy requests never
+//     starve.
+//   - A waiter that leaves is removed; if it was the head, the queue is
+//     re-examined.
+//
+// Units in use (cur) and queued waiters (q.len) are exact at every unlock.
+// Once closed by Shutdown, the queue is empty and admits no new waiter.
 type Resource struct {
-	name     string
-	capacity int64
-	sem      *semaphore.Weighted
+	// full is set while nothing can be granted at once (all units in use,
+	// a queue, or closed). It is written under mu only when that changes,
+	// so the uncontended path never stores it, and a Reject against a full
+	// resource fails with one atomic load, without touching mu.
+	full   atomic.Bool
+	isFull bool // mu-guarded copy of full, to skip redundant stores
+	mu     sync.Mutex
+	cur    int64
+	q      waitq
+	closed bool
+	size   int64
+	name   string
 }
 
 func newResource(name string, capacity int64) *Resource {
-	return &Resource{
-		name:     name,
-		capacity: capacity,
-		sem:      semaphore.NewWeighted(capacity),
+	return &Resource{name: name, size: capacity}
+}
+
+// sync publishes full when it changes. Caller holds mu.
+func (r *Resource) sync() {
+	if f := r.q.len > 0 || r.closed || r.cur >= r.size; f != r.isFull {
+		r.isFull = f
+		r.full.Store(f)
 	}
 }
 
-// acquire blocks until units are available or ctx is done. For Wait
-// admission. The ctx passed in is the caller's admission context, which
-// the runtime cancels on shutdown — so a shutdown wakes waiters through
-// this same ctx. On cancellation (including shutdown), semaphore.Weighted
-// releases any units it had already granted before returning the error.
-func (r *Resource) acquire(ctx context.Context, units int64) error {
-	return r.sem.Acquire(ctx, units)
-}
-
-// tryAcquire attempts immediate acquisition (Reject admission).
-func (r *Resource) tryAcquire(units int64) bool {
-	return r.sem.TryAcquire(units)
-}
-
-func (r *Resource) release(units int64) {
-	r.sem.Release(units)
-}
-
-// String renders "name(capacity)" for diagnostics.
+// String renders "name(capacity)".
 func (r *Resource) String() string {
-	return fmt.Sprintf("%s(%d)", r.name, r.capacity)
+	return r.name + "(" + strconv.FormatInt(r.size, 10) + ")"
+}
+
+// tryAcquire takes n units only if they fit and nobody is queued.
+func (r *Resource) tryAcquire(n int64) bool {
+	if r.full.Load() {
+		return false
+	}
+	r.mu.Lock()
+	ok := r.q.len == 0 && r.size-r.cur >= n
+	if ok {
+		r.cur += n
+		r.sync()
+	}
+	r.mu.Unlock()
+	return ok
+}
+
+// acquire takes n units (0 < n ≤ size), queueing behind earlier waiters.
+// It fails, holding nothing, if ctx ends while it waits or the resource is
+// closed. The uncontended path never touches ctx, so it never allocates.
+func (r *Resource) acquire(ctx context.Context, n int64) bool {
+	r.mu.Lock()
+	if r.q.len == 0 && r.size-r.cur >= n {
+		r.cur += n
+		r.sync()
+		r.mu.Unlock()
+		return true
+	}
+	done := ctx.Done() // only now: Done allocates on a fresh cancelCtx
+	if r.closed || isClosed(done) {
+		r.mu.Unlock()
+		return false
+	}
+	w := newWaiter(n)
+	r.q.push(w)
+	r.sync()
+	r.mu.Unlock()
+
+	woken := w.park(done)
+	ok := woken && w.state == granted && !isClosed(done)
+	if !ok {
+		r.leave(w, woken)
+	}
+	return ok
+}
+
+// leave settles a waiter that is not keeping a grant: one granted as its
+// caller gave up returns the units, one still queued is removed.
+func (r *Resource) leave(w *waiter, woken bool) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	defer r.sync()
+	if w.state == waiting {
+		head := r.q.head == w
+		r.q.remove(w)
+		if head {
+			r.grant()
+		}
+		return
+	}
+	if !woken {
+		<-w.ready // the owner woke w as its caller gave up
+	}
+	if w.state == granted {
+		r.cur -= w.n
+		r.grant()
+	}
+}
+
+func (r *Resource) release(n int64) {
+	r.mu.Lock()
+	r.cur -= n
+	r.grant()
+	r.sync()
+	r.mu.Unlock()
+}
+
+// grant admits waiters from the head while each one fits. Caller holds mu.
+func (r *Resource) grant() {
+	for w := r.q.head; w != nil && r.size-r.cur >= w.n; w = r.q.head {
+		r.cur += w.n
+		r.q.remove(w)
+		w.wake(granted)
+	}
+}
+
+// close withdraws every waiter and refuses new ones.
+func (r *Resource) close() {
+	r.mu.Lock()
+	r.closed = true
+	r.q.closeAll()
+	r.sync()
+	r.mu.Unlock()
 }

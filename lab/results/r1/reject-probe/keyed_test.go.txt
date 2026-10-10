@@ -1,0 +1,87 @@
+package probe
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"math/rand/v2"
+	"os"
+	"runtime"
+	"strconv"
+	"sync"
+	"sync/atomic"
+	"testing"
+	"time"
+
+	orig "github.com/arahe-dev/hertasdk"
+	vk "probe/vk"
+)
+
+const kClients, kKeys, kCap = 256, 64, 4
+
+func keyedLoop(do func(context.Context, int) (int, error), overloaded func(error) bool, mode string, window time.Duration) (ok, rej uint64) {
+	var stop atomic.Bool
+	var wg sync.WaitGroup
+	var nOK, nRej atomic.Uint64
+	for c := 0; c < kClients; c++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			rng := rand.New(rand.NewPCG(uint64(c), 9))
+			z := rand.NewZipf(rng, 1.2, 1, kKeys-1)
+			for !stop.Load() {
+				_, err := do(context.Background(), int(z.Uint64()))
+				if err == nil {
+					nOK.Add(1)
+				} else if overloaded(err) {
+					nRej.Add(1)
+					if mode == "yield" {
+						runtime.Gosched()
+					}
+				}
+			}
+		}()
+	}
+	time.Sleep(window)
+	stop.Store(true)
+	wg.Wait()
+	return nOK.Load(), nRej.Load()
+}
+
+func keyOf(i int) string { return strconv.Itoa(i) }
+
+func TestKeyedReject(t *testing.T) {
+	w := 700 * time.Millisecond
+	for _, adm := range []string{"reject", "wait"} {
+		for r := 0; r < 2; r++ {
+			// orig
+			{
+				rt, _ := orig.NewRuntime(orig.ResourceSpec{Name: "r", Capacity: kCap})
+				p := orig.Policy[int]{Effect: orig.Idempotent, Resources: []orig.Requirement{{Name: "r", Units: 1}}, SerializeKey: keyOf}
+				if adm == "reject" {
+					p.Admission = orig.Reject
+				}
+				op, _ := orig.NewOperation(rt, "op", func(_ context.Context, i int) (int, error) { return i, nil }, p)
+				ok, rej := keyedLoop(op.Do, func(e error) bool { return errors.Is(e, orig.ErrOverloaded) }, "yield", w)
+				fmt.Printf("%-6s orig  ok/s=%8.0f rej/s=%9.0f\n", adm, float64(ok)/w.Seconds(), float64(rej)/w.Seconds())
+			}
+			// recon (instrumented)
+			{
+				vk.RefusedPeek.Store(0)
+				vk.RefusedKey.Store(0)
+				vk.RefusedClaim.Store(0)
+				rt, _ := vk.NewRuntime(vk.ResourceSpec{Name: "r", Capacity: kCap})
+				p := vk.Policy[int]{Effect: vk.Idempotent, Resources: []vk.Requirement{{Name: "r", Units: 1}}, SerializeKey: keyOf}
+				if adm == "reject" {
+					p.Admission = vk.Reject
+				}
+				op, _ := vk.NewOperation(rt, "op", func(_ context.Context, i int) (int, error) { return i, nil }, p)
+				ok, rej := keyedLoop(op.Do, func(e error) bool { return errors.Is(e, vk.ErrOverloaded) }, "yield", w)
+				fmt.Printf("%-6s recon ok/s=%8.0f rej/s=%9.0f  refused: peek=%d key-held=%d claim=%d\n", adm, float64(ok)/w.Seconds(), float64(rej)/w.Seconds(),
+					vk.RefusedPeek.Load(), vk.RefusedKey.Load(), vk.RefusedClaim.Load())
+			}
+			runtime.GC()
+		}
+	}
+	_ = os.Getenv
+}

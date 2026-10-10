@@ -12,19 +12,26 @@ Every attempt ends in exactly one outcome:
 | `Success` | Done. No retry. |
 | `Transient` | Retryable, if the policy allows and `Effect` permits. |
 | `Permanent` | Never retried. |
-| `Throttled` | **Not retried in V0.** Herta has no backoff/jitter semantics, so an immediate retry would only hammer the resource that just refused us. `RetryPolicy.On[Throttled] = true` is rejected at construction. |
+| `Throttled` | **Not retried.** Herta has no backoff/jitter semantics yet, so an immediate retry would only hammer the resource that just refused us. `RetryPolicy.On[Throttled] = true` is rejected at construction. |
 | `Uncertain` | Retryable **only** if `Effect` is `Pure` or `Idempotent`. Never for `NonIdempotent`. |
 
-Since v0.2.0 the retry policy must only request what the contract implements:
-`On` entries for `Throttled`, `Success`, `Permanent`, or unrecognized
-`Outcome` values are construction errors (`ErrInvalidRetryPolicy`), not
-silently ignored settings. The actionable entries in V0 are `Transient`,
-and `Uncertain` where the `Effect` permits it.
+The retry policy must only request what the contract implements: `On`
+entries for `Throttled`, `Success`, `Permanent`, or unrecognized `Outcome`
+values are construction errors (`ErrInvalidRetryPolicy`), not silently
+ignored settings. When several are present, the lowest is reported. The
+actionable entries are `Transient`, and `Uncertain` where the `Effect`
+permits it. The table is copied at construction.
 
 Classification is the **handler's** (or its provider adapter's) job — the
 code closest to the external system tags errors with `Fail(outcome, err)`.
 Anything untagged is unclassified — and unclassified Go errors are treated
-conservatively: **no speculative retry**.
+conservatively: **no speculative retry**. A nil `*Failure` returned by
+mistake (`var f *Failure; return v, f`) is unclassified too; it never
+crashes the caller.
+
+One classifier drives both the retry decision and the error `Do` returns,
+so the two can never disagree: an unclassified error after the attempt's
+own deadline is `Uncertain` in both.
 
 ## Retry safety
 
@@ -32,7 +39,7 @@ The retry table is the heart of the contract:
 
 |  | Pure | Idempotent | NonIdempotent |
 |---|---|---|---|
-| Transient | retry ok | retry ok | retry only if proven unexecuted |
+| Transient | retry ok | retry ok | retry ok — the adapter vouches it did not execute |
 | Uncertain | retry ok | retry ok | **invalid contract** |
 | Permanent / Throttled | no blind retry | no blind retry | no blind retry |
 
@@ -52,11 +59,13 @@ retry, prove idempotence, or make execution observable) instead of hoping.
 
 ## NonIdempotent restrictions
 
-- A `NonIdempotent` operation may still retry `Transient` failures **only**
-  when the runtime can prove the attempt did not execute (e.g. rejected before
-  dispatch, failed before any side effect).
-- Timeouts on non-idempotent operations classify as `Uncertain` unless the
-  provider proves otherwise — a timed-out call may have completed server-side.
+- A `NonIdempotent` operation retries `Transient` failures, and `Transient`
+  is a promise: the adapter is saying the attempt did not execute (rejected
+  before dispatch, failed before any side effect). Herta cannot verify it and
+  trusts the tag, so tag `Transient` only where that is true.
+- An unclassified timeout is `Uncertain` for every `Effect` — a timed-out call
+  may have completed server-side. An adapter must not turn `ctx.Done()` into
+  `Transient` for a `NonIdempotent` call unless it knows nothing was sent.
 - When in doubt, the runtime does not retry. Conservative is correct.
 
 ## Caller cancellation
@@ -64,10 +73,12 @@ retry, prove idempotence, or make execution observable) instead of hoping.
 `ctx` cancellation by the caller is not a failure of the operation — it is a
 withdrawal of interest:
 
-- The attempt stops (cooperatively) and no retry follows.
-- Waiting operations (admission, key, resources) wake with a cancellation
-  error without consuming capacity.
-- Cancellation never classifies as `Transient`.
+- The attempt stops (cooperatively) and no retry follows: an attempt the
+  caller ended is `Permanent`, whatever the retry policy says.
+- Waiting operations (admission, key, resources) wake with the caller's own
+  `ctx.Err()` without consuming capacity, even if shutdown began meanwhile.
+- Herta never classifies a caller's cancellation as `Transient`. Only an
+  adapter that tags `ctx.Err()` itself can, and it then owns that promise.
 
 ## Plain error conservative behavior
 

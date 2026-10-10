@@ -4,19 +4,49 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  go:
+  # The shipped module: zero dependencies, 100% statement coverage.
+  hertasdk:
+    name: hertasdk (go ${{ matrix.go }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go: ['1.26.x', 'stable'] # 1.26 is the go.mod floor (errors.AsType)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version-file: go.mod
+          go-version: ${{ matrix.go }}
           cache: true
-      - run: go mod download
+      - name: go.mod is tidy
+        run: go mod tidy && git diff --exit-code -- go.mod go.sum
       - run: test -z "$(gofmt -l .)"
-      - run: go vet ./...
-      - run: go test -count=1 ./...
-      - run: go test -race -count=1 ./...
-      - run: go build ./...
+      - run: go vet . ./examples/...
+      - run: go test -race -count=1 -coverprofile=coverage.out .
+      - name: coverage is 100%
+        run: go tool cover -func=coverage.out | tail -1 | grep -q '100.0%'
       - run: go run ./examples/quickstart
+
+  # The comparison lab (its own module): quick tier against v0.2.0 (lab/v02)
+  # and hertasdk, both implementations.
+  lab:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lab
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: lab/go.mod
+          cache: true
+      - run: go vet ./...
+      - run: go test -race -count=1 ./...

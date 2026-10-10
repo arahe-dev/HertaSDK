@@ -15,7 +15,7 @@
     <rect x="150" y="138" width="340" height="118" rx="12" fill="none" stroke="#111111" stroke-width="2"/>
     <text x="320" y="160" text-anchor="middle" font-size="15" font-weight="700" fill="#111111">Herta Runtime</text>
     <text x="320" y="182" text-anchor="middle" font-size="13" fill="#333333">Resource budgets · Admission policy</text>
-    <text x="320" y="202" text-anchor="middle" font-size="13" fill="#333333">SerializeBy(key) · Timeout / retry contract</text>
+    <text x="320" y="202" text-anchor="middle" font-size="13" fill="#333333">SerializeKey · Timeout / retry contract</text>
     <text x="320" y="222" text-anchor="middle" font-size="13" fill="#333333">Shutdown / lifecycle</text>
     <line x1="176" y1="231" x2="464" y2="231" stroke="#111111" stroke-width="1" stroke-dasharray="5 4" opacity="0.45"/>
     <text x="320" y="247" text-anchor="middle" font-size="12" fill="#555555">shared local capacity — one environment</text>

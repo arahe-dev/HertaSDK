@@ -1,0 +1,51 @@
+package probe
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"runtime"
+	"testing"
+	"time"
+
+	vg "probe/vg"
+)
+
+func vgOp(h func(context.Context, int) (int, error)) (func(context.Context, int) (int, error), func(error) bool) {
+	rt, _ := vg.NewRuntime(vg.ResourceSpec{Name: "r", Capacity: 4})
+	op, err := vg.NewOperation(rt, "op", h, vg.Policy[int]{Effect: vg.Idempotent, Admission: vg.Reject, Resources: []vg.Requirement{{Name: "r", Units: 1}}})
+	must(err)
+	return op.Do, func(e error) bool { return errors.Is(e, vg.ErrOverloaded) }
+}
+
+// TestSchedScaling: recon spin storm at 256 clients across GOMAXPROCS.
+func TestSchedScaling(t *testing.T) {
+	old := runtime.GOMAXPROCS(0)
+	defer runtime.GOMAXPROCS(old)
+	for _, p := range []int{4, 10, 20} {
+		runtime.GOMAXPROCS(p)
+		fmt.Printf("GOMAXPROCS=%-3d clients/P=%-4d ", p, 256/p)
+		runRoot("recon", reconOp, 256, true, 800*time.Millisecond)
+		runtime.GC()
+	}
+}
+
+// TestDefense: yield-on-full inside the library (vg) vs recon, all shapes.
+func TestDefense(t *testing.T) {
+	w := 800 * time.Millisecond
+	for _, c := range []int{16, 256} {
+		for _, spin := range []bool{true, false} {
+			runRoot("recon", reconOp, c, spin, w)
+			runRoot("vg", vgOp, c, spin, w)
+			runtime.GC()
+		}
+	}
+	h := func(_ context.Context, i int) (int, error) { return i, nil }
+	for _, n := range []int{64, 256, 1024} {
+		dr, _ := reconOp(h)
+		dg, _ := vgOp(h)
+		a, _ := serverLoad(dr, n, 600*time.Millisecond)
+		b, _ := serverLoad(dg, n, 600*time.Millisecond)
+		fmt.Printf("server inflight=%-5d recon ok/s=%8.0f  vg ok/s=%8.0f  ratio=%.2f\n", n, a, b, b/a)
+	}
+}

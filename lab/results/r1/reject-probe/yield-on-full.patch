@@ -1,0 +1,20 @@
+--- /c/hertasdk/recon/resource.go	2026-10-10 00:36:40.752882500 +0530
++++ recon/resource.go (yield on full)	2026-10-10 01:09:39.512210400 +0530
+@@ -2,6 +2,7 @@
+ 
+ import (
+ 	"context"
++	"runtime"
+ 	"strconv"
+ 	"sync"
+ 	"sync/atomic"
+@@ -55,6 +56,9 @@
+ // tryAcquire takes n units only if they fit and nobody is queued.
+ func (r *Resource) tryAcquire(n int64) bool {
+ 	if r.full.Load() {
++		// Saturated: give the processor to whoever holds the capacity, so
++		// a caller that retries at once cannot starve the holders.
++		runtime.Gosched()
+ 		return false
+ 	}
+ 	r.mu.Lock()

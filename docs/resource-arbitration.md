@@ -1,8 +1,8 @@
 # Resource arbitration
 
 The defining feature of HertaSDK: heterogeneous operations share named finite
-budgets, and the runtime arbitrates fairly instead of letting each subsystem
-invent its own semaphore.
+budgets, and the runtime arbitrates them in strict FIFO order instead of
+letting each subsystem invent its own semaphore.
 
 ## Shared local resources
 
@@ -18,9 +18,10 @@ flowchart LR
     end
 ```
 
-Operations declare claims: `{ renderer: 1 }`, `{ db-write: 2 }`. The runtime
-admits an operation only when every claimed budget has room, acquiring in
-deterministic order with rollback on partial failure.
+Operations declare claims in their policy, e.g.
+`Resources: []hertasdk.Requirement{{Name: "db-write", Units: 2}}`. The
+runtime admits an operation only when every claimed budget has room,
+acquiring in deterministic order with rollback on partial failure.
 
 The point is sharing: the render path, the event ingester, and the catalogue
 writer can all draw from `db-write`. Capacity planning happens once, in one
@@ -43,22 +44,30 @@ flowchart LR
     R -->|"peak inside: exactly 8"| P["provider"]
 ```
 
-Measured in the internal reference implementation: 20 concurrent render calls
-against capacity 8 produced an observed peak of exactly 8 inside the provider.
-No more, no fewer — arbitration is exact, not approximate.
+Proven by `TestCapacityLimitHeldUnderLoad`: 20 concurrent render calls
+against capacity 8 produce an observed peak of exactly 8 inside the provider.
+No more, no fewer — arbitration is exact, not approximate. The lab's
+invariant monitors check the same bound under load and chaos.
 
 ## Admission under contention
 
 When a budget is full, the operation's admission policy decides:
 
-- `Wait`: queue without holding downstream capacity. Fair wake-up on release
-  or shutdown.
-- `Reject`: return `Throttled` immediately. The caller degrades, sheds, or
-  retries at its own layer — Herta does not retry throttled work blindly.
+- `Wait`: queue in strict FIFO order. On release, waiters are granted from
+  the head for as long as each fits; a heavy waiter at the head holds
+  lighter ones behind it, so heavy requests never starve. A key waiter holds
+  no capacity; a multi-resource waiter holds the earlier budgets in its
+  order (see [execution-model.md](execution-model.md)).
+- `Reject`: return `Throttled` immediately when the units are taken **or**
+  someone is already queued — `Reject` never overtakes a waiter. The refusal
+  yields the processor once, so callers retrying in a tight loop cannot
+  starve the calls holding capacity. The caller degrades, sheds, or retries
+  at its own layer, ideally with a backoff — Herta does not retry throttled
+  work.
 
 ## Per-process limitation
 
-Herta V0 arbitrates **within one process**. It does **not** coordinate
+Herta arbitrates **within one process**. It does **not** coordinate
 resources globally across processes, hosts, or containers.
 
 - Two processes each running a renderer budget of 8 can hold 16 total.
