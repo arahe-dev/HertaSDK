@@ -165,18 +165,29 @@ func TestGapNothingAccumulates(t *testing.T) {
 			{"cancelled caller, distinct keys", dead, newOp(t, rt,
 				impl.Policy{Resources: one, Key: func(i int) string { return fmt.Sprint("key-", i) }}, free)},
 		}
+		// A leak grows with every batch of calls; runtime churn (stopped
+		// timers awaiting cleanup, pooled buffers) is bounded and does not, so
+		// only growth in both of two consecutive batches counts.
+		perBatch := func(a, b uint64) uint64 {
+			if b > a {
+				return (b - a) / calls
+			}
+			return 0
+		}
 		for _, c := range cases {
 			for i := range warm {
 				c.op.Do(c.ctx, -i)
 			}
-			before := workload.LiveHeap()
-			for i := range calls {
-				c.op.Do(c.ctx, i)
+			heap := []uint64{workload.LiveHeap()}
+			for range 2 {
+				for i := range calls {
+					c.op.Do(c.ctx, i)
+				}
+				heap = append(heap, workload.LiveHeap())
 			}
-			after := workload.LiveHeap()
-			if after > before && (after-before)/calls > perCall {
-				t.Errorf("%s: live heap grew %d B over %d calls (%d B/call), want ≤ %d B/call",
-					c.name, after-before, calls, (after-before)/calls, perCall)
+			if g1, g2 := perBatch(heap[0], heap[1]), perBatch(heap[1], heap[2]); g1 > perCall && g2 > perCall {
+				t.Errorf("%s: live heap grew %d then %d B/call over two batches of %d calls, want ≤ %d B/call",
+					c.name, g1, g2, calls, perCall)
 			}
 		}
 	})

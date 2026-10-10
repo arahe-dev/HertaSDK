@@ -30,8 +30,10 @@ func NoLeak(t testing.TB, base, slack int, d time.Duration) {
 	}
 }
 
-// LiveHeap is the heap in use after two forced collections.
+// LiveHeap is the heap in use once goroutines have settled and two forced
+// collections have run.
 func LiveHeap() uint64 {
+	SettledGoroutines() // a goroutine still exiting keeps its closure live
 	runtime.GC()
 	runtime.GC()
 	var ms runtime.MemStats

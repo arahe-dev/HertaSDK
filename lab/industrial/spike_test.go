@@ -47,9 +47,9 @@ func TestSpike(t *testing.T) {
 		if s["backlog_cleared_ms"] > 1000 {
 			t.Errorf("the burst's last caller returned %.0fms after the burst", s["backlog_cleared_ms"])
 		}
-		// 0.01, not 0: a deadline timer that fires as its call succeeds starts a
-		// goroutine its caller cannot see. TestGoroutinesPerDo pins the exact 0.
-		budget(t, im, workload.D10, "goroutines created per call", s["goroutines_per_call"], 0.01)
+		// Callers and their deadline timers are counted exactly, so whatever
+		// remains was started by the runtime under test (Δ10: none).
+		budget(t, im, workload.D10, "goroutines created per call", s["goroutines_per_call"], 0.001)
 	})
 }
 
@@ -92,7 +92,7 @@ func runSpike(t *testing.T, im impl.Impl, pre, burst, post time.Duration) metric
 		mu       sync.Mutex
 		calls    []call
 		inflight atomic.Int64
-		expired  atomic.Uint64 // callers whose deadline timer fired
+		fired    atomic.Uint64 // callers' deadline timers that fired
 		wg       sync.WaitGroup
 	)
 	pk := watch(func() int64 { return int64(baseG) + 1 + inflight.Load() }) // +1: the sampler
@@ -107,12 +107,14 @@ func runSpike(t *testing.T, im impl.Impl, pre, burst, post time.Duration) metric
 		wg.Go(func() {
 			defer inflight.Add(-1)
 			called := workload.Now()
-			ctx, cancel := context.WithTimeout(context.Background(), spikeDeadline-(workload.Since(start)-at))
-			defer cancel()
+			// The caller's deadline is the test's own timer, so every fire, and
+			// the goroutine Go runs it on, is counted exactly.
+			ctx, cancel := context.WithCancelCause(context.Background())
+			left := spikeDeadline - (workload.Since(start) - at)
+			deadline := time.AfterFunc(max(left, 0), func() { fired.Add(1); cancel(context.DeadlineExceeded) })
 			_, err := op.Do(ctx, 0)
-			if ctx.Err() == context.DeadlineExceeded {
-				expired.Add(1) // its timer fired on a goroutine of its own
-			}
+			deadline.Stop()
+			cancel(nil)
 			c := call{at: at, lat: workload.Since(start) - at, in: workload.Since(called), ok: err == nil}
 			mu.Lock()
 			calls = append(calls, c)
@@ -120,6 +122,7 @@ func runSpike(t *testing.T, im impl.Impl, pre, burst, post time.Duration) metric
 		})
 	}
 	wg.Wait()
+	workload.SettledGoroutines() // every fired timer has run and been counted
 	spawned := created() - createdBefore
 	extraG, peakHeap := pk.stop()
 	wholeBudgetFree(t, rt)
@@ -151,7 +154,7 @@ func runSpike(t *testing.T, im impl.Impl, pre, burst, post time.Duration) metric
 		"recovery_ms":           ms(recovery(phase(burstEnd, end), burstEnd, limit)),
 		"backlog_cleared_ms":    ms(lastReturn(during) - burstEnd),
 		"recovery_limit_ms":     ms(limit),
-		"goroutines_per_call":   (float64(spawned) - float64(len(calls)) - float64(expired.Load())) / float64(len(calls)),
+		"goroutines_per_call":   (float64(spawned) - float64(len(calls)) - float64(fired.Load())) / float64(len(calls)),
 		"peak_extra_goroutines": extraG, "peak_heap_MB": peakHeap, "arrivals": float64(len(calls)),
 	}
 }
