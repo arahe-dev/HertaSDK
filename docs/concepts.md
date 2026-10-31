@@ -4,7 +4,7 @@ The six primitives of HertaSDK. One execution model, many heterogeneous
 operations — every primitive below exists to make shared in-process execution
 explicit and checkable.
 
-> Status: **1.0-next — the v1.0 candidate.** The names below are the real
+> Status: **v1.0.0, stable.** The names below are the real
 > public API of package `hertasdk` (`github.com/arahe-dev/hertasdk`). The
 > normative definition is [contract.md](contract.md); this page explains it.
 

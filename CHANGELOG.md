@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-10-31
+
+The first stable release. The code is identical to `v1.0.0-next`; this
+release promotes it and commits to its API. Everything listed under
+[1.0.0-next] below, including the upgrade notes from v0.2.0, applies.
+
+### Why now
+
+- Validated in a production pilot.
+- The package suite (race-clean, 100% statement coverage) and every lab
+  suite pass unchanged.
+
+### Stability promise
+
+- The exported API is covered by semantic versioning: 1.x releases add,
+  never change or remove.
+- `RetryPolicy.On` and `*Failure` stay. The planned `OutcomeSet` and typed
+  `Error` will arrive beside them, and all-or-nothing multi-resource
+  acquisition only as an opt-in (contract §9).
+
+### Changed
+
+- Documentation describes v1.0.0 as the stable release; `@latest` resolves
+  to `v1.0.0`.
+- `v1.0.0-next` and `v0.2.0` are no longer supported (see
+  [SECURITY.md](SECURITY.md)). `v1.0.0-next` users can switch to `v1.0.0`
+  with no code change.
+
 ## [1.0.0-next] - 2026-10-10
 
 The v1.0 candidate. The runtime was rebuilt from first principles against a

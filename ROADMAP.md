@@ -1,15 +1,15 @@
 # Roadmap
 
-HertaSDK 1.0-next, the v1.0 candidate, is the runtime rebuilt from first
-principles against a written contract, and checked against v0.2.0 by a
-comparison lab. No dates are promised — each future gate below must actually
+HertaSDK v1.0.0 is the runtime rebuilt from first principles against a
+written contract, checked against v0.2.0 by a comparison lab, and proven in
+a production pilot. No dates are promised — each future gate below must actually
 pass before the next begins.
 
 ## Where things stand
 
-- **1.0-next:** package `hertasdk`, zero dependencies, Go 1.26+, twelve
-  v0.2 defects fixed (see [CHANGELOG.md](CHANGELOG.md)); being hardened
-  before it is locked as v1.0.
+- **v1.0.0:** package `hertasdk`, zero dependencies, Go 1.26+, twelve
+  v0.2 defects fixed (see [CHANGELOG.md](CHANGELOG.md)). The exported API
+  is stable: 1.x releases only add to it.
 - **Contract:** normative in [docs/contract.md](docs/contract.md).
 - **Proof suite:** 75 tests, 100% statement coverage, race-clean; v0.2.0's
   own suite passes against `hertasdk`; 100% mutation score; Go race detector
@@ -20,8 +20,9 @@ pass before the next begins.
 - **Consumer validation:** render, event-ingestion, and catalogue-replacement
   workloads validated before extraction. CatalogueReplace landed without Herta
   semantic changes.
-- **Public module:** `github.com/arahe-dev/hertasdk`; `@v1.0.0-next` is
-  1.0-next (a pre-release, so `@latest` is still `@v0.2.0`).
+- **Production:** validated in a production pilot.
+- **Public module:** `github.com/arahe-dev/hertasdk`; `@latest` is
+  `@v1.0.0`.
 - **Quickstart:** runnable at `examples/quickstart`
   (`go run ./examples/quickstart`).
 - **Benchmarks:** `BenchmarkContention`, `BenchmarkKeyedSerialization`,
@@ -43,13 +44,17 @@ pass before the next begins.
 - [x] v0.2.0 API safety hardening (Effect must be declared; explicit enum/retry-policy validation)
 - [x] First-principles reconstruction against a written contract
 - [x] Comparison lab against v0.2.0 (differential, chaos, mutation, DoE, industrial)
-- [x] Zero dependencies; package renamed `hertasdk` (1.0-next)
+- [x] Zero dependencies; package renamed `hertasdk`
+- [x] Validated in a production pilot
+- [x] v1.0.0
 
 ## Future
 
-- [ ] Harden 1.0-next and lock it as **v1.0**, after a real consumer's
-  database-backed suite passes on `hertasdk` (so far Postgres-backed
-  consumer tests have only been skipped, not run)
+- [ ] Additive 1.x features, each only on consumer evidence:
+  `Snapshot()`, bounded `Wait` (`MaxWait`, `MaxWaiting`), `Backoff`,
+  retryable `Throttled`, an `OutcomeSet` alongside `RetryPolicy.On`, a
+  typed `Error` alongside `*Failure`, and opt-in all-or-nothing
+  multi-resource acquisition (see [docs/contract.md](docs/contract.md) §9)
 - [ ] Additional real-world consumers
 - [ ] Improve benchmark corpus when evidence warrants
 - [ ] Evaluate Rust/Tower prototype
