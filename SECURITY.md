@@ -8,8 +8,9 @@ them.
 
 | Version | Supported |
 |---|---|
-| v1.0.0-next | Supported: the v1.0 candidate |
-| v0.2.0 | Supported until v1.0 is tagged |
+| v1.0.x | Supported |
+| v1.0.0-next | Unsupported: superseded by v1.0.0 (identical code); upgrade |
+| v0.2.0 | Unsupported: upgrade to v1.0.0 (see the CHANGELOG's upgrade notes) |
 | v0.1.0 | Unsupported: an omitted `Effect` silently meant `Pure` |
 
 Security fixes land on `main` and are noted in the next release.

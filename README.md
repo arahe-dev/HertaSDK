@@ -17,22 +17,21 @@ produce, and what failure means — the runtime validates those contracts and
 arbitrates shared local capacity across otherwise-independent subsystems.
 
 ![Go](https://img.shields.io/badge/Go-%3E%3D1.26-00ADD8?logo=go&logoColor=white)
-![Status: 1.0-next](https://img.shields.io/badge/status-1.0--next%20%C2%B7%20v1.0%20candidate-orange)
+![Release: v1.0.0](https://img.shields.io/badge/release-v1.0.0-brightgreen)
 ![Dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)
 
 </div>
 
-> **Status.** HertaSDK **1.0-next** is the v1.0 candidate: the execution
-> contract rebuilt from first principles, with zero dependencies, the
-> package renamed to `hertasdk` (source-breaking: see the
-> [upgrade notes](CHANGELOG.md#upgrade-notes)), and twelve v0.2 defects fixed. It is
-> being hardened before it is locked as v1.0. It is tagged as the
-> pre-release `v1.0.0-next`, so `@latest` still resolves to v0.2.0:
+> **Status.** HertaSDK **v1.0.0** is the first stable release: the
+> execution contract rebuilt from first principles, with zero dependencies,
+> the package renamed to `hertasdk` (source-breaking from v0.2: see the
+> [upgrade notes](CHANGELOG.md#upgrade-notes)), and twelve v0.2 defects
+> fixed. The exported API is now covered by semantic versioning: 1.x
+> releases only add to it.
 >
 > ```sh
-> go get github.com/arahe-dev/hertasdk@v1.0.0-next   # 1.0-next
-> go get github.com/arahe-dev/hertasdk@v0.2.0        # previous release
+> go get github.com/arahe-dev/hertasdk@v1.0.0
 > ```
 >
 > The execution contract is defined in [docs/contract.md](docs/contract.md):
@@ -294,7 +293,7 @@ deadline bounds how long a call waits.
 Install:
 
 ```sh
-go get github.com/arahe-dev/hertasdk@v1.0.0-next
+go get github.com/arahe-dev/hertasdk@v1.0.0
 ```
 
 Runnable example in [`examples/quickstart`](examples/quickstart/main.go)
@@ -340,7 +339,7 @@ arbitrating. Nothing more.
 
 ## Current validation
 
-HertaSDK 1.0-next was rebuilt from first principles against a written
+HertaSDK v1.0 was rebuilt from first principles against a written
 contract ([docs/contract.md](docs/contract.md)) and checked against v0.2.0,
 which is kept frozen in [`lab/v02`](lab/v02) as the reference. The
 evidence lives in the [`lab/`](lab) module, which does not ship with the
@@ -357,12 +356,13 @@ package. The full report is [lab/results/r2/REPORT.md](lab/results/r2/REPORT.md)
 - The real consumer's test suite (render, events, catalogue, handoff) runs
   identically with `hertasdk` in place of v0.2.0
 - Twelve v0.2 defects fixed, each pinned by a test; see [CHANGELOG.md](CHANGELOG.md)
+- Validated in a production pilot
 
 **Performance against v0.2.0** (one quiet Windows 11 machine,
 i7-13650HX; Linux numbers are not published yet; methodology in
 [lab/results/r2](lab/results/r2/REPORT.md))
 
-| | v0.2.0 | 1.0-next |
+| | v0.2.0 | v1.0 |
 |---|---:|---:|
 | uncontended `Do` | 893 ns · 10 allocs | **59 ns · 0 allocs** |
 | `Do` with a per-attempt timeout | 1,465 ns · 14 allocs | **350 ns · 4 allocs** |
@@ -386,12 +386,11 @@ runtime has no dependencies beyond the Go standard library.
 - [x] Runnable quickstart
 - [x] Baseline benchmarks
 - [x] v0.2.0
-- [x] First-principles reconstruction against a written contract (1.0-next)
+- [x] First-principles reconstruction against a written contract
 - [x] Comparison lab: differential, chaos, mutation, DoE and industrial suites
 - [x] Zero dependencies; package renamed `hertasdk`
-- [ ] Harden 1.0-next and lock it as **v1.0**, after a real consumer's
-  database-backed suite passes on `hertasdk` (so far Postgres-backed
-  consumer tests have only been skipped, not run)
+- [x] Validated in a production pilot
+- [x] **v1.0.0**
 - [ ] Additional real-world consumers
 - [ ] Improve benchmark corpus when evidence warrants
 - [ ] Evaluate Rust/Tower prototype

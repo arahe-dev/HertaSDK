@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// One test per CONTRACT §8 delta, each proving recon's behavior where
+// One test per CONTRACT §8 delta, each proving hertasdk's behavior where
 // v0.2.0 is defective.
 
 // Δ1: Reject with a held key fails fast instead of blocking.

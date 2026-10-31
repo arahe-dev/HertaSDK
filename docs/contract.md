@@ -1,10 +1,10 @@
-# HertaSDK execution contract (v1.0-next)
+# HertaSDK execution contract (v1.0)
 
 This document is the normative contract of package `hertasdk`. It was written to reconstruct HertaSDK v0.2.0 from first principles, and that history still shapes it:
 
 - the **exported API** is v0.2.0's, under the package name `hertasdk`;
 - the **behavior** is v0.2.0's, except for the numbered deltas in §8 (each one a confirmed v0.2 defect);
-- the **internals are designed to carry v1.0** (§9) without restructuring.
+- the **internals are designed to carry the planned 1.x additions** (§9) without restructuring.
 
 When this document and v0.2 disagree, this document wins only where §8 says so. Otherwise v0.2's observable behavior is the oracle. v0.2.0 is kept, frozen, in `lab/v02` for that comparison.
 
@@ -118,7 +118,7 @@ While waiting for a later resource in name order, an operation **holds** the ear
 
 - This is deadlock-free, because every operation acquires in the same global order.
 - It is the one stated exception to A3.
-- v1.0 may replace it with all-or-nothing acquisition (§9).
+- A 1.x release may add all-or-nothing acquisition as an opt-in (§9). Hold-while-waiting stays the default for all of v1.
 
 ## 5. Execution and retry
 
@@ -191,14 +191,14 @@ Further rules:
 
 Any other observed difference is a **bug in hertasdk**, unless it is nondeterministic in v0.2 (for example, which waiter wins a tie under `Shutdown`).
 
-## 9. Designed for v1.0 (internal architecture requirements)
+## 9. Designed for 1.x additions (internal architecture requirements)
 
-hertasdk must make these v1.0 features additive, not a rewrite:
+The v1.0.0 API is stable. These planned features must arrive in 1.x as additions, never as changes to existing names, signatures or default behavior:
 
-- **Own budget semaphore**, with no `golang.org/x/sync` dependency. It exposes exact counts of waiters and units in use, which v1.0 needs for `Snapshot()`, `MaxWaiting` and `MaxWait`, and keeps room for all-or-nothing multi-resource acquisition.
+- **Own budget semaphore**, with no `golang.org/x/sync` dependency. It exposes exact counts of waiters and units in use, which `Snapshot()`, `MaxWaiting` and `MaxWait` need, and keeps room for opt-in all-or-nothing multi-resource acquisition.
 - **One admission path** (key, then resources), parameterized by mode, so that a bounded `Wait` (with `MaxWait` and `MaxWaiting`) slots in.
-- **One classifier, one retry table** (a bitset over `Outcome`), so that `OutcomeSet`, `Backoff` and retryable `Throttled` slot in.
-- **Centralized error construction**, so the v1.0 typed `Error` (with `Op`, `Outcome` and `Attempts`) slots in.
+- **One classifier, one retry table** (a bitset over `Outcome`), so that `OutcomeSet` (alongside `RetryPolicy.On`, which stays), `Backoff` and retryable `Throttled` slot in.
+- **Centralized error construction**, so a typed `Error` (with `Op`, `Outcome` and `Attempts`) slots in alongside `*Failure`, which stays.
 - **Lock-free admission/drain state**: one atomic word holding the stopping bit and the in-flight count.
 - **No per-call goroutines**; context propagation via `context.AfterFunc` only where a waiter actually blocks.
 - **Package layout:** a handful of files, each owning one concern; no file over about 250 lines.
@@ -233,7 +233,7 @@ Each amendment resolves a point where this document was silent, ambiguous or wro
 - `Fail` never nests: re-tagging an error that already carries a `*Failure` returns it unchanged. So only a hand-built chain can reach this case.
 
 **Amendment 3. `NewRuntime()` with no specs is rejected** (§3.1).
-- The error is "execution: runtime requires at least one resource".
+- The error is "hertasdk: runtime requires at least one resource" (v0.2: "execution: …").
 - The v0.2 suite requires this, and recon runs that suite unchanged.
 
 **Amendment 4. "Shutdown begins" withdraws only calls that are queued** (§4 steps 2 and 3, §6 step 2).
