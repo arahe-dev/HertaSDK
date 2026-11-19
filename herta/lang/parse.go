@@ -395,6 +395,7 @@ func (p *parser) handlerDecl() (*Handler, error) {
 			continue
 		}
 		var b strings.Builder
+		var inline []Stmt
 		startLine := t.Line
 		for p.cur().Kind != TokEOF && p.cur().Line == startLine {
 			tok := p.cur()
@@ -411,8 +412,19 @@ func (p *parser) handlerDecl() (*Handler, error) {
 				b.WriteByte(' ')
 			}
 			b.WriteString(tokText(p.adv()))
+			// A `fail <outcome>` buried in an inline block still returns a
+			// classified error; record it so the checker sees it. Strings
+			// and comments can't reach here as idents.
+			if tok.Kind == TokIdent && tok.Text == "fail" &&
+				p.cur().Kind == TokIdent && p.cur().Line == startLine {
+				o := p.adv()
+				b.WriteByte(' ')
+				b.WriteString(o.Text)
+				inline = append(inline, &FailStmt{Outcome: o.Text, Line: tok.Line, Col: tok.Col})
+			}
 		}
 		h.Body = append(h.Body, &RawStmt{Text: b.String(), Line: line, Col: col})
+		h.Body = append(h.Body, inline...)
 	}
 	if _, err := p.expect(TokRBrace, "} for handler body"); err != nil {
 		return nil, err

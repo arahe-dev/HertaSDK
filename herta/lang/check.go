@@ -3,8 +3,6 @@ package lang
 import (
 	"fmt"
 	"strconv"
-	"strings"
-	"unicode"
 )
 
 // Diagnostic is a compile-time contract error.
@@ -183,24 +181,10 @@ func checkHandler(h *Handler, op *Op, at func(Diagnostic)) {
 		at(Diagnostic{h.Line, h.Col, fmt.Sprintf("handler %q: results must be (%s, error)", h.Name, op.Result)})
 	}
 	for _, s := range h.Body {
-		switch s := s.(type) {
-		case *FailStmt:
-			checkFailOutcome(h, s.Outcome, s.Line, s.Col, at)
-		case *RawStmt:
-			// A `fail` inside a brace block on the same line still
-			// produces a classified error; check its outcome too.
-			words := strings.FieldsFunc(s.Text, isSep)
-			for i, w := range words {
-				if w == "fail" && i+1 < len(words) {
-					checkFailOutcome(h, words[i+1], s.Line, s.Col, at)
-				}
-			}
+		if f, ok := s.(*FailStmt); ok {
+			checkFailOutcome(h, f.Outcome, f.Line, f.Col, at)
 		}
 	}
-}
-
-func isSep(r rune) bool {
-	return !(r == '_' || unicode.IsLetter(r) || unicode.IsDigit(r))
 }
 
 func checkFailOutcome(h *Handler, outcome string, line, col int, at func(Diagnostic)) {
