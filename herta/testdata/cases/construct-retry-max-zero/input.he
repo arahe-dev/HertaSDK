@@ -1,4 +1,4 @@
-// retry max must be >= 1: MaxAttempts 0 is a construction error.
+// retry max 0 is vacuous (needs >= 2): MaxAttempts 0 is a construction error.
 runtime main {
     resource r capacity 1
 }
