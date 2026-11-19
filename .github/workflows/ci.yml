@@ -12,9 +12,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Skip the sdk/lab jobs when a change only touches the Herta language tree
+  # (herta/** has its own herta-lang workflow). Gating at job level — not the
+  # trigger — keeps required checks reporting "Skipped" instead of pending.
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      sdk: ${{ steps.filter.outputs.sdk }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            sdk:
+              - '**'
+              - '!herta/**'
+
   # The shipped module: zero dependencies, 100% statement coverage.
   hertasdk:
     name: hertasdk (go ${{ matrix.go }})
+    needs: changes
+    if: needs.changes.outputs.sdk == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -38,6 +57,8 @@ jobs:
   # The comparison lab (its own module): quick tier against v0.2.0 (lab/v02)
   # and hertasdk, both implementations.
   lab:
+    needs: changes
+    if: needs.changes.outputs.sdk == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
