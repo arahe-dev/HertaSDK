@@ -384,9 +384,12 @@ func (p *parser) handlerDecl() (*Handler, error) {
 			}
 			var b strings.Builder
 			startLine := p.cur().Line
+			argDepth := depth
 			for p.cur().Kind != TokEOF && p.cur().Line == startLine {
 				tok := p.cur()
-				if tok.Kind == TokRBrace && depth == 0 {
+				// A } at the depth the arg started on closes the block
+				// the fail sits in; it is not part of the expression.
+				if tok.Kind == TokRBrace && depth == argDepth {
 					break
 				}
 				if tok.Kind == TokLBrace {
