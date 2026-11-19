@@ -82,6 +82,45 @@ func TestPerCaseTimeout(t *testing.T) {
 	}
 }
 
+func TestSuiteTimeoutFailsRemainingCases(t *testing.T) {
+	dir := t.TempDir()
+	writeCase(t, dir, "slow", "x\n", "x\n")
+	writeCase(t, dir, "unreached", "x\n", "x\n")
+	cases, _ := Discover(dir, DefaultLimits)
+	lim := DefaultLimits
+	lim.TotalTimeout = 100 * time.Millisecond
+	results := Run(context.Background(), cases, "sleep 2", lim)
+	if len(results) != 2 {
+		t.Fatalf("expected a result per case, got %d", len(results))
+	}
+	for _, r := range results {
+		if r.Err == nil {
+			t.Fatalf("case %s should have failed", r.Case.Name)
+		}
+	}
+	if _, ok := Summary(results); ok {
+		t.Fatal("an expired suite must not report a clean pass")
+	}
+}
+
+func TestArgsExpandAsSeparateArguments(t *testing.T) {
+	dir := t.TempDir()
+	writeCase(t, dir, "a", "x\n", "<one><two>")
+	if err := os.WriteFile(filepath.Join(dir, "a", "args.txt"), []byte("one two\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	cases, err := Discover(dir, DefaultLimits)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// printf reuses its format per argument: separate args print <one><two>,
+	// a merged "one two" argument would print <one two>.
+	results := Run(context.Background(), cases, "printf <%s> {args}", DefaultLimits)
+	if results[0].Err != nil {
+		t.Fatalf("expected pass: %v", results[0].Err)
+	}
+}
+
 func TestExecTemplateAndExpectedExit(t *testing.T) {
 	dir := t.TempDir()
 	writeCase(t, dir, "nonzero", "x\n", "")

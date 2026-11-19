@@ -23,6 +23,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"syscall"
 	"time"
 )
 
@@ -140,6 +141,12 @@ func Run(ctx context.Context, cases []Case, execTemplate string, lim Limits) []R
 	defer cancel()
 	results := make([]Result, 0, len(cases))
 	for _, c := range cases {
+		if ctx.Err() != nil {
+			// The suite deadline passed: remaining cases count as failed
+			// so an expired suite can never report a clean pass.
+			results = append(results, Result{Case: c, Err: fmt.Errorf("not run: suite exceeded the %s total timeout", lim.TotalTimeout)})
+			continue
+		}
 		if c.Skipped {
 			results = append(results, Result{Case: c, Skipped: true})
 			continue
@@ -147,9 +154,6 @@ func Run(ctx context.Context, cases []Case, execTemplate string, lim Limits) []R
 		start := time.Now()
 		err := runCase(ctx, c, execTemplate, lim)
 		results = append(results, Result{Case: c, Elapsed: time.Since(start), Err: err})
-		if ctx.Err() != nil {
-			break
-		}
 	}
 	return results
 }
@@ -182,19 +186,32 @@ func execCase(ctx context.Context, c Case, tmpl string, lim Limits) ([]byte, err
 	cctx, cancel := context.WithTimeout(ctx, lim.CaseTimeout)
 	defer cancel()
 	fields := strings.Fields(tmpl)
-	expanded := make([]string, 0, len(fields))
+	expanded := make([]string, 0, len(fields)+len(c.Args))
 	for _, f := range fields {
+		if f == "{args}" {
+			expanded = append(expanded, c.Args...)
+			continue
+		}
 		f = strings.ReplaceAll(f, "{file}", c.Input)
-		f = strings.ReplaceAll(f, "{args}", strings.Join(c.Args, " "))
 		expanded = append(expanded, f)
 	}
 	cmd := exec.CommandContext(cctx, expanded[0], expanded[1:]...)
+	// Kill the whole process group on timeout: checkers launched via
+	// wrappers (go run, sh) leave children that would outlive the cap.
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+	cmd.Cancel = func() error {
+		return syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
+	}
+	cmd.WaitDelay = 2 * time.Second
 	var out cappedBuffer
 	out.limit = lim.MaxOutputSize
 	cmd.Stdout = &out
 	cmd.Stderr = &out
 	err := cmd.Run()
 	if cctx.Err() == context.DeadlineExceeded {
+		if ctx.Err() != nil {
+			return out.buf.Bytes(), fmt.Errorf("suite exceeded the %s total timeout", lim.TotalTimeout)
+		}
 		return out.buf.Bytes(), fmt.Errorf("exceeded the %s per-case timeout", lim.CaseTimeout)
 	}
 	if out.overflowed {
