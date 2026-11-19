@@ -4,6 +4,7 @@ package testpkg
 
 import (
 	"context"
+	"time"
 
 	"github.com/arahe-dev/hertasdk"
 )
@@ -27,6 +28,7 @@ func NewMainFlaky(rt *hertasdk.Runtime) (*hertasdk.Operation[MainFlakyInput, int
 		Resources: []hertasdk.Requirement{
 			{Name: "r", Units: 1},
 		},
+		Timeout: 10 * time.Millisecond,
 	})
 }
 
@@ -38,6 +40,10 @@ func mainFlakyHandler(ctx context.Context, in MainFlakyInput) (int, error) {
 	}
 	if n == 0 {
 		return *new(int), hertasdk.Fail(hertasdk.Throttled, errors_new("zero"))
+	}
+	switch n {
+	case 1:
+		return *new(int), hertasdk.Fail(hertasdk.Uncertain, errors_new("one"))
 	}
 	return *new(int), hertasdk.Fail(hertasdk.Uncertain, errors_new("always"))
 }
