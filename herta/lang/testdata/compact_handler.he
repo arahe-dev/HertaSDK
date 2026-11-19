@@ -1,0 +1,16 @@
+runtime main {
+    resource db capacity 4
+}
+op main::op1() -> r {
+    effect pure
+}
+handler main::op1() -> (r, error) {
+    if bad { fail transient, err }
+    return r, nil }
+op main::op2() -> r {
+    effect pure
+}
+handler main::op2() -> (r, error) {
+    if bad { fail success, err }
+    return r, nil
+}

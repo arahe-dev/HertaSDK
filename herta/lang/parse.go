@@ -377,6 +377,9 @@ func (p *parser) handlerDecl() (*Handler, error) {
 			startLine := p.cur().Line
 			for p.cur().Kind != TokEOF && p.cur().Line == startLine {
 				tok := p.cur()
+				if tok.Kind == TokRBrace && depth == 0 {
+					break
+				}
 				if tok.Kind == TokLBrace {
 					depth++
 				}
@@ -395,6 +398,9 @@ func (p *parser) handlerDecl() (*Handler, error) {
 		startLine := t.Line
 		for p.cur().Kind != TokEOF && p.cur().Line == startLine {
 			tok := p.cur()
+			if tok.Kind == TokRBrace && depth == 0 {
+				break
+			}
 			if tok.Kind == TokLBrace {
 				depth++
 			}
