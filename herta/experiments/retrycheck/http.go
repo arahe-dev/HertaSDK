@@ -119,14 +119,14 @@ func (s source) checkReplay(fn *ast.FuncDecl) {
 	if !acceptsRequest || anyIn(fn.Body, s.methodGate) {
 		return
 	}
-	for _, node := range fn.Body.List {
-		if loop, ok := node.(*ast.ForStmt); ok && retryLoop(loop) && anyIn(loop.Body, func(n ast.Node) bool {
+	if anyIn(fn.Body, func(n ast.Node) bool {
+		loop, ok := n.(*ast.ForStmt)
+		return ok && retryLoop(loop) && anyIn(loop.Body, func(n ast.Node) bool {
 			c, ok := n.(*ast.CallExpr)
 			return ok && (name(c.Fun) == "Do" || name(c.Fun) == "RoundTrip")
-		}) {
-			s.report(retryHTTPRule, fn.Name, "HTTP retry loop has no visible method or idempotency gate")
-			return
-		}
+		})
+	}) {
+		s.report(retryHTTPRule, fn.Name, "HTTP retry loop has no visible method or idempotency gate")
 	}
 }
 

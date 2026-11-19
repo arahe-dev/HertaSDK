@@ -74,6 +74,20 @@ func (c *Client) RoundTrip(req *h.Request) {
 		c.HTTP.RoundTrip(req)
 	}
 }
+func (c *NestedClient) Do(req *h.Request) { // RK002
+	if c.enabled {
+		for attempt := 0; attempt < 4; attempt++ {
+			c.HTTP.Do(req)
+		}
+	}
+}
+func (c *CallbackClient) Do(req *h.Request) {
+	save(func() {
+		for attempt := 0; attempt < 4; attempt++ {
+			c.HTTP.Do(req)
+		}
+	})
+}
 func receiveWebhook(w h.ResponseWriter, req *h.Request) {
 	event := webhook.ConstructEvent(req)
 	queue.Publish(event) // RK003
