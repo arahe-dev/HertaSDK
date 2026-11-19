@@ -1,13 +1,14 @@
 # hertatest — capped golden-file runner
 
-One command runs the whole Herta conformance suite:
+Build the checker once, then run the Herta conformance suite:
 
 ```sh
-go run ./herta/cmd/hertatest -cases herta/testdata/cases -exec selftest
+go build -o /tmp/herta ./herta/cmd/herta
+go run ./herta/cmd/hertatest -cases herta/testdata/cases -exec "/tmp/herta check {file}"
 ```
 
-`selftest` echoes each `input.he` and is what CI uses until the real
-checker lands. Point `-exec` at any command template once it exists:
+`selftest` echoes each `input.he` to exercise the runner itself.
+For language tests, point `-exec` at the checker:
 
 ```sh
 hertatest -exec "go run ./herta/cmd/herta check {file} {args}"

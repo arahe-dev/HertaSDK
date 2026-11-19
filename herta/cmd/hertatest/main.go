@@ -1,12 +1,11 @@
 // Command hertatest runs the Herta golden-file suite: one fast command with
 // hard caps on case count and runtime.
 //
-//	hertatest -cases herta/testdata/cases -exec selftest
-//	hertatest -cases herta/testdata/cases -exec "go run ./herta/cmd/herta check {file} {args}"
+//	hertatest -cases herta/testdata/cases -exec "herta check {file}"
 //
 // -exec is a command template: {file} expands to the case's input.he and
 // {args} to its args.txt. The literal value "selftest" selects the built-in
-// echo engine used until a real checker exists.
+// echo engine for exercising the runner itself.
 package main
 
 import (

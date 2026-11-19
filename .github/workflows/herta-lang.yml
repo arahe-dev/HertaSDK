@@ -30,5 +30,6 @@ jobs:
       - run: gofmt -l ./herta | tee /dev/stderr | test -z "$(cat)"
       - run: go vet ./herta/...
       - run: go test -count=1 ./herta/...
+      - run: go build -o /tmp/herta ./herta/cmd/herta
       - name: golden suite (capped)
-        run: go run ./herta/cmd/hertatest -cases herta/testdata/cases -exec selftest
+        run: go run ./herta/cmd/hertatest -cases herta/testdata/cases -exec "/tmp/herta check {file}"
