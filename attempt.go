@@ -20,6 +20,24 @@ func (op *Operation[I, O]) run(ctx context.Context, in I) (O, error) {
 		if err == nil {
 			return out, nil // a late result is returned, not discarded
 		}
+		if op.classify != nil {
+			if callerErr := ctx.Err(); callerErr != nil {
+				return zero, callerErr
+			}
+			o := Uncertain
+			if !expired {
+				o = op.classify(err)
+			}
+			switch o {
+			case Transient, Permanent, Throttled, Uncertain:
+			default:
+				o = Permanent
+			}
+			if n >= op.attempts || !op.retry.has(o) {
+				return zero, &Failure{Outcome: o, Err: err}
+			}
+			continue
+		}
 		o, promoted := classify(err, expired)
 		if n >= op.attempts || !op.retry.has(o) {
 			return zero, failed(err, promoted)

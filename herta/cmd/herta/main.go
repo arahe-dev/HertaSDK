@@ -21,11 +21,14 @@ func main() {
 	}
 	switch os.Args[1] {
 	case "check", "ast":
-		if len(os.Args) != 3 {
-			fmt.Fprintf(os.Stderr, "usage: herta %s <file.he>\n", os.Args[1])
+		fs := flag.NewFlagSet(os.Args[1], flag.ExitOnError)
+		closed := fs.Bool("closed", false, "enforce closed-world contracts")
+		fs.Parse(os.Args[2:])
+		if fs.NArg() != 1 {
+			fmt.Fprintf(os.Stderr, "usage: herta %s [-closed] <file.he>\n", os.Args[1])
 			os.Exit(2)
 		}
-		src, err := os.ReadFile(os.Args[2])
+		src, err := os.ReadFile(fs.Arg(0))
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "herta:", err)
 			os.Exit(2)
@@ -39,7 +42,11 @@ func main() {
 			fmt.Print(lang.Dump(prog))
 			return
 		}
-		diags := lang.Check(prog)
+		check := lang.Check
+		if *closed {
+			check = lang.CheckClosed
+		}
+		diags := check(prog)
 		for _, d := range diags {
 			fmt.Fprintln(os.Stdout, d)
 		}
@@ -49,9 +56,10 @@ func main() {
 	case "build":
 		fs := flag.NewFlagSet("build", flag.ExitOnError)
 		pkg := fs.String("pkg", "main", "package name for the generated file")
+		closed := fs.Bool("closed", false, "enforce closed-world contracts")
 		fs.Parse(os.Args[2:])
 		if fs.NArg() != 1 {
-			fmt.Fprintln(os.Stderr, "usage: herta build [-pkg name] <file.he>")
+			fmt.Fprintln(os.Stderr, "usage: herta build [-closed] [-pkg name] <file.he>")
 			os.Exit(2)
 		}
 		src, err := os.ReadFile(fs.Arg(0))
@@ -64,14 +72,22 @@ func main() {
 			fmt.Fprintln(os.Stdout, err)
 			os.Exit(1)
 		}
-		diags := lang.Check(prog)
+		check := lang.Check
+		if *closed {
+			check = lang.CheckClosed
+		}
+		diags := check(prog)
 		for _, d := range diags {
 			fmt.Fprintln(os.Stdout, d)
 		}
 		if len(diags) > 0 {
 			os.Exit(1)
 		}
-		out, err := gogen.Generate(prog, *pkg)
+		generate := gogen.Generate
+		if *closed {
+			generate = gogen.GenerateClosed
+		}
+		out, err := generate(prog, *pkg)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "herta:", err)
 			os.Exit(2)

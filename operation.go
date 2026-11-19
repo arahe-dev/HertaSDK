@@ -19,6 +19,10 @@ type Operation[I any, O any] struct {
 	timeout  time.Duration
 	attempts int
 	retry    outcomeSet // outcomes that are both requested and safe
+	name     string
+	classify func(error) Outcome
+	closed   bool
+	calls    map[string]bool
 }
 
 // claim is n units of one budget, resolved at construction.
@@ -60,6 +64,15 @@ func NewOperation[I any, O any](rt *Runtime, name string, handler Handler[I, O],
 		timeout:  max(policy.Timeout, 0),
 		attempts: max(policy.Retry.MaxAttempts, 1),
 		retry:    retry,
+		name:     name,
+		classify: policy.Classify,
+		closed:   policy.Closed,
+	}
+	if policy.Closed {
+		op.calls = make(map[string]bool, len(policy.Calls))
+		for _, callee := range policy.Calls {
+			op.calls[callee] = true
+		}
 	}
 	if policy.Admission == Reject {
 		op.mode = Reject
@@ -70,32 +83,47 @@ func NewOperation[I any, O any](rt *Runtime, name string, handler Handler[I, O],
 // Do runs one call: gate, key, resources in name order, then the attempt
 // loop. Everything acquired is released exactly once on every path,
 // panics included, and a panic propagates unchanged. An uncontended call
-// creates no goroutine and, without a Timeout, allocates nothing.
+// creates no goroutine and, without a Timeout or closed call frame, allocates
+// nothing. Frames are tracked from a Closed operation through its descendants.
 func (op *Operation[I, O]) Do(ctx context.Context, in I) (O, error) {
 	var zero O
+	parent, _ := ctx.Value(callFrameKey{}).(*callFrame)
+	if parent != nil && parent.closed && !parent.calls[op.name] {
+		return zero, callViolation(ErrUndeclaredCall, parent.name, op.name)
+	}
 	rt := op.rt
 	if !rt.enter() {
 		return zero, ErrRuntimeStopping
 	}
 	defer rt.exit()
 
-	key, err := op.admit(ctx, in)
+	k := ""
+	if op.key != nil {
+		k = op.key(in)
+	}
+	for ancestor := parent; ancestor != nil && k != ""; ancestor = ancestor.parent {
+		if ancestor.rt == rt && ancestor.key == k {
+			return zero, callViolation(ErrKeyReacquired, ancestor.name, op.name)
+		}
+	}
+	key, err := op.admit(ctx, k)
 	if err != nil {
 		return zero, err
 	}
 	defer op.release(key, len(op.claims))
+	if op.closed || parent != nil {
+		ctx = context.WithValue(ctx, callFrameKey{}, &callFrame{
+			name: op.name, key: k, rt: rt, closed: op.closed, calls: op.calls, parent: parent,
+		})
+	}
 	return op.run(ctx, in)
 }
 
 // admit acquires the call's key, then its claims (CONTRACT §4). A call
 // waiting for its key holds no units; a call waiting for a later claim
 // holds the earlier ones (§4.3). On failure it holds nothing.
-func (op *Operation[I, O]) admit(ctx context.Context, in I) (*keyEntry, error) {
+func (op *Operation[I, O]) admit(ctx context.Context, k string) (*keyEntry, error) {
 	rt := op.rt
-	k := ""
-	if op.key != nil {
-		k = op.key(in)
-	}
 	// Only a live caller takes a key or waits for units (Amendment 1): a
 	// done caller would hold capacity it cannot use (A3). Reject claims do
 	// not consult ctx, so an unkeyed Reject call still reports overload.

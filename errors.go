@@ -26,6 +26,10 @@ var (
 
 // Admission errors returned by Do.
 var (
+	// ErrUndeclaredCall rejects a nested call absent from its closed parent's Calls.
+	ErrUndeclaredCall = errors.New("hertasdk: undeclared call")
+	// ErrKeyReacquired rejects a key already held on the tracked context chain.
+	ErrKeyReacquired = errors.New("hertasdk: serialize key reacquired")
 	// ErrOverloaded is always returned as Fail(Throttled, ErrOverloaded).
 	ErrOverloaded = errors.New("hertasdk: overloaded")
 	// ErrRuntimeStopping is returned untagged (Permanent) once Shutdown has

@@ -1,0 +1,2 @@
+2:1: HC016 path main::a: retry requires declared classification in closed mode; add classify { ... , _ => permanent }
+3:1: HC018 path main::a: handler constructs an outcome in closed mode; return the error and declare classify instead

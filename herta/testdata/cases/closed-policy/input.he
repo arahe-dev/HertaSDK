@@ -1,0 +1,3 @@
+runtime main { resource db capacity 1 }
+op main::a() -> u64 { effect pure retry max 1 on { transient } }
+handler main::a() -> (u64, error) { return 0, hertasdk.Fail(hertasdk.Permanent, ErrA) }

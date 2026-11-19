@@ -206,7 +206,52 @@ The preexisting local nonidempotent/uncertain diagnostic remains unchanged
 for compatibility; a valid dedupe assertion suppresses that local rejection.
 Cycles also participate in effect propagation before path traversal stops.
 
-## 5. What is not checked
+## 5. Closed mode (prototype)
+
+`herta check -closed file.he` and `herta build -closed [-pkg name] file.he`
+opt into closed-world contracts. The default remains unchanged. Bodies remain
+ordinary Go, not a restricted body language. Closed builds set `Policy.Closed`
+on every generated operation and snapshot its fully qualified declared callees
+from `calls`, checker-only `call` expressions, and typed parameter `.Do` edges.
+Opaque helper calls must declare their edges with `calls`.
+
+`classify { ErrTimeout => uncertain, ErrUnavailable => transient, _ => permanent }`
+lowers to an authoritative `Policy.Classify` function: ordered `errors.Is`
+checks followed by the fallback. Sentinel names are Go identifiers resolved by
+the surrounding package; missing names fail Go compilation. First match wins,
+including `_`. Error declarations annotate ambiguity; they do not define Go
+sentinel values. Helpers return errors, not outcome tags. A helper's or child
+operation's `*hertasdk.Failure` tag is ignored by this classifier, but its error
+chain remains visible to `errors.Is`. Nil errors remain successful. Caller
+cancellation wins; an expired attempt-owned deadline remains Uncertain even
+when a classifier would choose Transient or Permanent. Invalid classifier
+outcomes (including Success for a non-nil error) normalize to Permanent.
+Without `Policy.Classify`, SDK classification is unchanged. An operation
+without retries may omit `classify` and retain that legacy classification.
+
+Closed checks add HC016 for **any** retry clause without `classify` and HC018
+for direct handler constructions of `hertasdk.Fail`, `&hertasdk.Failure`, or
+`fail outcome, error`. Missing classifier fallback remains HC009; HC001–HC015
+retain their existing meanings. Helpers are not inspected for outcome tags;
+the authoritative classifier makes those tags irrelevant.
+
+Before admission, SDK `.Do` checks the parent frame on the supplied context.
+A closed parent's undeclared callee returns a Permanent `ErrUndeclaredCall`
+with `parent -> callee` names, without running or acquiring resources. A key
+already held by an ancestor on the same runtime returns Permanent
+`ErrKeyReacquired` rather than waiting on itself. Empty keys hold no lock;
+identical key strings on different runtimes are independent. Frames carry the
+operation name, held key, and parent through handler-derived contexts, starting
+at a closed operation and continuing through its descendants. Open-only call
+trees retain the previous behavior and allocation profile.
+
+This is not a Go sandbox or a whole-program proof. Calls on unrelated contexts,
+such as `context.Background()`, are **not seen**. Host code must propagate the
+handler context; asynchronous work must finish before the handler returns so
+its frame still describes held keys. Callee authorization is by operation name,
+not an unforgeable capability. Codegen still exposes ordinary SDK operations.
+
+## 6. What is not checked
 
 Outside the composition forms above, Herta does not type-check handler Go.
 Everything else — serialization bounds, allocation budgets, drain behavior —
@@ -214,7 +259,7 @@ is runtime semantics owned by `hertasdk`, not the language. The conformance
 harness (separate PR) ports hertasdk's test suite as Herta programs to keep
 the two aligned.
 
-## 6. Golden files
+## 7. Golden files
 
 `lang/testdata/` (relative to the language root) holds one `.he` input and `.golden` expected output per
 case (parse tree dump or diagnostic list). `go test ./lang/...` compares

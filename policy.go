@@ -83,6 +83,13 @@ type Policy[I any] struct {
 	// a time, and a call waiting for its key holds no resource units.
 	SerializeKey func(I) string
 	Retry        RetryPolicy
+	// Classify, when non-nil, overrides handler Failure tags. An expired
+	// attempt deadline still promotes to Uncertain; caller cancellation wins.
+	Classify func(error) Outcome
+	// Closed restricts nested calls on the handler context to Calls.
+	// Calls contains fully qualified operation names and is snapshotted.
+	Closed bool
+	Calls  []string
 }
 
 // ResourceSpec declares a named finite capacity.

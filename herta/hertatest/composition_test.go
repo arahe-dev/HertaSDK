@@ -17,7 +17,7 @@ func TestCheckerGoldens(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	results := Run(context.Background(), cases, bin+" check {file}", DefaultLimits)
+	results := Run(context.Background(), cases, bin+" check {args} {file}", DefaultLimits)
 	summary, ok := Summary(results)
 	if !ok {
 		t.Fatal(summary)

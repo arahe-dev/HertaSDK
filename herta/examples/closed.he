@@ -1,0 +1,10 @@
+runtime main { resource db capacity 2 }
+error ErrTimeout ambiguous
+op main::charge() -> u64 {
+    effect nonidempotent
+    retry max 2 on { transient }
+    classify { ErrTimeout => uncertain, ErrUnavailable => transient, _ => permanent }
+}
+handler main::charge() -> (u64, error) { return chargeHost(ctx) }
+op main::checkout() -> u64 { effect nonidempotent calls charge }
+handler main::checkout() -> (u64, error) { return checkoutHost(ctx) }
