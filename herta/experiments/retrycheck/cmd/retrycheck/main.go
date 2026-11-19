@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"go/ast"
 	"go/parser"
+	"go/scanner"
 	"go/token"
 	"io"
 	"os"
@@ -54,6 +55,23 @@ func include(path string) bool {
 		}
 	}
 	return true
+}
+
+// The parser can discard comments on malformed source. On that error path,
+// look for the standard marker in leading comments without parsing the body.
+func hasGeneratedPreamble(path string, src []byte) bool {
+	f := token.NewFileSet().AddFile(path, -1, len(src))
+	var s scanner.Scanner
+	s.Init(f, src, nil, scanner.ScanComments)
+	for {
+		_, tok, lit := s.Scan()
+		if tok != token.COMMENT {
+			return false
+		}
+		if rest, ok := strings.CutPrefix(lit, "// Code generated "); ok && strings.HasSuffix(rest, " DO NOT EDIT.") {
+			return true
+		}
+	}
 }
 
 // scan parses tracked files across all platforms and modules. It never builds
@@ -104,6 +122,9 @@ func scan(root string, out io.Writer) error {
 		}
 		file, err := parser.ParseFile(fileset, path, src, parser.ParseComments|parser.SkipObjectResolution)
 		if err != nil {
+			if hasGeneratedPreamble(path, src) {
+				continue
+			}
 			return err
 		}
 		if ast.IsGenerated(file) {
