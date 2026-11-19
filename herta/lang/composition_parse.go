@@ -48,6 +48,11 @@ func (p *parser) compositionClause(op *Op) error {
 			return err
 		}
 		op.Dedupe = n.Text
+	case "evidence":
+		if err := p.word("dispatch"); err != nil {
+			return err
+		}
+		op.TrackDispatch = true
 	case "detached":
 		op.Detached = true
 		if p.cur().Text == "for" {

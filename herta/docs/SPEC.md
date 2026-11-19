@@ -251,6 +251,17 @@ handler context; asynchronous work must finish before the handler returns so
 its frame still describes held keys. Callee authorization is by operation name,
 not an unforgeable capability. Codegen still exposes ordinary SDK operations.
 
+### Executable plans and dispatch evidence
+
+`call name(args)` executes: in a runtime whose handlers use it, codegen emits
+a `<Runtime>Plan` and lowers each call to the callee's `Do` with positional
+arguments bound to the callee's parameters. A statement that is only a call
+returns the callee's error. The clause `evidence dispatch` sets
+`Policy.TrackDispatch`; the handler statement `dispatch` marks the send point
+(`hertasdk.Dispatch`). After it, `Transient` is reported and treated as
+`Uncertain`. Tracking propagates to every operation that can reach a tracked
+one. See [SYNTHESIS.md](SYNTHESIS.md).
+
 ## 6. What is not checked
 
 Outside the composition forms above, Herta does not type-check handler Go.

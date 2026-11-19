@@ -1,0 +1,23 @@
+runtime main { resource writes capacity 1 }
+error ErrAckLost ambiguous
+op main::publish(id: string) -> u64 {
+    effect nonidempotent
+    evidence dispatch
+    resources { writes units 1 }
+    retry max 2 on { transient }
+    classify { ErrAckLost => uncertain, ErrNotSent => transient, _ => permanent }
+}
+handler main::publish(id: string) -> (u64, error) {
+    req, err := prepareHost(ctx, id)
+    if err != nil { return 0, err }
+    dispatch
+    return sendHost(ctx, req)
+}
+op main::checkout(id: string) -> u64 {
+    effect nonidempotent
+    retry max 2 on { transient }
+    classify { ErrAckLost => uncertain, ErrNotSent => transient, _ => permanent }
+}
+handler main::checkout(id: string) -> (u64, error) {
+    return call publish(id)
+}

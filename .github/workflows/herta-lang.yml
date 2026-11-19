@@ -32,6 +32,6 @@ jobs:
       - run: go test -count=1 ./herta/...
       - run: go build -o /tmp/herta ./herta/cmd/herta
       - name: golden suite (capped)
-        run: go run ./herta/cmd/hertatest -cases herta/testdata/cases -exec "/tmp/herta check {file}"
+        run: go run ./herta/cmd/hertatest -cases herta/testdata/cases -exec "/tmp/herta check {args} {file}"
       - name: codegen suite (capped)
         run: go run ./herta/cmd/hertatest -cases herta/testdata/codegen -exec "/tmp/herta build {args} {file}"

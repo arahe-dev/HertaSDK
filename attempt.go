@@ -16,7 +16,8 @@ func (op *Operation[I, O]) run(ctx context.Context, in I) (O, error) {
 		} else {
 			op.rt.stats.retried.Add(1)
 		}
-		out, expired, err := op.attempt(ctx, in)
+		actx, st := op.track(ctx)
+		out, expired, err := op.attempt(actx, in)
 		if err == nil {
 			return out, nil // a late result is returned, not discarded
 		}
@@ -33,13 +34,16 @@ func (op *Operation[I, O]) run(ctx context.Context, in I) (O, error) {
 			default:
 				o = Permanent
 			}
-			if n >= op.attempts || !op.retry.has(o) {
+			o, safe := st.evidence(o)
+			if n >= op.attempts || !safe || !op.retry.has(o) {
 				return zero, &Failure{Outcome: o, Err: err}
 			}
 			continue
 		}
 		o, promoted := classify(err, expired)
-		if n >= op.attempts || !op.retry.has(o) {
+		o, safe := st.evidence(o)
+		promoted = promoted || (o == Uncertain && OutcomeOf(err) != Uncertain)
+		if n >= op.attempts || !safe || !op.retry.has(o) {
 			return zero, failed(err, promoted)
 		}
 	}

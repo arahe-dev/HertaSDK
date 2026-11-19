@@ -29,6 +29,9 @@ structure Reply where
   error : Option RawError
   /-- Cooperative backend waits precisely until the effective context deadline. -/
   hangs : Bool := false
+  /-- evidence.go: the adapter called Dispatch before this reply. Conservative
+  default; DispatchBeforeApply below is the adapter's whole obligation. -/
+  dispatched : Bool := true
   deriving Repr
 
 abbrev Backend := Nat → Reply
@@ -43,6 +46,8 @@ structure Policy where
   path : Path := .legacy
   /-- Zero is SDK behavior (attempt.go:5–7); positive values are an extension. -/
   backoff : Nat := 0
+  /-- Policy.TrackDispatch (evidence.go). -/
+  trackDispatch : Bool := false
 
 def normalize : Outcome → Outcome
   | .success => .permanent
@@ -69,6 +74,11 @@ def resolve (path : Path) (raw : RawError) (tag : Option Outcome)
     else if ownExpired then .uncertain
     else normalize (tag.getD .permanent)
 
+/-- evidence.go:55–64, single operation: after Dispatch, Transient is no longer
+evidence of "not applied". Nested ancestor marking is not modeled here. -/
+def evidence (p : Policy) (r : Reply) (o : Outcome) : Outcome :=
+  if p.trackDispatch && r.dispatched && o == .transient then .uncertain else o
+
 structure Observation where
   elapsed : Nat
   applied : Nat
@@ -94,7 +104,7 @@ def observe (p : Policy) (b : Backend) (c : Classifier) (i now : Nat) : Observat
     applied := if r.applied then 1 else 0
     outcome := match raw with
       | none => .success
-      | some e => resolve p.path e (c i e) ownExpired callerEnded
+      | some e => evidence p r (resolve p.path e (c i e) ownExpired callerEnded)
     ownExpired := ownExpired
     callerEnded := callerEnded }
 
@@ -279,9 +289,9 @@ theorem T5 (p : Policy) (b : Backend) (c : Classifier) (i now : Nat)
   | some e =>
     simp only [observe, hr] at expired ⊢
     rw [expired, hp]
-    have safe : ∀ ended, mayRetry p (resolve .closed e (c i e) true ended) = false := by
+    have safe : ∀ ended, mayRetry p (evidence p (b i) (resolve .closed e (c i e) true ended)) = false := by
       intro ended
-      cases ended <;> simp [resolve, mayRetry, he]
+      cases ended <;> simp [resolve, evidence, mayRetry, he] <;> split <;> simp [mayRetry, he]
     exact safe _
 #print axioms T5
 
@@ -290,7 +300,7 @@ return still succeeds; empty retry sets stop at the first plain failure.
 These use attempt.go:10–21, not a hard preemption interpretation of Timeout. -/
 theorem execution_edges :
     (run { r1 with callerDeadline := 0 } hangsUntilContext untagged).calls = 0 ∧
-    (run r1 (fun _ => ⟨1100, true, none, false⟩) untagged).outcome = .success ∧
+    (run r1 (fun _ => ⟨1100, true, none, false, true⟩) untagged).outcome = .success ∧
     (run { r1 with retryOn := [] } appliesThenPlain transientTag).calls = 1 ∧
     (run { r1 with maxAttempts := 0 } appliesThenPlain transientTag).calls = 1 := by decide
 #print axioms execution_edges
@@ -301,5 +311,56 @@ theorem T5_witness_blocked :
     (run { twoAttempts with path := .closed } appliesThenTimesOut transientTag).applied = 1 := by
   decide
 #print axioms T5_witness_blocked
+
+/-- The adapter obligation dispatch tracking replaces TransientHonest with:
+every application happens after Dispatch. It says nothing about error labels. -/
+def DispatchBeforeApply (b : Backend) : Prop :=
+  ∀ i, (b i).applied = true → (b i).dispatched = true
+
+theorem evidence_transient (p : Policy) (r : Reply) (o : Outcome)
+    (ht : p.trackDispatch = true) (h : evidence p r o = .transient) :
+    r.dispatched = false := by
+  unfold evidence at h
+  cases hd : r.dispatched
+  · rfl
+  · simp only [ht, hd, Bool.true_and] at h
+    split at h <;> simp_all
+
+theorem dispatch_honest (p : Policy) (b : Backend) (c : Classifier)
+    (ht : p.trackDispatch = true) (hb : DispatchBeforeApply b) :
+    TransientHonest p b c := by
+  intro i now h
+  have hnot : (b i).applied = false := by
+    cases ha : (b i).applied
+    · rfl
+    · have hd := hb i ha
+      simp only [observe] at h
+      split at h
+      · simp at h
+      · simp [evidence_transient p (b i) _ ht h] at hd
+  simp [observe, hnot]
+
+/-- T6: with dispatch tracking, ANY classifier (including one that labels
+every error Transient) cannot duplicate a nonidempotent effect, provided only
+that the adapter dispatches before applying. -/
+theorem T6 (p : Policy) (b : Backend) (c : Classifier)
+    (he : p.effect = .nonidempotent) (ht : p.trackDispatch = true)
+    (hb : DispatchBeforeApply b) : (run p b c).applied ≤ 1 :=
+  loop_safety p b c he (dispatch_honest p b c ht hb) _ _ _
+#print axioms T6
+
+def appliesBeforeDispatch : Backend := fun _ =>
+  { duration := 1, applied := true, error := some .plain, dispatched := false }
+
+/-- The boundary study's mislabeled lost ack: two applications untracked,
+one tracked; an adapter that applies before Dispatch still gets two. -/
+theorem T6_witness :
+    (run { twoAttempts with path := .closed } appliesThenPlain transientTag).applied = 2 ∧
+    (run { twoAttempts with path := .closed, trackDispatch := true }
+      appliesThenPlain transientTag).applied = 1 ∧
+    (run { twoAttempts with path := .closed, trackDispatch := true }
+      appliesBeforeDispatch transientTag).applied = 2 := by
+  decide
+#print axioms T6_witness
 
 end Herta

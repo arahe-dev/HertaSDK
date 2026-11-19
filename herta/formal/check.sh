@@ -23,7 +23,7 @@ for name, axioms in audits:
     if bad:
         sys.exit(f'FAIL: {name}: unexpected axioms {sorted(bad)}')
 expected = {'T1', 'T1_assumption_necessary', 'T2', 'T3_per_attempt',
-            'T3_default', 'T4_key', 'T4_composition', 'T5'}
+            'T3_default', 'T4_key', 'T4_composition', 'T5', 'T6', 'T6_witness'}
 if not {'Herta.' + n for n in expected} <= names:
     sys.exit('FAIL: missing theorem axiom audits')
 print('PASS: all theorem audits present; only standard axioms')
