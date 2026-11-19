@@ -1,0 +1,7 @@
+runtime main {
+    resource db capacity 9223372036854775808
+}
+op main::op1() -> r {
+    effect pure
+    timeout 99999999999h
+}

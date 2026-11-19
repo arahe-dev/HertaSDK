@@ -1,0 +1,61 @@
+name: admission-done-caller
+summary: "A caller whose context is already done gets its ctx error, uncounted - except an unkeyed Reject call, which reports overload."
+source: contract_test.go/TestContractDoneCallerTakesNothing (Amendment 1)
+runtime:
+  resources: [{name: r, capacity: 1}]
+operations:
+  keyed-reject:
+    input: int
+    effect: Pure
+    requires: [{resource: r, units: 1}]
+    admission: Reject
+    key: const-k
+    handler: {return: 0}
+  unkeyed-reject:
+    input: int
+    effect: Pure
+    requires: [{resource: r, units: 1}]
+    admission: Reject
+    handler: {return: 0}
+  keyed-wait:
+    input: int
+    effect: Pure
+    requires: [{resource: r, units: 1}]
+    admission: Wait
+    key: const-k
+    handler: {return: 0}
+  unkeyed-wait:
+    input: int
+    effect: Pure
+    requires: [{resource: r, units: 1}]
+    admission: Wait
+    handler: {return: 0}
+steps:
+  # All calls below use a caller context that is already cancelled.
+  - ctx: "dead = {cancelled: true}"
+  # Key held, keyed Reject: done caller takes nothing, gets ctx error.
+  - hold_key: const-k          # runner acquires the raw key (KeyLocker.lock)
+  - call: {op: keyed-reject, via_ctx: dead, as: key-held}
+  - release_key: const-k
+  # Units held, keyed Reject: key is free but capacity is taken - still ctx error, nothing taken.
+  - hold_units: {resource: r, units: 1}
+  - call: {op: keyed-reject, via_ctx: dead, as: keyfree-units-held}
+  # Units held, unkeyed Reject: the one case that reports overload instead.
+  - call: {op: unkeyed-reject, via_ctx: dead, as: unkeyed-units-held}
+  - call: {op: unkeyed-reject, via_ctx: dead, as: unkeyed-units-held-again}
+  - release_units: {resource: r, units: 1}
+  # Units held, unkeyed Wait: parks on no resources, leaves on ctx.
+  - hold_units: {resource: r, units: 1}
+  - call: {op: unkeyed-wait, via_ctx: dead, as: wait-units-held}
+  - call: {op: keyed-wait, via_ctx: dead, as: wait-keyed}
+  - release_units: {resource: r, units: 1}
+
+expected:
+  results:
+    key-held: {error_is: context.Canceled, started: false}
+    keyfree-units-held: {error_is: context.Canceled, started: false}
+    unkeyed-units-held: {error: ErrOverloaded, outcome: Throttled}
+    unkeyed-units-held-again: {error: ErrOverloaded, outcome: Throttled}
+    wait-units-held: {error_is: context.Canceled, started: false}
+    wait-keyed: {error_is: context.Canceled, started: false}
+  stats: {Rejected: 2, Started: 0}

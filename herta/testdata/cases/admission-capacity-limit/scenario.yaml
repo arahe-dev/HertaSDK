@@ -1,0 +1,42 @@
+name: admission-capacity-limit
+summary: Capacity 8, 20 blocked calls - peak concurrent handlers is exactly 8.
+source: execution_test.go/TestCapacityLimitHeldUnderLoad
+runtime:
+  resources: [{name: renderer, capacity: 8}]
+operations:
+  render:
+    input: int
+    effect: Pure
+    requires: [{resource: renderer, units: 1}]
+    admission: Wait
+    timeout_ms: 5000
+    handler: {block: gate-1, then: {return: 1}}
+steps:
+  - spawn: {op: render, input: 0, as: c0}
+  - spawn: {op: render, input: 1, as: c1}
+  - spawn: {op: render, input: 2, as: c2}
+  - spawn: {op: render, input: 3, as: c3}
+  - spawn: {op: render, input: 4, as: c4}
+  - spawn: {op: render, input: 5, as: c5}
+  - spawn: {op: render, input: 6, as: c6}
+  - spawn: {op: render, input: 7, as: c7}
+  - spawn: {op: render, input: 8, as: c8}
+  - spawn: {op: render, input: 9, as: c9}
+  - spawn: {op: render, input: 10, as: c10}
+  - spawn: {op: render, input: 11, as: c11}
+  - spawn: {op: render, input: 12, as: c12}
+  - spawn: {op: render, input: 13, as: c13}
+  - spawn: {op: render, input: 14, as: c14}
+  - spawn: {op: render, input: 15, as: c15}
+  - spawn: {op: render, input: 16, as: c16}
+  - spawn: {op: render, input: 17, as: c17}
+  - spawn: {op: render, input: 18, as: c18}
+  - spawn: {op: render, input: 19, as: c19}
+  - wait: {inflight: 8}
+  - gate: gate-1 open
+  - join: all
+
+expected:
+  inflight_peak: 8
+  calls: {render: 20}
+  stats: {Admitted: 20, Started: 20, Finished: 20}

@@ -1,0 +1,15 @@
+runtime main
+  resource db capacity 16
+  resource network capacity 4
+op main::charge(user_id: string, cents: u64) -> receipt
+  effect nonidempotent
+  admission reject
+  resource db units 1
+  resource network units 1
+  timeout 500ms
+  serialize key user_id
+  retry max 3 on {transient}
+handler main::charge -> (receipt, error)
+  stmt r := do_charge ( user_id , cents )
+  fail transient, r . err
+ok

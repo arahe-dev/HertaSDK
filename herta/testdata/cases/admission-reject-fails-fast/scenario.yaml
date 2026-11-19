@@ -1,0 +1,49 @@
+name: admission-reject-fails-fast
+summary: Reject admission on exhausted capacity or a held key returns ErrOverloaded (Throttled) immediately, counted as Rejected.
+source: execution_test.go/TestRejectAdmissionFailsFast, delta_test.go/TestDelta1RejectFailsFastOnHeldKey (Δ1)
+runtime:
+  resources: [{name: renderer, capacity: 1}, {name: r, capacity: 4}]
+operations:
+  hold:
+    input: int
+    effect: Pure
+    requires: [{resource: renderer, units: 1}]
+    admission: Wait
+    handler: {block: gate-1, then: return-ctx-err}
+  render:
+    input: int
+    effect: Pure
+    requires: [{resource: renderer, units: 1}]
+    admission: Reject
+    handler: {return: 0}
+  keyed-hold:
+    input: string
+    effect: Pure
+    requires: [{resource: r, units: 1}]
+    admission: Wait
+    key: input
+    handler: {block: gate-2, then: {return: 0}}
+  keyed-reject:
+    input: string
+    effect: Pure
+    requires: [{resource: r, units: 1}]
+    admission: Reject
+    key: input
+    handler: {return: 0}
+steps:
+  - spawn: {op: hold, as: h1}
+  - wait: {started: 1}
+  - call: {op: render, as: r1}        # capacity held -> fail fast
+  - spawn: {op: keyed-hold, input: K, as: kh}
+  - wait: {started: 2}
+  - call: {op: keyed-reject, input: K, as: r2}   # key held -> fail fast
+  - gate: gate-1 open
+  - gate: gate-2 open
+  - join: all
+
+expected:
+  results:
+    r1: {error: ErrOverloaded, outcome: Throttled, started: false}
+    r2: {error: ErrOverloaded, outcome: Throttled, started: false}
+  calls: {render: 0, keyed-reject: 0}
+  stats: {Rejected: 2}

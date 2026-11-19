@@ -1,0 +1,4 @@
+4:1: op "op1": serialize key "user_id" must be a string parameter, got u64
+4:1: op "main::op1" has no handler
+8:1: op "op2": serialize key "missing" is not a parameter
+8:1: op "main::op2" has no handler

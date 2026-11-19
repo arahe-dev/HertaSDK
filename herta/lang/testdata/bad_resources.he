@@ -1,0 +1,7 @@
+runtime main {
+    resource db capacity 2
+}
+op main::op1() -> r {
+    effect pure
+    resources { db units 5, missing units 1, db units 1 }
+}

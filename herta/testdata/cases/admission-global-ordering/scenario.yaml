@@ -1,0 +1,37 @@
+name: admission-global-ordering
+summary: "Resources are acquired in global order, not policy order: a caller blocked on resource \"a\" holds nothing, so a \"b\"-only caller proceeds."
+source: execution_test.go/TestGlobalOrderingPreventsHoldAndWaitStarvation
+runtime:
+  resources: [{name: a, capacity: 1}, {name: b, capacity: 1}]
+operations:
+  hold-a:
+    input: int
+    effect: Pure
+    requires: [{resource: a, units: 1}]
+    admission: Wait
+    handler: {block: gate-1, then: {return: 0}}
+  victim:
+    input: int
+    effect: Pure
+    requires: [{resource: b, units: 1}, {resource: a, units: 1}]  # policy order [b, a]; global order normalizes to [a, b]
+    admission: Wait
+    handler: {return: 0}
+  needs-b:
+    input: int
+    effect: Pure
+    requires: [{resource: b, units: 1}]
+    admission: Reject
+    handler: {return: 0}
+steps:
+  - spawn: {op: hold-a, as: ha}
+  - wait: {started: 1}
+  - spawn: {op: victim, as: v}     # parks waiting on "a" (global first); must hold nothing
+  - wait: {blocked: v}
+  - call: {op: needs-b, as: probe} # would fail if the victim held "b"
+  - gate: gate-1 open
+  - join: all
+
+expected:
+  results:
+    probe: {error: null, value: 0}
+  calls: {needs-b: 1, victim: 1, hold-a: 1}

@@ -219,7 +219,7 @@ func loadHandler(tr *tracer, im impl.Impl, seed uint64, chaos bool) impl.Handler
 		case n < 84:
 			returned, err = impl.Throttled, im.Fail(impl.Throttled, errAdapter)
 		case n < 88:
-			err = errAdapter
+			returned, err = outcomeUntagged, errAdapter
 		case n < 94: // a provider adapter that maps its own timeout to Transient
 			select {
 			case <-ctx.Done():
