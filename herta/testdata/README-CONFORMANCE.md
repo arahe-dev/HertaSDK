@@ -8,9 +8,9 @@ oracle.
 Layout follows the capped runner (`lang/hertatest`):
 
 ```
-herta/conformance/cases/<slug>/
-    input.herta     # the Herta program under test (required)
-    expected.txt    # golden stdout of `herta check input.herta` (required)
+herta/testdata/cases/<slug>/
+    input.he     # the Herta program under test (required)
+    expected.golden    # golden stdout of `herta check input.he` (required)
     expected.exit   # present when the check must fail (optional)
     scenario.yaml   # behavioral scenario + expectations for the
                     # conformance driver (runtime-semantics cases only)
@@ -36,7 +36,7 @@ ports, so a coverage diff is mechanical.
 
 ## scenario.yaml format
 
-`input.herta` declares the runtimes, ops and handlers. `scenario.yaml`
+`input.he` declares the runtimes, ops and handlers. `scenario.yaml`
 holds the original case spec: the runtime driver script (`steps:` — calls,
 spawns, gates, contexts, shutdown, direct key/unit holds) and the
 `expected:` observations a correct backend must produce (per-call results
