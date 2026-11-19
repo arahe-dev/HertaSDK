@@ -1,0 +1,44 @@
+name: admission-partial-acquire-rollback
+summary: A Reject call needing {a, b} where only a is free fails without keeping a.
+source: execution_test.go/TestPartialAcquireRollsBack
+runtime:
+  resources: [{name: a, capacity: 1}, {name: b, capacity: 1}]
+operations:
+  hold-b:
+    input: int
+    effect: Pure
+    requires: [{resource: b, units: 1}]
+    admission: Wait
+    handler: {block: gate-1, then: {return: 0}}
+  victim:
+    input: int
+    effect: Pure
+    requires: [{resource: a, units: 1}, {resource: b, units: 1}]
+    admission: Reject
+    handler: {return: 0}
+  probe-a:
+    input: int
+    effect: Pure
+    requires: [{resource: a, units: 1}]
+    admission: Reject
+    handler: {return: 0}
+  probe-b:
+    input: int
+    effect: Pure
+    requires: [{resource: b, units: 1}]
+    admission: Reject
+    handler: {return: 0}
+steps:
+  - spawn: {op: hold-b, as: hb}
+  - wait: {started: 1}
+  - call: {op: victim, as: v}       # fails on b; must not keep a
+  - call: {op: probe-a, as: pa}     # proves a was rolled back
+  - call: {op: probe-b, as: pb}     # proves b is still held by the holder
+  - gate: gate-1 open
+  - join: all
+
+expected:
+  results:
+    v: {error: ErrOverloaded, outcome: Throttled}
+    pa: {error: null}
+    pb: {error: ErrOverloaded, outcome: Throttled}

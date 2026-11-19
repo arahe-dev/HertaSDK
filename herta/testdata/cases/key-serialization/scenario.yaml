@@ -1,0 +1,44 @@
+name: key-serialization
+summary: Same key never overlaps, different keys run in parallel when the budget permits; an empty SerializeKey result means no serialization.
+source: execution_test.go/TestKeySerializationSameKeySerialDifferentKeyParallel, execution_test.go/TestEmptyKeyMeansNoSerialization
+runtime:
+  resources: [{name: db-write, capacity: 8}]
+operations:
+  replace:
+    input: string
+    effect: Idempotent
+    requires: [{resource: db-write, units: 1}]
+    admission: Wait
+    key: input
+    handler: {block: gate-1, then: {return: 0}}
+  unkeyed:
+    input: string
+    effect: Pure
+    key: empty                      # SerializeKey returns "" -> no serialization
+    handler: {block: gate-2, then: {return: 0}}
+steps:
+  # 4 calls on brand A, 4 on brand B; ample capacity.
+  - spawn: {op: replace, input: A, as: a0}
+  - spawn: {op: replace, input: B, as: b0}
+  - spawn: {op: replace, input: A, as: a1}
+  - spawn: {op: replace, input: B, as: b1}
+  - spawn: {op: replace, input: A, as: a2}
+  - spawn: {op: replace, input: B, as: b2}
+  - spawn: {op: replace, input: A, as: a3}
+  - spawn: {op: replace, input: B, as: b3}
+  - wait: {inflight: 2}             # A and B in flight together, never more
+  - gate: gate-1 open
+  - join: all
+  # Empty key: 4 calls overlap fully.
+  - spawn: {op: unkeyed, input: x, as: u0}
+  - spawn: {op: unkeyed, input: x, as: u1}
+  - spawn: {op: unkeyed, input: x, as: u2}
+  - spawn: {op: unkeyed, input: x, as: u3}
+  - wait: {inflight: 4}
+  - gate: gate-2 open
+  - join: all
+
+expected:
+  inflight_peak: 4          # phase 2 (empty key) overlapped all 4; phase 1 peaked at exactly 2
+  key_counts: {replace: {A: 4, B: 4}}
+  calls: {replace: 8, unkeyed: 4}

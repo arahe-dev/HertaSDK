@@ -1,0 +1,37 @@
+name: admission-shared-budget
+summary: "Two operations sharing one resource never exceed aggregate capacity: 1-unit and 3-unit callers on a budget of 4."
+source: execution_test.go/TestSharedBudgetAcrossOperations
+runtime:
+  resources: [{name: db-write, capacity: 4}]
+operations:
+  events-record:
+    input: int
+    effect: Idempotent
+    requires: [{resource: db-write, units: 1}]
+    admission: Wait
+    handler: {block: gate-1, then: {return: 0}}
+  catalogue-replace:
+    input: int
+    effect: Idempotent
+    requires: [{resource: db-write, units: 3}]
+    admission: Wait
+    handler: {block: gate-1, then: {return: 0}}
+steps:
+  - spawn: {op: events-record, input: 0, as: e0}
+  - spawn: {op: catalogue-replace, input: 0, as: c0}
+  - spawn: {op: events-record, input: 1, as: e1}
+  - spawn: {op: catalogue-replace, input: 1, as: c1}
+  - spawn: {op: events-record, input: 2, as: e2}
+  - spawn: {op: catalogue-replace, input: 2, as: c2}
+  - spawn: {op: events-record, input: 3, as: e3}
+  - spawn: {op: catalogue-replace, input: 3, as: c3}
+  - spawn: {op: events-record, input: 4, as: e4}
+  - spawn: {op: catalogue-replace, input: 4, as: c4}
+  - sleep_ms: 250
+  - gate: gate-1 open
+  - join: all
+
+expected:
+  inflight_peak_max: 4     # aggregate in-flight handlers never exceeded the budget
+  calls: {events-record: 5, catalogue-replace: 5}
+  stats: {Started: 10, Finished: 10}
