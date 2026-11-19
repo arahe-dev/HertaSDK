@@ -75,8 +75,11 @@ type FailStmt struct {
 }
 
 // RawStmt is any other statement, preserved as source text for codegen.
+// Fails records `fail` uses buried in inline blocks so the checker sees
+// them; they print as part of Text, not as separate statements.
 type RawStmt struct {
 	Text      string
+	Fails     []OutcomeRef
 	Line, Col int
 }
 

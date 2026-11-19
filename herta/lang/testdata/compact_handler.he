@@ -14,3 +14,10 @@ handler main::op2() -> (r, error) {
     if bad { fail success, err }
     return r, nil
 }
+op main::op3() -> r {
+    effect pure
+}
+handler main::op3() -> (r, error) {
+    if bad { fail 0, err }
+    return r, nil
+}

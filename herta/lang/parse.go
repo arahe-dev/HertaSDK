@@ -395,7 +395,7 @@ func (p *parser) handlerDecl() (*Handler, error) {
 			continue
 		}
 		var b strings.Builder
-		var inline []Stmt
+		var fails []OutcomeRef
 		startLine := t.Line
 		for p.cur().Kind != TokEOF && p.cur().Line == startLine {
 			tok := p.cur()
@@ -414,17 +414,17 @@ func (p *parser) handlerDecl() (*Handler, error) {
 			b.WriteString(tokText(p.adv()))
 			// A `fail <outcome>` buried in an inline block still returns a
 			// classified error; record it so the checker sees it. Strings
-			// and comments can't reach here as idents.
+			// and comments can't reach here as idents. The outcome may be
+			// any token — the checker reports invalid ones.
 			if tok.Kind == TokIdent && tok.Text == "fail" &&
-				p.cur().Kind == TokIdent && p.cur().Line == startLine {
+				p.cur().Line == startLine && p.cur().Kind != TokRBrace && p.cur().Kind != TokEOF {
 				o := p.adv()
 				b.WriteByte(' ')
-				b.WriteString(o.Text)
-				inline = append(inline, &FailStmt{Outcome: o.Text, Line: tok.Line, Col: tok.Col})
+				b.WriteString(tokText(o))
+				fails = append(fails, OutcomeRef{Name: o.Text, Line: tok.Line, Col: tok.Col})
 			}
 		}
-		h.Body = append(h.Body, &RawStmt{Text: b.String(), Line: line, Col: col})
-		h.Body = append(h.Body, inline...)
+		h.Body = append(h.Body, &RawStmt{Text: b.String(), Fails: fails, Line: line, Col: col})
 	}
 	if _, err := p.expect(TokRBrace, "} for handler body"); err != nil {
 		return nil, err

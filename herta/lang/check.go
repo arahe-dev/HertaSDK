@@ -181,8 +181,13 @@ func checkHandler(h *Handler, op *Op, at func(Diagnostic)) {
 		at(Diagnostic{h.Line, h.Col, fmt.Sprintf("handler %q: results must be (%s, error)", h.Name, op.Result)})
 	}
 	for _, s := range h.Body {
-		if f, ok := s.(*FailStmt); ok {
-			checkFailOutcome(h, f.Outcome, f.Line, f.Col, at)
+		switch s := s.(type) {
+		case *FailStmt:
+			checkFailOutcome(h, s.Outcome, s.Line, s.Col, at)
+		case *RawStmt:
+			for _, f := range s.Fails {
+				checkFailOutcome(h, f.Name, f.Line, f.Col, at)
+			}
 		}
 	}
 }
