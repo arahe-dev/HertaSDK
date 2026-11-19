@@ -1,0 +1,19 @@
+// id: C3-020b9108d265-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/volume/csi/nodeinfomanager/nodeinfomanager.go#L549
+// facts: InitializeCSINodeWithAnnotation530-539 is a context-free exponential-backoff initialization; helper545-571 intentionally reads/reconciles CSINode at startup with TODO; no request lifetime to preserve was established.
+// model: Standalone context-free startup entry, not called from a cancellable operation in the facts.
+runtime main { resource evaluation capacity 1 }
+op main::initializeCSINode() -> u64 {
+    effect idempotent
+    detached
+    calls readAndReconcileCSINode
+}
+handler main::initializeCSINode() -> (u64, error) {
+    return 0, nil
+}
+op main::readAndReconcileCSINode() -> u64 {
+    effect idempotent
+}
+handler main::readAndReconcileCSINode() -> (u64, error) {
+    return 0, nil
+}

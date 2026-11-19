@@ -1,0 +1,26 @@
+// id: C2-10e7b5b1b3aa-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/iclouddrive/iclouddrive.go#L490
+// facts: CreateDir 490-510 calls findLeafItem on unknown create outcome, reaching listAll 203-212; failed lookup aborts the outer retry while successful lookup prevents duplicate creation; R*R possible reads (default100) are intentional outcome recovery.
+// model: Default 10 total pacer attempts: pinned rclone fs/config.go:196-198; lib/pacer/pacer.go Call passes p.retries, CallNoRetry passes 1. Default matches the C2 facts, not an evaluation budget override. Lookup failure aborts outer retry (rule 6); successful refetch guards against duplicate creation, making logical CreateDir idempotent.
+runtime main { resource evaluation capacity 1 }
+op main::createDir() -> u64 {
+    effect idempotent
+    retry max 10 on { uncertain }
+}
+handler main::createDir() -> (u64, error) {
+    return 0, nil
+}
+op main::findLeafItem() -> u64 {
+    effect pure
+    calls listAll
+}
+handler main::findLeafItem() -> (u64, error) {
+    return 0, nil
+}
+op main::listAll() -> u64 {
+    effect pure
+    retry max 10 on { uncertain }
+}
+handler main::listAll() -> (u64, error) {
+    return 0, nil
+}

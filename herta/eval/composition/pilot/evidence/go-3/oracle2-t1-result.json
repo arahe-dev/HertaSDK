@@ -1,0 +1,7 @@
+{
+  "run": "go-3",
+  "task": "t1",
+  "passed": 0,
+  "count10_rc": 1,
+  "race_rc": 1
+}

@@ -1,0 +1,42 @@
+// A handler panic releases keys and resources and propagates; panic(nil)
+// propagates as PanicNilError; the attempt context is cancelled (Δ7).
+runtime main {
+    resource renderer capacity 1
+    resource db_write capacity 1
+}
+
+op main::boom(k: string) -> int {
+    effect pure
+    admission wait
+    resources { renderer units 1, db_write units 1 }
+    serialize key k
+}
+handler main::boom(k: string) -> (int, error) {
+    panic("programmer bug")
+}
+
+op main::boom_nil(n: int) -> int {
+    effect pure
+    timeout 1h
+    resources { renderer units 1, db_write units 1 }
+}
+handler main::boom_nil(n: int) -> (int, error) {
+    panic_nil()
+}
+
+op main::probe_res(n: int) -> int {
+    effect pure
+    admission reject
+    resources { renderer units 1, db_write units 1 }
+}
+handler main::probe_res(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::probe_key(k: string) -> int {
+    effect pure
+    serialize key k
+}
+handler main::probe_key(k: string) -> (int, error) {
+    return 0, nil
+}

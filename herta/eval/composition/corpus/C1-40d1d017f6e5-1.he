@@ -1,0 +1,11 @@
+// id: C1-40d1d017f6e5-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/staging/src/k8s.io/kubectl/pkg/cmd/logs/logs.go#L446
+// facts: consumeWithRetry 446-463 writes the diagnostic error to stderr before retrying an APIStatus error; this is intentional log output, not replay of the requested external mutation.
+// inexpressible: Only intentional stderr logging before retry is identified; no replay of an external mutation in the facts.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

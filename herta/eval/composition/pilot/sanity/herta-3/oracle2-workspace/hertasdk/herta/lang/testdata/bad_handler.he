@@ -1,0 +1,15 @@
+runtime main {
+    resource db capacity 4
+}
+op main::op1(user_id: string) -> receipt {
+    effect idempotent
+}
+handler main::op1(user_id: u64) -> (receipt, error) {
+    if bad {
+        fail success, err
+    }
+}
+handler main::op1(user_id: string) -> (receipt, error) {
+}
+handler main::ghost(x: i32) -> (receipt, error) {
+}

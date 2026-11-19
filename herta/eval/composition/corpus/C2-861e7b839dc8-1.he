@@ -1,0 +1,11 @@
+// id: C2-861e7b839dc8-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/kubelet/cm/devicemanager/plugin/v1beta1/stub.go#L229
+// facts: Stub.Watch229 retries Restart -> Start137-183 -> PollImmediate169 socket readiness; outer shares ctx with2min bound, inner readiness is10s; deliberate readiness recovery, no exact count product from wall-clock bounds.
+// inexpressible: Watch shares a 2min context with 10s readiness polling; neither time bound establishes an exact attempt count.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

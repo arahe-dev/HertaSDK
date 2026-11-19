@@ -1,0 +1,11 @@
+// id: C1-2b11ddbc47ad-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/staging/src/k8s.io/apiextensions-apiserver/pkg/apiserver/customresource_discovery_controller.go#L302
+// facts: DiscoveryController.sync updates the local aggregated-discovery manager/handlers; RemoveGroup/SetGroupVersionPriority are in-process discovery registry mutations, not remote state changes.
+// inexpressible: Only in-process discovery registry mutations; no remote mutation, governed retry, lock, or context behavior in the supplied facts.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

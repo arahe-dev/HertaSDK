@@ -1,0 +1,19 @@
+// id: C4-183c73dd6e27-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/kubelet/cm/devicemanager/manager.go#L825
+// facts: callGetPreferredAllocationIfAvailable1176 releases m.mutex before the plugin RPC and reacquires1179; it requires the caller-held mutex and is not a second acquisition while held.
+// model: Helper releases before plugin RPC and reacquires afterwards; held regions do not nest.
+runtime main { resource evaluation capacity 1 }
+op main::deviceManagerBeforeRpc() -> u64 {
+    effect pure
+    lock deviceManagerMutex
+}
+handler main::deviceManagerBeforeRpc() -> (u64, error) {
+    return 0, nil
+}
+op main::deviceManagerAfterRpc() -> u64 {
+    effect pure
+    lock deviceManagerMutex
+}
+handler main::deviceManagerAfterRpc() -> (u64, error) {
+    return 0, nil
+}

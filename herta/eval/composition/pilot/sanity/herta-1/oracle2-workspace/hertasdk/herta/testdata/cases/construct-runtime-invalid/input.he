@@ -1,0 +1,17 @@
+// NewRuntime rejects empty spec lists, non-positive capacities, duplicates
+// and empty names (contract §3.1). In Herta these are compile errors.
+runtime empty {
+}
+
+runtime zerocap {
+    resource a capacity 0
+}
+
+runtime dup {
+    resource a capacity 1
+    resource a capacity 2
+}
+
+runtime ok {
+    resource a capacity 1
+}

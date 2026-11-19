@@ -1,0 +1,18 @@
+// id: C1-043fdffa8a58-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/googlecloudstorage/googlecloudstorage.go#L1484
+// facts: lib/pacer/pacer.go 255-256 implements CallNoRetry as call(fn,1); the selected Insert callback executes once at this site.
+// model: CallNoRetry has one attempt: no retry clause. Insert may create but is not replayed at this site.
+runtime main { resource evaluation capacity 1 }
+op main::insertOnce() -> u64 {
+    effect nonidempotent
+    calls insert
+}
+handler main::insertOnce() -> (u64, error) {
+    return 0, nil
+}
+op main::insert() -> u64 {
+    effect nonidempotent
+}
+handler main::insert() -> (u64, error) {
+    return 0, nil
+}

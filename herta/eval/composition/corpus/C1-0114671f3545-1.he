@@ -1,0 +1,19 @@
+// id: C1-0114671f3545-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/volume/csi/nodeinfomanager/nodeinfomanager.go#L266
+// facts: updateNode 266 -> tryUpdateNode 297-320 refetches Node and reapplies desired-state functions before PatchNodeStatus; successful changes converge on the next Get.
+// model: Pinned nodeinfomanager.go:56-60 sets updateBackoff.Steps=4. The callee is the logical refetch-and-reconcile update.
+runtime main { resource evaluation capacity 1 }
+op main::updateNode() -> u64 {
+    effect idempotent
+    retry max 4 on { uncertain }
+    calls refetchReconcilePatch
+}
+handler main::updateNode() -> (u64, error) {
+    return 0, nil
+}
+op main::refetchReconcilePatch() -> u64 {
+    effect idempotent
+}
+handler main::refetchReconcilePatch() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,27 @@
+// Two runtimes with same-named ops: generated names carry the runtime.
+runtime a {
+    resource r capacity 1
+}
+runtime b {
+    resource r capacity 2
+}
+
+op a::work(k: string) -> int {
+    effect idempotent
+    admission wait
+    resources { r units 1 }
+    serialize key k
+    retry max 2 on { transient, uncertain }
+}
+handler a::work(k: string) -> (int, error) {
+    return len(k), nil
+}
+
+op b::work(k: string) -> int {
+    effect pure
+    resources { r units 2 }
+    timeout 1s
+}
+handler b::work(k: string) -> (int, error) {
+    return 0, nil
+}

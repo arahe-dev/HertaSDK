@@ -1,0 +1,19 @@
+// id: C4-008727589243-3
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/vfs/vfscache/item.go#L755
+// facts: The selected call755 passes syncWriteBack=false; _actualClose's synchronous _store833 branch is therefore unreachable from this site (and _store's own reacquires follow explicit unlocks).
+// model: syncWriteBack=false excludes _store; no edge to an unreachable branch.
+runtime main { resource evaluation capacity 1 }
+op main::closeNoSyncWriteBack() -> u64 {
+    effect pure
+    lock mu
+    calls actualCloseNoStore
+}
+handler main::closeNoSyncWriteBack() -> (u64, error) {
+    return 0, nil
+}
+op main::actualCloseNoStore() -> u64 {
+    effect pure
+}
+handler main::actualCloseNoStore() -> (u64, error) {
+    return 0, nil
+}

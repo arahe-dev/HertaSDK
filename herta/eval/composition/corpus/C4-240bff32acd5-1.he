@@ -1,0 +1,19 @@
+// id: C4-240bff32acd5-1
+// link: https://github.com/moby/moby/blob/288c9392dd81a868b1e28e38c7ac3f78284e0c21/daemon/cluster/noderunner.go#L106
+// facts: start106 launches handleNodeExit181, which may call enableReconnectWatcher; enableReconnectWatcher382-397 launches another goroutine for its mu.Lock387; no synchronous path reenters the caller's mu.
+// model: Acquisition runs on explicitly separate goroutine; no synchronous held-mu call edge.
+runtime main { resource evaluation capacity 1 }
+op main::start() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::start() -> (u64, error) {
+    return 0, nil
+}
+op main::reconnectWatcher() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::reconnectWatcher() -> (u64, error) {
+    return 0, nil
+}

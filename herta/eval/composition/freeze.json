@@ -1,0 +1,8 @@
+{
+  "model_count": 121,
+  "frozen_at_utc": "2026-11-19T16:59:58.768249+00:00",
+  "labels_opened": false,
+  "checker_commit": "e9741d23d663ea1ad8e708a5f0e88393424b4416",
+  "checker_sha256": "3bd91def1c5927a69389a83d81c757de5e4ae6deeab24346d20990088dab6cfb",
+  "model_manifest_sha256": "2f6f8d142d59eba789cfa43ebc52de27bfd2229cfc5861306d87849ae5b408b8"
+}

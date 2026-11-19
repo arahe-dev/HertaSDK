@@ -1,0 +1,26 @@
+// id: C2-6d1d50753c23-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/ulozto/ulozto.go#L664
+// facts: ulozto664 -> shouldRetry236-259 on401 -> authenticate262-291; failed authentication stops outer and inner predicate disables reauth; conditional R*R/default100 recovery bound.
+// model: Default 10 total pacer attempts: pinned rclone fs/config.go:196-198; lib/pacer/pacer.go Call passes p.retries, CallNoRetry passes 1. Default matches the C2 facts, not an evaluation budget override. Auth failure short-circuits the outer policy; no calls edge under outer retry, per rule 6. Inner reauth is disabled. Underlying user-request effect is not specified; the modeled operation is credential recovery.
+runtime main { resource evaluation capacity 1 }
+op main::requestAuthRecovery() -> u64 {
+    effect idempotent
+    retry max 10 on { transient }
+}
+handler main::requestAuthRecovery() -> (u64, error) {
+    return 0, nil
+}
+op main::authenticate() -> u64 {
+    effect idempotent
+    retry max 10 on { uncertain }
+    calls installCredentials
+}
+handler main::authenticate() -> (u64, error) {
+    return 0, nil
+}
+op main::installCredentials() -> u64 {
+    effect idempotent
+}
+handler main::installCredentials() -> (u64, error) {
+    return 0, nil
+}

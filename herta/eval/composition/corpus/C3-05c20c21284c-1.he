@@ -1,0 +1,19 @@
+// id: C3-05c20c21284c-1
+// link: https://github.com/grafana/loki/blob/134acef80206feff0a01ee830ffceca4b0a087ea/pkg/bloomgateway/worker.go#L107
+// facts: bloomgateway.worker.running65-107 deliberately processes/drains queued batches while service is Running or Stopping, using one Background per batch; cancellation is handled by stopped queue/state, not one caller (batches combine multiple task.ctx values).
+// model: Queue/state owns multi-request batches while Running or Stopping, not any single task ctx.
+runtime main { resource evaluation capacity 1 }
+op main::serviceDrain() -> u64 {
+    effect idempotent
+    calls processQueuedBatch
+}
+handler main::serviceDrain() -> (u64, error) {
+    return 0, nil
+}
+op main::processQueuedBatch() -> u64 {
+    effect idempotent
+    detached for shutdown
+}
+handler main::processQueuedBatch() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,5 @@
+// Actual ref-go t1 first-match classification order; see evidence/ref-go/t1/service.go.txt. Nil-success branch omitted; context symbols normalized. Untagged context returns use nominal permanent; SDK deadline promotion is dynamic and outside this classification projection.
+runtime main { resource db capacity 8 }
+error ErrTimeout ambiguous
+op main::charge() -> u64 { effect nonidempotent timeout 500ms retry max 3 on { transient } classify { ErrUnavailable => transient, ErrTimeout => uncertain, _ => permanent } }
+handler main::charge() -> (u64, error) { return 0, nil }

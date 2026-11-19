@@ -1,0 +1,5 @@
+runtime empty {
+}
+op ghost::op1() -> r {
+    effect pure
+}

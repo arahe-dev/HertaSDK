@@ -1,0 +1,29 @@
+runtime main { resource db capacity 8 resource network capacity 4 }
+op main::debit(svc: servicePtr, user: string, cents: u64, account_key: string) -> Unit { effect nonidempotent admission wait resources { db units 1 } serialize key account_key }
+handler main::debit(svc: servicePtr, user: string, cents: u64, account_key: string) -> (Unit, error) {
+_ = account_key
+return Unit{}, svc.b.Debit(ctx, user, cents)
+}
+op main::credit(svc: servicePtr, user: string, cents: u64, account_key: string) -> Unit { effect nonidempotent admission wait resources { db units 1 } serialize key account_key }
+handler main::credit(svc: servicePtr, user: string, cents: u64, account_key: string) -> (Unit, error) {
+_ = account_key
+return Unit{}, svc.b.Credit(ctx, user, cents)
+}
+op main::transfer(svc: servicePtr, from: string, to: string, cents: u64, first_key: string, second_key: string) -> Unit {
+    effect nonidempotent
+    admission wait
+    serialize key first_key
+}
+handler main::transfer(svc: servicePtr, from: string, to: string, cents: u64, first_key: string, second_key: string) -> (Unit, error) {
+    _ = first_key
+    return Unit{}, svc.transferHost(ctx, from, to, cents, second_key)
+}
+op main::move_funds(svc: servicePtr, from: string, to: string, cents: u64, second_key: string) -> Unit {
+    effect nonidempotent
+    admission wait
+    serialize key second_key
+}
+handler main::move_funds(svc: servicePtr, from: string, to: string, cents: u64, second_key: string) -> (Unit, error) {
+    _ = second_key
+    return Unit{}, svc.moveFundsHost(ctx, from, to, cents)
+}

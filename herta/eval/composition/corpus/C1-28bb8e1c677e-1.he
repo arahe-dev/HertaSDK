@@ -1,0 +1,11 @@
+// id: C1-28bb8e1c677e-1
+// link: https://github.com/minio/minio/blob/7aac2a2c5b7c882e68c1ce017d8256be2feea27f/cmd/iam.go#L409
+// facts: IAMSys.Load 210-243 loads cache, sets a local credential holder and publishes bootstrap telemetry; neither identified call is replay of a remote IAM mutation.
+// inexpressible: Only cache/local credential mutation and telemetry at the identified site; no remote IAM mutation to model.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

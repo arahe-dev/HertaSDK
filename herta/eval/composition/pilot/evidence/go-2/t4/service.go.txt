@@ -1,0 +1,96 @@
+package t4
+
+import (
+	"context"
+	"github.com/arahe-dev/hertasdk"
+	"sync"
+)
+
+type Input struct {
+	User  string
+	Cents uint64
+}
+type Service struct {
+	b             *Backend
+	debit, credit *hertasdk.Operation[Input, Unit]
+	transfers     keyLock
+}
+
+// keyLock serializes callers per key, including the empty key. It is kept
+// outside the runtime's key space so a transfer's lock can never collide
+// with the per-user keys its debit and credit take.
+type keyLock struct {
+	mu sync.Mutex
+	m  map[string]*keySlot
+}
+
+type keySlot struct {
+	ch   chan struct{}
+	refs int
+}
+
+func (l *keyLock) lock(ctx context.Context, k string) (func(), error) {
+	l.mu.Lock()
+	if l.m == nil {
+		l.m = map[string]*keySlot{}
+	}
+	e := l.m[k]
+	if e == nil {
+		e = &keySlot{ch: make(chan struct{}, 1)}
+		l.m[k] = e
+	}
+	e.refs++
+	l.mu.Unlock()
+	drop := func() {
+		l.mu.Lock()
+		if e.refs--; e.refs == 0 {
+			delete(l.m, k)
+		}
+		l.mu.Unlock()
+	}
+	select {
+	case e.ch <- struct{}{}:
+	case <-ctx.Done():
+		drop()
+		return nil, ctx.Err()
+	}
+	return func() { <-e.ch; drop() }, nil
+}
+
+func New(b *Backend) (*Service, error) {
+	s := &Service{b: b}
+	rt, err := hertasdk.NewRuntime(hertasdk.ResourceSpec{Name: "db", Capacity: 8}, hertasdk.ResourceSpec{Name: "network", Capacity: 4})
+	if err != nil {
+		return nil, err
+	}
+	_ = rt
+	s.debit, err = hertasdk.NewOperation(rt, "debit", func(ctx context.Context, in Input) (Unit, error) { return Unit{}, s.b.Debit(ctx, in.User, in.Cents) }, hertasdk.Policy[Input]{Effect: hertasdk.NonIdempotent, Admission: hertasdk.Wait, Resources: []hertasdk.Requirement{{Name: "db", Units: 1}}, SerializeKey: func(in Input) string { return in.User }})
+	if err != nil {
+		return nil, err
+	}
+	s.credit, err = hertasdk.NewOperation(rt, "credit", func(ctx context.Context, in Input) (Unit, error) { return Unit{}, s.b.Credit(ctx, in.User, in.Cents) }, hertasdk.Policy[Input]{Effect: hertasdk.NonIdempotent, Admission: hertasdk.Wait, Resources: []hertasdk.Requirement{{Name: "db", Units: 1}}, SerializeKey: func(in Input) string { return in.User }})
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+func (s *Service) Debit(ctx context.Context, user string, cents uint64) error {
+	_, e := s.debit.Do(ctx, Input{User: user, Cents: cents})
+	return e
+}
+func (s *Service) Credit(ctx context.Context, user string, cents uint64) error {
+	_, e := s.credit.Do(ctx, Input{User: user, Cents: cents})
+	return e
+}
+func (s *Service) Transfer(ctx context.Context, from, to string, cents uint64) error {
+	unlock, err := s.transfers.lock(ctx, from)
+	if err != nil {
+		return err
+	}
+	defer unlock()
+	if _, err := s.debit.Do(ctx, Input{User: from, Cents: cents}); err != nil {
+		return err
+	}
+	_, err = s.credit.Do(ctx, Input{User: to, Cents: cents})
+	return err
+}

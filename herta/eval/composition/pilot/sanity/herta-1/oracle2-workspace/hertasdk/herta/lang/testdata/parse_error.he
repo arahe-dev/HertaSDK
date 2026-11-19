@@ -1,0 +1,3 @@
+runtime main {
+    resource db capacity
+}

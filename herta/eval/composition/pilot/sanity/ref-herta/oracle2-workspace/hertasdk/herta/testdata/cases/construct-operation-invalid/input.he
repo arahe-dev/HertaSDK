@@ -1,0 +1,61 @@
+// NewOperation rejects unknown/zero/negative/over-capacity/duplicate
+// requirements, missing effect, bad serialize keys and handler errors
+// (contract §3.2). In Herta these are compile errors.
+runtime main {
+    resource r capacity 2
+}
+
+op main::unknown(n: int) -> int {
+    effect pure
+    resources { nope units 1 }
+}
+handler main::unknown(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::zerou(n: int) -> int {
+    effect pure
+    resources { r units 0 }
+}
+handler main::zerou(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::overcap(n: int) -> int {
+    effect pure
+    resources { r units 3 }
+}
+handler main::overcap(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::dupres(n: int) -> int {
+    effect pure
+    resources { r units 1, r units 1 }
+}
+handler main::dupres(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::noeffect(n: int) -> int {
+    resources { r units 1 }
+}
+handler main::noeffect(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::badkey(k: int) -> int {
+    effect pure
+    serialize key k
+}
+handler main::badkey(k: int) -> (int, error) {
+    return 0, nil
+}
+
+handler main::ghost(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::nohandler(n: int) -> int {
+    effect pure
+}

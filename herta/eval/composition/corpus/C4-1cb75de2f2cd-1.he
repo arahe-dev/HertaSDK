@@ -1,0 +1,19 @@
+// id: C4-1cb75de2f2cd-1
+// link: https://github.com/minio/minio/blob/7aac2a2c5b7c882e68c1ce017d8256be2feea27f/internal/ringbuffer/ring_buffer.go#L148
+// facts: Read148 calls readErr(true); readErr117-121 acquires mu only under !locked, so its locking branch cannot execute for this argument.
+// model: readErr(true) cannot execute !locked acquisition branch.
+runtime main { resource evaluation capacity 1 }
+op main::read() -> u64 {
+    effect pure
+    lock mu
+    calls readErrAlreadyLocked
+}
+handler main::read() -> (u64, error) {
+    return 0, nil
+}
+op main::readErrAlreadyLocked() -> u64 {
+    effect pure
+}
+handler main::readErrAlreadyLocked() -> (u64, error) {
+    return 0, nil
+}

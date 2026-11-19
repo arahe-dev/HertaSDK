@@ -1,0 +1,11 @@
+// id: C1-3d89636795c7-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/staging/src/k8s.io/cloud-provider/controllers/route/route_controller.go#L480
+// facts: createRouteFunc retries only k8s Conflict from provider CreateRoute (446-480); concrete provider selection, conflict-after-commit behavior and provider idempotence were not established; method name alone cannot prove replay hazard.
+// inexpressible: Concrete provider effect/idempotence and conflict-after-commit behavior are unknown; method name CreateRoute cannot establish an effect contract.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

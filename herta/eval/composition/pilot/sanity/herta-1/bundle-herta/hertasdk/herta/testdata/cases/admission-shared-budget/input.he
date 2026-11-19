@@ -1,0 +1,24 @@
+// Two operations sharing db-write never exceed aggregate capacity 4.
+runtime main {
+    resource db_write capacity 4
+}
+
+op main::events_record(n: int) -> int {
+    effect idempotent
+    admission wait
+    resources { db_write units 1 }
+}
+handler main::events_record(n: int) -> (int, error) {
+    block_on("gate-1")
+    return 0, nil
+}
+
+op main::catalogue_replace(n: int) -> int {
+    effect idempotent
+    admission wait
+    resources { db_write units 3 }
+}
+handler main::catalogue_replace(n: int) -> (int, error) {
+    block_on("gate-1")
+    return 0, nil
+}

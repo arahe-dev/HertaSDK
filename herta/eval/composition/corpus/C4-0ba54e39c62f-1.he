@@ -1,0 +1,11 @@
+// id: C4-0ba54e39c62f-1
+// link: https://github.com/syncthing/syncthing/blob/f2ed52347ec461a2b7a70787192f3615bcb6bafd/script/weblatedl.go#L145
+// facts: http.DefaultClient.Do145 is net/http.Client.Do(req), with no callback or singleflight group; scanner incorrectly treats arbitrary Do methods as singleflight.
+// inexpressible: HTTP verb/effect unspecified; no lock or singleflight behavior to express. Pure placeholder is not a claim about arbitrary HTTP methods.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,19 @@
+// id: C4-1b8ec1fef62e-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go#L943
+// facts: forgetWatcher1653 returns a func(bool); assignment943 constructs that closure without executing its c.Lock1655; the lock is taken later when the watcher is forgotten.
+// model: Returning func(bool) does not invoke it; later callback acquires after constructor releases.
+runtime main { resource evaluation capacity 1 }
+op main::constructForgetClosure() -> u64 {
+    effect pure
+    lock cacher
+}
+handler main::constructForgetClosure() -> (u64, error) {
+    return 0, nil
+}
+op main::invokeForgetClosure() -> u64 {
+    effect pure
+    lock cacher
+}
+handler main::invokeForgetClosure() -> (u64, error) {
+    return 0, nil
+}

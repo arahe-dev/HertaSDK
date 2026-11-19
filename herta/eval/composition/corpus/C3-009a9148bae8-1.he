@@ -1,0 +1,18 @@
+// id: C3-009a9148bae8-1
+// link: https://github.com/cli/cli/blob/acee710547dcf7dfb6490afea77972187e74b819/.github/skills/cli-exercise/tool/internal/engine/actions.go#L358
+// facts: act355-358 dispatches Finish asynchronously only after a partial action error, to cancel the owned terminal and persist outcomes after the request fails; deliberate cleanup.
+// model: Async cleanup is a separate op, not a synchronous call under the action.
+runtime main { resource evaluation capacity 1 }
+op main::action() -> u64 {
+    effect idempotent
+}
+handler main::action() -> (u64, error) {
+    return 0, nil
+}
+op main::finish() -> u64 {
+    effect idempotent
+    detached for cleanup
+}
+handler main::finish() -> (u64, error) {
+    return 0, nil
+}

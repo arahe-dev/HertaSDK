@@ -1,0 +1,8 @@
+--- FAIL: TestOracleHardCheckout (0.00s)
+    --- FAIL: TestOracleHardCheckout/uncertain_inventory (0.00s)
+        harder_test.go:30: idempotent inventory recovery: inventory: request timed out {Charges:0 ChargeCalls:0 ReserveCalls:1 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+    --- FAIL: TestOracleHardCheckout/uncertain_inventory_exhausted (0.00s)
+        harder_test.go:39: idempotent inventory limit: request timed out {Charges:0 ChargeCalls:0 ReserveCalls:1 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+FAIL
+FAIL	pilot/t3	0.012s
+FAIL

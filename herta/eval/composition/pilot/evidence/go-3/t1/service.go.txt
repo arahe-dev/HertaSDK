@@ -1,0 +1,69 @@
+package t1
+
+import (
+	"context"
+	"errors"
+	"time"
+
+	"github.com/arahe-dev/hertasdk"
+)
+
+// classifyCharge maps the provider's error contract onto outcomes.
+// Only ErrUnavailable is known not to have applied the charge, so it is the
+// only retryable failure. A provider timeout or an ended context may have
+// charged the customer and is reported as Uncertain, never retried.
+func classifyCharge(err error) error {
+	switch {
+	case err == nil:
+		return nil
+	case errors.Is(err, ErrUnavailable):
+		return hertasdk.Fail(hertasdk.Transient, err)
+	case errors.Is(err, ErrTimeout),
+		errors.Is(err, context.DeadlineExceeded),
+		errors.Is(err, context.Canceled):
+		return hertasdk.Fail(hertasdk.Uncertain, err)
+	default:
+		return hertasdk.Fail(hertasdk.Permanent, err)
+	}
+}
+
+type chargeInput struct {
+	User  string
+	Cents uint64
+}
+
+type Service struct {
+	b      *Backend
+	charge *hertasdk.Operation[chargeInput, Receipt]
+}
+
+func New(b *Backend) (*Service, error) {
+	s := &Service{b: b}
+	rt, err := hertasdk.NewRuntime(hertasdk.ResourceSpec{Name: "db", Capacity: 8}, hertasdk.ResourceSpec{Name: "network", Capacity: 4})
+	if err != nil {
+		return nil, err
+	}
+	s.charge, err = hertasdk.NewOperation(rt, "charge", func(ctx context.Context, in chargeInput) (Receipt, error) {
+		r, e := s.b.Charge(ctx, in.User, in.Cents)
+		if e != nil {
+			return Receipt{}, classifyCharge(e)
+		}
+		return r, nil
+	}, hertasdk.Policy[chargeInput]{
+		Effect:    hertasdk.NonIdempotent,
+		Admission: hertasdk.Wait,
+		Resources: []hertasdk.Requirement{{Name: "db", Units: 1}, {Name: "network", Units: 1}},
+		Timeout:   500 * time.Millisecond,
+		Retry:     hertasdk.RetryPolicy{MaxAttempts: 3, On: map[hertasdk.Outcome]bool{hertasdk.Transient: true}},
+	})
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+
+// Charge charges user once. An error whose hertasdk.OutcomeOf is Uncertain
+// (e.g. wrapping ErrTimeout) means the customer may have been charged.
+func (s *Service) Charge(ctx context.Context, user string, cents uint64) (Receipt, error) {
+	return s.charge.Do(ctx, chargeInput{User: user, Cents: cents})
+}

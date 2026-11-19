@@ -1,0 +1,6 @@
+--- FAIL: TestOracleHardCharge (0.03s)
+    --- FAIL: TestOracleHardCharge/joined_unavailable (0.00s)
+        harder_test.go:38: uncertain charge repeated/misreported: err=<nil> outcome=Success charges=2 calls=2
+FAIL
+FAIL	pilot/t1	0.555s
+FAIL

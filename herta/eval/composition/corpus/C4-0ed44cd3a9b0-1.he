@@ -1,0 +1,19 @@
+// id: C4-0ed44cd3a9b0-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/mega/mega.go#L683
+// facts: purgeCheck683 calls findRoot(ctx,false); findRoot459 returns on !create before mkdir463, so reacquiring mkdirMu in mkdir is impossible on this path.
+// model: create=false returns before mkdir; no edge into mkdirMu reacquire.
+runtime main { resource evaluation capacity 1 }
+op main::purgeCheck() -> u64 {
+    effect pure
+    lock mkdirMu
+    calls findRootNoCreate
+}
+handler main::purgeCheck() -> (u64, error) {
+    return 0, nil
+}
+op main::findRootNoCreate() -> u64 {
+    effect pure
+}
+handler main::findRootNoCreate() -> (u64, error) {
+    return 0, nil
+}

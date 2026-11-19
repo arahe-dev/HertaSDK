@@ -1,0 +1,19 @@
+// id: C3-05d72008150c-1
+// link: https://github.com/grafana/loki/blob/134acef80206feff0a01ee830ffceca4b0a087ea/pkg/engine/internal/worker/worker.go#L437
+// facts: Same scheduler lifecycle as C3 index0: run225 creates schedulerCtx and explicitly cancels/waits at260-265 after thread drain; handleSchedulerConn437 preserves it in errgroup, intentionally independent of immediate service cancellation.
+// model: Same explicit schedulerCancel/Wait lifecycle; errgroup inherits scheduler ctx.
+runtime main { resource evaluation capacity 1 }
+op main::workerRun() -> u64 {
+    effect pure
+    calls schedulerLifecycle
+}
+handler main::workerRun() -> (u64, error) {
+    return 0, nil
+}
+op main::schedulerLifecycle() -> u64 {
+    effect pure
+    detached for shutdown
+}
+handler main::schedulerLifecycle() -> (u64, error) {
+    return 0, nil
+}

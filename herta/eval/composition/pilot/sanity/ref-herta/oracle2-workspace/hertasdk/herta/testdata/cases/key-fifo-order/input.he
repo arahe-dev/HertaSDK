@@ -1,0 +1,13 @@
+// A key is handed off in arrival order; a cancelled waiter queues nothing.
+runtime main {
+    resource r capacity 8
+}
+
+op main::work(k: string) -> int {
+    effect pure
+    serialize key k
+}
+handler main::work(k: string) -> (int, error) {
+    block_on("gate-1")
+    return 0, nil
+}

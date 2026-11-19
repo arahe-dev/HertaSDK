@@ -1,0 +1,25 @@
+// id: C1-0a66ed309daa-1
+// link: https://github.com/grafana/loki/blob/134acef80206feff0a01ee830ffceca4b0a087ea/pkg/storage/chunk/client/aws/s3_storage_client.go#L511
+// facts: GetObjectRange retries an S3 read; bucketFromKey 457-466 calls fnv.New32a().Write solely to hash the bucket key in memory.
+// model: Pinned s3_storage_client.go:140-142 configures MaxRetries=5; the backoff Ongoing loop bounds actual attempts to 5 (pinned vendored backoff implementation). Hash Write is local pure work.
+runtime main { resource evaluation capacity 1 }
+op main::getObjectRange() -> u64 {
+    effect pure
+    retry max 5 on { uncertain }
+    calls readS3
+}
+handler main::getObjectRange() -> (u64, error) {
+    return 0, nil
+}
+op main::readS3() -> u64 {
+    effect pure
+}
+handler main::readS3() -> (u64, error) {
+    return 0, nil
+}
+op main::hashBucketKey() -> u64 {
+    effect pure
+}
+handler main::hashBucketKey() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,19 @@
+// id: C4-008727589243-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/vfs/vfscache/item.go#L755
+// facts: closeAfterGrace733 holds mu, but _actualClose803 explicitly Unlocks before downloader close then Locks805; no nested acquisition occurs without the matching release.
+// model: _actualClose Unlocks before downloader close, then restores lock; separate held regions.
+runtime main { resource evaluation capacity 1 }
+op main::closeAfterGrace() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::closeAfterGrace() -> (u64, error) {
+    return 0, nil
+}
+op main::closeAfterRelease() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::closeAfterRelease() -> (u64, error) {
+    return 0, nil
+}

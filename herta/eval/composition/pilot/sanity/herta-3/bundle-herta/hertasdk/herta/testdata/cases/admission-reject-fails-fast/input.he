@@ -1,0 +1,46 @@
+// Reject on exhausted capacity or a held key fails fast: ErrOverloaded
+// (Throttled), counted as Rejected, handler never runs.
+runtime main {
+    resource renderer capacity 1
+    resource r capacity 4
+}
+
+op main::hold(n: int) -> int {
+    effect pure
+    admission wait
+    resources { renderer units 1 }
+}
+handler main::hold(n: int) -> (int, error) {
+    block_on("gate-1")
+    return 0, ctx_err()
+}
+
+op main::render(n: int) -> int {
+    effect pure
+    admission reject
+    resources { renderer units 1 }
+}
+handler main::render(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::keyed_hold(k: string) -> int {
+    effect pure
+    admission wait
+    resources { r units 1 }
+    serialize key k
+}
+handler main::keyed_hold(k: string) -> (int, error) {
+    block_on("gate-2")
+    return 0, nil
+}
+
+op main::keyed_reject(k: string) -> int {
+    effect pure
+    admission reject
+    resources { r units 1 }
+    serialize key k
+}
+handler main::keyed_reject(k: string) -> (int, error) {
+    return 0, nil
+}

@@ -1,0 +1,27 @@
+// id: C2-111ecc19364a-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/volume/iscsi/iscsi_util.go#L326
+// facts: iscsi_util.go 326 uses 5 attach rounds, each calling waitForPathToExist 420 with deviceDiscoveryTimeout=30; helper 148-176 checks up to30 times: 5*30=150 local stat/glob probes per portal, deliberate discovery (scanner's6 is off by one).
+// model: 5 attach rounds * 30 local read probes; no invented budget override for intentional discovery.
+runtime main { resource evaluation capacity 1 }
+op main::attachRounds() -> u64 {
+    effect pure
+    retry max 5 on { transient }
+    calls waitForPath
+}
+handler main::attachRounds() -> (u64, error) {
+    return 0, nil
+}
+op main::waitForPath() -> u64 {
+    effect pure
+    retry max 30 on { transient }
+    calls statOrGlob
+}
+handler main::waitForPath() -> (u64, error) {
+    return 0, nil
+}
+op main::statOrGlob() -> u64 {
+    effect pure
+}
+handler main::statOrGlob() -> (u64, error) {
+    return 0, nil
+}

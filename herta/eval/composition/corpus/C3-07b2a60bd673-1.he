@@ -1,0 +1,11 @@
+// id: C3-07b2a60bd673-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/fs/operations/operations.go#L332
+// facts: operations.equal248-354 forwards input ctx directly to SetModTime332. The only package Background is a shadowed cleanup context in copy.manualCopy247; a concrete incoming detached path to equal was not established from the analyzer's pathless row.
+// inexpressible: Facts establish ctx forwarding in equal, but not the incoming detached chain; closure-scope taint cannot be expressed as a verified call path.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

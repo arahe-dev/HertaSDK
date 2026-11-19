@@ -1,0 +1,24 @@
+// id: C1-3010c83cfb12-1
+// link: https://github.com/etcd-io/etcd/blob/70ea96cfb86d938b7daa9bb181046c62d361fc6a/pkg/proxy/server.go#L292
+// facts: listenAndServe 292 onward is an Accept loop; successful iterations copy distinct accepted connections, not replay a previously completed write after failure.
+// model: No retry clause: successful iterations act on distinct connections, not replay the same failed operation.
+runtime main { resource evaluation capacity 1 }
+op main::serveAcceptedConnections() -> u64 {
+    effect nonidempotent
+    calls accept, copyOneConnection
+}
+handler main::serveAcceptedConnections() -> (u64, error) {
+    return 0, nil
+}
+op main::accept() -> u64 {
+    effect pure
+}
+handler main::accept() -> (u64, error) {
+    return 0, nil
+}
+op main::copyOneConnection() -> u64 {
+    effect nonidempotent
+}
+handler main::copyOneConnection() -> (u64, error) {
+    return 0, nil
+}

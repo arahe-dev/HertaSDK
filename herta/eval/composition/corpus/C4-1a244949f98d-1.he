@@ -1,0 +1,19 @@
+// id: C4-1a244949f98d-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go#L1594
+// facts: deleteUnsyncedWatcherLocked752 and stopWatcherLocked1606 are helpers operating under an already-held Cacher lock, not keyed-lock acquisition functions; scanner mistakes Locked names and watcher args for locks.
+// model: Locked helper consumes caller-held lock, does not acquire another lock.
+runtime main { resource evaluation capacity 1 }
+op main::deleteUnsyncedWatcher() -> u64 {
+    effect pure
+    lock cacher
+    calls stopWatcherLocked
+}
+handler main::deleteUnsyncedWatcher() -> (u64, error) {
+    return 0, nil
+}
+op main::stopWatcherLocked() -> u64 {
+    effect pure
+}
+handler main::stopWatcherLocked() -> (u64, error) {
+    return 0, nil
+}

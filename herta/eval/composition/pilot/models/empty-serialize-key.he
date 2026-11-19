@@ -1,0 +1,6 @@
+// Section 3 empty-key trap: concrete empty argument disables runtime serialization; no nonempty key type/check.
+runtime main { resource db capacity 8 }
+op main::entry() -> u64 { effect nonidempotent }
+handler main::entry() -> (u64, error) { call refund("") return 0, nil }
+op main::refund(order_key: string) -> u64 { effect nonidempotent serialize key order_key }
+handler main::refund(order_key: string) -> (u64, error) { return 0, nil }

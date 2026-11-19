@@ -1,0 +1,19 @@
+// id: C3-031df8dbb955-1
+// link: https://github.com/cert-manager/cert-manager/blob/51d66220af9bed86db4e08e7e316b96f7efb3ab9/cmd/controller/app/controller.go#L133
+// facts: controller.go130-137 waits for rootCtx.Done and gives metricsServer.Shutdown a fresh5s context; deliberate graceful shutdown after root cancellation.
+runtime main { resource evaluation capacity 1 }
+op main::rootShutdown() -> u64 {
+    effect idempotent
+    calls metricsShutdown
+}
+handler main::rootShutdown() -> (u64, error) {
+    return 0, nil
+}
+op main::metricsShutdown() -> u64 {
+    effect idempotent
+    detached for shutdown
+    timeout 5s
+}
+handler main::metricsShutdown() -> (u64, error) {
+    return 0, nil
+}

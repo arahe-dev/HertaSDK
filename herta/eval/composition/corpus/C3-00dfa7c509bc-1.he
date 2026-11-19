@@ -1,0 +1,24 @@
+// id: C3-00dfa7c509bc-1
+// link: https://github.com/hashicorp/terraform/blob/a1246154d166f0647e398b823f0d9a3b9b64e920/internal/cloud/backend.go#L972
+// facts: backend.go971 explicitly states runningCtx only blocks until operation returns; done() is deferred by the operation goroutine989; real work receives stopCtx derived from the caller979/995, so this is a completion signal not an uncancellable effect.
+// model: stopCtx derives from caller; runningCtx completion signal does not run the remote effect. No detach.
+runtime main { resource evaluation capacity 1 }
+op main::operation() -> u64 {
+    effect idempotent
+    calls remoteWork
+}
+handler main::operation() -> (u64, error) {
+    return 0, nil
+}
+op main::remoteWork() -> u64 {
+    effect idempotent
+}
+handler main::remoteWork() -> (u64, error) {
+    return 0, nil
+}
+op main::completionSignal() -> u64 {
+    effect pure
+}
+handler main::completionSignal() -> (u64, error) {
+    return 0, nil
+}

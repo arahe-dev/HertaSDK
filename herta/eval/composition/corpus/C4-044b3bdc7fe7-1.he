@@ -1,0 +1,19 @@
+// id: C4-044b3bdc7fe7-1
+// link: https://github.com/caddyserver/caddy/blob/edcdfa0ed88f7dcc1c53720d25218fde9d63eb1e/modules/caddyhttp/reverseproxy/streaming.go#L675
+// facts: cleanupAttachedConnections671 registers time.AfterFunc; closeAttachedConnections675 executes on timer goroutine after the registering critical section, not as synchronous reentry; immediate branch665 explicitly Unlocks first.
+// model: Timer callback is independent; immediate branch Unlocks first.
+runtime main { resource evaluation capacity 1 }
+op main::cleanupAttachedConnections() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::cleanupAttachedConnections() -> (u64, error) {
+    return 0, nil
+}
+op main::timerClose() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::timerClose() -> (u64, error) {
+    return 0, nil
+}

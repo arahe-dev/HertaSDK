@@ -1,0 +1,22 @@
+// Unclassified errors are Permanent and never retried; a typed-nil Failure
+// reads Permanent. fail <outcome> is the only contract-relevant form.
+runtime main {
+    resource r capacity 1
+}
+
+op main::plain(n: int) -> int {
+    effect pure
+    retry max 3 on { transient }
+}
+handler main::plain(n: int) -> (int, error) {
+    return 0, plain_error()
+}
+
+op main::typed_nil(n: int) -> int {
+    effect idempotent
+    resources { r units 1 }
+    retry max 3 on { transient, uncertain }
+}
+handler main::typed_nil(n: int) -> (int, error) {
+    return 0, typed_nil_failure()
+}

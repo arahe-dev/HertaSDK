@@ -1,0 +1,20 @@
+// id: C4-0e481592c51c-1
+// link: https://github.com/minio/minio/blob/7aac2a2c5b7c882e68c1ce017d8256be2feea27f/cmd/site-replication.go#L5110
+// facts: healBucket5005 holds c.RLock through PeerBucketConfigureReplHandler5110, which re-RLocks the same embedded sync.RWMutex1145; a pending writer (e.g. loadFromDisk289) blocks the inner read and prevents outer release, risking writer starvation/deadlock.
+// model: Both reachable synchronous frames RLock the same embedded RWMutex.
+runtime main { resource evaluation capacity 1 }
+op main::healBucket() -> u64 {
+    effect pure
+    lock siteReplication shared
+    calls peerConfigureReplication
+}
+handler main::healBucket() -> (u64, error) {
+    return 0, nil
+}
+op main::peerConfigureReplication() -> u64 {
+    effect pure
+    lock siteReplication shared
+}
+handler main::peerConfigureReplication() -> (u64, error) {
+    return 0, nil
+}

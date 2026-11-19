@@ -1,0 +1,19 @@
+// id: C4-0022975767d5-1
+// link: https://github.com/hashicorp/terraform/blob/a1246154d166f0647e398b823f0d9a3b9b64e920/internal/backend/remote-state/consul/client.go#L386
+// facts: RemoteClient.lock391 does not acquire c.mu synchronously; its monitor goroutine474-489 locks only later on lock loss, after caller Lock returns and releases mu; analyzer descends into that goroutine.
+// model: Monitor runs on a goroutine after Lock returns; no held-lock call edge.
+runtime main { resource evaluation capacity 1 }
+op main::clientLock() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::clientLock() -> (u64, error) {
+    return 0, nil
+}
+op main::monitorLockLoss() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::monitorLockLoss() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,20 @@
+// id: C3-046a34200bab-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/staging/src/k8s.io/controller-manager/pkg/clientbuilder/client_builder_dynamic.go#L312
+// facts: getOrCreateServiceAccount is used by context-free DynamicControllerClientBuilder.Config113 and tokenSourceImpl.Token260; Token's four-step startup/refresh backoff deliberately obtains credentials independently, not an inner request-context operation.
+// model: Context-free credential startup/refresh entry; no established cancellable request caller. Four startup steps are explicit in facts.
+runtime main { resource evaluation capacity 1 }
+op main::credentialInitialization() -> u64 {
+    effect idempotent
+    detached
+    retry max 4 on { transient }
+    calls getOrCreateServiceAccount
+}
+handler main::credentialInitialization() -> (u64, error) {
+    return 0, nil
+}
+op main::getOrCreateServiceAccount() -> u64 {
+    effect idempotent
+}
+handler main::getOrCreateServiceAccount() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,9 @@
+runtime main { resource db capacity 8 resource network capacity 4 }
+// order_key is the decimal order ID: hertasdk serializes only non-empty
+// string keys, and every int64 (0 and negatives included) formats non-empty
+// and distinct. A key waiter holds no units, so other orders keep running.
+op main::refund(svc: servicePtr, order_id: int64, order_key: string, cents: u64) -> Unit { effect nonidempotent admission wait resources { db units 1, network units 1 } serialize key order_key }
+handler main::refund(svc: servicePtr, order_id: int64, order_key: string, cents: u64) -> (Unit, error) {
+_ = order_key
+return Unit{}, svc.b.Refund(ctx, order_id, cents)
+}

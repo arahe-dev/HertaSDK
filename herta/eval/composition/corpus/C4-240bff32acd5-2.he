@@ -1,0 +1,19 @@
+// id: C4-240bff32acd5-2
+// link: https://github.com/moby/moby/blob/288c9392dd81a868b1e28e38c7ac3f78284e0c21/daemon/cluster/noderunner.go#L106
+// facts: start187 uses go n.handleControlSocketChange; its mu.Lock194 executes on another goroutine, not on the start caller holding mu.
+// model: Acquisition runs on explicitly separate goroutine; no synchronous held-mu call edge.
+runtime main { resource evaluation capacity 1 }
+op main::start() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::start() -> (u64, error) {
+    return 0, nil
+}
+op main::controlSocketChanged() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::controlSocketChanged() -> (u64, error) {
+    return 0, nil
+}

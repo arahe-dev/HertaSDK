@@ -1,0 +1,19 @@
+// id: C3-00a0d005b7be-1
+// link: https://github.com/moby/moby/blob/288c9392dd81a868b1e28e38c7ac3f78284e0c21/daemon/daemon.go#L607
+// facts: Daemon.restore308-617 repairs containers left RemovalInProgress by a prior crash; CheckpointTo607 persists the dead state during daemon startup, not a request-scoped inner effect.
+// model: Startup restore explicitly owns crash repair, not request work.
+runtime main { resource evaluation capacity 1 }
+op main::daemonRestore() -> u64 {
+    effect idempotent
+    calls checkpointDeadState
+}
+handler main::daemonRestore() -> (u64, error) {
+    return 0, nil
+}
+op main::checkpointDeadState() -> u64 {
+    effect idempotent
+    detached for background
+}
+handler main::checkpointDeadState() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,11 @@
+// id: C1-2e51a05dfcc9-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/controller/volume/persistentvolume/pv_controller.go#L1743
+// facts: doDeleteVolume 1473-1498 can repeat Delete if finalizer removal fails, but volume.go declares volume interface methods idempotent; finalizer removal refetches and skips an absent finalizer (1501-1526).
+// inexpressible: Repeated controller reconciliation has no finite retry-attempt bound in the facts; Herta cannot encode that policy. Delete and finalizer reconciliation are explicitly idempotent.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

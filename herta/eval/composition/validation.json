@@ -1,0 +1,665 @@
+[
+  {
+    "id": "C1-0114671f3545-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-03bf5ebf5e42-1",
+    "exit": 1,
+    "diagnostics": [
+      "8:23: op \"copy\": retrying uncertain outcomes is unsafe for effect nonidempotent",
+      "6:1: HC005 path main::copy -> main::postCopy: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes"
+    ]
+  },
+  {
+    "id": "C1-043fdffa8a58-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-04d352c05d8b-1",
+    "exit": 1,
+    "diagnostics": [
+      "8:22: op \"rotationBackoff\": retrying uncertain outcomes is unsafe for effect nonidempotent",
+      "6:1: HC005 path main::rotationBackoff -> main::rotateCerts: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes",
+      "6:1: HC005 path main::rotationBackoff -> main::rotateCerts -> main::requestCertificate: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes"
+    ]
+  },
+  {
+    "id": "C1-04ef5c221158-1",
+    "exit": 1,
+    "diagnostics": [
+      "8:23: op \"requestDecompress\": retrying uncertain outcomes is unsafe for effect nonidempotent",
+      "6:1: HC005 path main::requestDecompress -> main::postTask: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes"
+    ]
+  },
+  {
+    "id": "C1-088146d9f334-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-08af893ff8b7-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-08e48c247812-1",
+    "exit": 1,
+    "diagnostics": [
+      "8:23: op \"requestNewTask\": retrying uncertain outcomes is unsafe for effect nonidempotent",
+      "6:1: HC005 path main::requestNewTask -> main::postTask: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes"
+    ]
+  },
+  {
+    "id": "C1-0a578406485b-1",
+    "exit": 1,
+    "diagnostics": [
+      "8:23: op \"startSession\": retrying uncertain outcomes is unsafe for effect nonidempotent",
+      "6:1: HC005 path main::startSession -> main::allocateEmptySession: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes"
+    ]
+  },
+  {
+    "id": "C1-0a66ed309daa-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-0b4e456fd2aa-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-0b5c84345608-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-0b99fca31587-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-0ba430e1a9b8-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-140269351172-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-18b21055f7dc-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-2247ea143023-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-224c89f02fe3-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-2527bf0d5bc0-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-28bb8e1c677e-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-2b11ddbc47ad-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-2e51a05dfcc9-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-2f277c230bcf-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-3010c83cfb12-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-383cec32cf7d-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-39c1239aa801-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-3d89636795c7-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-40d1d017f6e5-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-4d53c3ab1046-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C1-4ea745d6eef3-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-0a11fe33c05a-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::requestAuthRecovery -> main::shouldRetry -> main::authorizeAccount: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-10e7b5b1b3aa-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-111ecc19364a-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::attachRounds -> main::waitForPath: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget",
+      "14:1: HC006 path main::waitForPath: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-15ef7b990d66-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::requestAuthRecovery -> main::shouldRetry -> main::authorizeAccount: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-1bed871e7557-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::requestAuthRecovery -> main::shouldRetry -> main::authorizeAccount: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-28caf6935eb6-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-37fcde000258-1",
+    "exit": 1,
+    "diagnostics": [
+      "8:22: op \"batch\": retrying uncertain outcomes is unsafe for effect nonidempotent",
+      "23:22: op \"createMultipart\": retrying uncertain outcomes is unsafe for effect nonidempotent",
+      "6:1: HC005 path main::batch -> main::replicateMultipart: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes",
+      "6:1: HC005 path main::batch -> main::replicateMultipart -> main::createMultipart: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes"
+    ]
+  },
+  {
+    "id": "C2-42e17ae9b5e2-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-437671419da0-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-441168455d35-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-46f153de700c-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::requestAuthRecovery -> main::shouldRetry -> main::authorizeAccount: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-47cbf4a83c5f-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-64f868421929-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-6c1ae13b31a0-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-6d1d50753c23-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-82324366faca-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-861e7b839dc8-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-862ec1dc2340-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-9e89e58fff87-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-a4f4ba540b13-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::requestAuthRecovery -> main::shouldRetry -> main::authorizeAccount: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-a51c51d6c70c-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::requestAuthRecovery -> main::shouldRetry -> main::authorizeAccount: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-ae6f138273d8-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-afdab14996a9-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-b57fafc140ac-1",
+    "exit": 1,
+    "diagnostics": [
+      "8:22: op \"batch\": retrying uncertain outcomes is unsafe for effect nonidempotent",
+      "6:1: HC005 path main::batch -> main::copyMultipart: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes",
+      "6:1: HC005 path main::batch -> main::copyMultipart -> main::allocateMultipartUpload: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes"
+    ]
+  },
+  {
+    "id": "C2-b63930c65537-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-b977b1b2f3f8-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::requestAuthRecovery -> main::shouldRetry -> main::authorizeAccount: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-b9ff4c4630c4-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::requestAuthRecovery -> main::shouldRetry -> main::authorizeAccount: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-c8e4dc6cef93-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-d2cb0ce9fe50-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::requestAuthRecovery -> main::shouldRetry -> main::authorizeAccount: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-d577fa45adb3-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::requestAuthRecovery -> main::shouldRetry -> main::authorizeAccount: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-dd6c9409d1e3-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC006 path main::requestAuthRecovery -> main::shouldRetry -> main::authorizeAccount: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget"
+    ]
+  },
+  {
+    "id": "C2-f06e28032baf-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C2-fd50dbb2283d-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-00743daaa8e8-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-007abf485347-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-00828bc6f5f0-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-009a9148bae8-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-00a0d005b7be-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-00dfa7c509bc-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-01a4f52fb033-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC008 path main::controllerLoop -> main::addTaint: non-pure detached work drops cancellation from main::controllerLoop; declare detached for <owner> or propagate cancellation"
+    ]
+  },
+  {
+    "id": "C3-020b9108d265-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-02746660cb96-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-02c2f0402959-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-02cb9c9b06bb-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-031df8dbb955-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-034276477d8d-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-046a34200bab-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-04a4a917a646-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-059c3b6c94a6-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-05c20c21284c-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-05d72008150c-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-06678cdb2d48-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-06ddeb85f5d4-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-0756b52e792d-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-078dfaf6d656-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-07b2a60bd673-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-07c1b5e04ce7-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-0823880839f8-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-62085e82ea5e-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-95ac50c8a7a4-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C3-b6c2ef46b507-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-0022975767d5-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-008727589243-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-008727589243-2",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-008727589243-3",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-008727589243-4",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-044b3bdc7fe7-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-07890e544778-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-08cf6ec78387-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC002 path main::safePathCloseEmpty -> main::path: lock safePathMutex reacquired: exclusive self-deadlock; release the caller lock or remove nested acquisition"
+    ]
+  },
+  {
+    "id": "C4-0956a49606e3-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-0b0a00188444-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-0ba54e39c62f-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-0e481592c51c-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC002 path main::healBucket -> main::peerConfigureReplication: lock siteReplication reacquired: recursive RLock writer-starvation deadlock; release the caller lock or remove nested acquisition"
+    ]
+  },
+  {
+    "id": "C4-0ed44cd3a9b0-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-13cdf20b19d1-1",
+    "exit": 1,
+    "diagnostics": [
+      "6:1: HC002 path main::healGroups -> main::iamChangeHook: lock siteReplication reacquired: recursive RLock writer-starvation deadlock; release the caller lock or remove nested acquisition"
+    ]
+  },
+  {
+    "id": "C4-16b92f0f5d90-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-183c73dd6e27-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-1a244949f98d-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-1b55566be5cd-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-1b8ec1fef62e-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-1c7b15d97e4c-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-1cb75de2f2cd-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-20b903515959-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-240bff32acd5-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-240bff32acd5-2",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-240bff32acd5-3",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-240bff32acd5-4",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-2ade06a98a83-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-2d9259d48226-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-2eac5989e35d-1",
+    "exit": 0,
+    "diagnostics": []
+  },
+  {
+    "id": "C4-31114fe46c94-1",
+    "exit": 0,
+    "diagnostics": []
+  }
+]

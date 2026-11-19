@@ -1,0 +1,38 @@
+// id: C3-01a4f52fb033-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/staging/src/k8s.io/cloud-provider/node/helpers/taints.go#L62
+// facts: NodeLifecycleController cancellation-bearing loop passes ctx to shutdownInCloudProvider (node_lifecycle_controller.go202), but then AddOrUpdateTaintOnNode210 has no ctx and uses TODO for retry GET/PATCH (taints.go62-110); cancellation cannot stop those API requests.
+// model: Loop is cancellation-bearing. Context-free taint helper uses TODO without an explicit separate lifecycle owner; no retry bound is invented.
+runtime main { resource evaluation capacity 1 }
+op main::controllerLoop() -> u64 {
+    effect idempotent
+    calls shutdownCloud, addTaint
+}
+handler main::controllerLoop() -> (u64, error) {
+    return 0, nil
+}
+op main::shutdownCloud() -> u64 {
+    effect idempotent
+}
+handler main::shutdownCloud() -> (u64, error) {
+    return 0, nil
+}
+op main::addTaint() -> u64 {
+    effect idempotent
+    detached
+    calls getNode, patchDesiredTaint
+}
+handler main::addTaint() -> (u64, error) {
+    return 0, nil
+}
+op main::getNode() -> u64 {
+    effect pure
+}
+handler main::getNode() -> (u64, error) {
+    return 0, nil
+}
+op main::patchDesiredTaint() -> u64 {
+    effect idempotent
+}
+handler main::patchDesiredTaint() -> (u64, error) {
+    return 0, nil
+}

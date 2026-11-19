@@ -1,0 +1,15 @@
+// Capacity 8, 20 blocked calls: peak concurrent handlers is exactly 8.
+runtime main {
+    resource renderer capacity 8
+}
+
+op main::render(n: int) -> int {
+    effect pure
+    admission wait
+    timeout 5s
+    resources { renderer units 1 }
+}
+handler main::render(n: int) -> (int, error) {
+    block_on("gate-1")
+    return 1, nil
+}

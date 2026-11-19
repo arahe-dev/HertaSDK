@@ -1,0 +1,11 @@
+// id: C2-ae6f138273d8-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/registry/rbac/rest/storage_rbac.go#L169
+// facts: storage_rbac.go169 outer30s startup poll calls ensureRBACPolicy whose269/307/359/410 conflict-or-unavailable loops use DefaultBackoff4; deliberate bounded bootstrap repair, no exact outer attempt cap/product.
+// inexpressible: 30s startup polling has no exact outer attempt bound; inner DefaultBackoff=4 alone cannot establish a product.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

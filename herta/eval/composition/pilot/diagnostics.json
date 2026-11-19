@@ -1,0 +1,2417 @@
+[
+  {
+    "path": "unmodified/herta-1/bundle-herta/t1/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-1/bundle-herta/t2/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-1/bundle-herta/t3/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-1/bundle-herta/t4/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-1/oracle2-workspace/t1/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-1/oracle2-workspace/t2/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-1/oracle2-workspace/t3/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-1/oracle2-workspace/t4/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-2/bundle-herta/t1/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-2/bundle-herta/t2/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-2/bundle-herta/t3/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-2/bundle-herta/t4/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-2/oracle2-workspace/t1/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-2/oracle2-workspace/t2/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-2/oracle2-workspace/t3/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-2/oracle2-workspace/t4/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-3/bundle-herta/t1/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-3/bundle-herta/t2/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-3/bundle-herta/t3/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-3/bundle-herta/t4/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-3/oracle2-workspace/t1/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-3/oracle2-workspace/t2/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-3/oracle2-workspace/t3/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/herta-3/oracle2-workspace/t4/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/ref-herta/oracle2-workspace/t1/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/ref-herta/oracle2-workspace/t2/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/ref-herta/oracle2-workspace/t3/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/ref-herta/oracle2-workspace/t4/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/ref2-herta/workspace/t1/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/ref2-herta/workspace/t2/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/ref2-herta/workspace/t3/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "unmodified/ref2-herta/workspace/t4/shop.he",
+    "cohort": "unmodified",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/examples/charge.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/lang/testdata/bad_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "12:1: handler \"main::op1\" declared twice\n7:1: handler \"op1\": param 0 is user_id:u64, op declares user_id:string\n9:9: handler \"op1\": cannot fail with outcome success\n14:1: handler \"main::ghost\": no matching op declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/lang/testdata/bad_key.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"op1\": serialize key \"user_id\" must be a string parameter, got u64\n4:1: op \"main::op1\" has no handler\n8:1: op \"op2\": serialize key \"missing\" is not a parameter\n8:1: op \"main::op2\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/lang/testdata/bad_resources.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:17: op \"op1\": units 5 for \"db\" exceed capacity 2\n6:29: op \"op1\": resource \"missing\" not declared on runtime \"main\"\n6:46: op \"op1\": resource \"db\" listed twice\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/lang/testdata/bad_retry.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:22: op \"op1\": retry on permanent is never allowed\n6:33: op \"op1\": retrying uncertain outcomes is unsafe for effect nonidempotent\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/lang/testdata/bad_runtime.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "1:1: runtime \"empty\" declares no resources\n3:1: op \"op1\": runtime \"ghost\" is not declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/lang/testdata/compact_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "14:14: handler \"op2\": cannot fail with outcome success\n21:14: handler \"op3\": invalid fail outcome \"0\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/lang/testdata/effect_required.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"charge\": effect is required (pure|idempotent|nonidempotent)\n4:1: op \"main::charge\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/lang/testdata/no_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/lang/testdata/parse_error.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: expected capacity value, got }(\"}\")@3:1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/lang/testdata/string_fail_words.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/lang/testdata/valid_basic.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/admission-capacity-limit/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/admission-done-caller/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/admission-global-ordering/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/admission-partial-acquire-rollback/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/admission-reject-fails-fast/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/admission-shared-budget/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/admission-waiter-cancellation/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/attempt-deadline/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/caller-context/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/construct-invalid-retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "9:22: op \"op\": retry on throttled is never allowed\n9:33: op \"op\": retry on permanent is never allowed\n9:44: op \"op\": retry on success is never allowed\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/construct-operation-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:17: op \"unknown\": resource \"nope\" not declared on runtime \"main\"\n18:17: op \"zerou\": units for \"r\" must be > 0\n26:17: op \"overcap\": units 3 for \"r\" exceed capacity 2\n34:28: op \"dupres\": resource \"r\" listed twice\n40:1: op \"noeffect\": effect is required (pure|idempotent|nonidempotent)\n47:1: op \"badkey\": serialize key \"k\" must be a string parameter, got int\n55:1: handler \"main::ghost\": no matching op declared\n59:1: op \"main::nohandler\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/construct-retry-max-zero/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "8:5: op \"op\": retry max must be >= 1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/construct-runtime-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: runtime \"empty\" declares no resources\n7:14: resource \"a\": capacity must be > 0\n12:14: duplicate resource \"a\" in runtime \"dup\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/construct-unsafe-retry/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:22: op \"render\": retrying uncertain outcomes is unsafe for effect nonidempotent\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/failure-semantics/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/key-fifo-order/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/key-serialization/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/key-waiter-holds-no-resources/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/panic-release/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/cases/shutdown-lifecycle/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/codegen/charge/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/codegen/fail-outcomes/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/codegen/minimal/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/bundle-herta/hertasdk/herta/testdata/codegen/multi-runtime/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/examples/charge.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/lang/testdata/bad_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "12:1: handler \"main::op1\" declared twice\n7:1: handler \"op1\": param 0 is user_id:u64, op declares user_id:string\n9:9: handler \"op1\": cannot fail with outcome success\n14:1: handler \"main::ghost\": no matching op declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/lang/testdata/bad_key.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"op1\": serialize key \"user_id\" must be a string parameter, got u64\n4:1: op \"main::op1\" has no handler\n8:1: op \"op2\": serialize key \"missing\" is not a parameter\n8:1: op \"main::op2\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/lang/testdata/bad_resources.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:17: op \"op1\": units 5 for \"db\" exceed capacity 2\n6:29: op \"op1\": resource \"missing\" not declared on runtime \"main\"\n6:46: op \"op1\": resource \"db\" listed twice\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/lang/testdata/bad_retry.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:22: op \"op1\": retry on permanent is never allowed\n6:33: op \"op1\": retrying uncertain outcomes is unsafe for effect nonidempotent\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/lang/testdata/bad_runtime.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "1:1: runtime \"empty\" declares no resources\n3:1: op \"op1\": runtime \"ghost\" is not declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/lang/testdata/compact_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "14:14: handler \"op2\": cannot fail with outcome success\n21:14: handler \"op3\": invalid fail outcome \"0\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/lang/testdata/effect_required.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"charge\": effect is required (pure|idempotent|nonidempotent)\n4:1: op \"main::charge\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/lang/testdata/no_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/lang/testdata/parse_error.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: expected capacity value, got }(\"}\")@3:1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/lang/testdata/string_fail_words.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/lang/testdata/valid_basic.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/admission-capacity-limit/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/admission-done-caller/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/admission-global-ordering/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/admission-partial-acquire-rollback/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/admission-reject-fails-fast/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/admission-shared-budget/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/admission-waiter-cancellation/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/attempt-deadline/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/caller-context/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/construct-invalid-retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "9:22: op \"op\": retry on throttled is never allowed\n9:33: op \"op\": retry on permanent is never allowed\n9:44: op \"op\": retry on success is never allowed\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/construct-operation-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:17: op \"unknown\": resource \"nope\" not declared on runtime \"main\"\n18:17: op \"zerou\": units for \"r\" must be > 0\n26:17: op \"overcap\": units 3 for \"r\" exceed capacity 2\n34:28: op \"dupres\": resource \"r\" listed twice\n40:1: op \"noeffect\": effect is required (pure|idempotent|nonidempotent)\n47:1: op \"badkey\": serialize key \"k\" must be a string parameter, got int\n55:1: handler \"main::ghost\": no matching op declared\n59:1: op \"main::nohandler\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/construct-retry-max-zero/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "8:5: op \"op\": retry max must be >= 1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/construct-runtime-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: runtime \"empty\" declares no resources\n7:14: resource \"a\": capacity must be > 0\n12:14: duplicate resource \"a\" in runtime \"dup\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/construct-unsafe-retry/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:22: op \"render\": retrying uncertain outcomes is unsafe for effect nonidempotent\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/failure-semantics/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/key-fifo-order/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/key-serialization/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/key-waiter-holds-no-resources/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/panic-release/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/cases/shutdown-lifecycle/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/codegen/charge/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/codegen/fail-outcomes/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/codegen/minimal/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-1/oracle2-workspace/hertasdk/herta/testdata/codegen/multi-runtime/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/examples/charge.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/lang/testdata/bad_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "12:1: handler \"main::op1\" declared twice\n7:1: handler \"op1\": param 0 is user_id:u64, op declares user_id:string\n9:9: handler \"op1\": cannot fail with outcome success\n14:1: handler \"main::ghost\": no matching op declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/lang/testdata/bad_key.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"op1\": serialize key \"user_id\" must be a string parameter, got u64\n4:1: op \"main::op1\" has no handler\n8:1: op \"op2\": serialize key \"missing\" is not a parameter\n8:1: op \"main::op2\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/lang/testdata/bad_resources.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:17: op \"op1\": units 5 for \"db\" exceed capacity 2\n6:29: op \"op1\": resource \"missing\" not declared on runtime \"main\"\n6:46: op \"op1\": resource \"db\" listed twice\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/lang/testdata/bad_retry.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:22: op \"op1\": retry on permanent is never allowed\n6:33: op \"op1\": retrying uncertain outcomes is unsafe for effect nonidempotent\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/lang/testdata/bad_runtime.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "1:1: runtime \"empty\" declares no resources\n3:1: op \"op1\": runtime \"ghost\" is not declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/lang/testdata/compact_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "14:14: handler \"op2\": cannot fail with outcome success\n21:14: handler \"op3\": invalid fail outcome \"0\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/lang/testdata/effect_required.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"charge\": effect is required (pure|idempotent|nonidempotent)\n4:1: op \"main::charge\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/lang/testdata/no_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/lang/testdata/parse_error.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: expected capacity value, got }(\"}\")@3:1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/lang/testdata/string_fail_words.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/lang/testdata/valid_basic.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/admission-capacity-limit/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/admission-done-caller/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/admission-global-ordering/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/admission-partial-acquire-rollback/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/admission-reject-fails-fast/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/admission-shared-budget/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/admission-waiter-cancellation/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/attempt-deadline/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/caller-context/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/construct-invalid-retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "9:22: op \"op\": retry on throttled is never allowed\n9:33: op \"op\": retry on permanent is never allowed\n9:44: op \"op\": retry on success is never allowed\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/construct-operation-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:17: op \"unknown\": resource \"nope\" not declared on runtime \"main\"\n18:17: op \"zerou\": units for \"r\" must be > 0\n26:17: op \"overcap\": units 3 for \"r\" exceed capacity 2\n34:28: op \"dupres\": resource \"r\" listed twice\n40:1: op \"noeffect\": effect is required (pure|idempotent|nonidempotent)\n47:1: op \"badkey\": serialize key \"k\" must be a string parameter, got int\n55:1: handler \"main::ghost\": no matching op declared\n59:1: op \"main::nohandler\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/construct-retry-max-zero/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "8:5: op \"op\": retry max must be >= 1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/construct-runtime-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: runtime \"empty\" declares no resources\n7:14: resource \"a\": capacity must be > 0\n12:14: duplicate resource \"a\" in runtime \"dup\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/construct-unsafe-retry/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:22: op \"render\": retrying uncertain outcomes is unsafe for effect nonidempotent\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/failure-semantics/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/key-fifo-order/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/key-serialization/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/key-waiter-holds-no-resources/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/panic-release/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/cases/shutdown-lifecycle/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/codegen/charge/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/codegen/fail-outcomes/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/codegen/minimal/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/bundle-herta/hertasdk/herta/testdata/codegen/multi-runtime/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/examples/charge.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/lang/testdata/bad_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "12:1: handler \"main::op1\" declared twice\n7:1: handler \"op1\": param 0 is user_id:u64, op declares user_id:string\n9:9: handler \"op1\": cannot fail with outcome success\n14:1: handler \"main::ghost\": no matching op declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/lang/testdata/bad_key.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"op1\": serialize key \"user_id\" must be a string parameter, got u64\n4:1: op \"main::op1\" has no handler\n8:1: op \"op2\": serialize key \"missing\" is not a parameter\n8:1: op \"main::op2\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/lang/testdata/bad_resources.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:17: op \"op1\": units 5 for \"db\" exceed capacity 2\n6:29: op \"op1\": resource \"missing\" not declared on runtime \"main\"\n6:46: op \"op1\": resource \"db\" listed twice\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/lang/testdata/bad_retry.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:22: op \"op1\": retry on permanent is never allowed\n6:33: op \"op1\": retrying uncertain outcomes is unsafe for effect nonidempotent\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/lang/testdata/bad_runtime.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "1:1: runtime \"empty\" declares no resources\n3:1: op \"op1\": runtime \"ghost\" is not declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/lang/testdata/compact_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "14:14: handler \"op2\": cannot fail with outcome success\n21:14: handler \"op3\": invalid fail outcome \"0\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/lang/testdata/effect_required.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"charge\": effect is required (pure|idempotent|nonidempotent)\n4:1: op \"main::charge\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/lang/testdata/no_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/lang/testdata/parse_error.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: expected capacity value, got }(\"}\")@3:1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/lang/testdata/string_fail_words.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/lang/testdata/valid_basic.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/admission-capacity-limit/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/admission-done-caller/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/admission-global-ordering/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/admission-partial-acquire-rollback/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/admission-reject-fails-fast/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/admission-shared-budget/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/admission-waiter-cancellation/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/attempt-deadline/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/caller-context/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/construct-invalid-retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "9:22: op \"op\": retry on throttled is never allowed\n9:33: op \"op\": retry on permanent is never allowed\n9:44: op \"op\": retry on success is never allowed\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/construct-operation-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:17: op \"unknown\": resource \"nope\" not declared on runtime \"main\"\n18:17: op \"zerou\": units for \"r\" must be > 0\n26:17: op \"overcap\": units 3 for \"r\" exceed capacity 2\n34:28: op \"dupres\": resource \"r\" listed twice\n40:1: op \"noeffect\": effect is required (pure|idempotent|nonidempotent)\n47:1: op \"badkey\": serialize key \"k\" must be a string parameter, got int\n55:1: handler \"main::ghost\": no matching op declared\n59:1: op \"main::nohandler\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/construct-retry-max-zero/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "8:5: op \"op\": retry max must be >= 1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/construct-runtime-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: runtime \"empty\" declares no resources\n7:14: resource \"a\": capacity must be > 0\n12:14: duplicate resource \"a\" in runtime \"dup\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/construct-unsafe-retry/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:22: op \"render\": retrying uncertain outcomes is unsafe for effect nonidempotent\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/failure-semantics/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/key-fifo-order/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/key-serialization/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/key-waiter-holds-no-resources/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/panic-release/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/cases/shutdown-lifecycle/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/codegen/charge/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/codegen/fail-outcomes/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/codegen/minimal/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-2/oracle2-workspace/hertasdk/herta/testdata/codegen/multi-runtime/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/examples/charge.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/lang/testdata/bad_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "12:1: handler \"main::op1\" declared twice\n7:1: handler \"op1\": param 0 is user_id:u64, op declares user_id:string\n9:9: handler \"op1\": cannot fail with outcome success\n14:1: handler \"main::ghost\": no matching op declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/lang/testdata/bad_key.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"op1\": serialize key \"user_id\" must be a string parameter, got u64\n4:1: op \"main::op1\" has no handler\n8:1: op \"op2\": serialize key \"missing\" is not a parameter\n8:1: op \"main::op2\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/lang/testdata/bad_resources.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:17: op \"op1\": units 5 for \"db\" exceed capacity 2\n6:29: op \"op1\": resource \"missing\" not declared on runtime \"main\"\n6:46: op \"op1\": resource \"db\" listed twice\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/lang/testdata/bad_retry.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:22: op \"op1\": retry on permanent is never allowed\n6:33: op \"op1\": retrying uncertain outcomes is unsafe for effect nonidempotent\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/lang/testdata/bad_runtime.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "1:1: runtime \"empty\" declares no resources\n3:1: op \"op1\": runtime \"ghost\" is not declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/lang/testdata/compact_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "14:14: handler \"op2\": cannot fail with outcome success\n21:14: handler \"op3\": invalid fail outcome \"0\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/lang/testdata/effect_required.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"charge\": effect is required (pure|idempotent|nonidempotent)\n4:1: op \"main::charge\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/lang/testdata/no_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/lang/testdata/parse_error.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: expected capacity value, got }(\"}\")@3:1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/lang/testdata/string_fail_words.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/lang/testdata/valid_basic.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/admission-capacity-limit/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/admission-done-caller/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/admission-global-ordering/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/admission-partial-acquire-rollback/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/admission-reject-fails-fast/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/admission-shared-budget/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/admission-waiter-cancellation/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/attempt-deadline/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/caller-context/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/construct-invalid-retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "9:22: op \"op\": retry on throttled is never allowed\n9:33: op \"op\": retry on permanent is never allowed\n9:44: op \"op\": retry on success is never allowed\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/construct-operation-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:17: op \"unknown\": resource \"nope\" not declared on runtime \"main\"\n18:17: op \"zerou\": units for \"r\" must be > 0\n26:17: op \"overcap\": units 3 for \"r\" exceed capacity 2\n34:28: op \"dupres\": resource \"r\" listed twice\n40:1: op \"noeffect\": effect is required (pure|idempotent|nonidempotent)\n47:1: op \"badkey\": serialize key \"k\" must be a string parameter, got int\n55:1: handler \"main::ghost\": no matching op declared\n59:1: op \"main::nohandler\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/construct-retry-max-zero/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "8:5: op \"op\": retry max must be >= 1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/construct-runtime-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: runtime \"empty\" declares no resources\n7:14: resource \"a\": capacity must be > 0\n12:14: duplicate resource \"a\" in runtime \"dup\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/construct-unsafe-retry/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:22: op \"render\": retrying uncertain outcomes is unsafe for effect nonidempotent\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/failure-semantics/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/key-fifo-order/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/key-serialization/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/key-waiter-holds-no-resources/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/panic-release/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/cases/shutdown-lifecycle/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/codegen/charge/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/codegen/fail-outcomes/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/codegen/minimal/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/bundle-herta/hertasdk/herta/testdata/codegen/multi-runtime/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/examples/charge.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/lang/testdata/bad_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "12:1: handler \"main::op1\" declared twice\n7:1: handler \"op1\": param 0 is user_id:u64, op declares user_id:string\n9:9: handler \"op1\": cannot fail with outcome success\n14:1: handler \"main::ghost\": no matching op declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/lang/testdata/bad_key.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"op1\": serialize key \"user_id\" must be a string parameter, got u64\n4:1: op \"main::op1\" has no handler\n8:1: op \"op2\": serialize key \"missing\" is not a parameter\n8:1: op \"main::op2\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/lang/testdata/bad_resources.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:17: op \"op1\": units 5 for \"db\" exceed capacity 2\n6:29: op \"op1\": resource \"missing\" not declared on runtime \"main\"\n6:46: op \"op1\": resource \"db\" listed twice\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/lang/testdata/bad_retry.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:22: op \"op1\": retry on permanent is never allowed\n6:33: op \"op1\": retrying uncertain outcomes is unsafe for effect nonidempotent\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/lang/testdata/bad_runtime.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "1:1: runtime \"empty\" declares no resources\n3:1: op \"op1\": runtime \"ghost\" is not declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/lang/testdata/compact_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "14:14: handler \"op2\": cannot fail with outcome success\n21:14: handler \"op3\": invalid fail outcome \"0\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/lang/testdata/effect_required.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"charge\": effect is required (pure|idempotent|nonidempotent)\n4:1: op \"main::charge\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/lang/testdata/no_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/lang/testdata/parse_error.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: expected capacity value, got }(\"}\")@3:1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/lang/testdata/string_fail_words.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/lang/testdata/valid_basic.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/admission-capacity-limit/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/admission-done-caller/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/admission-global-ordering/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/admission-partial-acquire-rollback/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/admission-reject-fails-fast/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/admission-shared-budget/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/admission-waiter-cancellation/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/attempt-deadline/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/caller-context/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/construct-invalid-retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "9:22: op \"op\": retry on throttled is never allowed\n9:33: op \"op\": retry on permanent is never allowed\n9:44: op \"op\": retry on success is never allowed\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/construct-operation-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:17: op \"unknown\": resource \"nope\" not declared on runtime \"main\"\n18:17: op \"zerou\": units for \"r\" must be > 0\n26:17: op \"overcap\": units 3 for \"r\" exceed capacity 2\n34:28: op \"dupres\": resource \"r\" listed twice\n40:1: op \"noeffect\": effect is required (pure|idempotent|nonidempotent)\n47:1: op \"badkey\": serialize key \"k\" must be a string parameter, got int\n55:1: handler \"main::ghost\": no matching op declared\n59:1: op \"main::nohandler\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/construct-retry-max-zero/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "8:5: op \"op\": retry max must be >= 1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/construct-runtime-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: runtime \"empty\" declares no resources\n7:14: resource \"a\": capacity must be > 0\n12:14: duplicate resource \"a\" in runtime \"dup\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/construct-unsafe-retry/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:22: op \"render\": retrying uncertain outcomes is unsafe for effect nonidempotent\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/failure-semantics/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/key-fifo-order/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/key-serialization/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/key-waiter-holds-no-resources/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/panic-release/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/cases/shutdown-lifecycle/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/codegen/charge/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/codegen/fail-outcomes/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/codegen/minimal/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/herta-3/oracle2-workspace/hertasdk/herta/testdata/codegen/multi-runtime/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/examples/charge.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/lang/testdata/bad_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "12:1: handler \"main::op1\" declared twice\n7:1: handler \"op1\": param 0 is user_id:u64, op declares user_id:string\n9:9: handler \"op1\": cannot fail with outcome success\n14:1: handler \"main::ghost\": no matching op declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/lang/testdata/bad_key.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"op1\": serialize key \"user_id\" must be a string parameter, got u64\n4:1: op \"main::op1\" has no handler\n8:1: op \"op2\": serialize key \"missing\" is not a parameter\n8:1: op \"main::op2\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/lang/testdata/bad_resources.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:17: op \"op1\": units 5 for \"db\" exceed capacity 2\n6:29: op \"op1\": resource \"missing\" not declared on runtime \"main\"\n6:46: op \"op1\": resource \"db\" listed twice\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/lang/testdata/bad_retry.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:22: op \"op1\": retry on permanent is never allowed\n6:33: op \"op1\": retrying uncertain outcomes is unsafe for effect nonidempotent\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/lang/testdata/bad_runtime.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "1:1: runtime \"empty\" declares no resources\n3:1: op \"op1\": runtime \"ghost\" is not declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/lang/testdata/compact_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "14:14: handler \"op2\": cannot fail with outcome success\n21:14: handler \"op3\": invalid fail outcome \"0\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/lang/testdata/effect_required.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"charge\": effect is required (pure|idempotent|nonidempotent)\n4:1: op \"main::charge\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/lang/testdata/no_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/lang/testdata/parse_error.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: expected capacity value, got }(\"}\")@3:1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/lang/testdata/string_fail_words.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/lang/testdata/valid_basic.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/admission-capacity-limit/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/admission-done-caller/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/admission-global-ordering/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/admission-partial-acquire-rollback/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/admission-reject-fails-fast/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/admission-shared-budget/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/admission-waiter-cancellation/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/attempt-deadline/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/caller-context/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/construct-invalid-retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "9:22: op \"op\": retry on throttled is never allowed\n9:33: op \"op\": retry on permanent is never allowed\n9:44: op \"op\": retry on success is never allowed\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/construct-operation-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:17: op \"unknown\": resource \"nope\" not declared on runtime \"main\"\n18:17: op \"zerou\": units for \"r\" must be > 0\n26:17: op \"overcap\": units 3 for \"r\" exceed capacity 2\n34:28: op \"dupres\": resource \"r\" listed twice\n40:1: op \"noeffect\": effect is required (pure|idempotent|nonidempotent)\n47:1: op \"badkey\": serialize key \"k\" must be a string parameter, got int\n55:1: handler \"main::ghost\": no matching op declared\n59:1: op \"main::nohandler\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/construct-retry-max-zero/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "8:5: op \"op\": retry max must be >= 1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/construct-runtime-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: runtime \"empty\" declares no resources\n7:14: resource \"a\": capacity must be > 0\n12:14: duplicate resource \"a\" in runtime \"dup\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/construct-unsafe-retry/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:22: op \"render\": retrying uncertain outcomes is unsafe for effect nonidempotent\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/failure-semantics/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/key-fifo-order/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/key-serialization/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/key-waiter-holds-no-resources/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/panic-release/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/cases/shutdown-lifecycle/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/codegen/charge/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/codegen/fail-outcomes/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/codegen/minimal/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref-herta/oracle2-workspace/hertasdk/herta/testdata/codegen/multi-runtime/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/examples/charge.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/lang/testdata/bad_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "12:1: handler \"main::op1\" declared twice\n7:1: handler \"op1\": param 0 is user_id:u64, op declares user_id:string\n9:9: handler \"op1\": cannot fail with outcome success\n14:1: handler \"main::ghost\": no matching op declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/lang/testdata/bad_key.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"op1\": serialize key \"user_id\" must be a string parameter, got u64\n4:1: op \"main::op1\" has no handler\n8:1: op \"op2\": serialize key \"missing\" is not a parameter\n8:1: op \"main::op2\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/lang/testdata/bad_resources.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:17: op \"op1\": units 5 for \"db\" exceed capacity 2\n6:29: op \"op1\": resource \"missing\" not declared on runtime \"main\"\n6:46: op \"op1\": resource \"db\" listed twice\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/lang/testdata/bad_retry.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "6:22: op \"op1\": retry on permanent is never allowed\n6:33: op \"op1\": retrying uncertain outcomes is unsafe for effect nonidempotent\n4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/lang/testdata/bad_runtime.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "1:1: runtime \"empty\" declares no resources\n3:1: op \"op1\": runtime \"ghost\" is not declared\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/lang/testdata/compact_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "14:14: handler \"op2\": cannot fail with outcome success\n21:14: handler \"op3\": invalid fail outcome \"0\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/lang/testdata/effect_required.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"charge\": effect is required (pure|idempotent|nonidempotent)\n4:1: op \"main::charge\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/lang/testdata/no_handler.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "4:1: op \"main::op1\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/lang/testdata/parse_error.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: expected capacity value, got }(\"}\")@3:1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/lang/testdata/string_fail_words.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/lang/testdata/valid_basic.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/admission-capacity-limit/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/admission-done-caller/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/admission-global-ordering/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/admission-partial-acquire-rollback/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/admission-reject-fails-fast/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/admission-shared-budget/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/admission-waiter-cancellation/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/attempt-deadline/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/caller-context/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/construct-invalid-retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "9:22: op \"op\": retry on throttled is never allowed\n9:33: op \"op\": retry on permanent is never allowed\n9:44: op \"op\": retry on success is never allowed\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/construct-operation-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:17: op \"unknown\": resource \"nope\" not declared on runtime \"main\"\n18:17: op \"zerou\": units for \"r\" must be > 0\n26:17: op \"overcap\": units 3 for \"r\" exceed capacity 2\n34:28: op \"dupres\": resource \"r\" listed twice\n40:1: op \"noeffect\": effect is required (pure|idempotent|nonidempotent)\n47:1: op \"badkey\": serialize key \"k\" must be a string parameter, got int\n55:1: handler \"main::ghost\": no matching op declared\n59:1: op \"main::nohandler\" has no handler\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/construct-retry-max-zero/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "8:5: op \"op\": retry max must be >= 1\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/construct-runtime-invalid/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "3:1: runtime \"empty\" declares no resources\n7:14: resource \"a\": capacity must be > 0\n12:14: duplicate resource \"a\" in runtime \"dup\"\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/construct-unsafe-retry/input.he",
+    "cohort": "sanity",
+    "exit": 1,
+    "stdout": "10:22: op \"render\": retrying uncertain outcomes is unsafe for effect nonidempotent\n",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/failure-semantics/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/key-fifo-order/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/key-serialization/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/key-waiter-holds-no-resources/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/panic-release/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/retry-table/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/cases/shutdown-lifecycle/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/codegen/charge/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/codegen/fail-outcomes/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/codegen/minimal/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "sanity/ref2-herta/workspace/hertasdk/herta/testdata/codegen/multi-runtime/input.he",
+    "cohort": "sanity",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "models/t1-go-1.he",
+    "cohort": "transcription",
+    "exit": 1,
+    "stdout": "4:1: HC010 path main::charge: transient arm precedes uncertain arm; put uncertain arms first for joined errors\n",
+    "stderr": ""
+  },
+  {
+    "path": "models/t1-go-2.he",
+    "cohort": "transcription",
+    "exit": 1,
+    "stdout": "4:1: HC010 path main::charge: transient arm precedes uncertain arm; put uncertain arms first for joined errors\n",
+    "stderr": ""
+  },
+  {
+    "path": "models/t1-go-3.he",
+    "cohort": "transcription",
+    "exit": 1,
+    "stdout": "4:1: HC010 path main::charge: transient arm precedes uncertain arm; put uncertain arms first for joined errors\n",
+    "stderr": ""
+  },
+  {
+    "path": "models/t1-herta-1.he",
+    "cohort": "transcription",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "models/t1-herta-2.he",
+    "cohort": "transcription",
+    "exit": 1,
+    "stdout": "4:1: HC010 path main::charge: transient arm precedes uncertain arm; put uncertain arms first for joined errors\n",
+    "stderr": ""
+  },
+  {
+    "path": "models/t1-herta-3.he",
+    "cohort": "transcription",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "models/t1-ref-go.he",
+    "cohort": "transcription",
+    "exit": 1,
+    "stdout": "4:1: HC010 path main::charge: transient arm precedes uncertain arm; put uncertain arms first for joined errors\n",
+    "stderr": ""
+  },
+  {
+    "path": "models/t1-ref-herta.he",
+    "cohort": "transcription",
+    "exit": 1,
+    "stdout": "4:1: HC010 path main::charge: transient arm precedes uncertain arm; put uncertain arms first for joined errors\n",
+    "stderr": ""
+  },
+  {
+    "path": "models/t1-ref2-go.he",
+    "cohort": "transcription",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "models/t1-ref2-herta.he",
+    "cohort": "transcription",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "models/t1-timeout-transient-trap.he",
+    "cohort": "transcription",
+    "exit": 1,
+    "stdout": "4:1: HC005 path main::charge: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes\n4:1: HC011 path main::charge: ambiguous error (or _) classified transient with nonidempotent effect; classify it uncertain or permanent\n",
+    "stderr": ""
+  },
+  {
+    "path": "models/declared-nonidempotent-uncertain.he",
+    "cohort": "transcription",
+    "exit": 1,
+    "stdout": "3:66: op \"charge\": retrying uncertain outcomes is unsafe for effect nonidempotent\n",
+    "stderr": ""
+  },
+  {
+    "path": "models/t4-herta-2-intermediate-fallback.he",
+    "cohort": "transcription",
+    "exit": 1,
+    "stdout": "3:1: HC001 path main::transfer -> main::debit: serialize key reacquired while held by main::transfer; release the caller key or use a distinct key namespace\n",
+    "stderr": ""
+  },
+  {
+    "path": "models/idempotent-wrapper-trap.he",
+    "cohort": "transcription",
+    "exit": 1,
+    "stdout": "3:1: HC004 path main::checkout -> main::charge: declared idempotent has effective effect nonidempotent; declare nonidempotent or remove the effectful call\n3:1: HC005 path main::checkout -> main::charge: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes\n",
+    "stderr": ""
+  },
+  {
+    "path": "models/empty-serialize-key.he",
+    "cohort": "transcription",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "path": "models/probe-traps.he",
+    "cohort": "transcription",
+    "exit": 1,
+    "stdout": "10:1: HC001 path main::transfer -> main::debit: serialize key reacquired while held by main::transfer; release the caller key or use a distinct key namespace\n22:1: HC004 path main::checkout -> main::charge: declared idempotent has effective effect nonidempotent; declare nonidempotent or remove the effectful call\n22:1: HC005 path main::checkout -> main::charge: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes\n",
+    "stderr": ""
+  },
+  {
+    "path": "models/codegen-unused-param.he",
+    "cohort": "transcription",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

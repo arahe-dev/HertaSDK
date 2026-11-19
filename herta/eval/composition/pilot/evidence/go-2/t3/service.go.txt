@@ -1,0 +1,69 @@
+package t3
+
+import (
+	"context"
+	"errors"
+	"github.com/arahe-dev/hertasdk"
+	"time"
+)
+
+func classify(err error) error {
+	if err == nil {
+		return nil
+	}
+	switch {
+	case errors.Is(err, ErrUnavailable):
+		return hertasdk.Fail(hertasdk.Transient, err)
+	case errors.Is(err, ErrTimeout):
+		return hertasdk.Fail(hertasdk.Uncertain, err)
+	default:
+		return hertasdk.Fail(hertasdk.Permanent, err)
+	}
+}
+
+type Input struct {
+	User  string
+	Cents uint64
+}
+type Service struct {
+	b       *Backend
+	charge  *hertasdk.Operation[Input, Receipt]
+	reserve *hertasdk.Operation[reserveInput, Unit]
+}
+
+type reserveInput struct {
+	User, SKU string
+}
+
+func New(b *Backend) (*Service, error) {
+	s := &Service{b: b}
+	rt, err := hertasdk.NewRuntime(hertasdk.ResourceSpec{Name: "db", Capacity: 8}, hertasdk.ResourceSpec{Name: "network", Capacity: 4})
+	if err != nil {
+		return nil, err
+	}
+	_ = rt
+	s.charge, err = hertasdk.NewOperation(rt, "charge", func(ctx context.Context, in Input) (Receipt, error) {
+		r, e := s.b.Charge(ctx, in.User, in.Cents)
+		return r, classify(e)
+	}, hertasdk.Policy[Input]{Effect: hertasdk.NonIdempotent, Admission: hertasdk.Wait, Resources: []hertasdk.Requirement{{Name: "db", Units: 1}, {Name: "network", Units: 1}}, Timeout: 500 * time.Millisecond, Retry: hertasdk.RetryPolicy{MaxAttempts: 3, On: map[hertasdk.Outcome]bool{hertasdk.Transient: true}}})
+	if err != nil {
+		return nil, err
+	}
+	s.reserve, err = hertasdk.NewOperation(rt, "reserve", func(ctx context.Context, in reserveInput) (Unit, error) {
+		return Unit{}, classify(s.b.Reserve(ctx, in.User, in.SKU))
+	}, hertasdk.Policy[reserveInput]{Effect: hertasdk.Idempotent, Admission: hertasdk.Wait, Resources: []hertasdk.Requirement{{Name: "db", Units: 1}, {Name: "network", Units: 1}}, Retry: hertasdk.RetryPolicy{MaxAttempts: 3, On: map[hertasdk.Outcome]bool{hertasdk.Transient: true, hertasdk.Uncertain: true}}})
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+func (s *Service) Charge(ctx context.Context, user string, cents uint64) (Receipt, error) {
+	return s.charge.Do(ctx, Input{User: user, Cents: cents})
+}
+func (s *Service) Checkout(ctx context.Context, user, sku string, cents uint64) (Receipt, error) {
+	// Sequential, not nested: neither call holds units while the other waits.
+	if _, err := s.reserve.Do(ctx, reserveInput{User: user, SKU: sku}); err != nil {
+		return Receipt{}, err
+	}
+	return s.charge.Do(ctx, Input{User: user, Cents: cents})
+}

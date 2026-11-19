@@ -1,0 +1,26 @@
+// id: C3-0823880839f8-1
+// link: https://github.com/moby/moby/blob/288c9392dd81a868b1e28e38c7ac3f78284e0c21/daemon/start.go#L285
+// facts: Cleanup276 forwards its ctx to releaseNetwork285; restore calls Cleanup(TODO(),c) at daemon.go535 to clean a restored stopped container; detached inherited context is deliberate container cleanup, and separate ctr.Delete280 also deliberately survives cancellation.
+// model: Restore-owned cleanup survives cancellation.
+runtime main { resource evaluation capacity 1 }
+op main::restoreStoppedContainer() -> u64 {
+    effect idempotent
+    calls cleanupNetwork
+}
+handler main::restoreStoppedContainer() -> (u64, error) {
+    return 0, nil
+}
+op main::cleanupNetwork() -> u64 {
+    effect idempotent
+    detached for cleanup
+}
+handler main::cleanupNetwork() -> (u64, error) {
+    return 0, nil
+}
+op main::deleteContainer() -> u64 {
+    effect idempotent
+    detached for cleanup
+}
+handler main::deleteContainer() -> (u64, error) {
+    return 0, nil
+}

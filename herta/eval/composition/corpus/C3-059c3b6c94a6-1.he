@@ -1,0 +1,11 @@
+// id: C3-059c3b6c94a6-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/fs/operations/operations.go#L282
+// facts: operations.equal248 forwards ctx to DebugfCtx282; no local detach occurs. copy.manualCopy247 shadows ctx inside a cleanup callback, suggesting scope leakage, but the emitted row does not identify its incoming detached call chain; reachability of that taint was not established.
+// inexpressible: Facts establish ctx forwarding in equal, but not the incoming detached chain; closure-scope taint cannot be expressed as a verified call path.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,11 @@
+runtime main {
+    resource db capacity 4
+}
+op main::op1(user_id: u64) -> r {
+    effect idempotent
+    serialize key user_id
+}
+op main::op2() -> r {
+    effect idempotent
+    serialize key missing
+}

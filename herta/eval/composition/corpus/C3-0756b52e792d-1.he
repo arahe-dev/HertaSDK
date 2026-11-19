@@ -1,0 +1,25 @@
+// id: C3-0756b52e792d-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/registry/core/service/ipallocator/controller/repair.go#L211
+// facts: Repair.doRunOnce has no ctx parameter; outer RetryOnConflict141 does startup/periodic allocation reconciliation and the service List211 deliberately uses TODO; no request-scoped cancellation chain was established.
+// model: Context-free startup/periodic entry; no request cancellation chain or retry attempt count established.
+runtime main { resource evaluation capacity 1 }
+op main::startupPeriodicRepair() -> u64 {
+    effect idempotent
+    detached
+    calls listServices, reconcileAllocation
+}
+handler main::startupPeriodicRepair() -> (u64, error) {
+    return 0, nil
+}
+op main::listServices() -> u64 {
+    effect pure
+}
+handler main::listServices() -> (u64, error) {
+    return 0, nil
+}
+op main::reconcileAllocation() -> u64 {
+    effect idempotent
+}
+handler main::reconcileAllocation() -> (u64, error) {
+    return 0, nil
+}

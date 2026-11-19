@@ -1,0 +1,26 @@
+// id: C2-6c1ae13b31a0-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/linkbox/linkbox.go#L374
+// facts: linkbox374 -> shouldRetryWeb263-281 on API error -> login224-245 -> getUnmarshaledResponse322-333; failed login aborts outer, success installs fresh token; conditional R*R/default100 intentional token recovery.
+// model: Default 10 total pacer attempts: pinned rclone fs/config.go:196-198; lib/pacer/pacer.go Call passes p.retries, CallNoRetry passes 1. Default matches the C2 facts, not an evaluation budget override. Failed login aborts outer retry: recovery is separate under rule 6, not a nested call from the retrying op.
+runtime main { resource evaluation capacity 1 }
+op main::requestTokenRecovery() -> u64 {
+    effect idempotent
+    retry max 10 on { transient }
+}
+handler main::requestTokenRecovery() -> (u64, error) {
+    return 0, nil
+}
+op main::login() -> u64 {
+    effect idempotent
+    calls getUnmarshaledResponse
+}
+handler main::login() -> (u64, error) {
+    return 0, nil
+}
+op main::getUnmarshaledResponse() -> u64 {
+    effect idempotent
+    retry max 10 on { uncertain }
+}
+handler main::getUnmarshaledResponse() -> (u64, error) {
+    return 0, nil
+}

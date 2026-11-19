@@ -1,0 +1,27 @@
+// id: C3-b6c2ef46b507-1
+// link: https://github.com/grafana/loki/blob/134acef80206feff0a01ee830ffceca4b0a087ea/pkg/dataobj/metastore/toc_resolver.go#L539
+// facts: TOCResolver load538 takes a new ctx parameter; metadata/cache.go150-158 actually invokes it under a detached loadTimeout context, not outer refresh readCtx. The two10s ToC contexts are not parent/child; analyzer ignores callback parameter binding.
+// model: Callback receives a new shared-cache load context, not refreshRead ctx; independent entry points.
+runtime main { resource evaluation capacity 1 }
+op main::refreshRead() -> u64 {
+    effect pure
+    timeout 10s
+}
+handler main::refreshRead() -> (u64, error) {
+    return 0, nil
+}
+op main::sharedCacheLoad() -> u64 {
+    effect pure
+    detached for background
+    calls tocRead
+}
+handler main::sharedCacheLoad() -> (u64, error) {
+    return 0, nil
+}
+op main::tocRead() -> u64 {
+    effect pure
+    timeout 10s
+}
+handler main::tocRead() -> (u64, error) {
+    return 0, nil
+}

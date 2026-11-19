@@ -1,0 +1,34 @@
+// Resources are acquired in global order: a caller blocked on a holds
+// nothing, so a b-only caller proceeds (contract §4.3).
+runtime main {
+    resource a capacity 1
+    resource b capacity 1
+}
+
+op main::hold_a(n: int) -> int {
+    effect pure
+    admission wait
+    resources { a units 1 }
+}
+handler main::hold_a(n: int) -> (int, error) {
+    block_on("gate-1")
+    return 0, nil
+}
+
+op main::victim(n: int) -> int {
+    effect pure
+    admission wait
+    resources { b units 1, a units 1 }
+}
+handler main::victim(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::needs_b(n: int) -> int {
+    effect pure
+    admission reject
+    resources { b units 1 }
+}
+handler main::needs_b(n: int) -> (int, error) {
+    return 0, nil
+}

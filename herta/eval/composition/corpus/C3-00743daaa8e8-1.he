@@ -1,0 +1,19 @@
+// id: C3-00743daaa8e8-1
+// link: https://github.com/grafana/loki/blob/134acef80206feff0a01ee830ffceca4b0a087ea/pkg/engine/internal/worker/worker.go#L462
+// facts: Worker.run182-270 creates schedulerCtx independently, then explicitly schedulerCancel/Wait after draining threads; handleSchedulerConn437/462 forwards that lifecycle context through errgroup into WaitReady; deliberate shutdown ordering.
+// model: Explicit schedulerCancel/Wait after thread drain owns shutdown ordering; WaitReady is a read.
+runtime main { resource evaluation capacity 1 }
+op main::workerRun() -> u64 {
+    effect pure
+    calls schedulerLifecycle
+}
+handler main::workerRun() -> (u64, error) {
+    return 0, nil
+}
+op main::schedulerLifecycle() -> u64 {
+    effect pure
+    detached for shutdown
+}
+handler main::schedulerLifecycle() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,19 @@
+// id: C3-04a4a917a646-1
+// link: https://github.com/grafana/loki/blob/134acef80206feff0a01ee830ffceca4b0a087ea/pkg/compactor/deletion/delete_requests_store_boltdb.go#L325
+// facts: The detached route is MergeShardedRequests404 -> getAllShards166 -> queryDeleteRequests290 -> deleteRequestsWithDetails319/325; actual manager callers152/576 pass Background for startup/finished-batch maintenance, so no caller cancellation is lost in that scenario.
+// model: Actual callers use Background for startup/finished-batch maintenance.
+runtime main { resource evaluation capacity 1 }
+op main::maintenance() -> u64 {
+    effect idempotent
+    calls mergeShardedRequests
+}
+handler main::maintenance() -> (u64, error) {
+    return 0, nil
+}
+op main::mergeShardedRequests() -> u64 {
+    effect idempotent
+    detached for background
+}
+handler main::mergeShardedRequests() -> (u64, error) {
+    return 0, nil
+}

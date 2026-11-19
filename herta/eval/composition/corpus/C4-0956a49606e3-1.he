@@ -1,0 +1,19 @@
+// id: C4-0956a49606e3-1
+// link: https://github.com/grafana/loki/blob/134acef80206feff0a01ee830ffceca4b0a087ea/pkg/storage/stores/shipper/indexshipper/downloads/table.go#L441
+// facts: getOrCreateIndexSet403 holds indexSetsMtx, but Init and cleanupBrokenIndexSet441 execute in the explicit goroutine431; cleanup can wait for the creator's deferred Unlock without blocking its return.
+// model: Init and cleanup run in goroutine431.
+runtime main { resource evaluation capacity 1 }
+op main::getOrCreateIndexSet() -> u64 {
+    effect pure
+    lock indexSetsMtx
+}
+handler main::getOrCreateIndexSet() -> (u64, error) {
+    return 0, nil
+}
+op main::asyncInitCleanup() -> u64 {
+    effect pure
+    lock indexSetsMtx
+}
+handler main::asyncInitCleanup() -> (u64, error) {
+    return 0, nil
+}

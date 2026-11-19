@@ -1,0 +1,29 @@
+runtime main { resource db capacity 8 }
+op main::debit(user: string) -> u64 {
+    effect nonidempotent
+    serialize key user
+}
+handler main::debit(user: string) -> (u64, error) {
+    _ = user
+    return 1, nil
+}
+op main::transfer(user: string, debit: debitOp) -> u64 {
+    effect nonidempotent
+    serialize key user
+}
+handler main::transfer(user: string, debit: debitOp) -> (u64, error) {
+    return debit.Do(ctx, MainDebitInput{User: user})
+}
+op main::charge(user: string) -> u64 { effect nonidempotent }
+handler main::charge(user: string) -> (u64, error) {
+    _ = user
+    return 1, nil
+}
+op main::checkout(user: string, charge: chargeOp) -> u64 {
+    effect idempotent
+    retry max 3 on { uncertain }
+}
+handler main::checkout(user: string, charge: chargeOp) -> (u64, error) {
+    if _, err := charge.Do(ctx, MainChargeInput{User: user}); err != nil { return 0, err }
+    fail uncertain, errLater
+}

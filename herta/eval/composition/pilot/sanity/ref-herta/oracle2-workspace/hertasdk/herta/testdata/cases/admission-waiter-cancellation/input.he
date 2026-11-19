@@ -1,0 +1,33 @@
+// A waiting caller whose context is cancelled leaves immediately, takes no
+// capacity, and reports its own error even when shutdown wakes it (Δ6).
+runtime main {
+    resource renderer capacity 1
+}
+
+op main::hold(n: int) -> int {
+    effect pure
+    admission wait
+    resources { renderer units 1 }
+}
+handler main::hold(n: int) -> (int, error) {
+    block_on("gate-1")
+    return 0, ctx_err()
+}
+
+op main::waiter(n: int) -> int {
+    effect pure
+    admission wait
+    resources { renderer units 1 }
+}
+handler main::waiter(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::probe(n: int) -> int {
+    effect pure
+    admission reject
+    resources { renderer units 1 }
+}
+handler main::probe(n: int) -> (int, error) {
+    return 0, nil
+}

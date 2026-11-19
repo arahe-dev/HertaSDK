@@ -1,0 +1,25 @@
+// id: C3-95ac50c8a7a4-1
+// link: https://github.com/minio/minio/blob/7aac2a2c5b7c882e68c1ce017d8256be2feea27f/cmd/storage-rest-client.go#L327
+// facts: DiskInfo309's5s context is scoped only to the opts.NoOp branch, which returns at322; the cache-loader timeout327 occurs in the other branch with its own ctx parameter, never inside the NoOp timeout.
+// model: Disjoint branches, no child edge from NoOp to cache loader; loader timeout value is not supplied.
+runtime main { resource evaluation capacity 1 }
+op main::diskInfo() -> u64 {
+    effect pure
+    calls noopBranch, cacheLoaderBranch
+}
+handler main::diskInfo() -> (u64, error) {
+    return 0, nil
+}
+op main::noopBranch() -> u64 {
+    effect pure
+    timeout 5s
+}
+handler main::noopBranch() -> (u64, error) {
+    return 0, nil
+}
+op main::cacheLoaderBranch() -> u64 {
+    effect pure
+}
+handler main::cacheLoaderBranch() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,19 @@
+// id: C2-42e17ae9b5e2-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/onedrive/onedrive.go#L2900
+// facts: onedrive.go 2900-2917 performs getPosition only after416; getPosition 2856-2873 retries GET; failure returns outer false, success resumes from server offset; R*R/default100 possible position reads are deliberate recovery.
+// model: Default 10 total pacer attempts: pinned rclone fs/config.go:196-198; lib/pacer/pacer.go Call passes p.retries, CallNoRetry passes 1. Default matches the C2 facts, not an evaluation budget override. 416 recovery uses the server offset; failed position fetch aborts outer policy, so separate by rule 6.
+runtime main { resource evaluation capacity 1 }
+op main::uploadRecovery() -> u64 {
+    effect idempotent
+    retry max 10 on { transient }
+}
+handler main::uploadRecovery() -> (u64, error) {
+    return 0, nil
+}
+op main::getPosition() -> u64 {
+    effect pure
+    retry max 10 on { uncertain }
+}
+handler main::getPosition() -> (u64, error) {
+    return 0, nil
+}

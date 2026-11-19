@@ -1,0 +1,7 @@
+runtime main { resource db capacity 8 resource network capacity 4 }
+// Charging is not idempotent: only Transient failures (rejected before the
+// charge was applied) are retried; Uncertain ones (provider timeouts) are not.
+op main::charge(svc: servicePtr, user: string, cents: u64) -> Receipt { effect nonidempotent admission wait resources { db units 1, network units 1 } timeout 500ms retry max 3 on { transient } }
+handler main::charge(svc: servicePtr, user: string, cents: u64) -> (Receipt, error) {
+return svc.chargeHost(ctx, user, cents)
+}

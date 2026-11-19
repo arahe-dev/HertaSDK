@@ -1,0 +1,10 @@
+{
+  "frozen_at": "2026-11-19T17:03:57.217309+00:00",
+  "checker_sha256": "3bd91def1c5927a69389a83d81c757de5e4ae6deeab24346d20990088dab6cfb",
+  "checker_commit": "e9741d23d663ea1ad8e708a5f0e88393424b4416",
+  "checker_run_on_transcriptions": false,
+  "model_count": 17,
+  "manifest_sha256": "3bdb39a76c337954cd37080073b483d6c795a48409bd9399ab4781eb34106b12",
+  "transcription_sha256": "9a68cacf49487458e662f2ea99ad6710def902227d6a17426a57f47eb52170da",
+  "inventory_sha256": "94a4d15b892db49bc0256591774f2d9fdec02c4d797bcb827eb6f161bb4fcac7"
+}

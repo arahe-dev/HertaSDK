@@ -1,0 +1,19 @@
+// id: C1-08e48c247812-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/pikpak/helper.go#L119
+// facts: requestNewTask 112-125 repeats POST /drive/v1/files and returns shouldRetry; timeout/5xx can follow task creation and no request-id/dedupe is supplied in this path; provider-side dedupe unverified.
+// model: Default 10 total pacer attempts: pinned rclone fs/config.go:196-198; lib/pacer/pacer.go Call passes p.retries, CallNoRetry passes 1. Default matches the C2 facts, not an evaluation budget override.
+runtime main { resource evaluation capacity 1 }
+op main::requestNewTask() -> u64 {
+    effect nonidempotent
+    retry max 10 on { uncertain }
+    calls postTask
+}
+handler main::requestNewTask() -> (u64, error) {
+    return 0, nil
+}
+op main::postTask() -> u64 {
+    effect nonidempotent
+}
+handler main::postTask() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,19 @@
+// id: C1-0ba430e1a9b8-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/ulozto/ulozto.go#L486
+// facts: uploadUnchecked 473-488 repeats PATCH setting the same upload-batch PrivateSlug to status=confirmed; headers are local auth bookkeeping and the mutation is a fixed-resource status assignment rather than allocating another upload.
+// model: Default 10 total pacer attempts: pinned rclone fs/config.go:196-198; lib/pacer/pacer.go Call passes p.retries, CallNoRetry passes 1. Default matches the C2 facts, not an evaluation budget override.
+runtime main { resource evaluation capacity 1 }
+op main::uploadUnchecked() -> u64 {
+    effect idempotent
+    retry max 10 on { uncertain }
+    calls confirmSameBatch
+}
+handler main::uploadUnchecked() -> (u64, error) {
+    return 0, nil
+}
+op main::confirmSameBatch() -> u64 {
+    effect idempotent
+}
+handler main::confirmSameBatch() -> (u64, error) {
+    return 0, nil
+}

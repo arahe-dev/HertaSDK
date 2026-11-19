@@ -1,0 +1,19 @@
+// id: C4-2ade06a98a83-1
+// link: https://github.com/grafana/grafana/blob/c3f2c836adf7800899e7675e7718a2050fd03a6e/pkg/services/ngalert/notifier/redis_peer.go#L467
+// facts: redisPeer.AddState467 starts go receiveLoop while holding statesMtx; mergePartialState acquires it on the receive goroutine after publication, not synchronously on AddState's stack.
+// model: go receiveLoop publishes then acquires independently.
+runtime main { resource evaluation capacity 1 }
+op main::addState() -> u64 {
+    effect pure
+    lock statesMtx
+}
+handler main::addState() -> (u64, error) {
+    return 0, nil
+}
+op main::receiveLoopMerge() -> u64 {
+    effect pure
+    lock statesMtx
+}
+handler main::receiveLoopMerge() -> (u64, error) {
+    return 0, nil
+}

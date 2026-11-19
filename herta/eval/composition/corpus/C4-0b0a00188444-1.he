@@ -1,0 +1,19 @@
+// id: C4-0b0a00188444-1
+// link: https://github.com/syncthing/syncthing/blob/f2ed52347ec461a2b7a70787192f3615bcb6bafd/lib/fs/casefs.go#L92
+// facts: caseFilesystemRegistry.get92 starts go r.cleaner and releases mut96; cleaner's later lock is on another goroutine, not recursive locking by get.
+// model: go cleaner has an independent stack; get releases mut.
+runtime main { resource evaluation capacity 1 }
+op main::registryGet() -> u64 {
+    effect pure
+    lock mut
+}
+handler main::registryGet() -> (u64, error) {
+    return 0, nil
+}
+op main::cleaner() -> u64 {
+    effect pure
+    lock mut
+}
+handler main::cleaner() -> (u64, error) {
+    return 0, nil
+}

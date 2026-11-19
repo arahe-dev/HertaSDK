@@ -1,0 +1,25 @@
+run,arm,task,oracle(pass/fail),oracle_runs_passed,added_test_lines,changed_nontest_lines,he_rule_violation,supplied_op_changed,design
+go-1,go,t1,pass,10,41,47,no,no,retry transient only; timeout->uncertain
+go-1,go,t2,pass,10,32,30,no,no,serialize order: + decimal int64
+go-1,go,t3,pass,10,32,23,no,no,reserve retries transient/uncertain; sequential charge
+go-1,go,t4,pass,10,41,34,no,yes,disjoint account:/transfer: runtime keys
+go-2,go,t1,pass,10,50,48,no,no,retry transient only; timeout->uncertain
+go-2,go,t2,pass,10,31,30,no,no,serialize decimal int64
+go-2,go,t3,pass,10,42,21,no,no,reserve retries transient/uncertain; sequential charge
+go-2,go,t4,pass,10,42,55,no,no,separate context-aware source-account lock
+go-3,go,t1,pass,10,62,53,no,no,retry transient only; timeout/context->uncertain
+go-3,go,t2,pass,10,58,45,no,no,serialize refund: + decimal int64
+go-3,go,t3,pass,10,43,39,no,no,reserve retries transient/uncertain with 500ms timeout
+go-3,go,t4,pass,10,52,59,no,no,separate context-aware source-account lock
+herta-1,herta,t1,pass,10,75,87,no,no,retry transient only; timeout checked before unavailable
+herta-1,herta,t2,pass,10,72,75,no,no,serialize decimal int64 string parameter
+herta-1,herta,t3,pass,10,84,107,no,no,reserve retries transient/uncertain; unretried checkout op
+herta-1,herta,t4,pass,10,77,165,no,yes,ordered two-account transfer locks; account: debit/credit keys
+herta-2,herta,t1,pass,10,38,88,no,no,retry transient only; timeout->uncertain
+herta-2,herta,t2,pass,10,25,72,no,no,serialize order: + decimal string parameter
+herta-2,herta,t3,pass,10,34,106,no,no,reserve retries transient/uncertain; unretried checkout op
+herta-2,herta,t4,pass,10,38,69,no,no,NUL-prefixed source lock covers debit; credit outside lock
+herta-3,herta,t1,pass,10,83,86,no,no,retry transient only; timeout checked before unavailable
+herta-3,herta,t2,pass,10,78,65,no,no,serialize decimal int64 string parameter
+herta-3,herta,t3,pass,10,61,118,no,no,reserve retries transient/uncertain; unretried checkout op
+herta-3,herta,t4,pass,10,60,106,no,yes,disjoint user:/transfer: runtime keys

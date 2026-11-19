@@ -1,0 +1,6 @@
+--- FAIL: TestOracleHardTransfer (0.40s)
+    --- FAIL: TestOracleHardTransfer/accounts_"A"_"transfer:A" (0.40s)
+        harder_test.go:77: arbitrary account transfer: context deadline exceeded {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:1 CreditCalls:0 Balances:map[A:90]}
+FAIL
+FAIL	pilot/t4	0.416s
+FAIL

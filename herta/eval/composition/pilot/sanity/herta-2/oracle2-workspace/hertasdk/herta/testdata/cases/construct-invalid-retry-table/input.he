@@ -1,0 +1,13 @@
+// Retry.On entries that can never be retried are rejected as
+// ErrInvalidRetryPolicy, lowest invalid outcome first (contract §3.2).
+runtime main {
+    resource r capacity 1
+}
+
+op main::op(n: int) -> int {
+    effect pure
+    retry max 2 on { throttled, permanent, success }
+}
+handler main::op(n: int) -> (int, error) {
+    return 0, nil
+}

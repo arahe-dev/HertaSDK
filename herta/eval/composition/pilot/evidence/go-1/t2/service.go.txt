@@ -1,0 +1,44 @@
+package t2
+
+import (
+	"context"
+	"strconv"
+
+	"github.com/arahe-dev/hertasdk"
+)
+
+type Input struct {
+	OrderID int64
+	Cents   uint64
+}
+
+type Service struct {
+	b      *Backend
+	refund *hertasdk.Operation[Input, Unit]
+}
+
+func New(b *Backend) (*Service, error) {
+	s := &Service{b: b}
+	rt, err := hertasdk.NewRuntime(hertasdk.ResourceSpec{Name: "db", Capacity: 8}, hertasdk.ResourceSpec{Name: "network", Capacity: 4})
+	if err != nil {
+		return nil, err
+	}
+	s.refund, err = hertasdk.NewOperation(rt, "refund", func(ctx context.Context, in Input) (Unit, error) {
+		return Unit{}, s.b.Refund(ctx, in.OrderID, in.Cents)
+	}, hertasdk.Policy[Input]{
+		Effect:    hertasdk.NonIdempotent,
+		Admission: hertasdk.Wait,
+		Resources: []hertasdk.Requirement{{Name: "db", Units: 1}, {Name: "network", Units: 1}},
+		// Never empty, and distinct for every int64 (including 0 and negatives).
+		SerializeKey: func(in Input) string { return "order:" + strconv.FormatInt(in.OrderID, 10) },
+	})
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+
+func (s *Service) Refund(ctx context.Context, orderID int64, cents uint64) error {
+	_, err := s.refund.Do(ctx, Input{OrderID: orderID, Cents: cents})
+	return err
+}

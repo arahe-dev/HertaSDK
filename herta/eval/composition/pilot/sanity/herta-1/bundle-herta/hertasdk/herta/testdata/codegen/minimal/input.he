@@ -1,0 +1,11 @@
+// Minimal program: effect-only op, no params, wait admission by default.
+runtime main {
+    resource cpu capacity 2
+}
+
+op main::ping() -> int {
+    effect pure
+}
+handler main::ping() -> (int, error) {
+    return 1, nil
+}

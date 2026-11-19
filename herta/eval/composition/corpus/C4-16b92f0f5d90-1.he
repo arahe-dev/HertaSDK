@@ -1,0 +1,19 @@
+// id: C4-16b92f0f5d90-1
+// link: https://github.com/istio/istio/blob/b3217b023cffcc749205bca2fdd764e4b34004c4/pilot/pkg/model/network.go#L402
+// facts: Resolve395 holds n.Lock, but resolveAndCache449 passes refreshAndNotify(name)'s returned closure to time.AfterFunc; refreshAndNotify456 returns a function without locking, and that function locks only on the timer goroutine.
+// model: Constructing returned closure does not execute it; timer takes lock on independent stack.
+runtime main { resource evaluation capacity 1 }
+op main::resolve() -> u64 {
+    effect pure
+    lock networkMutex
+}
+handler main::resolve() -> (u64, error) {
+    return 0, nil
+}
+op main::timerRefresh() -> u64 {
+    effect pure
+    lock networkMutex
+}
+handler main::timerRefresh() -> (u64, error) {
+    return 0, nil
+}

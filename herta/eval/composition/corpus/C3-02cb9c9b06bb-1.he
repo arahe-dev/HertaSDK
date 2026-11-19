@@ -1,0 +1,19 @@
+// id: C3-02cb9c9b06bb-1
+// link: https://github.com/grafana/grafana/blob/c3f2c836adf7800899e7675e7718a2050fd03a6e/pkg/registry/apis/secret/garbagecollectionworker/worker.go#L62
+// facts: GC Run55-66 intentionally gives each inactive-value cleanup its own configured timeout and checks lifecycle cancellation between batches; this is explicitly a background garbage-collection lifecycle, not request work.
+// model: Background GC owns per-batch timeout; configured duration is unspecified, not invented.
+runtime main { resource evaluation capacity 1 }
+op main::gcRun() -> u64 {
+    effect idempotent
+    calls cleanupInactiveValues
+}
+handler main::gcRun() -> (u64, error) {
+    return 0, nil
+}
+op main::cleanupInactiveValues() -> u64 {
+    effect idempotent
+    detached for background
+}
+handler main::cleanupInactiveValues() -> (u64, error) {
+    return 0, nil
+}

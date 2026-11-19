@@ -1,0 +1,19 @@
+// id: C4-008727589243-2
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/vfs/vfscache/item.go#L755
+// facts: _actualClose777 calls _ensure while held; _ensure1272 Unlocks and defers Lock1273, so it restores an intentionally released mutex rather than reentering it.
+// model: _ensure first Unlocks, then defers Lock; no overlapping acquisition.
+runtime main { resource evaluation capacity 1 }
+op main::actualClose() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::actualClose() -> (u64, error) {
+    return 0, nil
+}
+op main::ensureAfterRelease() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::ensureAfterRelease() -> (u64, error) {
+    return 0, nil
+}

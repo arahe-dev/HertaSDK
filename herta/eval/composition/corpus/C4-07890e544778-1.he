@@ -1,0 +1,19 @@
+// id: C4-07890e544778-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/filefabric/filefabric.go#L364
+// facts: getApplianceInfo307-311 passes params token=*; rpc385-393 calls getToken only when token is absent, so the path back into tokenMu is excluded for this call.
+// model: token=* excludes getToken; no edge into tokenMu reacquire.
+runtime main { resource evaluation capacity 1 }
+op main::applianceInfo() -> u64 {
+    effect pure
+    lock tokenMu
+    calls rpcWithToken
+}
+handler main::applianceInfo() -> (u64, error) {
+    return 0, nil
+}
+op main::rpcWithToken() -> u64 {
+    effect pure
+}
+handler main::rpcWithToken() -> (u64, error) {
+    return 0, nil
+}

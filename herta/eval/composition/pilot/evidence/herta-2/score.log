@@ -1,0 +1,11 @@
+Workspace: bundle-herta  arm=herta
+t1: PASS | added-test-lines=38 | changed-lines=126
+  ok  	pilot/t1	0.504s
+t2: PASS | added-test-lines=25 | changed-lines=97
+  ok  	pilot/t2	0.127s
+t3: PASS | added-test-lines=34 | changed-lines=140
+  ok  	pilot/t3	0.002s
+t4: PASS | added-test-lines=38 | changed-lines=107
+  ok  	pilot/t4	0.003s
+Total: 4/4 PASS
+Isolated run: /home/ubuntu/pilot/runs/bundle-herta-vmdmt58o/workspace

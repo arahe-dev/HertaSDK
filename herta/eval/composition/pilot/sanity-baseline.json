@@ -1,0 +1,185 @@
+{
+  "checker_sha256": "6df0d185d952073578b59373a8e77c83285acc6e49234925d2de6206243d181d",
+  "by_input_sha256": {
+    "640b95c17e369e1cbb216bd22f343779a8a51352f1d56213b4ed44a8c89789bd": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "3130be1c1a8d63ff2130e41b2b856759c726ae1cf151de1e0830a08a64796986": {
+      "exit": 1,
+      "stdout": "12:1: handler \"main::op1\" declared twice\n7:1: handler \"op1\": param 0 is user_id:u64, op declares user_id:string\n9:9: handler \"op1\": cannot fail with outcome success\n14:1: handler \"main::ghost\": no matching op declared\n",
+      "stderr": ""
+    },
+    "1e2138a28826049d195c3f780cf0f697dd50f718751eb35d9d2836e156453c74": {
+      "exit": 1,
+      "stdout": "4:1: op \"op1\": serialize key \"user_id\" must be a string parameter, got u64\n4:1: op \"main::op1\" has no handler\n8:1: op \"op2\": serialize key \"missing\" is not a parameter\n8:1: op \"main::op2\" has no handler\n",
+      "stderr": ""
+    },
+    "ace0655e3d742a7d32f87846cef17408cd9c89cd55078d3c3b7459f7baf57c20": {
+      "exit": 1,
+      "stdout": "6:17: op \"op1\": units 5 for \"db\" exceed capacity 2\n6:29: op \"op1\": resource \"missing\" not declared on runtime \"main\"\n6:46: op \"op1\": resource \"db\" listed twice\n4:1: op \"main::op1\" has no handler\n",
+      "stderr": ""
+    },
+    "1b5d120160ffc675980dd95bc624d2701a8e30b207721e5a336b10abb35d2479": {
+      "exit": 1,
+      "stdout": "6:22: op \"op1\": retry on permanent is never allowed\n6:33: op \"op1\": retrying uncertain outcomes is unsafe for effect nonidempotent\n4:1: op \"main::op1\" has no handler\n",
+      "stderr": ""
+    },
+    "df3a2bd4879786a372c46fe6b84430370da8a908f06786ce6354babe8da7cb57": {
+      "exit": 1,
+      "stdout": "1:1: runtime \"empty\" declares no resources\n3:1: op \"op1\": runtime \"ghost\" is not declared\n",
+      "stderr": ""
+    },
+    "6e24c9ffc5b46578ae901e476fc57a3e654e5a34094fef212b34eb54be0d6496": {
+      "exit": 1,
+      "stdout": "14:14: handler \"op2\": cannot fail with outcome success\n21:14: handler \"op3\": invalid fail outcome \"0\"\n",
+      "stderr": ""
+    },
+    "e6b06ef836b8eed69ab6aed21a18e946e07127f13ff43bb082655f393a536cc8": {
+      "exit": 1,
+      "stdout": "4:1: op \"charge\": effect is required (pure|idempotent|nonidempotent)\n4:1: op \"main::charge\" has no handler\n",
+      "stderr": ""
+    },
+    "1feb07bd73135ed1d85c7ca60b0e4e526eefe9e66e02b08bfca445a6a062028b": {
+      "exit": 1,
+      "stdout": "4:1: op \"main::op1\" has no handler\n",
+      "stderr": ""
+    },
+    "5994f8dc1f26b7ea04940b88e78746195538373da619e2e96202dd0e9484a172": {
+      "exit": 1,
+      "stdout": "3:1: expected capacity value, got }(\"}\")@3:1\n",
+      "stderr": ""
+    },
+    "af09ed954712d7d4eb1082e94231249ab7235654ed61ce7758c512c7aea1ea47": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "3b822ff39d8f86c70a3caedccea13cf5f713bc6781ec84b8b442b345364af990": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "93486c28505eef34699e33d4f8f3c109f41f2f2127761abf5d5e2e8c15498ca4": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "05341f175e5cc17c7d9d3a918be9a08e8aa5c33ace151dde46d4965670ef568a": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "e322b143711e2011605c50ba5c11144d5046e596232c9eadceffc898aa0bbc54": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "d2fd8e457d8921abe725cf113499e37d18ec35d78e9902b1a9ea9ece7a3696d0": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "d0ecde445a88742c01290ac7fd8e64563e7fb321f03b8c32d05cca3369fa714e": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "d9d60e19c405c3202380c64f3b89d1aaac388a3128f8d13d1a2e12ce9cf78907": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "279bedda93cdcc72477111dbe858b3abe776138055061e6cce9c9e991e53ed8e": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "7532cb43b78472bd3a245db812a1fbe8f920e3c4cee87d6d229e18721ce5fe07": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "bc62ad5acac981fd48074cf6ce47ee1dee93c2145ea58f7e592cfc1e931d1198": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "24d4fac664e24bf1a58c3460eb68d356a12b31f75ac66211f83bd908bd27d636": {
+      "exit": 1,
+      "stdout": "9:22: op \"op\": retry on throttled is never allowed\n9:33: op \"op\": retry on permanent is never allowed\n9:44: op \"op\": retry on success is never allowed\n",
+      "stderr": ""
+    },
+    "1ba789022f2425468bb48a2a3867e72e228a92e9622fe5ccaa15b6339e0fb511": {
+      "exit": 1,
+      "stdout": "10:17: op \"unknown\": resource \"nope\" not declared on runtime \"main\"\n18:17: op \"zerou\": units for \"r\" must be > 0\n26:17: op \"overcap\": units 3 for \"r\" exceed capacity 2\n34:28: op \"dupres\": resource \"r\" listed twice\n40:1: op \"noeffect\": effect is required (pure|idempotent|nonidempotent)\n47:1: op \"badkey\": serialize key \"k\" must be a string parameter, got int\n55:1: handler \"main::ghost\": no matching op declared\n59:1: op \"main::nohandler\" has no handler\n",
+      "stderr": ""
+    },
+    "ce80c613f7d066ce1d1126e7f87ecaf326f72975dfdd38b3776345e098d553d8": {
+      "exit": 1,
+      "stdout": "8:5: op \"op\": retry max must be >= 1\n",
+      "stderr": ""
+    },
+    "8f56b60f2150f83d8d97f21f5d2710a34dd0870b6e0f67191d36f190b56a19e2": {
+      "exit": 1,
+      "stdout": "3:1: runtime \"empty\" declares no resources\n7:14: resource \"a\": capacity must be > 0\n12:14: duplicate resource \"a\" in runtime \"dup\"\n",
+      "stderr": ""
+    },
+    "a50aa565dd939d0120a3dcef51a202cfa67f6b3009cb7a356ee09b8766ffc0d1": {
+      "exit": 1,
+      "stdout": "10:22: op \"render\": retrying uncertain outcomes is unsafe for effect nonidempotent\n",
+      "stderr": ""
+    },
+    "616250d51de14bea877f86e9a9aa56e04ce96153e893c3086b10938ecf7632b1": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "579f318cc58bf7cf5daea778f77285a647b53d6201cf721918f9b8e133349a21": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "35a0a88e71dd7acaf9931944e422df5f3dfdb4fc401103802cc49b50fde05c67": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "96d9f20b9b6ac07c58919d8de3eeeedf492b69036822f5f52cf578536fd113e2": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "fb9413f25f88068a8a93a97108d74871bbfc694e29681f1f31c09b142e0a6593": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "58db452c9b0c74ef97347472ec2208973421915650db18645cd280124a51c88b": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "cfd960e2e58f8b9a76a3ffea6de893b16849edd1fd8a1403bd0ed3d688182be0": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "58d851b832e53afd4ef78ea72782b85183d4ee900449fde0215c7b8c2cb51def": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "10da3b26860b2867b67bf2e46ab2dfe13fd6e781bfaf3b0e9e02469083c2193e": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "14bc5e3696310a7bf074abdf8f187682c47e7faa99b18f75c3cc79a9130b18b3": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  }
+}

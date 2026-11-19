@@ -1,0 +1,58 @@
+package t1
+
+import (
+	"context"
+	"errors"
+	"github.com/arahe-dev/hertasdk"
+	"strconv"
+	"time"
+)
+
+var _ = time.Second
+var _ = strconv.FormatInt
+var _ = errors.Is
+
+func classify(err error) error {
+	if err == nil {
+		return nil
+	}
+	switch {
+	case errors.Is(err, ErrUnavailable):
+		return hertasdk.Fail(hertasdk.Transient, err)
+	case errors.Is(err, ErrTimeout):
+		return hertasdk.Fail(hertasdk.Uncertain, err)
+	default:
+		return hertasdk.Fail(hertasdk.Permanent, err)
+	}
+}
+
+type Input struct {
+	User, SKU, From, To, Key string
+	OrderID                  int64
+	Cents                    uint64
+}
+type Service struct {
+	b                                        *Backend
+	charge, checkout                         *hertasdk.Operation[Input, Receipt]
+	refund, reserve, debit, credit, transfer *hertasdk.Operation[Input, Unit]
+}
+
+func New(b *Backend) (*Service, error) {
+	s := &Service{b: b}
+	rt, err := hertasdk.NewRuntime(hertasdk.ResourceSpec{Name: "db", Capacity: 8}, hertasdk.ResourceSpec{Name: "network", Capacity: 4})
+	if err != nil {
+		return nil, err
+	}
+	_ = rt
+	s.charge, err = hertasdk.NewOperation(rt, "charge", func(ctx context.Context, in Input) (Receipt, error) {
+		r, e := s.b.Charge(ctx, in.User, in.Cents)
+		return r, classify(e)
+	}, hertasdk.Policy[Input]{Effect: hertasdk.NonIdempotent, Admission: hertasdk.Wait, Resources: []hertasdk.Requirement{{Name: "db", Units: 1}, {Name: "network", Units: 1}}, Timeout: 500 * time.Millisecond, Retry: hertasdk.RetryPolicy{MaxAttempts: 3, On: map[hertasdk.Outcome]bool{hertasdk.Transient: true}}})
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+func (s *Service) Charge(ctx context.Context, user string, cents uint64) (Receipt, error) {
+	return s.charge.Do(ctx, Input{User: user, Cents: cents})
+}

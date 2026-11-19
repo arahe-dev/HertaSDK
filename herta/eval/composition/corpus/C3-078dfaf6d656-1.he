@@ -1,0 +1,25 @@
+// id: C3-078dfaf6d656-1
+// link: https://github.com/grafana/grafana/blob/c3f2c836adf7800899e7675e7718a2050fd03a6e/pkg/registry/apis/iam/serviceaccount_org_hooks.go#L166
+// facts: BeginServiceAccountUpdate returns a success-only finish hook114-125, then spawns a bounded independent zanzana propagation job with Background timeout142-143 and Mutate166; intentional postcommit background synchronization.
+// model: Success hook launches a separate postcommit background job (rule 8); configured timeout value is not given.
+runtime main { resource evaluation capacity 1 }
+op main::successfulAccountUpdate() -> u64 {
+    effect idempotent
+}
+handler main::successfulAccountUpdate() -> (u64, error) {
+    return 0, nil
+}
+op main::propagationJob() -> u64 {
+    effect idempotent
+    detached for background
+    calls mutateZanzana
+}
+handler main::propagationJob() -> (u64, error) {
+    return 0, nil
+}
+op main::mutateZanzana() -> u64 {
+    effect idempotent
+}
+handler main::mutateZanzana() -> (u64, error) {
+    return 0, nil
+}

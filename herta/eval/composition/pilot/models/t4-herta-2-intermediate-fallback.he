@@ -1,0 +1,6 @@
+// Trap fallback, NOT recovered intermediate source. Supplied herta-2 final snapshots and retained score logs contain only the final NUL-prefixed solution; no intermediate revision or agent transcript is retained there.
+runtime main { resource db capacity 8 }
+op main::transfer(user: string) -> u64 { effect nonidempotent serialize key user calls debit }
+handler main::transfer(user: string) -> (u64, error) { return 0, nil }
+op main::debit(user: string) -> u64 { effect nonidempotent serialize key user }
+handler main::debit(user: string) -> (u64, error) { return 0, nil }

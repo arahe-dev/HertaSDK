@@ -1,0 +1,38 @@
+// id: C1-04d352c05d8b-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/staging/src/k8s.io/client-go/util/certificate/certificate_manager.go#L470
+// facts: rotateCerts 574-645 generates a fresh key/CSR each attempt; successful RequestCertificate followed by WaitForCertificate failure returns false,nil; next attempt allocates another GenerateName=csr- request (csr/csr.go 61-92), without reuse.
+// model: Pinned certificate_manager.go:464-470: 5 attempts in the selected ExponentialBackoff. Lines 471-472 then enter a separate infinite poll, not represented as a fictitious finite retry. uncertain represents failure after CSR commit while waiting.
+runtime main { resource evaluation capacity 1 }
+op main::rotationBackoff() -> u64 {
+    effect nonidempotent
+    retry max 5 on { uncertain }
+    calls rotateCerts
+}
+handler main::rotationBackoff() -> (u64, error) {
+    return 0, nil
+}
+op main::rotateCerts() -> u64 {
+    effect nonidempotent
+    calls generateKey, requestCertificate, waitForCertificate
+}
+handler main::rotateCerts() -> (u64, error) {
+    return 0, nil
+}
+op main::generateKey() -> u64 {
+    effect pure
+}
+handler main::generateKey() -> (u64, error) {
+    return 0, nil
+}
+op main::requestCertificate() -> u64 {
+    effect nonidempotent
+}
+handler main::requestCertificate() -> (u64, error) {
+    return 0, nil
+}
+op main::waitForCertificate() -> u64 {
+    effect pure
+}
+handler main::waitForCertificate() -> (u64, error) {
+    return 0, nil
+}

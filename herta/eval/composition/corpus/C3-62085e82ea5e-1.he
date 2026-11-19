@@ -1,0 +1,26 @@
+// id: C3-62085e82ea5e-1
+// link: https://github.com/syncthing/syncthing/blob/f2ed52347ec461a2b7a70787192f3615bcb6bafd/cmd/syncthing/crash_reporting.go#L110
+// facts: crash_reporting.go90 derives headCtx from ctx and110 independently derives putCtx from ctx; putCtx is not derived from headCtx, so60s PUT is not nested inside HEAD (actual HEAD constant10s; scanner incorrectly says30s).
+// model: HEAD and PUT contexts independently inherit original ctx: sibling edges, not HEAD -> PUT. Object PUT is a desired-state write.
+runtime main { resource evaluation capacity 1 }
+op main::reportCrash() -> u64 {
+    effect idempotent
+    calls head, put
+}
+handler main::reportCrash() -> (u64, error) {
+    return 0, nil
+}
+op main::head() -> u64 {
+    effect pure
+    timeout 10s
+}
+handler main::head() -> (u64, error) {
+    return 0, nil
+}
+op main::put() -> u64 {
+    effect idempotent
+    timeout 60s
+}
+handler main::put() -> (u64, error) {
+    return 0, nil
+}

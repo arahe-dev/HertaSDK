@@ -1,0 +1,41 @@
+run,arm,task,oracle2,oracle_runs_passed,race,reason
+go-1,go,t1,fail,0,fail,"errors.Join(ErrUnavailable, ErrTimeout) retried; charges=2"
+go-1,go,t2,pass,10,pass,
+go-1,go,t3,pass,10,pass,
+go-1,go,t4,pass,10,pass,
+go-2,go,t1,fail,0,fail,"errors.Join(ErrUnavailable, ErrTimeout) retried; charges=2"
+go-2,go,t2,pass,10,pass,
+go-2,go,t3,pass,10,pass,
+go-2,go,t4,pass,10,pass,
+go-3,go,t1,fail,0,fail,"errors.Join(ErrUnavailable, ErrTimeout) retried; charges=2"
+go-3,go,t2,pass,10,pass,
+go-3,go,t3,pass,10,pass,
+go-3,go,t4,pass,10,pass,
+herta-1,herta,t1,pass,10,pass,
+herta-1,herta,t2,pass,10,pass,
+herta-1,herta,t3,pass,10,pass,
+herta-1,herta,t4,pass,10,pass,
+herta-2,herta,t1,fail,0,fail,"errors.Join(ErrUnavailable, ErrTimeout) retried; charges=2"
+herta-2,herta,t2,pass,10,pass,
+herta-2,herta,t3,pass,10,pass,
+herta-2,herta,t4,pass,10,pass,
+herta-3,herta,t1,pass,10,pass,
+herta-3,herta,t2,pass,10,pass,
+herta-3,herta,t3,pass,10,pass,
+herta-3,herta,t4,pass,10,pass,
+ref-go,go,t1,fail,0,fail,"errors.Join(ErrUnavailable, ErrTimeout) retried; charges=2"
+ref-go,go,t2,pass,10,pass,
+ref-go,go,t3,fail,0,fail,uncertain inventory not retried; ReserveCalls=1
+ref-go,go,t4,fail,0,fail,destination transfer:A collides with held transfer key; deadline exceeded
+ref-herta,herta,t1,fail,0,fail,"errors.Join(ErrUnavailable, ErrTimeout) retried; charges=2"
+ref-herta,herta,t2,pass,10,pass,
+ref-herta,herta,t3,fail,0,fail,uncertain inventory not retried; ReserveCalls=1
+ref-herta,herta,t4,fail,0,fail,destination transfer:A collides with held transfer key; deadline exceeded
+ref2-go,go,t1,pass,10,pass,
+ref2-go,go,t2,pass,10,pass,
+ref2-go,go,t3,pass,10,pass,
+ref2-go,go,t4,pass,10,pass,
+ref2-herta,herta,t1,pass,10,pass,
+ref2-herta,herta,t2,pass,10,pass,
+ref2-herta,herta,t3,pass,10,pass,
+ref2-herta,herta,t4,pass,10,pass,

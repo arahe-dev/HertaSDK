@@ -1,0 +1,100 @@
+package t4
+
+import (
+	"context"
+	"fmt"
+	"github.com/arahe-dev/hertasdk"
+	"sync"
+)
+
+type Input struct {
+	User  string
+	Cents uint64
+}
+type Service struct {
+	b             *Backend
+	debit, credit *hertasdk.Operation[Input, Unit]
+	transfers     accountLocks
+}
+
+// accountLocks serializes transfers per source account. It is separate
+// from the runtime's key space on purpose: debit/credit key on the raw
+// account ID (and "" is unkeyed there), so any transfer key in that space
+// could equal some account ID and deadlock against a nested credit.
+type accountLocks struct {
+	mu sync.Mutex
+	m  map[string]*accountLock
+}
+
+type accountLock struct {
+	ch   chan struct{} // cap 1: holding the token holds the account
+	refs int
+}
+
+func (l *accountLocks) lock(ctx context.Context, id string) (func(), error) {
+	l.mu.Lock()
+	if l.m == nil {
+		l.m = map[string]*accountLock{}
+	}
+	e := l.m[id]
+	if e == nil {
+		e = &accountLock{ch: make(chan struct{}, 1)}
+		l.m[id] = e
+	}
+	e.refs++
+	l.mu.Unlock()
+	put := func() {
+		l.mu.Lock()
+		if e.refs--; e.refs == 0 {
+			delete(l.m, id)
+		}
+		l.mu.Unlock()
+	}
+	select {
+	case e.ch <- struct{}{}:
+	case <-ctx.Done():
+		put()
+		return nil, ctx.Err()
+	}
+	return func() { <-e.ch; put() }, nil
+}
+
+func New(b *Backend) (*Service, error) {
+	s := &Service{b: b}
+	rt, err := hertasdk.NewRuntime(hertasdk.ResourceSpec{Name: "db", Capacity: 8}, hertasdk.ResourceSpec{Name: "network", Capacity: 4})
+	if err != nil {
+		return nil, err
+	}
+	_ = rt
+	s.debit, err = hertasdk.NewOperation(rt, "debit", func(ctx context.Context, in Input) (Unit, error) { return Unit{}, s.b.Debit(ctx, in.User, in.Cents) }, hertasdk.Policy[Input]{Effect: hertasdk.NonIdempotent, Admission: hertasdk.Wait, Resources: []hertasdk.Requirement{{Name: "db", Units: 1}}, SerializeKey: func(in Input) string { return in.User }})
+	if err != nil {
+		return nil, err
+	}
+	s.credit, err = hertasdk.NewOperation(rt, "credit", func(ctx context.Context, in Input) (Unit, error) { return Unit{}, s.b.Credit(ctx, in.User, in.Cents) }, hertasdk.Policy[Input]{Effect: hertasdk.NonIdempotent, Admission: hertasdk.Wait, Resources: []hertasdk.Requirement{{Name: "db", Units: 1}}, SerializeKey: func(in Input) string { return in.User }})
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+func (s *Service) Debit(ctx context.Context, user string, cents uint64) error {
+	_, e := s.debit.Do(ctx, Input{User: user, Cents: cents})
+	return e
+}
+func (s *Service) Credit(ctx context.Context, user string, cents uint64) error {
+	_, e := s.credit.Do(ctx, Input{User: user, Cents: cents})
+	return e
+}
+func (s *Service) Transfer(ctx context.Context, from, to string, cents uint64) error {
+	unlock, err := s.transfers.lock(ctx, from)
+	if err != nil {
+		return err
+	}
+	defer unlock()
+	if err := s.Debit(ctx, from, cents); err != nil {
+		return err
+	}
+	if err := s.Credit(ctx, to, cents); err != nil {
+		return fmt.Errorf("transfer %q->%q: debited but credit failed: %w", from, to, err)
+	}
+	return nil
+}

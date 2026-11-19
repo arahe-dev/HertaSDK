@@ -1,0 +1,20 @@
+// id: C1-224c89f02fe3-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/controlplane/reconcilers/instancecount.go#L176
+// facts: RemoveEndpoints retries a stale Endpoints object only on conflicts; adapter.Update (endpointsadapter.go 72-77) sends that object's resourceVersion and then reconciles EndpointSlice; a committed update cannot be replayed with the old RV; stale-conflict liveness is a different issue.
+// model: Pinned instancecount.go:176 uses retry.DefaultBackoff (4 steps, corroborated by C2 facts); resourceVersion is the visible write precondition.
+runtime main { resource evaluation capacity 1 }
+op main::removeEndpoints(resource_version: string) -> u64 {
+    effect idempotent
+    retry max 4 on { transient }
+    calls updateResourceVersion
+}
+handler main::removeEndpoints(resource_version: string) -> (u64, error) {
+    return 0, nil
+}
+op main::updateResourceVersion(resource_version: string) -> u64 {
+    effect idempotent
+    dedupe key resource_version
+}
+handler main::updateResourceVersion(resource_version: string) -> (u64, error) {
+    return 0, nil
+}

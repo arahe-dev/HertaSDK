@@ -1,0 +1,23 @@
+// id: C1-140269351172-1
+// link: https://github.com/istio/istio/blob/b3217b023cffcc749205bca2fdd764e4b34004c4/cni/pkg/plugin/plugin.go#L277
+// facts: getK8sPodInfo reads a Pod; ExtractPodInfo (kubernetes.go 73-100) inserts container names into a fresh in-memory set.
+runtime main { resource evaluation capacity 1 }
+op main::getPodInfo() -> u64 {
+    effect pure
+    calls readPod, extractContainerNames
+}
+handler main::getPodInfo() -> (u64, error) {
+    return 0, nil
+}
+op main::readPod() -> u64 {
+    effect pure
+}
+handler main::readPod() -> (u64, error) {
+    return 0, nil
+}
+op main::extractContainerNames() -> u64 {
+    effect pure
+}
+handler main::extractContainerNames() -> (u64, error) {
+    return 0, nil
+}

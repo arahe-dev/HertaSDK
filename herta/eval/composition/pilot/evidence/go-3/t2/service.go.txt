@@ -1,0 +1,61 @@
+package t2
+
+import (
+	"context"
+	"errors"
+	"strconv"
+
+	"github.com/arahe-dev/hertasdk"
+)
+
+func classify(err error) error {
+	switch {
+	case err == nil:
+		return nil
+	case errors.Is(err, ErrUnavailable):
+		return hertasdk.Fail(hertasdk.Transient, err)
+	case errors.Is(err, ErrTimeout),
+		errors.Is(err, context.DeadlineExceeded),
+		errors.Is(err, context.Canceled):
+		return hertasdk.Fail(hertasdk.Uncertain, err)
+	default:
+		return hertasdk.Fail(hertasdk.Permanent, err)
+	}
+}
+
+type refundInput struct {
+	OrderID int64
+	Cents   uint64
+}
+
+type Service struct {
+	b      *Backend
+	refund *hertasdk.Operation[refundInput, Unit]
+}
+
+func New(b *Backend) (*Service, error) {
+	s := &Service{b: b}
+	rt, err := hertasdk.NewRuntime(hertasdk.ResourceSpec{Name: "db", Capacity: 8}, hertasdk.ResourceSpec{Name: "network", Capacity: 4})
+	if err != nil {
+		return nil, err
+	}
+	s.refund, err = hertasdk.NewOperation(rt, "refund", func(ctx context.Context, in refundInput) (Unit, error) {
+		return Unit{}, classify(s.b.Refund(ctx, in.OrderID, in.Cents))
+	}, hertasdk.Policy[refundInput]{
+		Effect:    hertasdk.NonIdempotent,
+		Admission: hertasdk.Wait,
+		Resources: []hertasdk.Requirement{{Name: "db", Units: 1}, {Name: "network", Units: 1}},
+		// Always non-empty and injective over int64, so every order
+		// (0 and negatives included) is serialized with itself only.
+		SerializeKey: func(in refundInput) string { return "refund:" + strconv.FormatInt(in.OrderID, 10) },
+	})
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+
+func (s *Service) Refund(ctx context.Context, orderID int64, cents uint64) error {
+	_, err := s.refund.Do(ctx, refundInput{OrderID: orderID, Cents: cents})
+	return err
+}

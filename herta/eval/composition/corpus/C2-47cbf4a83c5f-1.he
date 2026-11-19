@@ -1,0 +1,11 @@
+// id: C2-47cbf4a83c5f-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/registry/core/service/portallocator/controller/repair.go#L94
+// facts: portallocator runOnce94 uses4 conflict attempts; doRunOnce116 polls alloc.Get for30s, then reconstructs and updates allocation; deliberate bounded recovery with no fixed inner attempt cap/product.
+// inexpressible: Allocation polling has a 30s time bound with no fixed inner attempt cap; outer conflict bound 4 does not establish a numeric product.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,11 @@
+// id: C1-39c1239aa801-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/staging/src/k8s.io/kube-aggregator/pkg/apiserver/apiserver.go#L451
+// facts: The 10-minute loop intentionally reconciles StorageVersion; storageversion/updater.go 148-199 GETs by fixed name and replaces this APIServerID entry rather than appending duplicates.
+// inexpressible: The 10-minute periodic StorageVersion reconciliation is not a finite retry policy. Fixed-name desired-state replacement is otherwise idempotent.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

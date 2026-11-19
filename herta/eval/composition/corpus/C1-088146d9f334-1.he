@@ -1,0 +1,18 @@
+// id: C1-088146d9f334-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/proxy/util/nfacct/nfacct_linux.go#L153
+// facts: List constructs cmdGet with NLM_F_DUMP (154) and Execute reads netfilter counters; Execute's name is not evidence of a state-changing request.
+// model: Read-only netfilter dump. Execute is not classified by its name.
+runtime main { resource evaluation capacity 1 }
+op main::listCounters() -> u64 {
+    effect pure
+    calls executeDump
+}
+handler main::listCounters() -> (u64, error) {
+    return 0, nil
+}
+op main::executeDump() -> u64 {
+    effect pure
+}
+handler main::executeDump() -> (u64, error) {
+    return 0, nil
+}

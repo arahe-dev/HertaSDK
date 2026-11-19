@@ -1,0 +1,7 @@
+runtime main {
+    resource db capacity 4
+}
+op main::op1() -> r {
+    effect nonidempotent
+    retry max 3 on { permanent, uncertain }
+}

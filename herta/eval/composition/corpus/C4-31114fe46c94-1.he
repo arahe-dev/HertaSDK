@@ -1,0 +1,19 @@
+// id: C4-31114fe46c94-1
+// link: https://github.com/argoproj/argo-cd/blob/232fa2d123c0cef71de9251860289ee9a150172e/gitops-engine/pkg/cache/legacy_engine.go#L55
+// facts: legacyEngine.sync155 starts go e.processEvents(); its processEventsBatch lock is on that separate goroutine, while ensureSynced55 can finish and release c.lock; no synchronous reentry.
+// model: go processEvents runs independently while ensureSynced can release cacheLock.
+runtime main { resource evaluation capacity 1 }
+op main::ensureSynced() -> u64 {
+    effect pure
+    lock cacheLock
+}
+handler main::ensureSynced() -> (u64, error) {
+    return 0, nil
+}
+op main::processEventsBatch() -> u64 {
+    effect pure
+    lock cacheLock
+}
+handler main::processEventsBatch() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,32 @@
+// id: C1-0b99fca31587-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/internxt/internxt.go#L949
+// facts: About retries users.GetUsage (949-952); the reached PutToken belongs to 401 reauthentication (internxt.go 53-76; auth.go 183-230), not replay of a user mutation.
+// model: Default 10 total pacer attempts: pinned rclone fs/config.go:196-198; lib/pacer/pacer.go Call passes p.retries, CallNoRetry passes 1. Default matches the C2 facts, not an evaluation budget override. The facts establish 401 recovery; pinned internxt.go:53-76 also retries transport errors. Auth is a recovery step, not an additional retry loop inside the selected read; replacement credentials are desired-state bookkeeping.
+runtime main { resource evaluation capacity 1 }
+op main::about() -> u64 {
+    effect idempotent
+    retry max 10 on { transient, uncertain }
+    calls getUsage, refreshOrReLogin
+}
+handler main::about() -> (u64, error) {
+    return 0, nil
+}
+op main::getUsage() -> u64 {
+    effect pure
+}
+handler main::getUsage() -> (u64, error) {
+    return 0, nil
+}
+op main::refreshOrReLogin() -> u64 {
+    effect idempotent
+    calls saveReplacementCredentials
+}
+handler main::refreshOrReLogin() -> (u64, error) {
+    return 0, nil
+}
+op main::saveReplacementCredentials() -> u64 {
+    effect idempotent
+}
+handler main::saveReplacementCredentials() -> (u64, error) {
+    return 0, nil
+}

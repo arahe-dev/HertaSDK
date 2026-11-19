@@ -1,0 +1,19 @@
+// id: C4-2eac5989e35d-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/vfs/vfscache/item.go#L1149
+// facts: _checkObject900 may call _remove988, but _remove990 Unlocks before writeback.Remove and Locks992 afterwards; the held mutex is deliberately released before reacquisition.
+// model: _remove Unlocks before writeback.Remove, then restores Lock; separate regions.
+runtime main { resource evaluation capacity 1 }
+op main::checkObject() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::checkObject() -> (u64, error) {
+    return 0, nil
+}
+op main::removeAfterRelease() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::removeAfterRelease() -> (u64, error) {
+    return 0, nil
+}

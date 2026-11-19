@@ -1,0 +1,18 @@
+// id: C3-02746660cb96-1
+// link: https://github.com/restic/restic/blob/e2a3f7bd75ac95b6ae85f023295ee2d0ac0e78df/internal/backend/swift/swift.go#L154
+// facts: Swift.openReader151-154 immediately cancels cctx before obj.Length; comment explicitly prevents backend calls, so this deliberately probes cached response length rather than allowing detached network work.
+// model: Immediate cancellation forbids backend calls; cached-length read is pure.
+runtime main { resource evaluation capacity 1 }
+op main::openReader() -> u64 {
+    effect pure
+    calls cachedLength
+}
+handler main::openReader() -> (u64, error) {
+    return 0, nil
+}
+op main::cachedLength() -> u64 {
+    effect pure
+}
+handler main::cachedLength() -> (u64, error) {
+    return 0, nil
+}

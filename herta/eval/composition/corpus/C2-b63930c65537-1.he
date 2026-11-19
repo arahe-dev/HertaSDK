@@ -1,0 +1,19 @@
+// id: C2-b63930c65537-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/b2/upload.go#L249
+// facts: WriteChunk249-270 calls getUploadURL194-216, which retries URL fetch; exhausted lookup returns outer false, and successful part uploads reuse/cache URL; conditional R*R/default100 URL-fetch bound, intentional recovery.
+// model: Default 10 total pacer attempts: pinned rclone fs/config.go:196-198; lib/pacer/pacer.go Call passes p.retries, CallNoRetry passes 1. Default matches the C2 facts, not an evaluation budget override. Failed URL lookup stops the outer retry (rule 6); successful part uploads reuse/cache the URL. Chunk is a fixed part, not fresh object creation.
+runtime main { resource evaluation capacity 1 }
+op main::writeChunk() -> u64 {
+    effect idempotent
+    retry max 10 on { uncertain }
+}
+handler main::writeChunk() -> (u64, error) {
+    return 0, nil
+}
+op main::getUploadURL() -> u64 {
+    effect pure
+    retry max 10 on { uncertain }
+}
+handler main::getUploadURL() -> (u64, error) {
+    return 0, nil
+}

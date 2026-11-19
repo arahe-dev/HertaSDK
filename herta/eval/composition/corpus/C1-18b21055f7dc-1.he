@@ -1,0 +1,19 @@
+// id: C1-18b21055f7dc-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/volume/csi/nodeinfomanager/nodeinfomanager.go#L795
+// facts: tryUninstallDriverFromCSINode 815-857 refetches CSINode, removes only matching driver entries and skips already-clean spec/status; Update returns the new object for the subsequent status write.
+// model: Pinned nodeinfomanager.go:56-60 uses 4 attempts; the logical update refetches, filters matching entries, skips clean objects.
+runtime main { resource evaluation capacity 1 }
+op main::uninstallDriver() -> u64 {
+    effect idempotent
+    retry max 4 on { uncertain }
+    calls refetchRemoveDriver
+}
+handler main::uninstallDriver() -> (u64, error) {
+    return 0, nil
+}
+op main::refetchRemoveDriver() -> u64 {
+    effect idempotent
+}
+handler main::refetchRemoveDriver() -> (u64, error) {
+    return 0, nil
+}

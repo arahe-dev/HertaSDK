@@ -1,0 +1,42 @@
+// A reject call needing {a, b} where only a is free fails without keeping a.
+runtime main {
+    resource a capacity 1
+    resource b capacity 1
+}
+
+op main::hold_b(n: int) -> int {
+    effect pure
+    admission wait
+    resources { b units 1 }
+}
+handler main::hold_b(n: int) -> (int, error) {
+    block_on("gate-1")
+    return 0, nil
+}
+
+op main::victim(n: int) -> int {
+    effect pure
+    admission reject
+    resources { a units 1, b units 1 }
+}
+handler main::victim(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::probe_a(n: int) -> int {
+    effect pure
+    admission reject
+    resources { a units 1 }
+}
+handler main::probe_a(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::probe_b(n: int) -> int {
+    effect pure
+    admission reject
+    resources { b units 1 }
+}
+handler main::probe_b(n: int) -> (int, error) {
+    return 0, nil
+}

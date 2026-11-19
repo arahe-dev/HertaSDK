@@ -1,0 +1,19 @@
+// id: C3-02c2f0402959-1
+// link: https://github.com/grafana/grafana/blob/c3f2c836adf7800899e7675e7718a2050fd03a6e/pkg/api/http_server.go#L469
+// facts: HTTPServer.Run469 creates watchesCtx for in-process watches; shutdown goroutine512-528 calls endWatches on ctx.Done before graceful HTTP shutdown, and defer470 also cancels it.
+// model: Explicit endWatches on ctx.Done and deferred cancellation establish ownership.
+runtime main { resource evaluation capacity 1 }
+op main::httpServerRun() -> u64 {
+    effect pure
+    calls inProcessWatches
+}
+handler main::httpServerRun() -> (u64, error) {
+    return 0, nil
+}
+op main::inProcessWatches() -> u64 {
+    effect pure
+    detached for shutdown
+}
+handler main::inProcessWatches() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,11 @@
+// id: C1-2247ea143023-1
+// link: https://github.com/grafana/grafana/blob/c3f2c836adf7800899e7675e7718a2050fd03a6e/pkg/services/ngalert/schedule/recording_rule.go#L229
+// facts: tryEvaluation 282-350 retries WriteDatasource after remote-write errors but fixes the timestamp to ev.scheduledAt; DatasourceWriter dispatches to multiple writers, so duplicate safety depends on datasource sample dedupe and re-evaluation determinism, not established for every writer.
+// inexpressible: Datasource-specific sample dedupe and re-evaluation determinism are not established; cannot truthfully choose one effect for the polymorphic writer.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

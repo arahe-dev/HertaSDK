@@ -1,0 +1,16 @@
+// fail statements at top level and inside an inline block.
+runtime main {
+    resource r capacity 1
+}
+
+op main::flaky(n: int) -> int {
+    effect pure
+    resources { r units 1 }
+}
+handler main::flaky(n: int) -> (int, error) {
+    if n < 0 {
+        fail permanent, errors_new("negative")
+    }
+    if n == 0 { fail throttled, errors_new("zero") }
+    fail uncertain, errors_new("always")
+}

@@ -1,0 +1,7 @@
+{
+  "run": "ref-herta",
+  "task": "t2",
+  "passed": 10,
+  "count10_rc": 0,
+  "race_rc": 0
+}

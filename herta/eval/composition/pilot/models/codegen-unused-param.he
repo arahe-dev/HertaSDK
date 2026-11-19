@@ -1,0 +1,12 @@
+runtime main { resource db capacity 8 }
+op main::keyed(order_key: string) -> u64 {
+    effect pure
+    serialize key order_key
+}
+handler main::keyed(order_key: string) -> (u64, error) {
+    return 0, nil
+}
+op main::plain(value: u64) -> u64 { effect pure }
+handler main::plain(value: u64) -> (u64, error) {
+    return 0, nil
+}

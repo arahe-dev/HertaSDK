@@ -1,0 +1,172 @@
+[
+  {
+    "id": "t1-go-1",
+    "path": "models/t1-go-1.he",
+    "mechanism": "joined-unavailable-timeout",
+    "note": "Actual go-1 t1 first-match classification order; see evidence/go-1/t1/service.go.txt. Nil-success branch omitted; context symbols normalized. Untagged context returns use nominal permanent; SDK deadline promotion is dynamic and outside this classification projection.",
+    "run": "go-1",
+    "expected_flag": true,
+    "source": "evidence/go-1/t1/service.go.txt",
+    "sha256": "39c43c8e49adc39b2851a311bdb52d4eea80768601bc40c8e6f37d6fad6c3ee1"
+  },
+  {
+    "id": "t1-go-2",
+    "path": "models/t1-go-2.he",
+    "mechanism": "joined-unavailable-timeout",
+    "note": "Actual go-2 t1 first-match classification order; see evidence/go-2/t1/service.go.txt. Nil-success branch omitted; context symbols normalized. Untagged context returns use nominal permanent; SDK deadline promotion is dynamic and outside this classification projection.",
+    "run": "go-2",
+    "expected_flag": true,
+    "source": "evidence/go-2/t1/service.go.txt",
+    "sha256": "f794dc6b938bf44afda2a968e9402b330ebbfaf651f9354b7dd78ef1d7af32c8"
+  },
+  {
+    "id": "t1-go-3",
+    "path": "models/t1-go-3.he",
+    "mechanism": "joined-unavailable-timeout",
+    "note": "Actual go-3 t1 first-match classification order; see evidence/go-3/t1/service.go.txt. Nil-success branch omitted; context symbols normalized. Untagged context returns use nominal permanent; SDK deadline promotion is dynamic and outside this classification projection.",
+    "run": "go-3",
+    "expected_flag": true,
+    "source": "evidence/go-3/t1/service.go.txt",
+    "sha256": "3267a75ba3ce1c5a68cdeda75b1e4d46e2170a7f18b25a5d27338218fee8f52e"
+  },
+  {
+    "id": "t1-herta-1",
+    "path": "models/t1-herta-1.he",
+    "mechanism": "joined-unavailable-timeout",
+    "note": "Actual herta-1 t1 first-match classification order; see evidence/herta-1/t1/glue.go.txt. Nil-success branch omitted; context symbols normalized. Untagged context returns use nominal permanent; SDK deadline promotion is dynamic and outside this classification projection.",
+    "run": "herta-1",
+    "expected_flag": false,
+    "source": "evidence/herta-1/t1/glue.go.txt",
+    "sha256": "18d834e6bce25a617068a5a4b8ef23ce11efa974468edd62af5e4ec839f29287"
+  },
+  {
+    "id": "t1-herta-2",
+    "path": "models/t1-herta-2.he",
+    "mechanism": "joined-unavailable-timeout",
+    "note": "Actual herta-2 t1 first-match classification order; see evidence/herta-2/t1/glue.go.txt. Nil-success branch omitted; context symbols normalized. Untagged context returns use nominal permanent; SDK deadline promotion is dynamic and outside this classification projection.",
+    "run": "herta-2",
+    "expected_flag": true,
+    "source": "evidence/herta-2/t1/glue.go.txt",
+    "sha256": "fe79abbfde05575805f6fbd50191f524337a74df88bee06619cb29cd3ef059be"
+  },
+  {
+    "id": "t1-herta-3",
+    "path": "models/t1-herta-3.he",
+    "mechanism": "joined-unavailable-timeout",
+    "note": "Actual herta-3 t1 first-match classification order; see evidence/herta-3/t1/glue.go.txt. Nil-success branch omitted; context symbols normalized. Untagged context returns use nominal permanent; SDK deadline promotion is dynamic and outside this classification projection.",
+    "run": "herta-3",
+    "expected_flag": false,
+    "source": "evidence/herta-3/t1/glue.go.txt",
+    "sha256": "d639c33e13010d5adc897939836392c1b8a6ed728332e0eee962982ff60163f8"
+  },
+  {
+    "id": "t1-ref-go",
+    "path": "models/t1-ref-go.he",
+    "mechanism": "joined-unavailable-timeout",
+    "note": "Actual ref-go t1 first-match classification order; see evidence/ref-go/t1/service.go.txt. Nil-success branch omitted; context symbols normalized. Untagged context returns use nominal permanent; SDK deadline promotion is dynamic and outside this classification projection.",
+    "run": "ref-go",
+    "expected_flag": true,
+    "source": "evidence/ref-go/t1/service.go.txt",
+    "sha256": "e2a92c9e9bce34f4d9b95ffb75851709a7d3918a33e0b1ce4caee26fd16004c3"
+  },
+  {
+    "id": "t1-ref-herta",
+    "path": "models/t1-ref-herta.he",
+    "mechanism": "joined-unavailable-timeout",
+    "note": "Actual ref-herta t1 first-match classification order; see evidence/ref-herta/t1/glue.go.txt. Nil-success branch omitted; context symbols normalized. Untagged context returns use nominal permanent; SDK deadline promotion is dynamic and outside this classification projection.",
+    "run": "ref-herta",
+    "expected_flag": true,
+    "source": "evidence/ref-herta/t1/glue.go.txt",
+    "sha256": "d6ae534aa99d34ddb9fc5e7ca588cd36131ffb859c1147bd4c9937f68a9c524d"
+  },
+  {
+    "id": "t1-ref2-go",
+    "path": "models/t1-ref2-go.he",
+    "mechanism": "joined-unavailable-timeout",
+    "note": "Actual ref2-go t1 first-match classification order; see evidence/ref2-go/t1/service.go.txt. Nil-success branch omitted; context symbols normalized. Untagged context returns use nominal permanent; SDK deadline promotion is dynamic and outside this classification projection.",
+    "run": "ref2-go",
+    "expected_flag": false,
+    "source": "evidence/ref2-go/t1/service.go.txt",
+    "sha256": "67e6130e7fd1f16342918ac84c94ff0ffcceb9598dff211568fafcaab39ae3a9"
+  },
+  {
+    "id": "t1-ref2-herta",
+    "path": "models/t1-ref2-herta.he",
+    "mechanism": "joined-unavailable-timeout",
+    "note": "Actual ref2-herta t1 first-match classification order; see evidence/ref2-herta/t1/glue.go.txt. Nil-success branch omitted; context symbols normalized. Untagged context returns use nominal permanent; SDK deadline promotion is dynamic and outside this classification projection.",
+    "run": "ref2-herta",
+    "expected_flag": false,
+    "source": "evidence/ref2-herta/t1/glue.go.txt",
+    "sha256": "878bbc86a38d43c67ef44a21238f349e33c8d41c4e9a9d7cf69704ef8644964a"
+  },
+  {
+    "id": "t1-timeout-transient-trap",
+    "path": "models/t1-timeout-transient-trap.he",
+    "mechanism": "timeout-transient",
+    "note": "Task t1 trap: timeout may have committed, but is marked transient.",
+    "run": "",
+    "expected_flag": true,
+    "source": "",
+    "sha256": "cd724447684291d40429f026fa87f6f7b44e04d7125458d23e0313965f87cbb9"
+  },
+  {
+    "id": "declared-nonidempotent-uncertain",
+    "path": "models/declared-nonidempotent-uncertain.he",
+    "mechanism": "declared-unsafe-retry",
+    "note": "Section 3 already-caught baseline: declared nonidempotent retry on uncertain.",
+    "run": "",
+    "expected_flag": true,
+    "source": "",
+    "sha256": "ec378a7a7b2a2d4fdee7c1d677d921283e5953d77c2bab3eb35146cd118fe2a4"
+  },
+  {
+    "id": "t4-herta-2-intermediate-fallback",
+    "path": "models/t4-herta-2-intermediate-fallback.he",
+    "mechanism": "nested-key",
+    "note": "Trap fallback, NOT recovered intermediate source. Supplied herta-2 final snapshots and retained score logs contain only the final NUL-prefixed solution; no intermediate revision or agent transcript is retained there.",
+    "run": "herta-2-intermediate",
+    "expected_flag": true,
+    "source": "evidence/herta-2/t4/glue.go.txt",
+    "sha256": "335e4ab3c443115d1bf0553f34f5ff1679c4210aff185e974c380c1eced31cf0"
+  },
+  {
+    "id": "idempotent-wrapper-trap",
+    "path": "models/idempotent-wrapper-trap.he",
+    "mechanism": "idempotent-wrapper",
+    "note": "Probe's opaque wrapper effect and retry, exposed through calls charge.",
+    "run": "",
+    "expected_flag": true,
+    "source": "",
+    "sha256": "3fbd7febd904d2c597238cf3e7e5c445379f7c794b2ae688f6c8cbab35681af3"
+  },
+  {
+    "id": "empty-serialize-key",
+    "path": "models/empty-serialize-key.he",
+    "mechanism": "empty-key",
+    "note": "Section 3 empty-key trap: concrete empty argument disables runtime serialization; no nonempty key type/check.",
+    "run": "",
+    "expected_flag": false,
+    "source": "",
+    "sha256": "43f3e8c108a142ea6aaf69be38ae1df4dd93fedeac0841e4fb5c702e8bfc8c6d"
+  },
+  {
+    "id": "probe-traps",
+    "path": "models/probe-traps.he",
+    "mechanism": "combined-probe",
+    "note": "Exact unmodified retained probe.",
+    "run": "probe",
+    "expected_flag": true,
+    "source": "/home/ubuntu/work/pilot/probes/pr9/composition/traps.he",
+    "sha256": "93443523148364a878fcfc92376402e13843fb28d38f5241dbef3b784156fd68"
+  },
+  {
+    "id": "codegen-unused-param",
+    "path": "models/codegen-unused-param.he",
+    "mechanism": "codegen-unused-param",
+    "note": "Exact unmodified retained probe.",
+    "run": "probe",
+    "expected_flag": false,
+    "source": "/home/ubuntu/work/pilot/probes/pr9/unused/unused.he",
+    "sha256": "8b5c7ea671d9cbe2634426d1f4f0532e3164b32a6658b65a6a00fc6358e242d9"
+  }
+]

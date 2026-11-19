@@ -1,0 +1,24 @@
+// Same key never overlaps; different keys run in parallel when the budget
+// permits. No serialize clause means no serialization.
+runtime main {
+    resource db_write capacity 8
+}
+
+op main::replace(brand: string) -> int {
+    effect idempotent
+    admission wait
+    resources { db_write units 1 }
+    serialize key brand
+}
+handler main::replace(brand: string) -> (int, error) {
+    block_on("gate-1")
+    return 0, nil
+}
+
+op main::unkeyed(brand: string) -> int {
+    effect pure
+}
+handler main::unkeyed(brand: string) -> (int, error) {
+    block_on("gate-2")
+    return 0, nil
+}

@@ -1,0 +1,63 @@
+package t1
+
+import (
+	"context"
+	"errors"
+	"time"
+
+	"github.com/arahe-dev/hertasdk"
+)
+
+// classify maps the backend error contracts onto outcomes: ErrUnavailable
+// was rejected before applying (safe to retry), ErrTimeout may have charged.
+func classify(err error) error {
+	if err == nil {
+		return nil
+	}
+	switch {
+	case errors.Is(err, ErrUnavailable):
+		return hertasdk.Fail(hertasdk.Transient, err)
+	case errors.Is(err, ErrTimeout):
+		return hertasdk.Fail(hertasdk.Uncertain, err)
+	default:
+		// Left untagged: untagged errors are Permanent, except that the SDK
+		// promotes an expired per-call deadline to Uncertain (may have charged).
+		return err
+	}
+}
+
+type Input struct {
+	User  string
+	Cents uint64
+}
+
+type Service struct {
+	b      *Backend
+	charge *hertasdk.Operation[Input, Receipt]
+}
+
+func New(b *Backend) (*Service, error) {
+	s := &Service{b: b}
+	rt, err := hertasdk.NewRuntime(hertasdk.ResourceSpec{Name: "db", Capacity: 8}, hertasdk.ResourceSpec{Name: "network", Capacity: 4})
+	if err != nil {
+		return nil, err
+	}
+	s.charge, err = hertasdk.NewOperation(rt, "charge", func(ctx context.Context, in Input) (Receipt, error) {
+		r, e := s.b.Charge(ctx, in.User, in.Cents)
+		return r, classify(e)
+	}, hertasdk.Policy[Input]{
+		Effect:    hertasdk.NonIdempotent,
+		Admission: hertasdk.Wait,
+		Resources: []hertasdk.Requirement{{Name: "db", Units: 1}, {Name: "network", Units: 1}},
+		Timeout:   500 * time.Millisecond,
+		Retry:     hertasdk.RetryPolicy{MaxAttempts: 3, On: map[hertasdk.Outcome]bool{hertasdk.Transient: true}},
+	})
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+
+func (s *Service) Charge(ctx context.Context, user string, cents uint64) (Receipt, error) {
+	return s.charge.Do(ctx, Input{User: user, Cents: cents})
+}

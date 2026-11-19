@@ -1,0 +1,43 @@
+// A caller whose context is already done gets its ctx error, uncounted —
+// except an unkeyed reject call, which reports overload (Amendment 1).
+runtime main {
+    resource r capacity 1
+}
+
+op main::keyed_reject(k: string) -> int {
+    effect pure
+    admission reject
+    resources { r units 1 }
+    serialize key k
+}
+handler main::keyed_reject(k: string) -> (int, error) {
+    return 0, nil
+}
+
+op main::unkeyed_reject(n: int) -> int {
+    effect pure
+    admission reject
+    resources { r units 1 }
+}
+handler main::unkeyed_reject(n: int) -> (int, error) {
+    return 0, nil
+}
+
+op main::keyed_wait(k: string) -> int {
+    effect pure
+    admission wait
+    resources { r units 1 }
+    serialize key k
+}
+handler main::keyed_wait(k: string) -> (int, error) {
+    return 0, nil
+}
+
+op main::unkeyed_wait(n: int) -> int {
+    effect pure
+    admission wait
+    resources { r units 1 }
+}
+handler main::unkeyed_wait(n: int) -> (int, error) {
+    return 0, nil
+}

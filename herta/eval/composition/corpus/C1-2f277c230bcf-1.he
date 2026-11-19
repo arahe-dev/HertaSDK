@@ -1,0 +1,11 @@
+// id: C1-2f277c230bcf-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/cmd/kubeadm/app/util/apiclient/idempotency.go#L131
+// facts: CreateOrRetain 137-147 GETs the named object before every Create; after an ambiguous successful create the next GET retains it; analyzer missed this existence guard.
+// inexpressible: Pinned idempotency.go uses PollUntilContextTimeout, not a fixed attempt cap; Herta cannot encode this timed retry exactly. GET-before-Create replay safety is established.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

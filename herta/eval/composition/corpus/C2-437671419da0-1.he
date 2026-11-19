@@ -1,0 +1,11 @@
+// id: C2-437671419da0-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/registry/core/service/ipallocator/controller/repair.go#L136
+// facts: Repair.runOnce outer DefaultBackoff.Steps=4 (retry/util.go39); doRunOnce 159-180 polls snapshot reads for30s then updates allocation with conflict checks; deliberate bounded startup/refetch recovery, no fixed inner attempt cap/product.
+// inexpressible: Snapshot polling has a 30s time bound, not a finite inner attempt count. Outer conflict bound is 4, but no truthful numeric product can be encoded.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

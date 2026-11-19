@@ -1,0 +1,11 @@
+// id: C1-4d53c3ab1046-1
+// link: https://github.com/argoproj/argo-cd/blob/232fa2d123c0cef71de9251860289ee9a150172e/util/http/http.go#L252
+// facts: drainBody copies to io.Discard (275-277), not an external write; RoundTrip can resend arbitrary verbs, but the wrapper is gated by an opt-in env setting (types.go 4330-4336) and no concrete non-idempotent caller was established for this finding.
+// inexpressible: drainBody writes to io.Discard. Opt-in arbitrary-verb transport has no established concrete nonidempotent caller; cannot assign its effect truthfully.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

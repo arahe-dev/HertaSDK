@@ -1,0 +1,19 @@
+// id: C3-06ddeb85f5d4-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/seafile/webapi.go#L62
+// facts: getAuthorizationToken62 inherits the10s context deliberately created by interactive 2FA config (seafile.go392-395); authentication has its own bounded config-attempt lifecycle; normal Fs authentication forwards the caller ctx (webapi.go35-36).
+// model: Authentication inherits the bounded 10s interactive config context; no detach.
+runtime main { resource evaluation capacity 1 }
+op main::interactiveConfig() -> u64 {
+    effect idempotent
+    timeout 10s
+    calls getAuthorizationToken
+}
+handler main::interactiveConfig() -> (u64, error) {
+    return 0, nil
+}
+op main::getAuthorizationToken() -> u64 {
+    effect idempotent
+}
+handler main::getAuthorizationToken() -> (u64, error) {
+    return 0, nil
+}

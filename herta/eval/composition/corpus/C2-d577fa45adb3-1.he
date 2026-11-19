@@ -1,0 +1,35 @@
+// id: C2-d577fa45adb3-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/b2/b2.go#L1413
+// facts: b2.go1413 -> shouldRetry453-463 on401 -> authorizeAccount677-696; exhausted auth gets repeated across all outer retries: R*R/default100, configurable.
+// model: Default 10 total pacer attempts: pinned rclone fs/config.go:196-198; lib/pacer/pacer.go Call passes p.retries, CallNoRetry passes 1. Default matches the C2 facts, not an evaluation budget override. Projection is the credential-recovery path established in the facts, not unspecified surrounding user mutations. Pinned b2.go:677-696 GETs authorization and replaces current credentials; failed auth remains outer-retryable.
+runtime main { resource evaluation capacity 1 }
+op main::requestAuthRecovery() -> u64 {
+    effect idempotent
+    retry max 10 on { transient, uncertain }
+    calls shouldRetry
+}
+handler main::requestAuthRecovery() -> (u64, error) {
+    return 0, nil
+}
+op main::shouldRetry() -> u64 {
+    effect idempotent
+    calls authorizeAccount
+}
+handler main::shouldRetry() -> (u64, error) {
+    return 0, nil
+}
+op main::authorizeAccount() -> u64 {
+    effect idempotent
+    retry max 10 on { uncertain }
+    lock authMu
+    calls fetchAndInstallCredentials
+}
+handler main::authorizeAccount() -> (u64, error) {
+    return 0, nil
+}
+op main::fetchAndInstallCredentials() -> u64 {
+    effect idempotent
+}
+handler main::fetchAndInstallCredentials() -> (u64, error) {
+    return 0, nil
+}

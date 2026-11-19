@@ -1,0 +1,19 @@
+// id: C1-0a578406485b-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/dropbox/dropbox.go#L2070
+// facts: UploadSessionStartContext is called with nil content and an empty start arg (2070-2072); retries may allocate unused sessions but no file is committed until the later finish operation.
+// model: Default 10 total pacer attempts: pinned rclone fs/config.go:196-198; lib/pacer/pacer.go Call passes p.retries, CallNoRetry passes 1. Default matches the C2 facts, not an evaluation budget override. Allocating another session is an externally visible allocation even without committed file content; do not silently reclassify it as a read. Pinned dropbox.go:474-500 retries transport errors.
+runtime main { resource evaluation capacity 1 }
+op main::startSession() -> u64 {
+    effect nonidempotent
+    retry max 10 on { uncertain }
+    calls allocateEmptySession
+}
+handler main::startSession() -> (u64, error) {
+    return 0, nil
+}
+op main::allocateEmptySession() -> u64 {
+    effect nonidempotent
+}
+handler main::allocateEmptySession() -> (u64, error) {
+    return 0, nil
+}

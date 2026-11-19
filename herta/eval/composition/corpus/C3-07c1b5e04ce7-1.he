@@ -1,0 +1,19 @@
+// id: C3-07c1b5e04ce7-1
+// link: https://github.com/syncthing/syncthing/blob/f2ed52347ec461a2b7a70787192f3615bcb6bafd/lib/connections/tcp_listen.go#L65
+// facts: serve resolves the host to TCPAddr55 before Listen65 binds its numeric address; listener is closed on return70 and accept loop checks ctx cancellation; this deliberate service-listener bind is not detached request work.
+// model: Service-listener bind is owned startup; cancellation closes listener and is checked by accept loop.
+runtime main { resource evaluation capacity 1 }
+op main::serve() -> u64 {
+    effect idempotent
+    calls resolveAndBind
+}
+handler main::serve() -> (u64, error) {
+    return 0, nil
+}
+op main::resolveAndBind() -> u64 {
+    effect idempotent
+    detached for background
+}
+handler main::resolveAndBind() -> (u64, error) {
+    return 0, nil
+}

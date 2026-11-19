@@ -1,0 +1,19 @@
+// id: C3-06678cdb2d48-1
+// link: https://github.com/hashicorp/terraform/blob/a1246154d166f0647e398b823f0d9a3b9b64e920/internal/cloud/backend.go#L1022
+// facts: backend.go978-995 separates graceful stopCtx from explicit cancelCtx;1021-1022 cancels the remote run after stopCtx cancellation using the still-live cancellation channel; intentional cleanup with runningOp.Cancel controlling force-cancel.
+// model: Separate live force-cancellation channel intentionally cancels the remote run after graceful stop.
+runtime main { resource evaluation capacity 1 }
+op main::gracefulStop() -> u64 {
+    effect idempotent
+    calls cancelRemoteRun
+}
+handler main::gracefulStop() -> (u64, error) {
+    return 0, nil
+}
+op main::cancelRemoteRun() -> u64 {
+    effect idempotent
+    detached for cleanup
+}
+handler main::cancelRemoteRun() -> (u64, error) {
+    return 0, nil
+}

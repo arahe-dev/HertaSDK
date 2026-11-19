@@ -1,0 +1,19 @@
+// id: C4-008727589243-4
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/vfs/vfscache/item.go#L755
+// facts: _actualClose840 Unlocks before writeback.Add; the registered store callback842 runs as writeback work, and store693 acquires only its own callback critical section; caller restores mu844 after enqueueing.
+// model: Unlock precedes enqueue; store callback is independent writeback work.
+runtime main { resource evaluation capacity 1 }
+op main::closeBeforeEnqueue() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::closeBeforeEnqueue() -> (u64, error) {
+    return 0, nil
+}
+op main::registeredStore() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::registeredStore() -> (u64, error) {
+    return 0, nil
+}

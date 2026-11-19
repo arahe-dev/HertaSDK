@@ -1,0 +1,11 @@
+// id: C1-2527bf0d5bc0-1
+// link: https://github.com/kubernetes/kubernetes/blob/34a0056c2ba4ab6dbb40edb72fdbbdf579dcf068/pkg/registry/flowcontrol/rest/storage_flowcontrol.go#L134
+// facts: ensure reconciles bootstrap objects; ensurer/strategy.go 310-360 relists unwanted objects and treats IsNotFound on Delete as success; previously deleted objects are absent on replay.
+// inexpressible: Startup/periodic bootstrap reconciliation has a context/time-controlled poll, not a supplied finite attempt bound; Herta only has retry max N. Desired-state relist/delete semantics are otherwise idempotent.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

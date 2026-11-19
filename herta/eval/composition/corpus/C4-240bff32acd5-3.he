@@ -1,0 +1,19 @@
+// id: C4-240bff32acd5-3
+// link: https://github.com/moby/moby/blob/288c9392dd81a868b1e28e38c7ac3f78284e0c21/daemon/cluster/noderunner.go#L106
+// facts: start181 launches handleNodeExit in a goroutine; handleNodeExit282's mu.Lock can wait for Start's defer without preventing Start returning.
+// model: Acquisition runs on explicitly separate goroutine; no synchronous held-mu call edge.
+runtime main { resource evaluation capacity 1 }
+op main::start() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::start() -> (u64, error) {
+    return 0, nil
+}
+op main::handleNodeExit() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::handleNodeExit() -> (u64, error) {
+    return 0, nil
+}

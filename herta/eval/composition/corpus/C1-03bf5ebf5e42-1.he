@@ -1,0 +1,19 @@
+// id: C1-03bf5ebf5e42-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/backend/iclouddrive/iclouddrive.go#L307
+// facts: Copy 307 retries POST /v1/item/copy/<source> (api/drive.go 474-497); retryResultUnknown 672 explicitly retries unknown results and network errors; a committed copy can be copied again; provider-side dedupe unverified.
+// model: Default 10 total pacer attempts: pinned rclone fs/config.go:196-198; lib/pacer/pacer.go Call passes p.retries, CallNoRetry passes 1. Default matches the C2 facts, not an evaluation budget override.
+runtime main { resource evaluation capacity 1 }
+op main::copy() -> u64 {
+    effect nonidempotent
+    retry max 10 on { uncertain }
+    calls postCopy
+}
+handler main::copy() -> (u64, error) {
+    return 0, nil
+}
+op main::postCopy() -> u64 {
+    effect nonidempotent
+}
+handler main::postCopy() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,19 @@
+// id: C4-240bff32acd5-4
+// link: https://github.com/moby/moby/blob/288c9392dd81a868b1e28e38c7ac3f78284e0c21/daemon/cluster/noderunner.go#L106
+// facts: start186 launches go handleReadyEvent; that handler's mu.Lock264 is asynchronous relative to Start's held mutex.
+// model: Acquisition runs on explicitly separate goroutine; no synchronous held-mu call edge.
+runtime main { resource evaluation capacity 1 }
+op main::start() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::start() -> (u64, error) {
+    return 0, nil
+}
+op main::handleReadyEvent() -> u64 {
+    effect pure
+    lock mu
+}
+handler main::handleReadyEvent() -> (u64, error) {
+    return 0, nil
+}

@@ -1,0 +1,26 @@
+// id: C4-1c7b15d97e4c-1
+// link: https://github.com/prometheus/prometheus/blob/2b311b9762bb5834a17374fcf45a8e5b2043293f/tsdb/index/postings.go#L345
+// facts: unlockWaitAndLockAgain378 first Unlocks p.mtx380, then takes/releases RLock and finally Lock390; it intentionally yields the held lock instead of recursively acquiring it.
+// model: Unlock -> RLock/RUnlock -> Lock are separate regions; no nested edge.
+runtime main { resource evaluation capacity 1 }
+op main::postingsBeforeYield() -> u64 {
+    effect pure
+    lock postings
+}
+handler main::postingsBeforeYield() -> (u64, error) {
+    return 0, nil
+}
+op main::postingsYieldRead() -> u64 {
+    effect pure
+    lock postings shared
+}
+handler main::postingsYieldRead() -> (u64, error) {
+    return 0, nil
+}
+op main::postingsAfterYield() -> u64 {
+    effect pure
+    lock postings
+}
+handler main::postingsAfterYield() -> (u64, error) {
+    return 0, nil
+}

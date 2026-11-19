@@ -1,0 +1,19 @@
+// id: C3-007abf485347-1
+// link: https://github.com/cli/cli/blob/acee710547dcf7dfb6490afea77972187e74b819/.github/skills/cli-exercise/tool/internal/engine/runtime.go#L439
+// facts: Runtime.watch418-440 calls Finish on duration/idle expiry with Background; Finish458 cancels the run and persists outcomes; deliberate termination cleanup must outlive the expired run.
+// model: Finish cancels owned run and persists outcomes after expiry.
+runtime main { resource evaluation capacity 1 }
+op main::watchExpiry() -> u64 {
+    effect idempotent
+    calls finish
+}
+handler main::watchExpiry() -> (u64, error) {
+    return 0, nil
+}
+op main::finish() -> u64 {
+    effect idempotent
+    detached for cleanup
+}
+handler main::finish() -> (u64, error) {
+    return 0, nil
+}

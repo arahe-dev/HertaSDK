@@ -1,0 +1,11 @@
+// id: C1-4ea745d6eef3-1
+// link: https://github.com/istio/istio/blob/b3217b023cffcc749205bca2fdd764e4b34004c4/pilot/pkg/leaderelection/k8sleaderelection/leaderelection.go#L297
+// facts: tryAcquireOrRenew 343-415 GETs the leader record before Create/Update; leaselock.go 84-97 updates the fetched lease carrying its RV, so ambiguous success is observed on the next attempt.
+// inexpressible: Leader acquisition/renewal is context/deadline-driven polling without a finite attempt bound in facts; Herta retry max N cannot express it. Refetch and resourceVersion updates are replay-safe.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

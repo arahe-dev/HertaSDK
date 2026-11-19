@@ -1,0 +1,77 @@
+package t4
+
+import (
+	"context"
+	"errors"
+	"github.com/arahe-dev/hertasdk"
+	"strconv"
+	"time"
+)
+
+var _ = time.Second
+var _ = strconv.FormatInt
+var _ = errors.Is
+
+func classify(err error) error {
+	if err == nil {
+		return nil
+	}
+	switch {
+	case errors.Is(err, ErrUnavailable):
+		return hertasdk.Fail(hertasdk.Transient, err)
+	case errors.Is(err, ErrTimeout):
+		return hertasdk.Fail(hertasdk.Uncertain, err)
+	default:
+		return hertasdk.Fail(hertasdk.Permanent, err)
+	}
+}
+
+type Input struct {
+	User, SKU, From, To, Key string
+	OrderID                  int64
+	Cents                    uint64
+}
+type Service struct {
+	b                                        *Backend
+	charge, checkout                         *hertasdk.Operation[Input, Receipt]
+	refund, reserve, debit, credit, transfer *hertasdk.Operation[Input, Unit]
+}
+
+func New(b *Backend) (*Service, error) {
+	s := &Service{b: b}
+	rt, err := hertasdk.NewRuntime(hertasdk.ResourceSpec{Name: "db", Capacity: 8}, hertasdk.ResourceSpec{Name: "network", Capacity: 4})
+	if err != nil {
+		return nil, err
+	}
+	_ = rt
+	s.debit, err = hertasdk.NewOperation(rt, "debit", func(ctx context.Context, in Input) (Unit, error) { return Unit{}, s.b.Debit(ctx, in.User, in.Cents) }, hertasdk.Policy[Input]{Effect: hertasdk.NonIdempotent, Admission: hertasdk.Wait, Resources: []hertasdk.Requirement{{Name: "db", Units: 1}}, SerializeKey: func(in Input) string { return "account:" + in.User }})
+	if err != nil {
+		return nil, err
+	}
+	s.credit, err = hertasdk.NewOperation(rt, "credit", func(ctx context.Context, in Input) (Unit, error) { return Unit{}, s.b.Credit(ctx, in.User, in.Cents) }, hertasdk.Policy[Input]{Effect: hertasdk.NonIdempotent, Admission: hertasdk.Wait, Resources: []hertasdk.Requirement{{Name: "db", Units: 1}}, SerializeKey: func(in Input) string { return "account:" + in.User }})
+	if err != nil {
+		return nil, err
+	}
+	s.transfer, err = hertasdk.NewOperation(rt, "transfer", func(ctx context.Context, in Input) (Unit, error) {
+		if _, e := s.debit.Do(ctx, Input{User: in.From, Cents: in.Cents}); e != nil {
+			return Unit{}, e
+		}
+		return s.credit.Do(ctx, Input{User: in.To, Cents: in.Cents})
+	}, hertasdk.Policy[Input]{Effect: hertasdk.NonIdempotent, Admission: hertasdk.Wait, SerializeKey: func(in Input) string { return "transfer:" + in.From }})
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+func (s *Service) Debit(ctx context.Context, user string, cents uint64) error {
+	_, e := s.debit.Do(ctx, Input{User: user, Cents: cents})
+	return e
+}
+func (s *Service) Credit(ctx context.Context, user string, cents uint64) error {
+	_, e := s.credit.Do(ctx, Input{User: user, Cents: cents})
+	return e
+}
+func (s *Service) Transfer(ctx context.Context, from, to string, cents uint64) error {
+	_, e := s.transfer.Do(ctx, Input{From: from, To: to, Cents: cents})
+	return e
+}

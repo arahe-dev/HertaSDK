@@ -1,0 +1,19 @@
+// id: C3-00828bc6f5f0-1
+// link: https://github.com/grafana/grafana/blob/c3f2c836adf7800899e7675e7718a2050fd03a6e/pkg/services/live/features/watch.go#L89
+// facts: OnSubscribe ignores its short-lived callback ctx (52), deliberately creates an independent long-lived watch (88-119); GetRestConfig uses that initialization lifecycle, not a per-request inner operation.
+// model: Initialization owns independent long-lived watch, not callback request lifetime.
+runtime main { resource evaluation capacity 1 }
+op main::onSubscribe() -> u64 {
+    effect pure
+    calls longLivedWatch
+}
+handler main::onSubscribe() -> (u64, error) {
+    return 0, nil
+}
+op main::longLivedWatch() -> u64 {
+    effect pure
+    detached for background
+}
+handler main::longLivedWatch() -> (u64, error) {
+    return 0, nil
+}

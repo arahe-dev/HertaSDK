@@ -1,0 +1,14 @@
+// NonIdempotent + retry on uncertain is rejected at construction with
+// ErrUnsafeRetry (contract §3.2); a compile error in Herta.
+runtime main {
+    resource renderer capacity 8
+}
+
+op main::render(user_id: string) -> int {
+    effect nonidempotent
+    resources { renderer units 1 }
+    retry max 2 on { uncertain }
+}
+handler main::render(user_id: string) -> (int, error) {
+    return 0, nil
+}

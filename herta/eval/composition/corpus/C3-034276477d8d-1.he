@@ -1,0 +1,11 @@
+// id: C3-034276477d8d-1
+// link: https://github.com/rclone/rclone/blob/a6779f3d79e0dfb71d08149f0ba35ba5568daab6/fs/operations/operations.go#L334
+// facts: operations.equal248 forwards ctx unchanged and logModTimeUpload228 only logs; the only package Background is cleanup-local copy.manualCopy247, suggesting closure-scope taint, but emitted row lacks the incoming call chain and that propagation chain was not established.
+// inexpressible: Facts establish ctx forwarding in equal, but not the incoming detached chain; closure-scope taint cannot be expressed as a verified call path.
+runtime main { resource evaluation capacity 1 }
+op main::site() -> u64 {
+    effect pure
+}
+handler main::site() -> (u64, error) {
+    return 0, nil
+}

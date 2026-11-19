@@ -1,0 +1,20 @@
+// id: C4-08cf6ec78387-1
+// link: https://github.com/moby/moby/blob/288c9392dd81a868b1e28e38c7ac3f78284e0c21/daemon/volume/safepath/safepath.go#L28
+// facts: SafePath.Close22 holds s.mutex and on path==empty invokes Path28, which Lock52s the same mutex; second Close (or concurrent repeated cleanup) cannot return. Mount Setup stores the same pointer and returns its Close callback (mounts.go203-218).
+// model: Reachable repeated Close path holds mutex while synchronously calling Path.
+runtime main { resource evaluation capacity 1 }
+op main::safePathCloseEmpty() -> u64 {
+    effect pure
+    lock safePathMutex
+    calls path
+}
+handler main::safePathCloseEmpty() -> (u64, error) {
+    return 0, nil
+}
+op main::path() -> u64 {
+    effect pure
+    lock safePathMutex
+}
+handler main::path() -> (u64, error) {
+    return 0, nil
+}
