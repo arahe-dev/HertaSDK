@@ -23,6 +23,9 @@ type Operation[I any, O any] struct {
 	classify func(error) Outcome
 	closed   bool
 	calls    map[string]bool
+	effect   Effect
+
+	trackDispatch bool
 }
 
 // claim is n units of one budget, resolved at construction.
@@ -67,6 +70,9 @@ func NewOperation[I any, O any](rt *Runtime, name string, handler Handler[I, O],
 		name:     name,
 		classify: policy.Classify,
 		closed:   policy.Closed,
+		effect:   policy.Effect,
+
+		trackDispatch: policy.TrackDispatch,
 	}
 	if policy.Closed {
 		op.calls = make(map[string]bool, len(policy.Calls))

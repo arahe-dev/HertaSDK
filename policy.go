@@ -90,6 +90,9 @@ type Policy[I any] struct {
 	// Calls contains fully qualified operation names and is snapshotted.
 	Closed bool
 	Calls  []string
+	// TrackDispatch makes Transient mean "not applied" only before the
+	// attempt (or a nested call within it) calls Dispatch; see Dispatch.
+	TrackDispatch bool
 }
 
 // ResourceSpec declares a named finite capacity.

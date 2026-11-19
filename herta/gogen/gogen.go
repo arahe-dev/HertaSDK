@@ -63,14 +63,39 @@ func generate(prog *lang.Program, pkg string, closed bool) (string, error) {
 		}
 	}
 
+	ops := map[string]*lang.Op{}
+	var order []*lang.Op
+	plans := map[string]bool{}
+	for _, d := range prog.Decls {
+		if op, ok := d.(*lang.Op); ok {
+			ops[op.Runtime+"::"+op.Name] = op
+			order = append(order, op)
+		}
+		if h, ok := d.(*lang.Handler); ok {
+			for _, st := range h.Body {
+				if raw, ok := st.(*lang.RawStmt); ok && len(findCalls(raw.Text)) > 0 {
+					plans[h.Runtime] = true
+				}
+			}
+		}
+	}
+
+	tracks := trackDispatch(order, handlers)
 	for _, d := range prog.Decls {
 		switch d := d.(type) {
 		case *lang.Runtime:
 			genRuntime(&b, d)
 		case *lang.Op:
-			if err := genOp(&b, d, handlers[d.Runtime+"::"+d.Name], closed); err != nil {
+			g := opGen{op: d, h: handlers[d.Runtime+"::"+d.Name], closed: closed, plan: plans[d.Runtime], ops: ops,
+				track: tracks[d.Runtime+"::"+d.Name]}
+			if err := g.gen(&b); err != nil {
 				return "", err
 			}
+		}
+	}
+	for _, d := range prog.Decls {
+		if rt, ok := d.(*lang.Runtime); ok && plans[rt.Name] {
+			genPlan(&b, rt.Name, order)
 		}
 	}
 
@@ -99,7 +124,21 @@ func genRuntime(b *strings.Builder, rt *lang.Runtime) {
 //	type MainChargeInput struct{ UserId string; Cents uint64 }
 //	func NewMainCharge(rt *hertasdk.Runtime) (*hertasdk.Operation[MainChargeInput, receipt], error)
 //	func mainChargeHandler(ctx context.Context, in MainChargeInput) (receipt, error)
-func genOp(b *strings.Builder, op *lang.Op, h *lang.Handler, closed bool) error {
+//
+// In a runtime whose handlers contain `call` statements, constructors and
+// handlers instead take the runtime's plan (see genPlan), and each call
+// executes the declared operation the checker saw.
+type opGen struct {
+	op     *lang.Op
+	h      *lang.Handler
+	closed bool
+	plan   bool
+	track  bool
+	ops    map[string]*lang.Op
+}
+
+func (g opGen) gen(b *strings.Builder) error {
+	op, h, closed := g.op, g.h, g.closed
 	base := export(op.Runtime) + export(op.Name)
 	input := base + "Input"
 	result := goType(op.Result)
@@ -113,11 +152,21 @@ func genOp(b *strings.Builder, op *lang.Op, h *lang.Handler, closed bool) error 
 	b.WriteString("}\n\n")
 
 	// The constructor assembles the Policy exactly as declared.
-	fmt.Fprintf(b, "// New%s constructs op %s::%s on rt.\n", base, op.Runtime, op.Name)
-	fmt.Fprintf(b, "func New%s(rt *hertasdk.Runtime) (*hertasdk.Operation[%s, %s], error) {\n", base, input, result)
+	handler, planParam := handlerName(op), ""
+	if g.plan {
+		planParam = ", p *" + planName(op.Runtime)
+		fmt.Fprintf(b, "func new%s(rt *hertasdk.Runtime%s) (*hertasdk.Operation[%s, %s], error) {\n", base, planParam, input, result)
+		handler = fmt.Sprintf("func(ctx context.Context, in %s) (%s, error) { return %s(ctx, p, in) }", input, result, handlerName(op))
+	} else {
+		fmt.Fprintf(b, "// New%s constructs op %s::%s on rt.\n", base, op.Runtime, op.Name)
+		fmt.Fprintf(b, "func New%s(rt *hertasdk.Runtime) (*hertasdk.Operation[%s, %s], error) {\n", base, input, result)
+	}
 	fmt.Fprintf(b, "\treturn hertasdk.NewOperation(rt, %s, %s, hertasdk.Policy[%s]{\n",
-		strconv.Quote(op.Runtime+"::"+op.Name), handlerName(op), input)
+		strconv.Quote(op.Runtime+"::"+op.Name), handler, input)
 	fmt.Fprintf(b, "\t\tEffect: hertasdk.%s,\n", sdkEffect(op.Effect))
+	if g.track {
+		b.WriteString("\t\tTrackDispatch: true,\n")
+	}
 	if closed {
 		b.WriteString("\t\tClosed: true,\n")
 		if callees := lang.Callees(op, h); len(callees) > 0 {
@@ -182,12 +231,22 @@ func genOp(b *strings.Builder, op *lang.Op, h *lang.Handler, closed bool) error 
 	if h == nil {
 		return fmt.Errorf("op %s::%s has no handler", op.Runtime, op.Name)
 	}
-	fmt.Fprintf(b, "func %s(ctx context.Context, in %s) (%s, error) {\n", handlerName(op), input, result)
+	fmt.Fprintf(b, "func %s(ctx context.Context%s, in %s) (%s, error) {\n", handlerName(op), planParam, input, result)
 	b.WriteString("\t_ = ctx\n")
+	if g.plan {
+		b.WriteString("\t_ = p\n")
+	}
 	for _, p := range op.Params {
 		fmt.Fprintf(b, "\t%s := in.%s\n", p.Name, export(p.Name))
 	}
 	for _, s := range h.Body {
+		if raw, ok := s.(*lang.RawStmt); ok && g.plan {
+			text, err := g.lowerCalls(raw.Text, result)
+			if err != nil {
+				return err
+			}
+			s = &lang.RawStmt{Text: text}
+		}
 		genStmt(b, s, result)
 	}
 	b.WriteString("}\n\n")
@@ -206,6 +265,10 @@ func genStmt(b *strings.Builder, s lang.Stmt, result string) {
 	case *lang.FailStmt:
 		fmt.Fprintf(b, "\treturn *new(%s), hertasdk.Fail(hertasdk.%s, %s)\n", result, export(s.Outcome), s.Arg)
 	case *lang.RawStmt:
+		if s.Text == "dispatch" {
+			b.WriteString("\thertasdk.Dispatch(ctx)\n")
+			return
+		}
 		for _, line := range rewriteFails(s.Text, result) {
 			fmt.Fprintf(b, "\t%s\n", line)
 		}

@@ -198,7 +198,7 @@ func (p *parser) opDecl() (*Op, error) {
 		}
 		seen[t.Text] = true
 		switch t.Text {
-		case "calls", "lock", "dedupe", "detached", "budget", "classify":
+		case "calls", "lock", "dedupe", "detached", "budget", "classify", "evidence":
 			if err := p.compositionClause(op); err != nil {
 				return nil, err
 			}

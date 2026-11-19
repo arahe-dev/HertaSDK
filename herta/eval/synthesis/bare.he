@@ -1,0 +1,22 @@
+runtime bare { resource writes capacity 1 }
+error ErrAckLost ambiguous
+op bare::publish(id: string) -> u64 {
+    effect nonidempotent
+    resources { writes units 1 }
+    retry max 2 on { transient }
+    classify { ErrAckLost => uncertain, ErrNotSent => transient, _ => permanent }
+}
+handler bare::publish(id: string) -> (u64, error) {
+    req, err := prepareHost(ctx, id)
+    if err != nil { return 0, err }
+    dispatch
+    return sendHost(ctx, req)
+}
+op bare::checkout(id: string) -> u64 {
+    effect nonidempotent
+    retry max 2 on { transient }
+    classify { ErrAckLost => uncertain, ErrNotSent => transient, _ => permanent }
+}
+handler bare::checkout(id: string) -> (u64, error) {
+    return call publish(id)
+}

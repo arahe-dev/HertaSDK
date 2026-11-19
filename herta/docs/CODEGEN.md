@@ -36,7 +36,10 @@ return *new(T), hertasdk.Fail(hertasdk.<Outcome>, <expr>)
 ```
 
 i.e. exactly the classified-error return the spec gives `fail`. Everything
-else in a body is ordinary Go that the surrounding package must make valid.
+else in a body is ordinary Go that the surrounding package must make valid,
+except `call name(args)` (lowered to `p.<Name>.Do` through the runtime's
+generated `<Runtime>Plan`) and a bare `dispatch` statement
+(`hertasdk.Dispatch(ctx)`); see [SYNTHESIS.md](SYNTHESIS.md).
 
 ## Example
 

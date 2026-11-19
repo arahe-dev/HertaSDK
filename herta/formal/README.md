@@ -19,6 +19,7 @@ deadlines, bounded retries and counters. Comments cite the Go source at
 - T4_key: a synchronously held same key cannot be reacquired before any deadline.
 - T4_composition: a Pure/Idempotent outer retry can duplicate a nested inner effect.
 - T5: closed-world own-expiry overrides any classifier, preventing that retry.
+- T6: with dispatch tracking, any classifier is safe if the adapter dispatches before applying.
 
 ## Boundaries and trust
 

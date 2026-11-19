@@ -251,4 +251,9 @@ Each amendment resolves a point where this document was silent, ambiguous or wro
 - Reaching that state requires `Shutdown` to land between the gate and `TryAcquire`, which is a race. The last clause of §8 already covered it; Δ11 names it so that the ledger can account for it.
 - The lab measures it: the trace reconciliation in `lab/system` `TestChaos` logs "N overloads were reported as ErrRuntimeStopping" for orig and requires 0 for recon.
 
+**Amendment 7. Dispatch evidence is opt-in** (§5 step 4).
+- With `Policy.TrackDispatch`, each attempt carries a state; `Dispatch(ctx)` marks it and every tracked ancestor attempt.
+- After classification (either path), `Transient` on a dispatched attempt becomes `Uncertain` (returned tagged `Uncertain`); a dispatch by a `NonIdempotent` operation forbids every enclosing tracked attempt from retrying `Uncertain`.
+- Without `TrackDispatch`, or when the adapter never calls `Dispatch`, behavior is unchanged. A tracked call allocates its attempt state (measured in `herta/docs/SYNTHESIS.md`). Pinned by `evidence_test.go`.
+
 **Note (no amendment needed).** `ErrInvalidOutcome` is never returned by orig or recon. `Fail` normalizes invalid outcomes to `Permanent` instead. The sentinel exists only for API parity.

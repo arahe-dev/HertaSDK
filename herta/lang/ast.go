@@ -43,7 +43,10 @@ type Op struct {
 	Owner     string
 	Budget    int64
 	Classify  []ClassifyArm
-	Line, Col int
+	// TrackDispatch is `evidence dispatch`: Transient counts as "not
+	// applied" only before the handler's `dispatch` statement.
+	TrackDispatch bool
+	Line, Col     int
 }
 
 type LockDecl struct {
