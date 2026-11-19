@@ -1,5 +1,8 @@
 # Executable SDK contract model
 
+See [Lean lessons for Herta](../docs/LEAN.md) for the pilot evidence, design mapping,
+theorem results, trust-ledger evaluation and proposed experiments.
+
 Lean 4.36.0 (the installed stable release), core/Std only, no external dependencies.
 Run `./check.sh` from this directory (elan's `lake` must be on PATH).
 

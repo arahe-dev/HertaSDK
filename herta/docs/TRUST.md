@@ -1,5 +1,8 @@
 # Trust ledger
 
+See [Lean lessons for Herta](LEAN.md) for the formal model's motivation, results,
+evaluation limits and evidence required before expanding the checker.
+
 ```sh
 go run ./herta/cmd/herta trust [-closed] [-json] [-strict] file.he
 ```
