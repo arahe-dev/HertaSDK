@@ -1,0 +1,3 @@
+9:22: op "op": retry on throttled is never allowed
+9:33: op "op": retry on permanent is never allowed
+9:44: op "op": retry on success is never allowed

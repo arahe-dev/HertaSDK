@@ -1,0 +1,15 @@
+name: construct-unsafe-retry
+summary: NonIdempotent + retry on Uncertain is rejected at construction with ErrUnsafeRetry naming the violation.
+source: execution_test.go/TestUnsafeContractRejectedAtConstruction
+runtime:
+  resources: [{name: renderer, capacity: 8}]
+steps:
+  - construct: {kind: operation, as: unsafe, op:
+      {name: render, effect: NonIdempotent,
+       requires: [{resource: renderer, units: 1}],
+       retry: {max_attempts: 2, on: [Uncertain]},
+       handler: {return: 0}}}
+
+expected:
+  results:
+    unsafe: {error: ErrUnsafeRetry, error_contains: "non-idempotent"}

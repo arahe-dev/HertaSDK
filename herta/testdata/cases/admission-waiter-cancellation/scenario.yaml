@@ -1,0 +1,51 @@
+name: admission-waiter-cancellation
+summary: A waiting caller whose context is cancelled leaves immediately, takes no capacity, and reports the caller error even when Shutdown wakes it.
+source: execution_test.go/TestWaitingCallerCancellationLeavesClean, delta_test.go/TestDelta6CallerErrorBeatsShutdown (Δ6)
+runtime:
+  resources: [{name: renderer, capacity: 1}]
+operations:
+  hold:
+    input: int
+    effect: Pure
+    requires: [{resource: renderer, units: 1}]
+    admission: Wait
+    handler: {block: gate-1, then: return-ctx-err}
+  waiter:
+    input: int
+    effect: Pure
+    requires: [{resource: renderer, units: 1}]
+    admission: Wait
+    handler: {return: 0}
+  probe:
+    input: int
+    effect: Pure
+    requires: [{resource: renderer, units: 1}]
+    admission: Reject
+    handler: {return: 0}
+steps:
+  - spawn: {op: hold, as: h}
+  - wait: {started: 1}
+  - ctx: c1 = cancel
+  - spawn: {op: waiter, via_ctx: c1, as: w}
+  - wait: {blocked: w}
+  - cancel: c1
+  - gate: gate-1 open
+  - join: h
+  - call: {op: probe, as: p}   # zero leakage: full capacity is free again
+  - join: w
+  # Δ6: a waiter cancelled just before Shutdown still reports its own error.
+  - construct: {kind: runtime, as: rt2, resources: [{name: renderer, capacity: 1}]}
+  - hold_units: {resource: renderer, units: 1, runtime: rt2}
+  - ctx: c2 = cancel
+  - spawn: {op: waiter, runtime: rt2, via_ctx: c2, as: w2}
+  - wait: {blocked: w2, runtime: rt2}
+  - cancel: c2
+  - shutdown: {runtime: rt2, as: sd2}
+  - join: w2
+
+expected:
+  results:
+    w: {error_is: context.Canceled}
+    w2: {error_is: context.Canceled}   # Δ6: caller error wins over shutdown wake
+    p: {error: null}
+  calls: {waiter: 0, probe: 1}

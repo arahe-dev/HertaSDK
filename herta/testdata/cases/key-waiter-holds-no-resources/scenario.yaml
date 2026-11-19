@@ -1,0 +1,37 @@
+name: key-waiter-holds-no-resources
+summary: A caller queued on a key holds zero resource capacity; an unkeyed caller can still run.
+source: execution_test.go/TestSameKeyWaiterHoldsNoResources
+runtime:
+  resources: [{name: db-write, capacity: 3}]
+operations:
+  holder:
+    input: string
+    effect: Pure
+    requires: [{resource: db-write, units: 1}]
+    key: input
+    handler: {block: gate-1, then: {return: 0}}
+  same-key-big:
+    input: string
+    effect: Pure
+    requires: [{resource: db-write, units: 2}]
+    key: input
+    handler: {return: 0}
+  other:
+    input: int
+    effect: Pure
+    requires: [{resource: db-write, units: 1}]
+    handler: {return: 0}
+steps:
+  - spawn: {op: holder, input: A, as: h}     # holds 1 of 3 units, blocks
+  - wait: {started: 1}
+  - spawn: {op: same-key-big, input: A, as: s}  # queues on key A; if it seized the remaining 2 units first, `other` could never run
+  - wait: {blocked: s}
+  - call: {op: other, as: o}                  # must complete while s waits
+  - gate: gate-1 open
+  - join: all
+
+expected:
+  results:
+    o: {error: null, value: 0}
+    s: {error: null, value: 0}
+  calls: {other: 1, same-key-big: 1, holder: 1}

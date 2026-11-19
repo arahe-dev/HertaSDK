@@ -1,0 +1,33 @@
+name: key-fifo-order
+summary: "A key is handed off in arrival order; a cancelled waiter leaves the holder intact and queues nothing."
+source: keys_test.go/TestKeysHandOffInArrivalOrder, TestKeysCancelledWaiterLeavesHolderIntact, TestKeysDoneBeforeQueueingFailsAtOnce
+runtime:
+  resources: [{name: r, capacity: 8}]
+operations:
+  work:
+    input: string
+    effect: Pure
+    key: input
+    handler: {block: gate-1, then: {return: 0}}
+steps:
+  # w0 takes key K and blocks; w1..w3 queue behind it in spawn order.
+  - spawn: {op: work, input: K, as: w0}
+  - wait: {started: 1}
+  - spawn: {op: work, input: K, as: w1}
+  - spawn: {op: work, input: K, as: w2}
+  - spawn: {op: work, input: K, as: w3}
+  - wait: {blocked: w3}
+  # A caller with a cancelled context joins no queue and fails at once.
+  - ctx: "dead = {cancelled: true}"
+  - call: {op: work, input: K, via_ctx: dead, as: dead-call}
+  # The runner releases the gate once w0's handler returns; each waiter
+  # must then run strictly in arrival order.
+  - gate: gate-1 open
+  - join: all
+
+expected:
+  results:
+    dead-call: {error_is: context.Canceled, started: false}
+  handler_start_order: [w0, w1, w2, w3]   # FIFO handoff in arrival order
+  calls: {work: 4}
+  stats: {Started: 4, Finished: 4}

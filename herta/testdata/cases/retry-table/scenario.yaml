@@ -1,0 +1,37 @@
+name: retry-table
+summary: MaxAttempts without On retries nothing; MaxAttempts 0 and 1 mean one execution; NonIdempotent retries only Transient.
+source: contract_test.go/TestContractRetryNeedsOn, execution_test.go/TestMaxAttemptsNormalization, contract_test.go/TestContractNonIdempotentRetriesOnlyTransient
+runtime:
+  resources: [{name: r, capacity: 1}]
+operations:
+  no-on:
+    input: int
+    effect: Pure
+    retry: {max_attempts: 5}        # no On map
+    handler: {fail: Transient}
+  ma-zero:
+    input: int
+    effect: Pure
+    retry: {max_attempts: 0, on: [Transient]}
+    handler: {fail: Transient}
+  nonidempotent:
+    input: string                 # input names the outcome the handler fails with
+    effect: NonIdempotent
+    retry: {max_attempts: 3, on: [Transient]}
+    handler: {fail: input}        # Fail(<input as outcome>)
+steps:
+  - call: {op: no-on, as: n1}
+  - call: {op: ma-zero, as: m0}
+  - call: {op: nonidempotent, input: Transient, as: t}
+  - call: {op: nonidempotent, input: Uncertain, as: u}
+  - call: {op: nonidempotent, input: Throttled, as: th}
+  - call: {op: nonidempotent, input: Permanent, as: p}
+
+expected:
+  calls: {no-on: 1, ma-zero: 1}
+  results:
+    t: {outcome: Transient}
+    u: {outcome: Uncertain}
+    th: {outcome: Throttled}
+    p: {outcome: Permanent}
+  per_result_calls: {t: 3, u: 1, th: 1, p: 1}   # handler invocations attributed to each Do

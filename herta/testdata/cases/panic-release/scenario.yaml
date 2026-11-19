@@ -1,0 +1,44 @@
+name: panic-release
+summary: A handler panic releases keys and resources, cancels the attempt context, and propagates; panic(nil) propagates as PanicNilError.
+source: execution_test.go/TestPanicReleasesEverythingAndPropagates, contract_test.go/TestContractPanicNilPropagates, delta_test.go/TestDelta7PanicCancelsAttemptContext (Δ7)
+runtime:
+  resources: [{name: renderer, capacity: 1}, {name: db-write, capacity: 1}]
+operations:
+  boom:
+    input: string
+    effect: Pure
+    requires: [{resource: renderer, units: 1}, {resource: db-write, units: 1}]
+    admission: Wait
+    key: const-brand-1
+    handler: {panic: "programmer bug", record_ctx: seen-ctx}
+  boom-nil:
+    input: int
+    effect: Pure
+    requires: [{resource: renderer, units: 1}, {resource: db-write, units: 1}]
+    timeout_ms: 3600000
+    handler: panic-nil
+  probe-res:
+    input: int
+    effect: Pure
+    requires: [{resource: renderer, units: 1}, {resource: db-write, units: 1}]
+    admission: Reject
+    handler: {return: 0}
+  probe-key:
+    input: string
+    effect: Pure
+    key: const-brand-1
+    handler: {return: 0}
+steps:
+  - call: {op: boom, input: x, as: p1}         # panics; runner recovers
+  - call: {op: boom-nil, as: p2}
+  - call: {op: probe-res, as: res}             # both resources were released
+  - call: {op: probe-key, input: y, as: key}   # the key was released
+
+expected:
+  results:
+    p1: {panic: "programmer bug"}
+    p2: {panic: PanicNilError}
+    res: {error: null}
+    key: {error: null}
+  attempt_ctx_cancelled: true     # Δ7: the panic cancelled the attempt context
+  stats: {Admitted: 4, Finished: 4}

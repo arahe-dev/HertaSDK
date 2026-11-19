@@ -1,0 +1,33 @@
+// Every attempt gets a fresh deadline; a plain error after the attempt
+// deadline is Uncertain and retried; a late result is still returned (Δ3).
+runtime main {
+    resource r capacity 1
+}
+
+op main::deadline_ignorer(n: int) -> int {
+    effect idempotent
+    timeout 20ms
+    retry max 3 on { uncertain }
+}
+handler main::deadline_ignorer(n: int) -> (int, error) {
+    block_ctx()
+    return 0, plain_error()
+}
+
+op main::deadline_noretry(n: int) -> int {
+    effect idempotent
+    timeout 20ms
+}
+handler main::deadline_noretry(n: int) -> (int, error) {
+    block_ctx()
+    return 0, plain_error()
+}
+
+op main::late(n: int) -> int {
+    effect pure
+    timeout 20ms
+}
+handler main::late(n: int) -> (int, error) {
+    block_ctx()
+    return 42, nil
+}
