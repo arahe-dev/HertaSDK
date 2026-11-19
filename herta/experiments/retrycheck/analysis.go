@@ -70,9 +70,22 @@ func importPaths(file *ast.File) map[string]string {
 		alias := path.Base(p)
 		if imp.Name != nil {
 			alias = imp.Name.Name
-		} else if len(alias) > 1 && alias[0] == 'v' {
-			if _, err := strconv.Atoi(alias[1:]); err == nil {
-				alias = path.Base(path.Dir(p))
+		} else {
+			if len(alias) > 1 && alias[0] == 'v' {
+				if _, err := strconv.Atoi(alias[1:]); err == nil {
+					alias = path.Base(path.Dir(p))
+				}
+			}
+			switch p {
+			case retryableHTTP:
+				alias = "retryablehttp"
+			case "github.com/hashicorp/go-uuid":
+				alias = "uuid"
+			default:
+				if p == "github.com/sethvargo/go-retry" || p == "github.com/avast/retry-go" ||
+					strings.HasPrefix(p, "github.com/avast/retry-go/") {
+					alias = "retry"
+				}
 			}
 		}
 		paths[alias] = p
