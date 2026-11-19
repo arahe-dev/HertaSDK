@@ -113,8 +113,8 @@ func (g opGen) lowerCalls(text, result string) (string, error) {
 			fields[i] = export(callee.Params[i].Name) + ": " + a
 		}
 		do := fmt.Sprintf("p.%s.Do(ctx, %sInput{%s})", export(callee.Name), base, strings.Join(fields, ", "))
-		if c.start == 0 && c.end == len(text) {
-			return fmt.Sprintf("if _, err := %s; err != nil { return *new(%s), err }", do, result), nil
+		if isStmt(text, c.start, c.end) {
+			do = fmt.Sprintf("if _, err := %s; err != nil { return *new(%s), err }", do, result)
 		}
 		b.WriteString(text[last:c.start])
 		b.WriteString(do)
@@ -175,4 +175,13 @@ func trackDispatch(order []*lang.Op, handlers map[string]*lang.Handler) map[stri
 		}
 	}
 	return tracks
+}
+
+// isStmt reports whether text[start:end] is a whole statement: at the start
+// of the line or after `{` or `;`, and before the end, `}` or `;`.
+func isStmt(text string, start, end int) bool {
+	before := strings.TrimRight(text[:start], " \t")
+	after := strings.TrimLeft(text[end:], " \t")
+	return (before == "" || strings.HasSuffix(before, "{") || strings.HasSuffix(before, ";")) &&
+		(after == "" || strings.HasPrefix(after, "}") || strings.HasPrefix(after, ";"))
 }

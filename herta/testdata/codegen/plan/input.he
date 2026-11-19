@@ -19,5 +19,6 @@ op main::checkout(id: string) -> u64 {
     classify { ErrAckLost => uncertain, ErrNotSent => transient, _ => permanent }
 }
 handler main::checkout(id: string) -> (u64, error) {
+    if id == "retry" { call publish(id) }
     return call publish(id)
 }

@@ -94,6 +94,11 @@ func mainCheckoutHandler(ctx context.Context, p *MainPlan, in MainCheckoutInput)
 	_ = ctx
 	_ = p
 	id := in.Id
+	if id == "retry" {
+		if _, err := p.Publish.Do(ctx, MainPublishInput{Id: id}); err != nil {
+			return *new(uint64), err
+		}
+	}
 	return p.Publish.Do(ctx, MainPublishInput{Id: id})
 }
 
