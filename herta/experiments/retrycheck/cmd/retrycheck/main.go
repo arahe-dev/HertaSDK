@@ -27,8 +27,9 @@ type finding struct {
 }
 
 type report struct {
-	Files    int       `json:"files"`
-	Findings []finding `json:"findings"`
+	Files         int       `json:"files"`
+	Findings      []finding `json:"findings"`
+	SparseOmitted int       `json:"sparse_omitted,omitempty"`
 }
 
 func main() {
@@ -58,7 +59,7 @@ func include(path string) bool {
 // scan parses tracked files across all platforms and modules. It never builds
 // the checkout, resolves its dependencies, or runs its code.
 func scan(root string, out io.Writer) error {
-	cmd := exec.Command("git", "ls-files", "--full-name", "-z", "--", "*.go")
+	cmd := exec.Command("git", "ls-files", "-t", "--full-name", "-z", "--", "*.go")
 	cmd.Dir = root
 	paths, err := cmd.Output()
 	if err != nil {
@@ -78,12 +79,19 @@ func scan(root string, out io.Writer) error {
 	groups := make(map[group][]*ast.File)
 	var order []group
 	for _, raw := range bytes.Split(paths, []byte{0}) {
-		path := string(raw)
+		if len(raw) < 2 {
+			continue
+		}
+		path := string(raw[2:])
 		if !include(path) {
 			continue
 		}
 		full := filepath.Join(root, path)
 		info, err := os.Lstat(full)
+		if raw[0] == 'S' && errors.Is(err, os.ErrNotExist) {
+			r.SparseOmitted++
+			continue
+		}
 		if err != nil {
 			return fmt.Errorf("inspect %s: %w", path, err)
 		}

@@ -25,7 +25,9 @@ go build -o /tmp/retrycheck ./cmd/retrycheck
 The argument is the root of a clean Git checkout. The driver reports JSON
 with the scanned-file count and one diagnostic per matching site; it parses
 tracked non-test Go source across all build tags and nested modules without
-building it. Vendor/fixture/testdata trees and Go-generated files marked with
+building it. Use a full checkout for reproduction; in a sparse checkout,
+`sparse_omitted` counts eligible files that were not materialized.
+Vendor/fixture/testdata trees and Go-generated files marked with
 the standard generated-code comment are excluded. Examples are included and
 must be separated from production code during triage. Dependencies are not
 loaded, so named string constants, aliasing, wrappers, middleware, and
