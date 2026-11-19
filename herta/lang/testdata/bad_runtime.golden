@@ -1,0 +1,2 @@
+1:1: runtime "empty" declares no resources
+3:1: op "op1": runtime "ghost" is not declared

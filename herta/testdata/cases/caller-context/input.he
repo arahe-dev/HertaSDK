@@ -1,0 +1,15 @@
+// The caller's own deadline/cancel is Permanent and never retried;
+// cancellation aborts the retry loop immediately (Δ4).
+runtime main {
+    resource r capacity 1
+}
+
+op main::op(n: int) -> int {
+    effect idempotent
+    timeout 1s
+    retry max 3 on { uncertain }
+}
+handler main::op(n: int) -> (int, error) {
+    block_ctx()
+    return 0, ctx_err()
+}

@@ -1,0 +1,13 @@
+name: construct-invalid-retry-table
+summary: Retry.On entries that can never be retried are rejected as ErrInvalidRetryPolicy naming the lowest invalid outcome.
+source: contract_test.go/TestContractRetryTableReportsLowestInvalid
+runtime:
+  resources: [{name: r, capacity: 1}]
+steps:
+  - construct: {kind: operation, as: table, op:
+      {effect: Pure, retry: {max_attempts: 2, on: [Throttled, Permanent, Success]},
+       handler: {return: 0}}}
+
+expected:
+  results:
+    table: {error: ErrInvalidRetryPolicy, error_contains: "retry on Success"}

@@ -1,0 +1,8 @@
+10:17: op "unknown": resource "nope" not declared on runtime "main"
+18:17: op "zerou": units for "r" must be > 0
+26:17: op "overcap": units 3 for "r" exceed capacity 2
+34:28: op "dupres": resource "r" listed twice
+40:1: op "noeffect": effect is required (pure|idempotent|nonidempotent)
+47:1: op "badkey": serialize key "k" must be a string parameter, got int
+55:1: handler "main::ghost": no matching op declared
+59:1: op "main::nohandler" has no handler

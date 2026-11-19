@@ -1,0 +1,2 @@
+14:14: handler "op2": cannot fail with outcome success
+21:14: handler "op3": invalid fail outcome "0"

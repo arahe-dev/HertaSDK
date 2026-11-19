@@ -1,0 +1,19 @@
+name: construct-runtime-invalid
+summary: NewRuntime rejects empty spec lists, non-positive capacities, duplicate names and empty names.
+source: execution_test.go/TestNewRuntimeValidation
+steps:
+  - construct: {kind: runtime, resources: [], as: no-resources}
+  - construct: {kind: runtime, resources: [{name: a, capacity: 0}], as: zero-cap}
+  - construct: {kind: runtime, resources: [{name: a, capacity: -1}], as: neg-cap}
+  - construct: {kind: runtime, resources: [{name: a, capacity: 1}, {name: a, capacity: 2}], as: dup}
+  - construct: {kind: runtime, resources: [{name: "", capacity: 1}], as: empty-name}
+  - construct: {kind: runtime, resources: [{name: ok, capacity: 1}], as: valid}
+
+expected:
+  results:
+    no-resources: {error: true}
+    zero-cap: {error: true}
+    neg-cap: {error: true}
+    dup: {error: true}
+    empty-name: {error: true}
+    valid: {error: null}

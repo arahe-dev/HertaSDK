@@ -1,0 +1,32 @@
+// A caller queued on a key holds zero resource capacity; an unkeyed caller
+// can still run (contract §4.2).
+runtime main {
+    resource db_write capacity 3
+}
+
+op main::holder(k: string) -> int {
+    effect pure
+    resources { db_write units 1 }
+    serialize key k
+}
+handler main::holder(k: string) -> (int, error) {
+    block_on("gate-1")
+    return 0, nil
+}
+
+op main::same_key_big(k: string) -> int {
+    effect pure
+    resources { db_write units 2 }
+    serialize key k
+}
+handler main::same_key_big(k: string) -> (int, error) {
+    return 0, nil
+}
+
+op main::other(n: int) -> int {
+    effect pure
+    resources { db_write units 1 }
+}
+handler main::other(n: int) -> (int, error) {
+    return 0, nil
+}
