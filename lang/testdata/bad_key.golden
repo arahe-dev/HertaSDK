@@ -1,0 +1,2 @@
+4:1: op "op1": serialize key "user_id" must be a string parameter, got u64
+8:1: op "op2": serialize key "missing" is not a parameter

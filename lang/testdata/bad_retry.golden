@@ -1,0 +1,2 @@
+6:22: op "op1": retry on permanent is never allowed
+6:33: op "op1": retrying uncertain outcomes is unsafe for effect nonidempotent
