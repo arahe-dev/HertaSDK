@@ -1,0 +1,11 @@
+runtime main {
+    resource db capacity 4
+}
+op main::op1() -> r {
+    effect pure
+    timeout 99999999999h
+    resources { db units 1 }
+}
+handler main::op1() -> (r, error) {
+    return r, nil
+}

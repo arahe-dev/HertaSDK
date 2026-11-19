@@ -98,7 +98,10 @@ func (p *parser) runtimeDecl() (*Runtime, error) {
 		if err != nil {
 			return nil, err
 		}
-		cap_, _ := strconv.ParseInt(capTok.Text, 10, 64)
+		cap_, err := strconv.ParseInt(capTok.Text, 10, 64)
+		if err != nil {
+			return nil, p.errf("capacity %q overflows int64", capTok.Text)
+		}
 		rt.Resources = append(rt.Resources, ResourceDecl{
 			Name: rn.Text, Capacity: cap_, Line: rn.Line, Col: rn.Col,
 		})
@@ -233,7 +236,10 @@ func (p *parser) opDecl() (*Op, error) {
 				if err != nil {
 					return nil, err
 				}
-				n, _ := strconv.ParseInt(uv.Text, 10, 64)
+				n, err := strconv.ParseInt(uv.Text, 10, 64)
+				if err != nil {
+					return nil, p.errf("units %q overflows int64", uv.Text)
+				}
 				op.Resources = append(op.Resources, OpResource{
 					Name: rn.Text, Units: n, Line: rn.Line, Col: rn.Col,
 				})
@@ -281,7 +287,10 @@ func (p *parser) opDecl() (*Op, error) {
 				return nil, err
 			}
 			rd := &RetryDecl{Line: t.Line, Col: t.Col}
-			rd.Max, _ = strconv.ParseInt(mv.Text, 10, 64)
+			rd.Max, err = strconv.ParseInt(mv.Text, 10, 64)
+			if err != nil {
+				return nil, p.errf("retry max %q overflows int64", mv.Text)
+			}
 			if _, err := p.ident("on"); err != nil {
 				return nil, err
 			}

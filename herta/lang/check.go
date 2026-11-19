@@ -2,6 +2,7 @@ package lang
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 )
 
@@ -133,12 +134,8 @@ func checkOp(op *Op, rt *Runtime, at func(Diagnostic)) {
 		}
 	}
 	if op.Timeout != "" {
-		i := 0
-		for i < len(op.Timeout) && op.Timeout[i] >= '0' && op.Timeout[i] <= '9' {
-			i++
-		}
-		if n, err := strconv.ParseInt(op.Timeout[:i], 10, 64); err != nil || n <= 0 {
-			at(Diagnostic{op.Line, op.Col, fmt.Sprintf("op %q: timeout must be > 0", op.Name)})
+		if _, err := parseDurationNS(op.Timeout); err != nil {
+			at(Diagnostic{op.Line, op.Col, fmt.Sprintf("op %q: %s", op.Name, err)})
 		}
 	}
 	if op.Retry != nil {
@@ -148,8 +145,10 @@ func checkOp(op *Op, rt *Runtime, at func(Diagnostic)) {
 				at(Diagnostic{o.Line, o.Col, fmt.Sprintf("op %q: retry on %s is never allowed", op.Name, o.Name)})
 			}
 		}
-		if op.Retry.Max < 1 {
-			at(Diagnostic{op.Retry.Line, op.Retry.Col, fmt.Sprintf("op %q: retry max must be >= 1", op.Name)})
+		if op.Retry.Max < 2 {
+			at(Diagnostic{op.Retry.Line, op.Retry.Col, fmt.Sprintf("op %q: retry max %d has no effect (must be >= 2 to retry)", op.Name, op.Retry.Max)})
+		} else if op.Retry.Max > maxRetryAttempts {
+			at(Diagnostic{op.Retry.Line, op.Retry.Col, fmt.Sprintf("op %q: retry max %d exceeds the cap of %d attempts", op.Name, op.Retry.Max, maxRetryAttempts)})
 		}
 		// ErrUnsafeRetry analog, reported after invalid-policy errors.
 		if op.Effect == "nonidempotent" {
@@ -190,6 +189,47 @@ func checkHandler(h *Handler, op *Op, at func(Diagnostic)) {
 			}
 		}
 	}
+}
+
+// maxRetryAttempts caps retry max: bounded retries are a contract, and an
+// unbounded count is a contract the language does not write down (D4).
+const maxRetryAttempts = 10
+
+// parseDurationNS parses a Herta duration literal (<int><unit>) into
+// nanoseconds, rejecting non-positive values and int64 overflow.
+func parseDurationNS(text string) (int64, error) {
+	i := 0
+	for i < len(text) && text[i] >= '0' && text[i] <= '9' {
+		i++
+	}
+	n, err := strconv.ParseInt(text[:i], 10, 64)
+	if err != nil {
+		return 0, fmt.Errorf("timeout %q does not fit int64", text)
+	}
+	if n <= 0 {
+		return 0, fmt.Errorf("timeout must be > 0")
+	}
+	var mult int64
+	switch text[i:] {
+	case "ns":
+		mult = 1
+	case "us":
+		mult = 1e3
+	case "ms":
+		mult = 1e6
+	case "s":
+		mult = 1e9
+	case "m":
+		mult = 60e9
+	case "h":
+		mult = 3600e9
+	default:
+		return 0, fmt.Errorf("unknown timeout unit %q", text[i:])
+	}
+	if n > math.MaxInt64/mult {
+		return 0, fmt.Errorf("timeout %q overflows int64 nanoseconds", text)
+	}
+	return n * mult, nil
 }
 
 func checkFailOutcome(h *Handler, outcome string, line, col int, at func(Diagnostic)) {

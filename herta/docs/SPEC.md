@@ -116,8 +116,13 @@ before unsafe-retry errors):
 - A `serialize key` naming a parameter **not in the signature** is an
   error; the parameter's type must be `string` (the keyed-mutex key).
 - `admission` values outside `wait|reject` are a parse error.
-- `timeout` must be **> 0**.
-- `retry max` must be **≥ 1**.
+- `timeout` must be **> 0** and, once converted to nanoseconds, **must fit
+  int64** (e.g. `timeout 99999999999h` is a compile error). A timeout that
+  overflowed would silently change meaning in generated Go.
+- `retry max` must be in **[2, 10]**: `max 1` is a vacuous retry that does
+  nothing, and counts above 10 are rejected (bounded retries are a contract;
+  stricter than hertasdk, which accepts any `MaxAttempts ≥ 1`).
+- Integer literals (`capacity`, `units`, `retry max`) must fit int64.
 - A `retry on` set containing `success`, `permanent`, or `throttled` is
   an `ErrInvalidRetryPolicy` analog.
 - `retry on { uncertain }` combined with `effect nonidempotent` is an
