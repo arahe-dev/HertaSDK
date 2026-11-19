@@ -1,0 +1,34 @@
+name: failure-semantics
+summary: "Outcome defaults and rendering: unclassified errors are Permanent and never retried; typed-nil Failure reads Permanent; Fail/OutcomeOf/Unwrap semantics; enum rendering."
+source: execution_test.go/TestUnclassifiedErrorIsPermanentAndNotRetried, execution_test.go/TestFailureContract, contract_test.go/TestContractTypedNilFailure, contract_test.go/TestContractRendering
+runtime:
+  resources: [{name: r, capacity: 1}]
+operations:
+  plain:
+    input: int
+    effect: Pure
+    retry: {max_attempts: 3, on: [Transient]}
+    handler: plain-error
+  typed-nil:
+    input: int
+    effect: Idempotent
+    requires: [{resource: r, units: 1}]
+    retry: {max_attempts: 3, on: [Transient, Uncertain]}
+    handler: typed-nil-failure
+steps:
+  - call: {op: plain, as: p}
+  - call: {op: typed-nil, as: tn}
+  # Pure-Fail API contract, asserted directly by the runner:
+  - check: fail-nil-is-nil            # Fail(Transient, nil) == nil
+  - check: unwrap-exposes-inner       # errors.Is(Fail(o, inner), inner)
+  - check: outcome-defaults           # OutcomeOf(nil)=Success, plain error=Permanent
+  - check: innermost-verdict-wins     # Fail(Permanent, Fail(Transient, e)) -> Transient
+  - check: rendering                  # Outcome/Effect/Resource String() tables
+
+expected:
+  results:
+    p: {outcome: Permanent, tagged: false}
+    tn: {outcome: Permanent}
+  checks: {fail-nil-is-nil: pass, unwrap-exposes-inner: pass, outcome-defaults: pass, innermost-verdict-wins: pass, rendering: pass}
+  calls: {plain: 1, typed-nil: 1}
+  stats: {Retried: 0}

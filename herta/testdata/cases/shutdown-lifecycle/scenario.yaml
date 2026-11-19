@@ -1,0 +1,42 @@
+name: shutdown-lifecycle
+summary: "Shutdown rejects new work, drains active calls, wakes queued waiters with ErrRuntimeStopping; an idle Shutdown beats an expired context; Finished==Admitted when Shutdown returns."
+source: execution_test.go/TestShutdownRejectsNewAndDrainsActive, TestShutdownWakesAdmissionWaiters, contract_test.go/TestContractShutdownWaitsForDrain, TestContractIdleShutdownBeatsExpiredContext, delta_test.go/TestDelta2FinishedVisibleWhenShutdownReturns (Δ2)
+runtime:
+  resources: [{name: db-write, capacity: 3}]
+operations:
+  work:
+    input: int
+    effect: Pure
+    requires: [{resource: db-write, units: 1}]
+    admission: Wait
+    handler: {block: gate-1, then: {return: 0}}
+steps:
+  # Idle runtime shutdown with an already-expired context succeeds.
+  - ctx: "expired = {cancelled: true}"
+  - shutdown: {ctx: expired, as: sd-idle}
+  - spawn: {op: work, as: a0}
+  - spawn: {op: work, as: a1}
+  - spawn: {op: work, as: a2}
+  - wait: {started: 3}
+  - spawn: {op: work, as: queued}            # parks on the full budget
+  - wait: {blocked: queued}
+  - shutdown: {as: sd, ctx: background}      # async: must wait for drain
+  - wait: {blocked: sd}
+  # New work is rejected while draining...
+  - call: {op: work, as: late}
+  # ...and the queued waiter is woken with stopping.
+  - join: queued
+  # Drained calls finish; then Shutdown returns.
+  - gate: gate-1 open
+  - join: all
+  - join: sd
+
+expected:
+  results:
+    sd-idle: {error: null}                          # idle shutdown ignores an expired ctx
+    queued: {error: ErrRuntimeStopping, outcome: Permanent}
+    late: {error: ErrRuntimeStopping, outcome: Permanent}
+    sd: {error: null}
+  calls: {work: 3}
+  stats: {Admitted: 3, Started: 3, Finished: 3, Rejected: 1}
+  stats_after_shutdown: {Finished_eq_Admitted: true}   # Δ2: at Shutdown()==nil, Finished==Admitted

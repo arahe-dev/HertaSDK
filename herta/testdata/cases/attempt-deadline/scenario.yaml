@@ -1,0 +1,36 @@
+name: attempt-deadline
+summary: Every attempt gets a fresh deadline; a plain error after the attempt deadline is Uncertain and retried; a result returned after the deadline is still returned.
+source: execution_test.go/TestFreshTimeoutPerAttempt, delta_test.go/TestDelta3PlainErrorAfterAttemptDeadlineIsRetried (Δ3), contract_test.go/TestContractEveryAttemptGetsAFreshDeadline, contract_test.go/TestContractLateResultIsReturned
+runtime:
+  resources: [{name: r, capacity: 1}]
+operations:
+  deadline-ignorer:
+    input: int
+    effect: Idempotent
+    timeout_ms: 20
+    retry: {max_attempts: 3, on: [Uncertain]}
+    handler: {block-ctx, then: plain-error}   # I/O-adapter style: ctx done -> plain error
+  deadline-ignorer-noretry:
+    input: int
+    effect: Idempotent
+    timeout_ms: 20
+    retry: {max_attempts: 3}                  # no On
+    handler: {block-ctx, then: plain-error}
+  late:
+    input: int
+    effect: Pure
+    timeout_ms: 20
+    handler: {block-ctx, then: {return: 42}}  # returns a value after the deadline
+steps:
+  - call: {op: deadline-ignorer, as: retried}
+  - call: {op: deadline-ignorer-noretry, as: once}
+  - call: {op: late, as: late-result}
+
+expected:
+  results:
+    retried: {outcome: Uncertain}           # plain error after attempt deadline -> Uncertain -> retried
+    once: {outcome: Uncertain}
+    late-result: {error: null, value: 42}   # a late result is still the result
+  per_result_calls: {retried: 3, once: 1}
+  attempt_spans: {retried: {min_fresh_deadline: true}}   # each attempt observed a ~full timeout budget
+  stats: {Retried: 3}

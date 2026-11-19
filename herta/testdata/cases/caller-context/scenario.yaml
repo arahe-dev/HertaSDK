@@ -1,0 +1,29 @@
+name: caller-context
+summary: "The caller's own deadline/cancel is Permanent and never retried; cancellation aborts the retry loop immediately."
+source: delta_test.go/TestDelta4CallerDeadlineIsPermanent (Δ4), execution_test.go/TestCallerCancellationAbortsRetryLoop
+runtime:
+  resources: [{name: r, capacity: 1}]
+operations:
+  op:
+    input: int
+    effect: Idempotent
+    timeout_ms: 1000
+    retry: {max_attempts: 3, on: [Uncertain]}
+    handler: {block-ctx, then: return-ctx-err}
+steps:
+  # Δ4: caller's own 10ms deadline beats a 1s attempt timeout.
+  - ctx: "d1 = {timeout_ms: 10}"
+  - call: {op: op, via_ctx: d1, as: deadline}
+  # Cancellation mid-attempt aborts the loop: attempt 2 never starts.
+  - ctx: "c1 = cancel"
+  - spawn: {op: op, via_ctx: c1, as: cancel-call}
+  - wait: {started: 2}
+  - cancel: c1
+  - join: cancel-call
+
+expected:
+  results:
+    deadline: {error_is: context.DeadlineExceeded, outcome: Permanent, tagged: false}
+    cancel-call: {error_is: context.Canceled, outcome: Permanent}
+  calls: {op: 2}   # one attempt each: neither caller-ended attempt was retried
+  stats: {Retried: 0}

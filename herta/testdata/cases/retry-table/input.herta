@@ -1,0 +1,20 @@
+// No retry clause retries nothing; NonIdempotent retries only transient.
+runtime main {
+    resource r capacity 1
+}
+
+op main::no_retry(n: int) -> int {
+    effect pure
+    resources { r units 1 }
+}
+handler main::no_retry(n: int) -> (int, error) {
+    fail transient, err("x")
+}
+
+op main::nonidempotent(n: int) -> int {
+    effect nonidempotent
+    retry max 3 on { transient }
+}
+handler main::nonidempotent(n: int) -> (int, error) {
+    fail transient, err("x")
+}

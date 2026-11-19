@@ -1,0 +1,33 @@
+name: construct-operation-invalid
+summary: NewOperation rejects unknown/zero/negative/over-capacity/duplicate requirements, empty names, nil handlers, nil runtimes.
+source: execution_test.go/TestNewOperationValidation
+runtime:
+  resources: [{name: r, capacity: 2}]
+steps:
+  - construct: {kind: operation, as: unknown-res, op:
+      {effect: Pure, requires: [{resource: nope, units: 1}], handler: {return: 0}}}
+  - construct: {kind: operation, as: zero-units, op:
+      {effect: Pure, requires: [{resource: r, units: 0}], handler: {return: 0}}}
+  - construct: {kind: operation, as: neg-units, op:
+      {effect: Pure, requires: [{resource: r, units: -1}], handler: {return: 0}}}
+  - construct: {kind: operation, as: over-cap, op:
+      {effect: Pure, requires: [{resource: r, units: 3}], handler: {return: 0}}}
+  - construct: {kind: operation, as: dup-res, op:
+      {effect: Pure, requires: [{resource: r, units: 1}, {resource: r, units: 1}], handler: {return: 0}}}
+  - construct: {kind: operation, as: empty-name, op:
+      {name: "", effect: Pure, handler: {return: 0}}}
+  - construct: {kind: operation, as: nil-handler, op:
+      {effect: Pure, handler: nil}}
+  - construct: {kind: operation, runtime: nil, as: nil-rt, op:
+      {effect: Pure, handler: {return: 0}}}
+
+expected:
+  results:
+    unknown-res: {error: true}
+    zero-units: {error: true}
+    neg-units: {error: true}
+    over-cap: {error: true}
+    dup-res: {error: true}
+    empty-name: {error: true}
+    nil-handler: {error: true}
+    nil-rt: {error: true}
