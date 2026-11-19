@@ -8,7 +8,7 @@ oracle.
 Layout follows the capped runner (`lang/hertatest`):
 
 ```
-herta/testdata/cases/<slug>/
+herta/conformance/cases/<slug>/
     input.herta     # the Herta program under test (required)
     expected.txt    # golden stdout of `herta check input.herta` (required)
     expected.exit   # present when the check must fail (optional)
