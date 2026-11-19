@@ -88,6 +88,25 @@ func (c *CallbackClient) Do(req *h.Request) {
 		}
 	})
 }
+func (c *SwitchClient) Do(req *h.Request) {
+	switch {
+	case req.Method == h.MethodPost, req.Method == h.MethodPatch:
+		c.HTTP.Do(req)
+		return
+	}
+	for attempt := 0; attempt < 4; attempt++ {
+		c.HTTP.Do(req)
+	}
+}
+func (c *OtherSwitchClient) Do(req *h.Request) { // RK002
+	switch {
+	case c.skip:
+		return
+	}
+	for attempt := 0; attempt < 4; attempt++ {
+		c.HTTP.Do(req)
+	}
+}
 func receiveWebhook(w h.ResponseWriter, req *h.Request) {
 	event := webhook.ConstructEvent(req)
 	queue.Publish(event) // RK003

@@ -161,14 +161,26 @@ func (s source) isRequestWrapper(expr ast.Expr) bool {
 }
 
 func (s source) methodGate(n ast.Node) bool {
-	var expr ast.Expr
 	switch n := n.(type) {
 	case *ast.IfStmt:
-		expr = n.Cond
+		return s.gateExpr(n.Cond)
 	case *ast.SwitchStmt:
-		expr = n.Tag
+		if n.Tag != nil {
+			return s.gateExpr(n.Tag)
+		}
+		for _, stmt := range n.Body.List {
+			for _, expr := range stmt.(*ast.CaseClause).List {
+				if s.gateExpr(expr) {
+					return true
+				}
+			}
+		}
 	}
-	return expr != nil && anyIn(expr, func(n ast.Node) bool {
+	return false
+}
+
+func (s source) gateExpr(expr ast.Expr) bool {
+	return anyIn(expr, func(n ast.Node) bool {
 		switch n := n.(type) {
 		case *ast.SelectorExpr:
 			return n.Sel.Name == "Method" || n.Sel.Name == "IdempotencyKey"
