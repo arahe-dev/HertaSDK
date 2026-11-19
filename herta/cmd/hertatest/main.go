@@ -1,10 +1,10 @@
 // Command hertatest runs the Herta golden-file suite: one fast command with
 // hard caps on case count and runtime.
 //
-//	hertatest -cases lang/testdata/cases -exec selftest
-//	hertatest -cases lang/testdata/cases -exec "go run ./lang/cmd/herta check {file} {args}"
+//	hertatest -cases herta/testdata/cases -exec selftest
+//	hertatest -cases herta/testdata/cases -exec "go run ./herta/cmd/herta check {file} {args}"
 //
-// -exec is a command template: {file} expands to the case's input.herta and
+// -exec is a command template: {file} expands to the case's input.he and
 // {args} to its args.txt. The literal value "selftest" selects the built-in
 // echo engine used until a real checker exists.
 package main
@@ -16,11 +16,11 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/arahe-dev/hertasdk/lang/hertatest"
+	"github.com/arahe-dev/hertasdk/herta/hertatest"
 )
 
 func main() {
-	cases := flag.String("cases", "lang/testdata/cases", "directory of case folders")
+	cases := flag.String("cases", "herta/testdata/cases", "directory of case folders")
 	execT := flag.String("exec", hertatest.Selftest, `check command template ({file}, {args}) or "selftest"`)
 	maxCases := flag.Int("max-cases", hertatest.DefaultLimits.MaxCases, "hard cap on case count")
 	caseTimeout := flag.Duration("case-timeout", hertatest.DefaultLimits.CaseTimeout, "per-case timeout")

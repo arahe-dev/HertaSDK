@@ -14,10 +14,10 @@ func writeCase(t *testing.T, dir, name, input, golden string) {
 	if err := os.MkdirAll(d, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(d, "input.herta"), []byte(input), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(d, "input.he"), []byte(input), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(d, "expected.txt"), []byte(golden), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(d, "expected.golden"), []byte(golden), 0o644); err != nil {
 		t.Fatal(err)
 	}
 }

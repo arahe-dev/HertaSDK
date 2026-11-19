@@ -3,10 +3,10 @@
 // agent friendly: one command, plain-text goldens, and hard limits that fail
 // the run before iteration can blow up CI.
 //
-// Layout of a case directory (lang/testdata/cases/<name>/):
+// Layout of a case directory (herta/testdata/cases/<name>/):
 //
-//	input.herta    source program under test (required)
-//	expected.txt   expected stdout of the check command (required)
+//	input.he    source program under test (required)
+//	expected.golden   expected stdout of the check command (required)
 //	expected.exit  expected exit code when non-zero (optional)
 //	args.txt       extra arguments appended to the command (optional)
 //	skip           file whose presence skips the case (optional)
@@ -46,17 +46,17 @@ var DefaultLimits = Limits{
 	MaxOutputSize: 1 << 20,
 }
 
-// Selftest is the built-in exec mode: it echoes input.herta to stdout, so the
+// Selftest is the built-in exec mode: it echoes input.he to stdout, so the
 // harness itself is exercised before a real checker exists. CI uses it until
-// lang/cmd/herta lands.
+// herta/cmd/herta lands.
 const Selftest = "selftest"
 
 // Case is one discovered test case.
 type Case struct {
 	Name    string
 	Dir     string
-	Input   string // path to input.herta
-	Golden  string // path to expected.txt
+	Input   string // path to input.he
+	Golden  string // path to expected.golden
 	Exit    string // path to expected.exit, "" if absent
 	Args    []string
 	Skipped bool
@@ -105,8 +105,8 @@ func Discover(dir string, lim Limits) ([]Case, error) {
 		c := Case{
 			Name:   e.Name(),
 			Dir:    caseDir,
-			Input:  filepath.Join(caseDir, "input.herta"),
-			Golden: filepath.Join(caseDir, "expected.txt"),
+			Input:  filepath.Join(caseDir, "input.he"),
+			Golden: filepath.Join(caseDir, "expected.golden"),
 		}
 		for _, f := range []string{c.Input, c.Golden} {
 			if _, err := os.Stat(f); err != nil {
