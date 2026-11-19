@@ -8,7 +8,7 @@ contracts as types, so a contract that `hertasdk.NewRuntime` /
 `hertasdk.NewOperation` would reject at run time is a **compile error** in
 Herta.
 
-This document is the normative spec for the grammar (`lang` package parser)
+This document is the normative spec for the grammar (the `lang` package parser)
 and the contract checker. It covers the language up to the contract boundary;
 Go code generation is specified separately.
 
@@ -139,6 +139,6 @@ the two aligned.
 
 ## 5. Golden files
 
-`lang/testdata/` holds one `.he` input and `.golden` expected output per
+`lang/testdata/` (relative to the language root) holds one `.he` input and `.golden` expected output per
 case (parse tree dump or diagnostic list). `go test ./lang/...` compares
 byte-for-byte; `-update` regenerates. One command, no fixtures elsewhere.

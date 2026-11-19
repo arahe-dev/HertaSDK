@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/arahe-dev/hertasdk/lang"
+	"github.com/arahe-dev/hertasdk/herta/lang"
 )
 
 func main() {
