@@ -1,0 +1,3 @@
+2:1: HC006 path main::a -> main::b: retry attempt product exceeds budget 10; reduce retry max or set the outermost budget
+2:1: HC007 path main::a -> main::b: callee timeout exceeds inherited timeout from main::a; shorten callee timeout or increase caller timeout
+2:1: HC008 path main::a -> main::cleanup: non-pure detached work drops cancellation from main::a; declare detached for <owner> or propagate cancellation

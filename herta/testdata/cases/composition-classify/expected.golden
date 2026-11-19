@@ -1,0 +1,5 @@
+3:1: HC010 path main::a: transient arm precedes uncertain arm; put uncertain arms first for joined errors
+3:1: HC009 path main::a: classification has no _ arm; add _ => permanent
+3:1: HC005 path main::a: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes
+3:1: HC011 path main::a: ambiguous error (or _) classified transient with nonidempotent effect; classify it uncertain or permanent
+9:1: HC011 path main::b: ambiguous error (or _) classified transient with nonidempotent effect; classify it uncertain or permanent

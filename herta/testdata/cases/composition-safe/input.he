@@ -1,0 +1,27 @@
+runtime main { resource db capacity 8 }
+error ErrCommitted ambiguous
+op main::a(id: string) -> u64 {
+    effect nonidempotent
+    dedupe key id
+    retry max 4 on { uncertain }
+    budget 12
+    serialize key id
+    lock ledger
+    timeout 20ms
+    resources { db units 3 }
+    classify { ErrCommitted => uncertain, _ => permanent }
+    calls cleanup
+}
+handler main::a(id: string) -> (u64, error) {
+    call b(id)
+}
+op main::b(order: string) -> u64 {
+    effect nonidempotent
+    dedupe key order
+    retry max 3 on { uncertain }
+    timeout 10ms
+    resources { db units 5 }
+}
+handler main::b(order: string) -> (u64, error) { return 0, nil }
+op main::cleanup() -> u64 { effect nonidempotent detached for cleanup }
+handler main::cleanup() -> (u64, error) { return 0, nil }

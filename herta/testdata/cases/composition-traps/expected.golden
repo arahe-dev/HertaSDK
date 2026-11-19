@@ -1,0 +1,3 @@
+9:1: HC001 path main::transfer -> main::debit: serialize key reacquired while held by main::transfer; release the caller key or use a distinct key namespace
+18:1: HC004 path main::checkout -> main::charge: declared idempotent has effective effect nonidempotent; declare nonidempotent or remove the effectful call
+18:1: HC005 path main::checkout -> main::charge: retry can replay an effective nonidempotent effect; add dedupe key <param> or stop retrying uncertain/ambiguous outcomes

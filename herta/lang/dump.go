@@ -11,6 +11,8 @@ func Dump(prog *Program) string {
 	var b strings.Builder
 	for _, d := range prog.Decls {
 		switch d := d.(type) {
+		case *ErrorDecl:
+			fmt.Fprintf(&b, "error %s ambiguous\n", d.Name)
 		case *Runtime:
 			fmt.Fprintf(&b, "runtime %s\n", d.Name)
 			for _, r := range d.Resources {
@@ -46,6 +48,39 @@ func Dump(prog *Program) string {
 					on = append(on, o.Name)
 				}
 				fmt.Fprintf(&b, "  retry max %d on {%s}\n", d.Retry.Max, strings.Join(on, ", "))
+			}
+			if len(d.Calls) > 0 {
+				fmt.Fprintf(&b, "  calls %s\n", strings.Join(d.Calls, ", "))
+			}
+			for _, l := range d.Locks {
+				fmt.Fprintf(&b, "  lock %s", l.Name)
+				if l.Shared {
+					b.WriteString(" shared")
+				}
+				b.WriteByte('\n')
+			}
+			if d.Dedupe != "" {
+				fmt.Fprintf(&b, "  dedupe key %s\n", d.Dedupe)
+			}
+			if d.Detached {
+				b.WriteString("  detached")
+				if d.Owner != "" {
+					fmt.Fprintf(&b, " for %s", d.Owner)
+				}
+				b.WriteByte('\n')
+			}
+			if d.Budget != 0 {
+				fmt.Fprintf(&b, "  budget %d\n", d.Budget)
+			}
+			if d.Classify != nil {
+				b.WriteString("  classify {")
+				for i, a := range d.Classify {
+					if i > 0 {
+						b.WriteString(", ")
+					}
+					fmt.Fprintf(&b, "%s => %s", a.Error, a.Outcome)
+				}
+				b.WriteString("}\n")
 			}
 		case *Handler:
 			fmt.Fprintf(&b, "handler %s::%s -> (%s)\n", d.Runtime, d.Name, strings.Join(d.Results, ", "))

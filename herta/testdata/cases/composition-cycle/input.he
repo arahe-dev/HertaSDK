@@ -1,0 +1,5 @@
+runtime main { resource db capacity 8 }
+op main::a(id: string) -> u64 { effect pure serialize key id calls b }
+handler main::a(id: string) -> (u64, error) { return 0, nil }
+op main::b(id: string) -> u64 { effect pure calls a }
+handler main::b(id: string) -> (u64, error) { return 0, nil }

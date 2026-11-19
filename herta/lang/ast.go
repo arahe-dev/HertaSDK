@@ -36,8 +36,32 @@ type Op struct {
 	Timeout   string // duration literal text, "" if unset
 	Key       string // serialize key param name, "" if unset
 	Retry     *RetryDecl
+	Calls     []string
+	Locks     []LockDecl
+	Dedupe    string
+	Detached  bool
+	Owner     string
+	Budget    int64
+	Classify  []ClassifyArm
 	Line, Col int
 }
+
+type LockDecl struct {
+	Name   string
+	Shared bool
+}
+
+type ClassifyArm struct {
+	Error   string
+	Outcome string
+}
+
+type ErrorDecl struct {
+	Name      string
+	Line, Col int
+}
+
+func (*ErrorDecl) declNode() {}
 
 type OpResource struct {
 	Name      string

@@ -1,0 +1,3 @@
+2:1: HC002 path main::a -> main::b -> main::c: lock mu reacquired: recursive RLock writer-starvation deadlock; release the caller lock or remove nested acquisition
+2:1: HC002 path main::a -> main::b -> main::c: lock exclusive reacquired: exclusive self-deadlock; release the caller lock or remove nested acquisition
+2:1: HC003 path main::a -> main::b -> main::c: held resource db units 9 exceed capacity 8; release caller units or increase capacity

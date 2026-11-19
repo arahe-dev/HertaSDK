@@ -1,0 +1,16 @@
+runtime main { resource db capacity 8 }
+op main::a() -> u64 {
+    effect nonidempotent
+    timeout 10ms
+    retry max 4 on { transient }
+    calls b, cleanup
+}
+handler main::a() -> (u64, error) { return 0, nil }
+op main::b() -> u64 {
+    effect pure
+    timeout 20ms
+    retry max 3 on { transient }
+}
+handler main::b() -> (u64, error) { return 0, nil }
+op main::cleanup() -> u64 { effect nonidempotent detached }
+handler main::cleanup() -> (u64, error) { return 0, nil }

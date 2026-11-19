@@ -65,6 +65,7 @@ func Check(prog *Program) []Diagnostic {
 			checkHandler(d, ops[d.Runtime+"::"+d.Name], at)
 		}
 	}
+	checkComposition(prog, ops, rts, at)
 	return diags
 }
 
@@ -152,7 +153,7 @@ func checkOp(op *Op, rt *Runtime, at func(Diagnostic)) {
 			at(Diagnostic{op.Retry.Line, op.Retry.Col, fmt.Sprintf("op %q: retry max must be >= 1", op.Name)})
 		}
 		// ErrUnsafeRetry analog, reported after invalid-policy errors.
-		if op.Effect == "nonidempotent" {
+		if op.Effect == "nonidempotent" && op.Dedupe == "" {
 			for _, o := range op.Retry.On {
 				if o.Name == "uncertain" {
 					at(Diagnostic{o.Line, o.Col, fmt.Sprintf("op %q: retrying uncertain outcomes is unsafe for effect nonidempotent", op.Name)})

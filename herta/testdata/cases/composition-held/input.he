@@ -1,0 +1,18 @@
+runtime main { resource db capacity 8 }
+op main::a() -> u64 {
+    effect pure
+    lock mu shared
+    lock exclusive
+    resources { db units 4 }
+    calls b
+}
+handler main::a() -> (u64, error) { return 0, nil }
+op main::b() -> u64 { effect pure calls c }
+handler main::b() -> (u64, error) { return 0, nil }
+op main::c() -> u64 {
+    effect pure
+    lock mu shared
+    lock exclusive shared
+    resources { db units 5 }
+}
+handler main::c() -> (u64, error) { return 0, nil }

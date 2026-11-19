@@ -1,0 +1,13 @@
+runtime main { resource db capacity 8 }
+error ErrCommitted ambiguous
+op main::a() -> u64 {
+    effect nonidempotent
+    retry max 2 on { transient }
+    classify { ErrCommitted => transient, ErrOther => uncertain }
+}
+handler main::a() -> (u64, error) { return 0, nil }
+op main::b() -> u64 {
+    effect nonidempotent
+    classify { _ => transient }
+}
+handler main::b() -> (u64, error) { return 0, nil }

@@ -62,6 +62,16 @@ func (p *parser) decl() (Decl, error) {
 		return p.opDecl()
 	case "handler":
 		return p.handlerDecl()
+	case "error":
+		kw := p.adv()
+		n, err := p.ident("error name")
+		if err != nil {
+			return nil, err
+		}
+		if err := p.word("ambiguous"); err != nil {
+			return nil, err
+		}
+		return &ErrorDecl{Name: n.Text, Line: kw.Line, Col: kw.Col}, nil
 	}
 	return nil, p.errf("unknown declaration %q", t.Text)
 }
@@ -183,11 +193,15 @@ func (p *parser) opDecl() (*Op, error) {
 		if t.Kind != TokIdent {
 			return nil, p.errf("expected contract clause, got %s", t.String())
 		}
-		if seen[t.Text] {
+		if seen[t.Text] && t.Text != "lock" {
 			return nil, p.errf("duplicate %q clause", t.Text)
 		}
 		seen[t.Text] = true
 		switch t.Text {
+		case "calls", "lock", "dedupe", "detached", "budget", "classify":
+			if err := p.compositionClause(op); err != nil {
+				return nil, err
+			}
 		case "effect":
 			p.adv()
 			v, err := p.ident("effect value")

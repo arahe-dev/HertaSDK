@@ -133,15 +133,88 @@ before unsafe-retry errors):
   (`success` is a compile error — you cannot fail successfully), wherever
   the `fail` statement appears in the body.
 
-## 4. What is not checked
+## 4. Composition prototype (checker only)
 
-Herta does not check handler bodies beyond arity and the `fail` form.
+The prototype additionally accepts these op-block clauses, in any order:
+
+```
+calls a, b
+lock ledger
+lock cache shared
+dedupe key request_id
+detached
+detached for cleanup // also shutdown or background
+budget 20
+classify { ErrCommitted => uncertain, ErrBusy => transient, _ => permanent }
+```
+
+`lock` may repeat for different locks; other clauses occur at most once.
+`dedupe key` must name an input parameter and asserts replay safety; it does
+not implement storage. `budget` is a positive int64 attempt-product limit;
+only the outermost op's override applies (default 10). Retry `max` continues
+to mean total attempts, not additional retries. Classifier arms are ordered,
+first match wins, with `_` matching anything; allowed classes are the existing
+outcomes. A top-level `error ErrCommitted ambiguous` declares that the error
+may occur after commit. Classification and dedupe assertions are checker
+metadata, not a generated runtime implementation.
+
+Handler `call debit(user)` records a positional call edge. Raw Go calls on
+an op-typed parameter, e.g. `debit: debitOp` followed by
+`debit.Do(ctx, MainDebitInput{User: user})`, also record edges, tolerating
+arbitrary whitespace and multiline calls. `calls debit` supplies edges for
+opaque bodies. Callees resolve in the caller's runtime. Calls are conservative:
+branches are all considered reachable, with no general Go type/alias analysis.
+Quoted strings and comments do not create edges. Explicit `call` syntax is
+checker-only; the Go generator does not lower it.
+
+Serialize namespaces are **runtime + key parameter name** by default. Simple
+identifier forwarding in positional `call` arguments or Go input struct fields
+(case/underscore-insensitive field names) preserves a caller parameter's
+namespace even if the callee parameter is renamed. Reentering the identical
+op is always unsafe. No prefix-expression inference or arbitrary Go dataflow
+is attempted. Named locks are process-wide. Resources are runtime-scoped;
+units are summed along a nested call path, not across sequential siblings.
+
+Every op is checked as a possible entry point. Effective effects propagate
+through calls. Ancestor deadlines propagate until an explicitly detached
+boundary. Every call is assumed to pass a potentially cancellable context;
+thus any unowned, non-pure detached callee is rejected even when the caller
+has no declared timeout. Owned detached operations opt out of inherited
+deadlines, but do not release ancestor locks or resource units.
+
+Composition diagnostics include a call path and remediation:
+
+| Code | Rejection |
+| --- | --- |
+| HC001 | Serialize-key reacquisition |
+| HC002 | Lock reacquisition (shared/shared warns of writer-starvation deadlock) |
+| HC003 | Nested resource units exceed capacity |
+| HC004 | Pure/idempotent declaration hides a nonidempotent effective effect |
+| HC005 | Unsafe retries of propagated nonidempotent effects or classified ambiguous errors |
+| HC006 | Retry attempt product exceeds outermost budget |
+| HC007 | Callee timeout exceeds an inherited deadline |
+| HC008 | Unowned non-pure detached callee drops cancellation |
+| HC009 | Classification lacks `_` fallback |
+| HC010 | Transient arm precedes uncertain arm (joined-error hazard) |
+| HC011 | Ambiguous error or `_` mapped transient with nonidempotent effect |
+| HC012 | Call cycle (traversal stops at the repeated op) |
+| HC013 | Unresolved callee |
+| HC014 | Dedupe key is not an input parameter |
+| HC015 | Traversal exceeds 10,000 path visits from an entry point |
+
+The preexisting local nonidempotent/uncertain diagnostic remains unchanged
+for compatibility; a valid dedupe assertion suppresses that local rejection.
+Cycles also participate in effect propagation before path traversal stops.
+
+## 5. What is not checked
+
+Outside the composition forms above, Herta does not type-check handler Go.
 Everything else — serialization bounds, allocation budgets, drain behavior —
 is runtime semantics owned by `hertasdk`, not the language. The conformance
 harness (separate PR) ports hertasdk's test suite as Herta programs to keep
 the two aligned.
 
-## 5. Golden files
+## 6. Golden files
 
 `lang/testdata/` (relative to the language root) holds one `.he` input and `.golden` expected output per
 case (parse tree dump or diagnostic list). `go test ./lang/...` compares
