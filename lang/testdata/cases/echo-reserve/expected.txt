@@ -1,0 +1,3 @@
+op transfer() -> () requires workers: 1 {
+    reserve workers
+}
