@@ -1,3 +1,4 @@
+12:1: handler "main::op1" declared twice
 7:1: handler "op1": param 0 is user_id:u64, op declares user_id:string
-8:5: handler "op1": cannot fail with outcome success
-10:1: handler "main::ghost": no matching op declared
+9:9: handler "op1": cannot fail with outcome success
+14:1: handler "main::ghost": no matching op declared

@@ -23,7 +23,8 @@ func Check(prog *Program) []Diagnostic {
 	at := func(d Diagnostic) { diags = append(diags, d) }
 
 	rts := map[string]*Runtime{}
-	ops := map[string]*Op{} // "runtime::name"
+	ops := map[string]*Op{}       // "runtime::name"
+	handlers := map[string]bool{} // ops that have a handler
 
 	for _, d := range prog.Decls {
 		switch d := d.(type) {
@@ -40,6 +41,13 @@ func Check(prog *Program) []Diagnostic {
 				continue
 			}
 			ops[key] = d
+		case *Handler:
+			key := d.Runtime + "::" + d.Name
+			if handlers[key] {
+				at(Diagnostic{d.Line, d.Col, fmt.Sprintf("handler %q declared twice", key)})
+				continue
+			}
+			handlers[key] = true
 		}
 	}
 
@@ -49,6 +57,10 @@ func Check(prog *Program) []Diagnostic {
 			checkRuntime(d, at)
 		case *Op:
 			checkOp(d, rts[d.Runtime], at)
+			key := d.Runtime + "::" + d.Name
+			if !handlers[key] && rts[d.Runtime] != nil {
+				at(Diagnostic{d.Line, d.Col, fmt.Sprintf("op %q has no handler", key)})
+			}
 		case *Handler:
 			checkHandler(d, ops[d.Runtime+"::"+d.Name], at)
 		}

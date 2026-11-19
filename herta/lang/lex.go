@@ -186,7 +186,7 @@ func (l *lexer) step() {
 			l.next()
 			l.pushAt(TokArrow, "->", line, col)
 		} else {
-			l.failf("expected -> after -")
+			l.pushAt(TokSym, "-", line, col)
 		}
 	default:
 		// Operators and other punctuation (handler bodies only).

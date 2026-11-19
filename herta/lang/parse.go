@@ -354,11 +354,17 @@ func (p *parser) handlerDecl() (*Handler, error) {
 	if _, err := p.expect(TokLBrace, "{"); err != nil {
 		return nil, err
 	}
-	// Body: statements separated by newline (token line changes). `fail`
+	// Body: one statement per source line. A line starting with `fail`
 	// is the only contract-relevant statement; the rest are opaque text.
-	for p.cur().Kind != TokRBrace && p.cur().Kind != TokEOF {
-		line, col := p.cur().Line, p.cur().Col
-		if p.cur().Kind == TokIdent && p.cur().Text == "fail" {
+	// Braces open nested blocks whose lines are statements too.
+	depth := 0
+	for {
+		t := p.cur()
+		if t.Kind == TokEOF || (t.Kind == TokRBrace && depth == 0) {
+			break
+		}
+		line, col := t.Line, t.Col
+		if t.Kind == TokIdent && t.Text == "fail" {
 			p.adv()
 			o, err := p.ident("fail outcome")
 			if err != nil {
@@ -369,36 +375,36 @@ func (p *parser) handlerDecl() (*Handler, error) {
 			}
 			var b strings.Builder
 			startLine := p.cur().Line
-			for p.cur().Kind != TokRBrace && p.cur().Kind != TokEOF && p.cur().Line == startLine {
+			for p.cur().Kind != TokEOF && p.cur().Line == startLine {
+				tok := p.cur()
+				if tok.Kind == TokLBrace {
+					depth++
+				}
+				if tok.Kind == TokRBrace {
+					depth--
+				}
 				if b.Len() > 0 {
 					b.WriteByte(' ')
 				}
-				b.WriteString(p.adv().Text)
+				b.WriteString(tokText(p.adv()))
 			}
 			h.Body = append(h.Body, &FailStmt{Outcome: o.Text, Arg: b.String(), Line: line, Col: col})
 			continue
 		}
 		var b strings.Builder
-		startLine := p.cur().Line
-		depth := 0
-		for p.cur().Kind != TokEOF {
-			t := p.cur()
-			if depth == 0 && t.Kind == TokRBrace {
-				break
-			}
-			if depth == 0 && t.Line != startLine {
-				break
-			}
-			if t.Kind == TokLBrace {
+		startLine := t.Line
+		for p.cur().Kind != TokEOF && p.cur().Line == startLine {
+			tok := p.cur()
+			if tok.Kind == TokLBrace {
 				depth++
 			}
-			if t.Kind == TokRBrace {
+			if tok.Kind == TokRBrace {
 				depth--
 			}
 			if b.Len() > 0 {
 				b.WriteByte(' ')
 			}
-			b.WriteString(p.adv().Text)
+			b.WriteString(tokText(p.adv()))
 		}
 		h.Body = append(h.Body, &RawStmt{Text: b.String(), Line: line, Col: col})
 	}
@@ -406,4 +412,13 @@ func (p *parser) handlerDecl() (*Handler, error) {
 		return nil, err
 	}
 	return h, nil
+}
+
+// tokText returns the token's source text; strings keep their quotes so
+// preserved handler statements survive a round trip.
+func tokText(t Tok) string {
+	if t.Kind == TokString {
+		return strconv.Quote(t.Text)
+	}
+	return t.Text
 }

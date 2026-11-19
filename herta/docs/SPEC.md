@@ -124,10 +124,14 @@ before unsafe-retry errors):
   `ErrUnsafeRetry` analog.
 
 **Handler checks**
-- A `handler` for an undeclared `op` is an error.
+- An `op` with **no handler** is an error — an operation cannot be
+  constructed without its body.
+- A `handler` for an undeclared `op`, or a second handler for the same
+  `op`, is an error.
 - Handler signature must equal the op signature plus `error`.
 - `fail <outcome>` accepts `transient|uncertain|permanent|throttled`
-  (`success` is a compile error — you cannot fail successfully).
+  (`success` is a compile error — you cannot fail successfully), wherever
+  the `fail` statement appears in the body.
 
 ## 4. What is not checked
 
