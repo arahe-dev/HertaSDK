@@ -1,0 +1,6 @@
+runtime main {
+    resource db capacity 16
+}
+op main::charge(user_id: string) -> receipt {
+    resources { db units 1 }
+}

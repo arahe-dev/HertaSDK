@@ -1,0 +1,4 @@
+6:17: op "op1": units 5 for "db" exceed capacity 2
+6:29: op "op1": resource "missing" not declared on runtime "main"
+6:46: op "op1": resource "db" listed twice
+4:1: op "main::op1" has no handler

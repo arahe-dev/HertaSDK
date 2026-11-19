@@ -1,0 +1,18 @@
+runtime main {
+    resource db capacity 4
+}
+op main::op1() -> r {
+    effect pure
+    retry max 1 on { transient }
+    resources { db units 1 }
+}
+handler main::op1() -> (r, error) {
+    return r, nil
+}
+op main::op2() -> r {
+    effect pure
+    retry max 1000000 on { transient }
+}
+handler main::op2() -> (r, error) {
+    return r, nil
+}

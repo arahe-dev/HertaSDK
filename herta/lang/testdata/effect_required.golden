@@ -1,0 +1,2 @@
+4:1: op "charge": effect is required (pure|idempotent|nonidempotent)
+4:1: op "main::charge" has no handler
