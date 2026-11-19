@@ -3,9 +3,11 @@
 //	herta check <file.he>          parse + contract-check, print diagnostics
 //	herta ast <file.he>            print the parsed AST dump (golden format)
 //	herta build [-pkg name] <file.he>   compile to Go calling hertasdk, on stdout
+//	herta trust [-closed] [-json] [-strict] <file.he>   print transitive trust assumptions
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -16,10 +18,44 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "usage: herta check|ast|build [-pkg name] <file.he>")
+		fmt.Fprintln(os.Stderr, "usage: herta check|ast|build|trust [flags] <file.he>")
 		os.Exit(2)
 	}
 	switch os.Args[1] {
+	case "trust":
+		fs := flag.NewFlagSet("trust", flag.ExitOnError)
+		closed := fs.Bool("closed", false, "model closed-world build mode")
+		asJSON := fs.Bool("json", false, "print machine-readable trust assumptions")
+		strict := fs.Bool("strict", false, "fail if any required trust assumption remains")
+		fs.Parse(os.Args[2:])
+		if fs.NArg() != 1 {
+			fmt.Fprintln(os.Stderr, "usage: herta trust [-closed] [-json] [-strict] <file.he>")
+			os.Exit(2)
+		}
+		src, err := os.ReadFile(fs.Arg(0))
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "herta:", err)
+			os.Exit(2)
+		}
+		prog, err := lang.Parse(string(src))
+		if err != nil {
+			fmt.Fprintln(os.Stdout, err)
+			os.Exit(1)
+		}
+		report := lang.Trust(prog, *closed)
+		if *asJSON {
+			enc := json.NewEncoder(os.Stdout)
+			enc.SetIndent("", "  ")
+			if err := enc.Encode(report); err != nil {
+				fmt.Fprintln(os.Stderr, "herta:", err)
+				os.Exit(2)
+			}
+		} else {
+			fmt.Print(lang.DumpTrust(report))
+		}
+		if *strict && lang.TrustRequired(report) {
+			os.Exit(1)
+		}
 	case "check", "ast":
 		fs := flag.NewFlagSet(os.Args[1], flag.ExitOnError)
 		closed := fs.Bool("closed", false, "enforce closed-world contracts")
@@ -94,7 +130,7 @@ func main() {
 		}
 		fmt.Print(out)
 	default:
-		fmt.Fprintln(os.Stderr, "usage: herta check|ast|build [-pkg name] <file.he>")
+		fmt.Fprintln(os.Stderr, "usage: herta check|ast|build|trust [flags] <file.he>")
 		os.Exit(2)
 	}
 }

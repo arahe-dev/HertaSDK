@@ -1,0 +1,2 @@
+main::a
+  trust: opaque-handler only [required; T1,T4_composition]
