@@ -192,8 +192,10 @@ func execCase(ctx context.Context, c Case, tmpl string, lim Limits) ([]byte, err
 			expanded = append(expanded, c.Args...)
 			continue
 		}
-		f = strings.ReplaceAll(f, "{file}", c.Input)
+		// Expand {args} before {file} so a literal "{args}" inside the
+		// input path is never rescanned as a placeholder.
 		f = strings.ReplaceAll(f, "{args}", strings.Join(c.Args, " "))
+		f = strings.ReplaceAll(f, "{file}", c.Input)
 		expanded = append(expanded, f)
 	}
 	cmd := exec.CommandContext(cctx, expanded[0], expanded[1:]...)
