@@ -1,0 +1,20 @@
+[
+  {
+    "op": "main::a",
+    "assumptions": [
+      {
+        "kind": "opaque-handler",
+        "required": true,
+        "theorems": [
+          "T1",
+          "T4_composition"
+        ],
+        "origin": "main::a",
+        "via": [
+          "main::a"
+        ],
+        "detail": "handler expressions and helpers are unchecked Go; effects and declared calls must be honest"
+      }
+    ]
+  }
+]

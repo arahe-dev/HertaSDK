@@ -1,0 +1,8 @@
+main::a
+  trust: nested-retry-amplification [required; T4_composition] via main::a: retry may replay nonidempotent callee along main::a -> main::b
+  trust: opaque-handler [required; T1,T4_composition] via main::a: handler expressions and helpers are unchecked Go; effects and declared calls must be honest
+  trust: opaque-handler [required; T1,T4_composition] via main::a -> main::b: handler expressions and helpers are unchecked Go; effects and declared calls must be honest
+  trust: transient-honest [required; T1] via main::a -> main::b: every Transient-classified attempt must have applied no effect (potential raw-Go tags in legacy mode)
+main::b
+  trust: opaque-handler [required; T1,T4_composition] via main::b: handler expressions and helpers are unchecked Go; effects and declared calls must be honest
+  trust: transient-honest [required; T1] via main::b: every Transient-classified attempt must have applied no effect (potential raw-Go tags in legacy mode)

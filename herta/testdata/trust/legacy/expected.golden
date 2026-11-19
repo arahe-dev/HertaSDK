@@ -1,0 +1,4 @@
+main::a
+  trust: legacy-tag-path [required; T2,T5] via main::a: handler tags win over own-deadline promotion; closed Policy.Classify is not installed
+  trust: opaque-handler [required; T1,T4_composition] via main::a: handler expressions and helpers are unchecked Go; effects and declared calls must be honest
+  trust: transient-honest [required; T1] via main::a: every Transient-classified attempt must have applied no effect (potential raw-Go tags in legacy mode)
