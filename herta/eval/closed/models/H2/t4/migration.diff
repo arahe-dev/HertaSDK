@@ -1,0 +1,13 @@
+--- H2/t4/original.he
++++ H2/t4/migrated.he
+@@ -7,7 +7,9 @@
+ handler main::credit(svc: servicePtr, user: string, cents: u64) -> (Unit, error) {
+ return Unit{}, svc.b.Credit(ctx, user, cents)
+ }
+-op main::transfer(svc: servicePtr, lock: string, from: string, cents: u64) -> Unit { effect nonidempotent admission wait serialize key lock }
++op main::transfer(svc: servicePtr, lock: string, from: string, cents: u64) -> Unit { effect nonidempotent admission wait serialize key lock 
++    calls debit
++}
+ handler main::transfer(svc: servicePtr, lock: string, from: string, cents: u64) -> (Unit, error) {
+ return Unit{}, svc.transferHost(ctx, lock, from, cents)
+ }

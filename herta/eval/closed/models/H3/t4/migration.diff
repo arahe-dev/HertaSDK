@@ -1,0 +1,13 @@
+--- H3/t4/original.he
++++ H3/t4/migrated.he
+@@ -18,7 +18,9 @@
+ // Transfer claims no units: its nested debit and credit wait for db, and
+ // holding units while waiting for more could deadlock under load. It never
+ // retries.
+-op main::transfer(svc: servicePtr, from: string, to: string, from_key: string, cents: u64) -> Unit { effect nonidempotent admission wait serialize key from_key }
++op main::transfer(svc: servicePtr, from: string, to: string, from_key: string, cents: u64) -> Unit { effect nonidempotent admission wait serialize key from_key 
++    calls debit, credit
++}
+ handler main::transfer(svc: servicePtr, from: string, to: string, from_key: string, cents: u64) -> (Unit, error) {
+ _ = from_key
+ return Unit{}, svc.transferHost(ctx, from, to, cents)

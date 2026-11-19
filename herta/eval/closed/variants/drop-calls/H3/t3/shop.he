@@ -1,0 +1,23 @@
+runtime main { resource db capacity 8 resource network capacity 4 }
+op main::charge(svc: servicePtr, user: string, cents: u64) -> Receipt { effect nonidempotent admission wait resources { db units 1, network units 1 } timeout 500ms retry max 3 on { transient } 
+    classify { ErrUnavailable => transient, ErrTimeout => uncertain, _ => permanent }
+}
+handler main::charge(svc: servicePtr, user: string, cents: u64) -> (Receipt, error) {
+return svc.chargeHost(ctx, user, cents)
+}
+// Reservation is idempotent, so timeouts (uncertain) are safe to retry too.
+op main::reserve(svc: servicePtr, user: string, sku: string) -> Unit { effect idempotent admission wait resources { db units 1, network units 1 } retry max 3 on { transient, uncertain } 
+    classify { ContextCanceled => permanent, ContextDeadlineExceeded => permanent, ErrTimeout => uncertain, ErrUnavailable => transient, _ => permanent }
+}
+handler main::reserve(svc: servicePtr, user: string, sku: string) -> (Unit, error) {
+return Unit{}, svc.reserveHost(ctx, user, sku)
+}
+// Checkout composes reserve and charge. It claims no units itself (its
+// nested calls would otherwise wait for capacity while holding some) and
+// never retries, so one checkout runs the charge operation at most once.
+op main::checkout(svc: servicePtr, user: string, sku: string, cents: u64) -> Receipt { effect nonidempotent admission wait 
+    calls charge
+}
+handler main::checkout(svc: servicePtr, user: string, sku: string, cents: u64) -> (Receipt, error) {
+return svc.checkoutHost(ctx, user, sku, cents)
+}

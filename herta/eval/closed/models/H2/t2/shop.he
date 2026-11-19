@@ -1,0 +1,5 @@
+runtime main { resource db capacity 8 resource network capacity 4 }
+op main::refund(svc: servicePtr, order_key: string, order_id: int64, cents: u64) -> Unit { effect nonidempotent admission wait resources { db units 1, network units 1 } serialize key order_key }
+handler main::refund(svc: servicePtr, order_key: string, order_id: int64, cents: u64) -> (Unit, error) {
+return Unit{}, svc.refundHost(ctx, order_key, order_id, cents)
+}

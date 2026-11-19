@@ -1,0 +1,27 @@
+runtime main { resource db capacity 8 resource network capacity 4 }
+// All keys share the runtime's key space, and account IDs are arbitrary
+// strings, so each op serializes on a prefixed key: user_key is
+// "user:"+user and from_key is "transfer:"+from. The prefixes keep the two
+// namespaces disjoint (a transfer can never wait on its own key through a
+// nested debit/credit) and make the empty account ID serialize too
+// (hertasdk ignores an empty key).
+op main::debit(svc: servicePtr, user: string, user_key: string, cents: u64) -> Unit { effect nonidempotent admission wait resources { db units 1 } serialize key user_key }
+handler main::debit(svc: servicePtr, user: string, user_key: string, cents: u64) -> (Unit, error) {
+_ = user_key
+return Unit{}, svc.b.Debit(ctx, user, cents)
+}
+op main::credit(svc: servicePtr, user: string, user_key: string, cents: u64) -> Unit { effect nonidempotent admission wait resources { db units 1 } serialize key user_key }
+handler main::credit(svc: servicePtr, user: string, user_key: string, cents: u64) -> (Unit, error) {
+_ = user_key
+return Unit{}, svc.b.Credit(ctx, user, cents)
+}
+// Transfer claims no units: its nested debit and credit wait for db, and
+// holding units while waiting for more could deadlock under load. It never
+// retries.
+op main::transfer(svc: servicePtr, from: string, to: string, from_key: string, cents: u64) -> Unit { effect nonidempotent admission wait serialize key from_key 
+    calls debit, credit
+}
+handler main::transfer(svc: servicePtr, from: string, to: string, from_key: string, cents: u64) -> (Unit, error) {
+_ = from_key
+return Unit{}, svc.transferHost(ctx, from, to, cents)
+}

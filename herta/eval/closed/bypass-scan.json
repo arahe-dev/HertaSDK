@@ -1,0 +1,292 @@
+[
+  {
+    "run": "H1",
+    "task": "t1",
+    "hits": [
+      {
+        "file": "inputs/H1/t1/glue.go",
+        "line": 17,
+        "text": "r, err := s.b.Charge(ctx, user, cents)"
+      }
+    ]
+  },
+  {
+    "run": "H1",
+    "task": "t2",
+    "hits": [
+      {
+        "file": "inputs/H1/t2/shop.he",
+        "line": 10,
+        "text": "return Unit{}, svc.b.Refund(ctx, order_id, cents)"
+      }
+    ]
+  },
+  {
+    "run": "H1",
+    "task": "t3",
+    "hits": [
+      {
+        "file": "inputs/H1/t3/glue.go",
+        "line": 33,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/H1/t3/shop.he",
+        "line": 13,
+        "text": "return Unit{}, classify(svc.b.Reserve(ctx, user, sku))"
+      }
+    ]
+  },
+  {
+    "run": "H1",
+    "task": "t4",
+    "hits": [
+      {
+        "file": "inputs/H1/t4/shop.he",
+        "line": 5,
+        "text": "return Unit{}, svc.b.Debit(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/H1/t4/shop.he",
+        "line": 10,
+        "text": "return Unit{}, svc.b.Credit(ctx, user, cents)"
+      }
+    ]
+  },
+  {
+    "run": "H2",
+    "task": "t1",
+    "hits": [
+      {
+        "file": "inputs/H2/t1/glue.go",
+        "line": 36,
+        "text": "r, err := s.b.Charge(ctx, user, cents)"
+      }
+    ]
+  },
+  {
+    "run": "H2",
+    "task": "t2",
+    "hits": [
+      {
+        "file": "inputs/H2/t2/glue.go",
+        "line": 34,
+        "text": "return s.b.Refund(ctx, orderID, cents)"
+      }
+    ]
+  },
+  {
+    "run": "H2",
+    "task": "t3",
+    "hits": [
+      {
+        "file": "inputs/H2/t3/glue.go",
+        "line": 38,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/H2/t3/glue.go",
+        "line": 74,
+        "text": "return classifyReserve(s.b.Reserve(ctx, user, sku))"
+      }
+    ]
+  },
+  {
+    "run": "H2",
+    "task": "t4",
+    "hits": [
+      {
+        "file": "inputs/H2/t4/shop.he",
+        "line": 4,
+        "text": "return Unit{}, svc.b.Debit(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/H2/t4/shop.he",
+        "line": 8,
+        "text": "return Unit{}, svc.b.Credit(ctx, user, cents)"
+      }
+    ]
+  },
+  {
+    "run": "H3",
+    "task": "t1",
+    "hits": [
+      {
+        "file": "inputs/H3/t1/glue.go",
+        "line": 43,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      }
+    ]
+  },
+  {
+    "run": "H3",
+    "task": "t2",
+    "hits": [
+      {
+        "file": "inputs/H3/t2/shop.he",
+        "line": 8,
+        "text": "return Unit{}, svc.b.Refund(ctx, order_id, cents)"
+      }
+    ]
+  },
+  {
+    "run": "H3",
+    "task": "t3",
+    "hits": [
+      {
+        "file": "inputs/H3/t3/glue.go",
+        "line": 38,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/H3/t3/glue.go",
+        "line": 60,
+        "text": "return classifyReserve(s.b.Reserve(ctx, user, sku))"
+      }
+    ]
+  },
+  {
+    "run": "H3",
+    "task": "t4",
+    "hits": [
+      {
+        "file": "inputs/H3/t4/shop.he",
+        "line": 11,
+        "text": "return Unit{}, svc.b.Debit(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/H3/t4/shop.he",
+        "line": 16,
+        "text": "return Unit{}, svc.b.Credit(ctx, user, cents)"
+      }
+    ]
+  },
+  {
+    "run": "R",
+    "task": "t1",
+    "hits": [
+      {
+        "file": "inputs/R/t1/glue.go",
+        "line": 36,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      }
+    ]
+  },
+  {
+    "run": "R",
+    "task": "t2",
+    "hits": [
+      {
+        "file": "inputs/R/t2/glue.go",
+        "line": 37,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/R/t2/shop.he",
+        "line": 9,
+        "text": "return Unit{},svc.b.Refund(ctx,order_id,cents)"
+      }
+    ]
+  },
+  {
+    "run": "R",
+    "task": "t3",
+    "hits": [
+      {
+        "file": "inputs/R/t3/glue.go",
+        "line": 38,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/R/t3/shop.he",
+        "line": 8,
+        "text": "return Unit{},classify(svc.b.Reserve(ctx,user,sku))"
+      }
+    ]
+  },
+  {
+    "run": "R",
+    "task": "t4",
+    "hits": [
+      {
+        "file": "inputs/R/t4/glue.go",
+        "line": 39,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/R/t4/shop.he",
+        "line": 8,
+        "text": "return Unit{}, svc.b.Debit(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/R/t4/shop.he",
+        "line": 12,
+        "text": "return Unit{}, svc.b.Credit(ctx, user, cents)"
+      }
+    ]
+  },
+  {
+    "run": "R2",
+    "task": "t1",
+    "hits": [
+      {
+        "file": "inputs/R2/t1/glue.go",
+        "line": 36,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      }
+    ]
+  },
+  {
+    "run": "R2",
+    "task": "t2",
+    "hits": [
+      {
+        "file": "inputs/R2/t2/glue.go",
+        "line": 37,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/R2/t2/shop.he",
+        "line": 9,
+        "text": "return Unit{},svc.b.Refund(ctx,order_id,cents)"
+      }
+    ]
+  },
+  {
+    "run": "R2",
+    "task": "t3",
+    "hits": [
+      {
+        "file": "inputs/R2/t3/glue.go",
+        "line": 38,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/R2/t3/shop.he",
+        "line": 8,
+        "text": "return Unit{},classify(svc.b.Reserve(ctx,user,sku))"
+      }
+    ]
+  },
+  {
+    "run": "R2",
+    "task": "t4",
+    "hits": [
+      {
+        "file": "inputs/R2/t4/glue.go",
+        "line": 39,
+        "text": "r, e := s.b.Charge(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/R2/t4/shop.he",
+        "line": 9,
+        "text": "return Unit{}, svc.b.Debit(ctx, user, cents)"
+      },
+      {
+        "file": "inputs/R2/t4/shop.he",
+        "line": 14,
+        "text": "return Unit{}, svc.b.Credit(ctx, user, cents)"
+      }
+    ]
+  }
+]

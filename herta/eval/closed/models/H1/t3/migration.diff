@@ -1,0 +1,29 @@
+--- H1/t3/original.he
++++ H1/t3/migrated.he
+@@ -1,5 +1,7 @@
+ runtime main { resource db capacity 8 resource network capacity 4 }
+-op main::charge(svc: servicePtr, user: string, cents: u64) -> Receipt { effect nonidempotent admission wait resources { db units 1, network units 1 } timeout 500ms retry max 3 on { transient } }
++op main::charge(svc: servicePtr, user: string, cents: u64) -> Receipt { effect nonidempotent admission wait resources { db units 1, network units 1 } timeout 500ms retry max 3 on { transient } 
++    classify { ErrUnavailable => transient, ErrTimeout => uncertain, _ => permanent }
++}
+ handler main::charge(svc: servicePtr, user: string, cents: u64) -> (Receipt, error) {
+ return svc.chargeHost(ctx, user, cents)
+ }
+@@ -8,6 +10,8 @@
+     admission wait
+     resources { db units 1, network units 1 }
+     retry max 3 on { transient, uncertain }
++
++    classify { ErrUnavailable => transient, ErrTimeout => uncertain, _ => permanent }
+ }
+ handler main::reserve(svc: servicePtr, user: string, sku: string) -> (Unit, error) {
+     return Unit{}, classify(svc.b.Reserve(ctx, user, sku))
+@@ -15,6 +19,8 @@
+ op main::checkout(svc: servicePtr, user: string, sku: string, cents: u64) -> Receipt {
+     effect nonidempotent
+     admission wait
++
++    calls reserve, charge
+ }
+ handler main::checkout(svc: servicePtr, user: string, sku: string, cents: u64) -> (Receipt, error) {
+     return svc.checkoutHost(ctx, user, sku, cents)

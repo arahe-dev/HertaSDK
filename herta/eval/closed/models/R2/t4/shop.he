@@ -1,0 +1,23 @@
+runtime main { resource db capacity 8 resource network capacity 4 }
+op main::charge(svc: servicePtr, user: string, cents: u64) -> Receipt { effect nonidempotent admission wait  }
+handler main::charge(svc: servicePtr, user: string, cents: u64) -> (Receipt, error) {
+return svc.chargeHost(ctx,user,cents)
+}
+op main::debit(svc: servicePtr, user: string, cents: u64, account_key: string) -> Unit { effect nonidempotent admission wait resources { db units 1 } serialize key account_key }
+handler main::debit(svc: servicePtr, user: string, cents: u64, account_key: string) -> (Unit, error) {
+_ = account_key
+return Unit{}, svc.b.Debit(ctx, user, cents)
+}
+op main::credit(svc: servicePtr, user: string, cents: u64, account_key: string) -> Unit { effect nonidempotent admission wait resources { db units 1 } serialize key account_key }
+handler main::credit(svc: servicePtr, user: string, cents: u64, account_key: string) -> (Unit, error) {
+_ = account_key
+return Unit{}, svc.b.Credit(ctx, user, cents)
+}
+op main::transfer(svc: servicePtr, from: string, to: string, cents: u64, transfer_key: string) -> Unit { effect nonidempotent admission wait serialize key transfer_key 
+    calls debit, credit
+}
+handler main::transfer(svc: servicePtr, from: string, to: string, cents: u64, transfer_key: string) -> (Unit, error) {
+_ = transfer_key
+if e:=svc.Debit(ctx,from,cents);e!=nil{return Unit{},e}
+return Unit{},svc.Credit(ctx,to,cents)
+}

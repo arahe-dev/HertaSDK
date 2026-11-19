@@ -1,0 +1,11 @@
+--- H1/t1/original.he
++++ H1/t1/migrated.he
+@@ -5,6 +5,8 @@
+     resources { db units 1, network units 1 }
+     timeout 500ms
+     retry max 3 on { transient }
++
++    classify { ErrTimeout => uncertain, ContextDeadlineExceeded => uncertain, ErrDeclined => permanent, ContextCanceled => permanent, ErrUnavailable => transient, _ => permanent }
+ }
+ handler main::charge(svc: servicePtr, user: string, cents: u64) -> (Receipt, error) {
+     return svc.chargeHost(ctx, user, cents)

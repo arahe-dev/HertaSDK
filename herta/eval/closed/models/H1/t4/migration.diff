@@ -1,0 +1,20 @@
+--- H1/t4/original.he
++++ H1/t4/migrated.he
+@@ -13,6 +13,8 @@
+     effect nonidempotent
+     admission wait
+     serialize key first_key
++
++    calls move_funds
+ }
+ handler main::transfer(svc: servicePtr, from: string, to: string, cents: u64, first_key: string, second_key: string) -> (Unit, error) {
+     _ = first_key
+@@ -22,6 +24,8 @@
+     effect nonidempotent
+     admission wait
+     serialize key second_key
++
++    calls debit, credit
+ }
+ handler main::move_funds(svc: servicePtr, from: string, to: string, cents: u64, second_key: string) -> (Unit, error) {
+     _ = second_key

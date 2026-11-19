@@ -1,0 +1,10 @@
+package t4
+import("context";"errors";"testing";"time";"github.com/arahe-dev/hertasdk")
+func TestClosedMutation(t *testing.T) {
+ b:=&Backend{}; b.SetBalance("A",10); s,e:=New(b);if e!=nil{t.Fatal(e)}
+ ctx,cancel:=context.WithTimeout(context.Background(),250*time.Millisecond);defer cancel()
+ started:=time.Now(); err := s.Transfer(ctx,"A","B",1)
+ if !errors.Is(err,hertasdk.ErrKeyReacquired)||hertasdk.OutcomeOf(err)!=hertasdk.Permanent{t.Fatalf("wanted ErrKeyReacquired: %v",err)}
+ if elapsed:=time.Since(started);elapsed>=200*time.Millisecond{t.Fatalf("guard too slow: %v",elapsed)}
+ t.Logf("expected ErrKeyReacquired: %v; elapsed=%v",err,time.Since(started))
+}

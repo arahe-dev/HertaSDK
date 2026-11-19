@@ -1,0 +1,13 @@
+--- R2/t4/original.he
++++ R2/t4/migrated.he
+@@ -13,7 +13,9 @@
+ _ = account_key
+ return Unit{}, svc.b.Credit(ctx, user, cents)
+ }
+-op main::transfer(svc: servicePtr, from: string, to: string, cents: u64, transfer_key: string) -> Unit { effect nonidempotent admission wait serialize key transfer_key }
++op main::transfer(svc: servicePtr, from: string, to: string, cents: u64, transfer_key: string) -> Unit { effect nonidempotent admission wait serialize key transfer_key 
++    calls debit, credit
++}
+ handler main::transfer(svc: servicePtr, from: string, to: string, cents: u64, transfer_key: string) -> (Unit, error) {
+ _ = transfer_key
+ if e:=svc.Debit(ctx,from,cents);e!=nil{return Unit{},e}

@@ -1,0 +1,1086 @@
+phase,run,task,stage,exit,codes,guards,failures,log,excerpt
+A,H1,t1,build,1,HC016,,,logs/A/H1/t1/build.log.gz,
+A,H1,t1,check,1,HC016,,,logs/A/H1/t1/check.log.gz,
+A,H1,t1,diagnostic-bypass-generation,0,,,,logs/A/H1/t1/diagnostic-bypass-generation.log.gz,
+A,H1,t1,oracle,0,,,,logs/A/H1/t1/oracle.log.gz,
+A,H1,t1,oracle2,0,,,,logs/A/H1/t1/oracle2.log.gz,
+A,H1,t1,own,0,,,,logs/A/H1/t1/own.log.gz,
+A,H1,t2,build,0,,,,logs/A/H1/t2/build.log.gz,
+A,H1,t2,check,0,,,,logs/A/H1/t2/check.log.gz,
+A,H1,t2,oracle,0,,,,logs/A/H1/t2/oracle.log.gz,
+A,H1,t2,oracle2,0,,,,logs/A/H1/t2/oracle2.log.gz,
+A,H1,t2,own,0,,,,logs/A/H1/t2/own.log.gz,
+A,H1,t3,build,1,HC016,,,logs/A/H1/t3/build.log.gz,
+A,H1,t3,check,1,HC016,,,logs/A/H1/t3/check.log.gz,
+A,H1,t3,diagnostic-bypass-generation,0,,,,logs/A/H1/t3/diagnostic-bypass-generation.log.gz,
+A,H1,t3,oracle,1,,ErrUndeclaredCall,TestOracleCheckout/inventory_retry;TestOracleCheckout/ambiguous_charge;TestOracleCheckout/inventory_exhausted;TestOracleCheckout/inventory_declined;TestOracleCheckout/empty;TestOracleCheckout,logs/A/H1/t3/oracle.log.gz,"    oracle_test.go:53: inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve receipt={User: Cents:0 ID:0} snapshot={Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_retry (0.00s)
+    oracle_test.go:67: checkout repeated a payment: err=hertasdk: undeclared call: main::checkout -> main::reserve charges=0 calls=0 reservations=0
+--- FAIL: TestOracleCheckout/ambiguous_charge (0.00s)
+    oracle_test.go:76: failed inventory: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_exhausted (0.00s)
+    oracle_test.go:85: permanent inventory failure: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_declined (0.00s)
+    oracle_test.go:93: empty input: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestOracleCheckout/empty (0.00s)
+--- FAIL: TestOracleCheckout (0.00s)"
+A,H1,t3,oracle2,1,,ErrUndeclaredCall,TestOracleCheckout/inventory_retry;TestOracleCheckout/ambiguous_charge;TestOracleCheckout/inventory_exhausted;TestOracleCheckout/inventory_declined;TestOracleCheckout/empty;TestOracleCheckout;TestOracleHardCheckout/uncertain_inventory;TestOracleHardCheckout/uncertain_inventory_exhausted;TestOracleHardCheckout/declined_charge;TestOracleHardCheckout/concurrent_capacity;TestOracleHardCheckout,logs/A/H1/t3/oracle2.log.gz,"    oracle_test.go:53: inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve receipt={User: Cents:0 ID:0} snapshot={Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_retry (0.00s)
+    oracle_test.go:67: checkout repeated a payment: err=hertasdk: undeclared call: main::checkout -> main::reserve charges=0 calls=0 reservations=0
+--- FAIL: TestOracleCheckout/ambiguous_charge (0.00s)
+    oracle_test.go:76: failed inventory: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_exhausted (0.00s)
+    oracle_test.go:85: permanent inventory failure: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_declined (0.00s)
+    oracle_test.go:93: empty input: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestOracleCheckout/empty (0.00s)
+--- FAIL: TestOracleCheckout (0.00s)
+    harder_test.go:30: idempotent inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory (0.00s)
+    harder_test.go:39: idempotent inventory limit: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory_exhausted (0.00s)
+    harder_test.go:48: declined charge repeated: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/declined_charge (0.00s)
+    harder_test.go:71: concurrent checkout: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/concurrent_capacity (0.00s)
+--- FAIL: TestOracleHardCheckout (0.00s)"
+A,H1,t3,own,1,,ErrUndeclaredCall,TestCheckoutFailureBoundaries/reserve_recovers;TestCheckoutFailureBoundaries/reserve_exhausts_retries;TestCheckoutFailureBoundaries/reserve_rejects;TestCheckoutFailureBoundaries/charge_is_uncertain;TestCheckoutFailureBoundaries/charge_rejects;TestCheckoutFailureBoundaries/preserve_charge_retries;TestCheckoutFailureBoundaries;TestConcurrentCheckoutMakesProgress;TestSmoke,logs/A/H1/t3/own.log.gz,"    checkout_test.go:44: checkout error = hertasdk: undeclared call: main::checkout -> main::reserve, want <nil>
+--- FAIL: TestCheckoutFailureBoundaries/reserve_recovers (0.00s)
+    checkout_test.go:44: checkout error = hertasdk: undeclared call: main::checkout -> main::reserve, want request timed out
+--- FAIL: TestCheckoutFailureBoundaries/reserve_exhausts_retries (0.00s)
+    checkout_test.go:44: checkout error = hertasdk: undeclared call: main::checkout -> main::reserve, want declined
+--- FAIL: TestCheckoutFailureBoundaries/reserve_rejects (0.00s)
+    checkout_test.go:44: checkout error = hertasdk: undeclared call: main::checkout -> main::reserve, want request timed out
+--- FAIL: TestCheckoutFailureBoundaries/charge_is_uncertain (0.00s)
+    checkout_test.go:44: checkout error = hertasdk: undeclared call: main::checkout -> main::reserve, want declined
+--- FAIL: TestCheckoutFailureBoundaries/charge_rejects (0.00s)
+    checkout_test.go:44: checkout error = hertasdk: undeclared call: main::checkout -> main::reserve, want service unavailable
+--- FAIL: TestCheckoutFailureBoundaries/preserve_charge_retries (0.00s)
+--- FAIL: TestCheckoutFailureBoundaries (0.00s)
+    checkout_test.go:78: hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestConcurrentCheckoutMakesProgress (0.00s)
+    smoke_test.go:19: checkout: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestSmoke (0.00s)"
+A,H1,t4,build,0,,,,logs/A/H1/t4/build.log.gz,
+A,H1,t4,check,0,,,,logs/A/H1/t4/check.log.gz,
+A,H1,t4,oracle,1,,ErrUndeclaredCall,TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer,logs/A/H1/t4/oracle.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)"
+A,H1,t4,oracle2,1,,ErrUndeclaredCall,"TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer;TestOracleHardTransfer/opposite_directions;TestOracleHardTransfer/accounts_""""_""B"";TestOracleHardTransfer/accounts_""A""_"""";TestOracleHardTransfer/accounts_""A""_""transfer:A"";TestOracleHardTransfer/accounts_""A""_""account:A"";TestOracleHardTransfer/accounts_""A""_""user:A"";TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"";TestOracleHardTransfer/accounts_""transfer:A""_""A"";TestOracleHardTransfer/accounts_""user:""_""transfer:"";TestOracleHardTransfer/accounts_""account:""_""user:"";TestOracleHardTransfer",logs/A/H1/t4/oracle2.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)
+    harder_test.go:65: opposite transfers: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:1000 B:1000]}
+--- FAIL: TestOracleHardTransfer/opposite_directions (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""""_""B"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_"""" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""transfer:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""account:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""user:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[transfer:A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""transfer:A""_""A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[user::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""user:""_""transfer:"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::move_funds {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[account::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""account:""_""user:"" (0.00s)
+--- FAIL: TestOracleHardTransfer (0.00s)"
+A,H1,t4,own,1,,ErrUndeclaredCall,TestSmoke;TestConcurrentTransfers;TestTransferStopsAfterFailedDebit,logs/A/H1/t4/own.log.gz,"    smoke_test.go:19: hertasdk: undeclared call: main::transfer -> main::move_funds
+--- FAIL: TestSmoke (0.00s)
+    transfers_test.go:48: hertasdk: undeclared call: main::transfer -> main::move_funds
+--- FAIL: TestConcurrentTransfers (0.00s)
+    transfers_test.go:72: transfer error = hertasdk: undeclared call: main::transfer -> main::move_funds, want declined
+--- FAIL: TestTransferStopsAfterFailedDebit (0.00s)"
+A,H2,t1,build,1,HC016,,,logs/A/H2/t1/build.log.gz,
+A,H2,t1,check,1,HC016,,,logs/A/H2/t1/check.log.gz,
+A,H2,t1,diagnostic-bypass-generation,0,,,,logs/A/H2/t1/diagnostic-bypass-generation.log.gz,
+A,H2,t1,oracle,0,,,,logs/A/H2/t1/oracle.log.gz,
+A,H2,t1,oracle2,1,,,TestOracleHardCharge/joined_unavailable;TestOracleHardCharge,logs/A/H2/t1/oracle2.log.gz,"    harder_test.go:38: uncertain charge repeated/misreported: err=<nil> outcome=Success charges=2 calls=2
+--- FAIL: TestOracleHardCharge/joined_unavailable (0.00s)
+--- FAIL: TestOracleHardCharge (0.03s)"
+A,H2,t1,own,0,,,,logs/A/H2/t1/own.log.gz,
+A,H2,t2,build,0,,,,logs/A/H2/t2/build.log.gz,
+A,H2,t2,check,0,,,,logs/A/H2/t2/check.log.gz,
+A,H2,t2,oracle,0,,,,logs/A/H2/t2/oracle.log.gz,
+A,H2,t2,oracle2,0,,,,logs/A/H2/t2/oracle2.log.gz,
+A,H2,t2,own,0,,,,logs/A/H2/t2/own.log.gz,
+A,H2,t3,build,1,HC016,,,logs/A/H2/t3/build.log.gz,
+A,H2,t3,check,1,HC016,,,logs/A/H2/t3/check.log.gz,
+A,H2,t3,diagnostic-bypass-generation,0,,,,logs/A/H2/t3/diagnostic-bypass-generation.log.gz,
+A,H2,t3,oracle,1,,ErrUndeclaredCall,TestOracleCheckout/inventory_retry;TestOracleCheckout/ambiguous_charge;TestOracleCheckout/inventory_exhausted;TestOracleCheckout/inventory_declined;TestOracleCheckout/empty;TestOracleCheckout,logs/A/H2/t3/oracle.log.gz,"    oracle_test.go:53: inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve receipt={User: Cents:0 ID:0} snapshot={Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_retry (0.00s)
+    oracle_test.go:67: checkout repeated a payment: err=hertasdk: undeclared call: main::checkout -> main::reserve charges=0 calls=0 reservations=0
+--- FAIL: TestOracleCheckout/ambiguous_charge (0.00s)
+    oracle_test.go:76: failed inventory: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_exhausted (0.00s)
+    oracle_test.go:85: permanent inventory failure: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_declined (0.00s)
+    oracle_test.go:93: empty input: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestOracleCheckout/empty (0.00s)
+--- FAIL: TestOracleCheckout (0.00s)"
+A,H2,t3,oracle2,1,,ErrUndeclaredCall,TestOracleCheckout/inventory_retry;TestOracleCheckout/ambiguous_charge;TestOracleCheckout/inventory_exhausted;TestOracleCheckout/inventory_declined;TestOracleCheckout/empty;TestOracleCheckout;TestOracleHardCheckout/uncertain_inventory;TestOracleHardCheckout/uncertain_inventory_exhausted;TestOracleHardCheckout/declined_charge;TestOracleHardCheckout/concurrent_capacity;TestOracleHardCheckout,logs/A/H2/t3/oracle2.log.gz,"    oracle_test.go:53: inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve receipt={User: Cents:0 ID:0} snapshot={Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_retry (0.00s)
+    oracle_test.go:67: checkout repeated a payment: err=hertasdk: undeclared call: main::checkout -> main::reserve charges=0 calls=0 reservations=0
+--- FAIL: TestOracleCheckout/ambiguous_charge (0.00s)
+    oracle_test.go:76: failed inventory: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_exhausted (0.00s)
+    oracle_test.go:85: permanent inventory failure: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_declined (0.00s)
+    oracle_test.go:93: empty input: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestOracleCheckout/empty (0.00s)
+--- FAIL: TestOracleCheckout (0.00s)
+    harder_test.go:30: idempotent inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory (0.00s)
+    harder_test.go:39: idempotent inventory limit: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory_exhausted (0.00s)
+    harder_test.go:48: declined charge repeated: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/declined_charge (0.00s)
+    harder_test.go:71: concurrent checkout: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/concurrent_capacity (0.00s)
+--- FAIL: TestOracleHardCheckout (0.00s)"
+A,H2,t3,own,1,,ErrUndeclaredCall,TestCheckoutPolicy;TestSmoke,logs/A/H2/t3/own.log.gz,"    extra_test.go:22: hertasdk: undeclared call: main::checkout -> main::reserve {0 0 0 0 false 0 0 0 map[]}
+--- FAIL: TestCheckoutPolicy (0.00s)
+    smoke_test.go:19: checkout: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestSmoke (0.00s)"
+A,H2,t4,build,0,,,,logs/A/H2/t4/build.log.gz,
+A,H2,t4,check,0,,,,logs/A/H2/t4/check.log.gz,
+A,H2,t4,oracle,1,,ErrUndeclaredCall,TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer,logs/A/H2/t4/oracle.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)"
+A,H2,t4,oracle2,1,,ErrUndeclaredCall,"TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer;TestOracleHardTransfer/opposite_directions;TestOracleHardTransfer/accounts_""""_""B"";TestOracleHardTransfer/accounts_""A""_"""";TestOracleHardTransfer/accounts_""A""_""transfer:A"";TestOracleHardTransfer/accounts_""A""_""account:A"";TestOracleHardTransfer/accounts_""A""_""user:A"";TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"";TestOracleHardTransfer/accounts_""transfer:A""_""A"";TestOracleHardTransfer/accounts_""user:""_""transfer:"";TestOracleHardTransfer/accounts_""account:""_""user:"";TestOracleHardTransfer",logs/A/H2/t4/oracle2.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)
+    harder_test.go:65: opposite transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:1000 B:1000]}
+--- FAIL: TestOracleHardTransfer/opposite_directions (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""""_""B"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_"""" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""transfer:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""account:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""user:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[transfer:A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""transfer:A""_""A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[user::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""user:""_""transfer:"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[account::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""account:""_""user:"" (0.00s)
+--- FAIL: TestOracleHardTransfer (0.00s)"
+A,H2,t4,own,1,,ErrUndeclaredCall,TestTransfersConcurrent;TestSmoke,logs/A/H2/t4/own.log.gz,"    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:26: hertasdk: undeclared call: main::transfer -> main"
+A,H3,t1,build,1,HC016,,,logs/A/H3/t1/build.log.gz,
+A,H3,t1,check,1,HC016,,,logs/A/H3/t1/check.log.gz,
+A,H3,t1,diagnostic-bypass-generation,0,,,,logs/A/H3/t1/diagnostic-bypass-generation.log.gz,
+A,H3,t1,oracle,0,,,,logs/A/H3/t1/oracle.log.gz,
+A,H3,t1,oracle2,0,,,,logs/A/H3/t1/oracle2.log.gz,
+A,H3,t1,own,0,,,,logs/A/H3/t1/own.log.gz,
+A,H3,t2,build,0,,,,logs/A/H3/t2/build.log.gz,
+A,H3,t2,check,0,,,,logs/A/H3/t2/check.log.gz,
+A,H3,t2,oracle,0,,,,logs/A/H3/t2/oracle.log.gz,
+A,H3,t2,oracle2,0,,,,logs/A/H3/t2/oracle2.log.gz,
+A,H3,t2,own,0,,,,logs/A/H3/t2/own.log.gz,
+A,H3,t3,build,1,HC016,,,logs/A/H3/t3/build.log.gz,
+A,H3,t3,check,1,HC016,,,logs/A/H3/t3/check.log.gz,
+A,H3,t3,diagnostic-bypass-generation,0,,,,logs/A/H3/t3/diagnostic-bypass-generation.log.gz,
+A,H3,t3,oracle,1,,ErrUndeclaredCall,TestOracleCheckout/inventory_retry;TestOracleCheckout/ambiguous_charge;TestOracleCheckout/inventory_exhausted;TestOracleCheckout/inventory_declined;TestOracleCheckout/empty;TestOracleCheckout,logs/A/H3/t3/oracle.log.gz,"    oracle_test.go:53: inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve receipt={User: Cents:0 ID:0} snapshot={Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_retry (0.00s)
+    oracle_test.go:67: checkout repeated a payment: err=hertasdk: undeclared call: main::checkout -> main::reserve charges=0 calls=0 reservations=0
+--- FAIL: TestOracleCheckout/ambiguous_charge (0.00s)
+    oracle_test.go:76: failed inventory: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_exhausted (0.00s)
+    oracle_test.go:85: permanent inventory failure: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_declined (0.00s)
+    oracle_test.go:93: empty input: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestOracleCheckout/empty (0.00s)
+--- FAIL: TestOracleCheckout (0.00s)"
+A,H3,t3,oracle2,1,,ErrUndeclaredCall,TestOracleCheckout/inventory_retry;TestOracleCheckout/ambiguous_charge;TestOracleCheckout/inventory_exhausted;TestOracleCheckout/inventory_declined;TestOracleCheckout/empty;TestOracleCheckout;TestOracleHardCheckout/uncertain_inventory;TestOracleHardCheckout/uncertain_inventory_exhausted;TestOracleHardCheckout/declined_charge;TestOracleHardCheckout/concurrent_capacity;TestOracleHardCheckout,logs/A/H3/t3/oracle2.log.gz,"    oracle_test.go:53: inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve receipt={User: Cents:0 ID:0} snapshot={Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_retry (0.00s)
+    oracle_test.go:67: checkout repeated a payment: err=hertasdk: undeclared call: main::checkout -> main::reserve charges=0 calls=0 reservations=0
+--- FAIL: TestOracleCheckout/ambiguous_charge (0.00s)
+    oracle_test.go:76: failed inventory: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_exhausted (0.00s)
+    oracle_test.go:85: permanent inventory failure: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_declined (0.00s)
+    oracle_test.go:93: empty input: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestOracleCheckout/empty (0.00s)
+--- FAIL: TestOracleCheckout (0.00s)
+    harder_test.go:30: idempotent inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory (0.00s)
+    harder_test.go:39: idempotent inventory limit: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory_exhausted (0.00s)
+    harder_test.go:48: declined charge repeated: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/declined_charge (0.00s)
+    harder_test.go:71: concurrent checkout: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/concurrent_capacity (0.00s)
+--- FAIL: TestOracleHardCheckout (0.00s)"
+A,H3,t3,own,1,,ErrUndeclaredCall,TestReserveRetried;TestReserveFailsNoCharge;TestChargeTimeoutOnce;TestChargeUnavailableRetried;TestSmoke,logs/A/H3/t3/own.log.gz,"    extra_test.go:21: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestReserveRetried (0.00s)
+    extra_test.go:33: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestReserveFailsNoCharge (0.00s)
+    extra_test.go:44: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestChargeTimeoutOnce (0.00s)
+    extra_test.go:59: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestChargeUnavailableRetried (0.00s)
+    smoke_test.go:19: checkout: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestSmoke (0.00s)"
+A,H3,t4,build,0,,,,logs/A/H3/t4/build.log.gz,
+A,H3,t4,check,0,,,,logs/A/H3/t4/check.log.gz,
+A,H3,t4,oracle,1,,ErrUndeclaredCall,TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer,logs/A/H3/t4/oracle.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)"
+A,H3,t4,oracle2,1,,ErrUndeclaredCall,"TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer;TestOracleHardTransfer/opposite_directions;TestOracleHardTransfer/accounts_""""_""B"";TestOracleHardTransfer/accounts_""A""_"""";TestOracleHardTransfer/accounts_""A""_""transfer:A"";TestOracleHardTransfer/accounts_""A""_""account:A"";TestOracleHardTransfer/accounts_""A""_""user:A"";TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"";TestOracleHardTransfer/accounts_""transfer:A""_""A"";TestOracleHardTransfer/accounts_""user:""_""transfer:"";TestOracleHardTransfer/accounts_""account:""_""user:"";TestOracleHardTransfer",logs/A/H3/t4/oracle2.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)
+    harder_test.go:65: opposite transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:1000 B:1000]}
+--- FAIL: TestOracleHardTransfer/opposite_directions (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""""_""B"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_"""" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""transfer:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""account:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""user:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[transfer:A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""transfer:A""_""A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[user::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""user:""_""transfer:"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[account::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""account:""_""user:"" (0.00s)
+--- FAIL: TestOracleHardTransfer (0.00s)"
+A,H3,t4,own,1,,ErrUndeclaredCall,TestConcurrentTransfers;TestInsufficient;TestSelfTransfer;TestSmoke,logs/A/H3/t4/own.log.gz,"    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main::debit
+    extra_test.go:27: hertasdk: undeclared call: main::transfer -> main"
+A,R,t1,build,1,HC016,,,logs/A/R/t1/build.log.gz,
+A,R,t1,check,1,HC016,,,logs/A/R/t1/check.log.gz,
+A,R,t1,diagnostic-bypass-generation,0,,,,logs/A/R/t1/diagnostic-bypass-generation.log.gz,
+A,R,t1,oracle,0,,,,logs/A/R/t1/oracle.log.gz,
+A,R,t1,oracle2,1,,,TestOracleHardCharge/joined_unavailable;TestOracleHardCharge,logs/A/R/t1/oracle2.log.gz,"    harder_test.go:38: uncertain charge repeated/misreported: err=<nil> outcome=Success charges=2 calls=2
+--- FAIL: TestOracleHardCharge/joined_unavailable (0.00s)
+--- FAIL: TestOracleHardCharge (0.03s)"
+A,R,t1,own,0,,,,logs/A/R/t1/own.log.gz,
+A,R,t2,build,0,,,,logs/A/R/t2/build.log.gz,
+A,R,t2,check,0,,,,logs/A/R/t2/check.log.gz,
+A,R,t2,oracle,0,,,,logs/A/R/t2/oracle.log.gz,
+A,R,t2,oracle2,0,,,,logs/A/R/t2/oracle2.log.gz,
+A,R,t2,own,0,,,,logs/A/R/t2/own.log.gz,
+A,R,t3,build,1,HC016,,,logs/A/R/t3/build.log.gz,
+A,R,t3,check,1,HC016,,,logs/A/R/t3/check.log.gz,
+A,R,t3,diagnostic-bypass-generation,0,,,,logs/A/R/t3/diagnostic-bypass-generation.log.gz,
+A,R,t3,oracle,1,,ErrUndeclaredCall,TestOracleCheckout/inventory_retry;TestOracleCheckout/ambiguous_charge;TestOracleCheckout/inventory_exhausted;TestOracleCheckout/inventory_declined;TestOracleCheckout/empty;TestOracleCheckout,logs/A/R/t3/oracle.log.gz,"    oracle_test.go:53: inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve receipt={User: Cents:0 ID:0} snapshot={Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_retry (0.00s)
+    oracle_test.go:67: checkout repeated a payment: err=hertasdk: undeclared call: main::checkout -> main::reserve charges=0 calls=0 reservations=0
+--- FAIL: TestOracleCheckout/ambiguous_charge (0.00s)
+    oracle_test.go:76: failed inventory: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_exhausted (0.00s)
+    oracle_test.go:85: permanent inventory failure: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_declined (0.00s)
+    oracle_test.go:93: empty input: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestOracleCheckout/empty (0.00s)
+--- FAIL: TestOracleCheckout (0.00s)"
+A,R,t3,oracle2,1,,ErrUndeclaredCall,TestOracleCheckout/inventory_retry;TestOracleCheckout/ambiguous_charge;TestOracleCheckout/inventory_exhausted;TestOracleCheckout/inventory_declined;TestOracleCheckout/empty;TestOracleCheckout;TestOracleHardCheckout/uncertain_inventory;TestOracleHardCheckout/uncertain_inventory_exhausted;TestOracleHardCheckout/declined_charge;TestOracleHardCheckout/concurrent_capacity;TestOracleHardCheckout,logs/A/R/t3/oracle2.log.gz,"    oracle_test.go:53: inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve receipt={User: Cents:0 ID:0} snapshot={Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_retry (0.00s)
+    oracle_test.go:67: checkout repeated a payment: err=hertasdk: undeclared call: main::checkout -> main::reserve charges=0 calls=0 reservations=0
+--- FAIL: TestOracleCheckout/ambiguous_charge (0.00s)
+    oracle_test.go:76: failed inventory: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_exhausted (0.00s)
+    oracle_test.go:85: permanent inventory failure: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_declined (0.00s)
+    oracle_test.go:93: empty input: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestOracleCheckout/empty (0.00s)
+--- FAIL: TestOracleCheckout (0.00s)
+    harder_test.go:30: idempotent inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory (0.00s)
+    harder_test.go:39: idempotent inventory limit: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory_exhausted (0.00s)
+    harder_test.go:48: declined charge repeated: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/declined_charge (0.00s)
+    harder_test.go:71: concurrent checkout: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/concurrent_capacity (0.00s)
+--- FAIL: TestOracleHardCheckout (0.00s)"
+A,R,t3,own,1,,ErrUndeclaredCall,TestSmoke,logs/A/R/t3/own.log.gz,"    smoke_test.go:19: checkout: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestSmoke (0.00s)"
+A,R,t4,build,0,,,,logs/A/R/t4/build.log.gz,
+A,R,t4,check,0,,,,logs/A/R/t4/check.log.gz,
+A,R,t4,oracle,1,,ErrUndeclaredCall,TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer,logs/A/R/t4/oracle.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)"
+A,R,t4,oracle2,1,,ErrUndeclaredCall,"TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer;TestOracleHardTransfer/opposite_directions;TestOracleHardTransfer/accounts_""""_""B"";TestOracleHardTransfer/accounts_""A""_"""";TestOracleHardTransfer/accounts_""A""_""transfer:A"";TestOracleHardTransfer/accounts_""A""_""account:A"";TestOracleHardTransfer/accounts_""A""_""user:A"";TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"";TestOracleHardTransfer/accounts_""transfer:A""_""A"";TestOracleHardTransfer/accounts_""user:""_""transfer:"";TestOracleHardTransfer/accounts_""account:""_""user:"";TestOracleHardTransfer",logs/A/R/t4/oracle2.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)
+    harder_test.go:65: opposite transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:1000 B:1000]}
+--- FAIL: TestOracleHardTransfer/opposite_directions (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""""_""B"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_"""" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""transfer:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""account:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""user:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[transfer:A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""transfer:A""_""A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[user::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""user:""_""transfer:"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[account::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""account:""_""user:"" (0.00s)
+--- FAIL: TestOracleHardTransfer (0.00s)"
+A,R,t4,own,1,,ErrUndeclaredCall,TestSmoke,logs/A/R/t4/own.log.gz,"    smoke_test.go:19: hertasdk: undeclared call: main::transfer -> main::debit
+--- FAIL: TestSmoke (0.00s)"
+A,R2,t1,build,1,HC016,,,logs/A/R2/t1/build.log.gz,
+A,R2,t1,check,1,HC016,,,logs/A/R2/t1/check.log.gz,
+A,R2,t1,diagnostic-bypass-generation,0,,,,logs/A/R2/t1/diagnostic-bypass-generation.log.gz,
+A,R2,t1,oracle,0,,,,logs/A/R2/t1/oracle.log.gz,
+A,R2,t1,oracle2,0,,,,logs/A/R2/t1/oracle2.log.gz,
+A,R2,t1,own,0,,,,logs/A/R2/t1/own.log.gz,
+A,R2,t2,build,0,,,,logs/A/R2/t2/build.log.gz,
+A,R2,t2,check,0,,,,logs/A/R2/t2/check.log.gz,
+A,R2,t2,oracle,0,,,,logs/A/R2/t2/oracle.log.gz,
+A,R2,t2,oracle2,0,,,,logs/A/R2/t2/oracle2.log.gz,
+A,R2,t2,own,0,,,,logs/A/R2/t2/own.log.gz,
+A,R2,t3,build,1,HC016,,,logs/A/R2/t3/build.log.gz,
+A,R2,t3,check,1,HC016,,,logs/A/R2/t3/check.log.gz,
+A,R2,t3,diagnostic-bypass-generation,0,,,,logs/A/R2/t3/diagnostic-bypass-generation.log.gz,
+A,R2,t3,oracle,1,,ErrUndeclaredCall,TestOracleCheckout/inventory_retry;TestOracleCheckout/ambiguous_charge;TestOracleCheckout/inventory_exhausted;TestOracleCheckout/inventory_declined;TestOracleCheckout/empty;TestOracleCheckout,logs/A/R2/t3/oracle.log.gz,"    oracle_test.go:53: inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve receipt={User: Cents:0 ID:0} snapshot={Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_retry (0.00s)
+    oracle_test.go:67: checkout repeated a payment: err=hertasdk: undeclared call: main::checkout -> main::reserve charges=0 calls=0 reservations=0
+--- FAIL: TestOracleCheckout/ambiguous_charge (0.00s)
+    oracle_test.go:76: failed inventory: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_exhausted (0.00s)
+    oracle_test.go:85: permanent inventory failure: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_declined (0.00s)
+    oracle_test.go:93: empty input: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestOracleCheckout/empty (0.00s)
+--- FAIL: TestOracleCheckout (0.00s)"
+A,R2,t3,oracle2,1,,ErrUndeclaredCall,TestOracleCheckout/inventory_retry;TestOracleCheckout/ambiguous_charge;TestOracleCheckout/inventory_exhausted;TestOracleCheckout/inventory_declined;TestOracleCheckout/empty;TestOracleCheckout;TestOracleHardCheckout/uncertain_inventory;TestOracleHardCheckout/uncertain_inventory_exhausted;TestOracleHardCheckout/declined_charge;TestOracleHardCheckout/concurrent_capacity;TestOracleHardCheckout,logs/A/R2/t3/oracle2.log.gz,"    oracle_test.go:53: inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve receipt={User: Cents:0 ID:0} snapshot={Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_retry (0.00s)
+    oracle_test.go:67: checkout repeated a payment: err=hertasdk: undeclared call: main::checkout -> main::reserve charges=0 calls=0 reservations=0
+--- FAIL: TestOracleCheckout/ambiguous_charge (0.00s)
+    oracle_test.go:76: failed inventory: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_exhausted (0.00s)
+    oracle_test.go:85: permanent inventory failure: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_declined (0.00s)
+    oracle_test.go:93: empty input: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestOracleCheckout/empty (0.00s)
+--- FAIL: TestOracleCheckout (0.00s)
+    harder_test.go:30: idempotent inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory (0.00s)
+    harder_test.go:39: idempotent inventory limit: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory_exhausted (0.00s)
+    harder_test.go:48: declined charge repeated: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/declined_charge (0.00s)
+    harder_test.go:71: concurrent checkout: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/concurrent_capacity (0.00s)
+--- FAIL: TestOracleHardCheckout (0.00s)"
+A,R2,t3,own,1,,ErrUndeclaredCall,TestSmoke,logs/A/R2/t3/own.log.gz,"    smoke_test.go:19: checkout: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestSmoke (0.00s)"
+A,R2,t4,build,0,,,,logs/A/R2/t4/build.log.gz,
+A,R2,t4,check,0,,,,logs/A/R2/t4/check.log.gz,
+A,R2,t4,oracle,1,,ErrUndeclaredCall,TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer,logs/A/R2/t4/oracle.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)"
+A,R2,t4,oracle2,1,,ErrUndeclaredCall,"TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer;TestOracleHardTransfer/opposite_directions;TestOracleHardTransfer/accounts_""""_""B"";TestOracleHardTransfer/accounts_""A""_"""";TestOracleHardTransfer/accounts_""A""_""transfer:A"";TestOracleHardTransfer/accounts_""A""_""account:A"";TestOracleHardTransfer/accounts_""A""_""user:A"";TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"";TestOracleHardTransfer/accounts_""transfer:A""_""A"";TestOracleHardTransfer/accounts_""user:""_""transfer:"";TestOracleHardTransfer/accounts_""account:""_""user:"";TestOracleHardTransfer",logs/A/R2/t4/oracle2.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)
+    harder_test.go:65: opposite transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:1000 B:1000]}
+--- FAIL: TestOracleHardTransfer/opposite_directions (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""""_""B"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_"""" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""transfer:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""account:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""user:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[transfer:A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""transfer:A""_""A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[user::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""user:""_""transfer:"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[account::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""account:""_""user:"" (0.00s)
+--- FAIL: TestOracleHardTransfer (0.00s)"
+A,R2,t4,own,1,,ErrUndeclaredCall,TestSmoke,logs/A/R2/t4/own.log.gz,"    smoke_test.go:19: hertasdk: undeclared call: main::transfer -> main::debit
+--- FAIL: TestSmoke (0.00s)"
+B,H1,t1,build,0,,,,logs/B/H1/t1/build.log.gz,
+B,H1,t1,check,0,,,,logs/B/H1/t1/check.log.gz,
+B,H1,t1,oracle,0,,,,logs/B/H1/t1/oracle.log.gz,
+B,H1,t1,oracle2,0,,,,logs/B/H1/t1/oracle2.log.gz,
+B,H1,t1,own,0,,,,logs/B/H1/t1/own.log.gz,
+B,H1,t2,build,0,,,,logs/B/H1/t2/build.log.gz,
+B,H1,t2,check,0,,,,logs/B/H1/t2/check.log.gz,
+B,H1,t2,oracle,0,,,,logs/B/H1/t2/oracle.log.gz,
+B,H1,t2,oracle2,0,,,,logs/B/H1/t2/oracle2.log.gz,
+B,H1,t2,own,0,,,,logs/B/H1/t2/own.log.gz,
+B,H1,t3,build,1,HC010,,,logs/B/H1/t3/build.log.gz,
+B,H1,t3,check,1,HC010,,,logs/B/H1/t3/check.log.gz,
+B,H1,t3,diagnostic-bypass-generation,0,,,,logs/B/H1/t3/diagnostic-bypass-generation.log.gz,
+B,H1,t3,oracle,0,,,,logs/B/H1/t3/oracle.log.gz,
+B,H1,t3,oracle2,0,,,,logs/B/H1/t3/oracle2.log.gz,
+B,H1,t3,own,0,,,,logs/B/H1/t3/own.log.gz,
+B,H1,t4,build,0,,,,logs/B/H1/t4/build.log.gz,
+B,H1,t4,check,0,,,,logs/B/H1/t4/check.log.gz,
+B,H1,t4,oracle,0,,,,logs/B/H1/t4/oracle.log.gz,
+B,H1,t4,oracle2,0,,,,logs/B/H1/t4/oracle2.log.gz,
+B,H1,t4,own,0,,,,logs/B/H1/t4/own.log.gz,
+B,H2,t1,build,1,HC010,,,logs/B/H2/t1/build.log.gz,
+B,H2,t1,check,1,HC010,,,logs/B/H2/t1/check.log.gz,
+B,H2,t1,diagnostic-bypass-generation,0,,,,logs/B/H2/t1/diagnostic-bypass-generation.log.gz,
+B,H2,t1,oracle,0,,,,logs/B/H2/t1/oracle.log.gz,
+B,H2,t1,oracle2,1,,,TestOracleHardCharge/joined_unavailable;TestOracleHardCharge,logs/B/H2/t1/oracle2.log.gz,"    harder_test.go:38: uncertain charge repeated/misreported: err=<nil> outcome=Success charges=2 calls=2
+--- FAIL: TestOracleHardCharge/joined_unavailable (0.00s)
+--- FAIL: TestOracleHardCharge (0.03s)"
+B,H2,t1,own,0,,,,logs/B/H2/t1/own.log.gz,
+B,H2,t2,build,0,,,,logs/B/H2/t2/build.log.gz,
+B,H2,t2,check,0,,,,logs/B/H2/t2/check.log.gz,
+B,H2,t2,oracle,0,,,,logs/B/H2/t2/oracle.log.gz,
+B,H2,t2,oracle2,0,,,,logs/B/H2/t2/oracle2.log.gz,
+B,H2,t2,own,0,,,,logs/B/H2/t2/own.log.gz,
+B,H2,t3,build,1,HC010,,,logs/B/H2/t3/build.log.gz,
+B,H2,t3,check,1,HC010,,,logs/B/H2/t3/check.log.gz,
+B,H2,t3,diagnostic-bypass-generation,0,,,,logs/B/H2/t3/diagnostic-bypass-generation.log.gz,
+B,H2,t3,oracle,0,,,,logs/B/H2/t3/oracle.log.gz,
+B,H2,t3,oracle2,0,,,,logs/B/H2/t3/oracle2.log.gz,
+B,H2,t3,own,0,,,,logs/B/H2/t3/own.log.gz,
+B,H2,t4,build,0,,,,logs/B/H2/t4/build.log.gz,
+B,H2,t4,check,0,,,,logs/B/H2/t4/check.log.gz,
+B,H2,t4,oracle,0,,,,logs/B/H2/t4/oracle.log.gz,
+B,H2,t4,oracle2,0,,,,logs/B/H2/t4/oracle2.log.gz,
+B,H2,t4,own,0,,,,logs/B/H2/t4/own.log.gz,
+B,H3,t1,build,0,,,,logs/B/H3/t1/build.log.gz,
+B,H3,t1,check,0,,,,logs/B/H3/t1/check.log.gz,
+B,H3,t1,oracle,0,,,,logs/B/H3/t1/oracle.log.gz,
+B,H3,t1,oracle2,0,,,,logs/B/H3/t1/oracle2.log.gz,
+B,H3,t1,own,0,,,,logs/B/H3/t1/own.log.gz,
+B,H3,t2,build,0,,,,logs/B/H3/t2/build.log.gz,
+B,H3,t2,check,0,,,,logs/B/H3/t2/check.log.gz,
+B,H3,t2,oracle,0,,,,logs/B/H3/t2/oracle.log.gz,
+B,H3,t2,oracle2,0,,,,logs/B/H3/t2/oracle2.log.gz,
+B,H3,t2,own,0,,,,logs/B/H3/t2/own.log.gz,
+B,H3,t3,build,1,HC010,,,logs/B/H3/t3/build.log.gz,
+B,H3,t3,check,1,HC010,,,logs/B/H3/t3/check.log.gz,
+B,H3,t3,diagnostic-bypass-generation,0,,,,logs/B/H3/t3/diagnostic-bypass-generation.log.gz,
+B,H3,t3,oracle,0,,,,logs/B/H3/t3/oracle.log.gz,
+B,H3,t3,oracle2,0,,,,logs/B/H3/t3/oracle2.log.gz,
+B,H3,t3,own,0,,,,logs/B/H3/t3/own.log.gz,
+B,H3,t4,build,0,,,,logs/B/H3/t4/build.log.gz,
+B,H3,t4,check,0,,,,logs/B/H3/t4/check.log.gz,
+B,H3,t4,oracle,0,,,,logs/B/H3/t4/oracle.log.gz,
+B,H3,t4,oracle2,0,,,,logs/B/H3/t4/oracle2.log.gz,
+B,H3,t4,own,0,,,,logs/B/H3/t4/own.log.gz,
+B,R,t1,build,1,HC010,,,logs/B/R/t1/build.log.gz,
+B,R,t1,check,1,HC010,,,logs/B/R/t1/check.log.gz,
+B,R,t1,diagnostic-bypass-generation,0,,,,logs/B/R/t1/diagnostic-bypass-generation.log.gz,
+B,R,t1,oracle,0,,,,logs/B/R/t1/oracle.log.gz,
+B,R,t1,oracle2,1,,,TestOracleHardCharge/joined_unavailable;TestOracleHardCharge,logs/B/R/t1/oracle2.log.gz,"    harder_test.go:38: uncertain charge repeated/misreported: err=<nil> outcome=Success charges=2 calls=2
+--- FAIL: TestOracleHardCharge/joined_unavailable (0.00s)
+--- FAIL: TestOracleHardCharge (0.03s)"
+B,R,t1,own,0,,,,logs/B/R/t1/own.log.gz,
+B,R,t2,build,0,,,,logs/B/R/t2/build.log.gz,
+B,R,t2,check,0,,,,logs/B/R/t2/check.log.gz,
+B,R,t2,oracle,0,,,,logs/B/R/t2/oracle.log.gz,
+B,R,t2,oracle2,0,,,,logs/B/R/t2/oracle2.log.gz,
+B,R,t2,own,0,,,,logs/B/R/t2/own.log.gz,
+B,R,t3,build,1,HC010,,,logs/B/R/t3/build.log.gz,
+B,R,t3,check,1,HC010,,,logs/B/R/t3/check.log.gz,
+B,R,t3,diagnostic-bypass-generation,0,,,,logs/B/R/t3/diagnostic-bypass-generation.log.gz,
+B,R,t3,oracle,0,,,,logs/B/R/t3/oracle.log.gz,
+B,R,t3,oracle2,1,,,TestOracleHardCheckout/uncertain_inventory;TestOracleHardCheckout/uncertain_inventory_exhausted;TestOracleHardCheckout,logs/B/R/t3/oracle2.log.gz,"    harder_test.go:30: idempotent inventory recovery: inventory: request timed out {Charges:0 ChargeCalls:0 ReserveCalls:1 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory (0.00s)
+    harder_test.go:39: idempotent inventory limit: request timed out {Charges:0 ChargeCalls:0 ReserveCalls:1 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory_exhausted (0.00s)
+--- FAIL: TestOracleHardCheckout (0.00s)"
+B,R,t3,own,0,,,,logs/B/R/t3/own.log.gz,
+B,R,t4,build,0,,,,logs/B/R/t4/build.log.gz,
+B,R,t4,check,0,,,,logs/B/R/t4/check.log.gz,
+B,R,t4,oracle,0,,,,logs/B/R/t4/oracle.log.gz,
+B,R,t4,oracle2,1,,ErrKeyReacquired,"TestOracleHardTransfer/accounts_""A""_""transfer:A"";TestOracleHardTransfer",logs/B/R/t4/oracle2.log.gz,"    harder_test.go:77: arbitrary account transfer: hertasdk: serialize key reacquired: main::transfer -> main::credit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:1 CreditCalls:0 Balances:map[A:90]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""transfer:A"" (0.00s)
+--- FAIL: TestOracleHardTransfer (0.00s)"
+B,R,t4,own,0,,,,logs/B/R/t4/own.log.gz,
+B,R2,t1,build,0,,,,logs/B/R2/t1/build.log.gz,
+B,R2,t1,check,0,,,,logs/B/R2/t1/check.log.gz,
+B,R2,t1,oracle,0,,,,logs/B/R2/t1/oracle.log.gz,
+B,R2,t1,oracle2,0,,,,logs/B/R2/t1/oracle2.log.gz,
+B,R2,t1,own,0,,,,logs/B/R2/t1/own.log.gz,
+B,R2,t2,build,0,,,,logs/B/R2/t2/build.log.gz,
+B,R2,t2,check,0,,,,logs/B/R2/t2/check.log.gz,
+B,R2,t2,oracle,0,,,,logs/B/R2/t2/oracle.log.gz,
+B,R2,t2,oracle2,0,,,,logs/B/R2/t2/oracle2.log.gz,
+B,R2,t2,own,0,,,,logs/B/R2/t2/own.log.gz,
+B,R2,t3,build,1,HC010,,,logs/B/R2/t3/build.log.gz,
+B,R2,t3,check,1,HC010,,,logs/B/R2/t3/check.log.gz,
+B,R2,t3,diagnostic-bypass-generation,0,,,,logs/B/R2/t3/diagnostic-bypass-generation.log.gz,
+B,R2,t3,oracle,0,,,,logs/B/R2/t3/oracle.log.gz,
+B,R2,t3,oracle2,0,,,,logs/B/R2/t3/oracle2.log.gz,
+B,R2,t3,own,0,,,,logs/B/R2/t3/own.log.gz,
+B,R2,t4,build,0,,,,logs/B/R2/t4/build.log.gz,
+B,R2,t4,check,0,,,,logs/B/R2/t4/check.log.gz,
+B,R2,t4,oracle,0,,,,logs/B/R2/t4/oracle.log.gz,
+B,R2,t4,oracle2,0,,,,logs/B/R2/t4/oracle2.log.gz,
+B,R2,t4,own,0,,,,logs/B/R2/t4/own.log.gz,
+C-drop,H3,t3,build,1,HC010,,,logs/C-drop/H3/t3/build.log.gz,
+C-drop,H3,t3,check,1,HC010,,,logs/C-drop/H3/t3/check.log.gz,
+C-drop,H3,t3,diagnostic-bypass-generation,0,,,,logs/C-drop/H3/t3/diagnostic-bypass-generation.log.gz,
+C-drop,H3,t3,mutation,0,,ErrUndeclaredCall,,logs/C-drop/H3/t3/mutation.log.gz,    mutation_test.go:9: expected ErrUndeclaredCall: hertasdk: undeclared call: main::checkout -> main::reserve; elapsed=31.493µs
+C-drop,H3,t3,oracle2,1,,ErrUndeclaredCall,TestOracleCheckout/inventory_retry;TestOracleCheckout/ambiguous_charge;TestOracleCheckout/inventory_exhausted;TestOracleCheckout/inventory_declined;TestOracleCheckout/empty;TestOracleCheckout;TestOracleHardCheckout/uncertain_inventory;TestOracleHardCheckout/uncertain_inventory_exhausted;TestOracleHardCheckout/declined_charge;TestOracleHardCheckout/concurrent_capacity;TestOracleHardCheckout,logs/C-drop/H3/t3/oracle2.log.gz,"    oracle_test.go:53: inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve receipt={User: Cents:0 ID:0} snapshot={Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_retry (0.00s)
+    oracle_test.go:67: checkout repeated a payment: err=hertasdk: undeclared call: main::checkout -> main::reserve charges=0 calls=0 reservations=0
+--- FAIL: TestOracleCheckout/ambiguous_charge (0.00s)
+    oracle_test.go:76: failed inventory: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_exhausted (0.00s)
+    oracle_test.go:85: permanent inventory failure: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleCheckout/inventory_declined (0.00s)
+    oracle_test.go:93: empty input: {User: Cents:0 ID:0} hertasdk: undeclared call: main::checkout -> main::reserve
+--- FAIL: TestOracleCheckout/empty (0.00s)
+--- FAIL: TestOracleCheckout (0.00s)
+    harder_test.go:30: idempotent inventory recovery: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory (0.00s)
+    harder_test.go:39: idempotent inventory limit: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory_exhausted (0.00s)
+    harder_test.go:48: declined charge repeated: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/declined_charge (0.00s)
+    harder_test.go:71: concurrent checkout: hertasdk: undeclared call: main::checkout -> main::reserve {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/concurrent_capacity (0.00s)
+--- FAIL: TestOracleHardCheckout (0.00s)"
+C-drop,H3,t4,build,0,,,,logs/C-drop/H3/t4/build.log.gz,
+C-drop,H3,t4,check,0,,,,logs/C-drop/H3/t4/check.log.gz,
+C-drop,H3,t4,mutation,0,,ErrUndeclaredCall,,logs/C-drop/H3/t4/mutation.log.gz,    mutation_test.go:9: expected ErrUndeclaredCall: hertasdk: undeclared call: main::transfer -> main::debit; elapsed=30.812µs
+C-drop,H3,t4,oracle2,1,,ErrUndeclaredCall,"TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer;TestOracleHardTransfer/opposite_directions;TestOracleHardTransfer/accounts_""""_""B"";TestOracleHardTransfer/accounts_""A""_"""";TestOracleHardTransfer/accounts_""A""_""transfer:A"";TestOracleHardTransfer/accounts_""A""_""account:A"";TestOracleHardTransfer/accounts_""A""_""user:A"";TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"";TestOracleHardTransfer/accounts_""transfer:A""_""A"";TestOracleHardTransfer/accounts_""user:""_""transfer:"";TestOracleHardTransfer/accounts_""account:""_""user:"";TestOracleHardTransfer",logs/C-drop/H3/t4/oracle2.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)
+    harder_test.go:65: opposite transfers: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:1000 B:1000]}
+--- FAIL: TestOracleHardTransfer/opposite_directions (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""""_""B"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_"""" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""transfer:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""account:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""user:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[transfer:A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""transfer:A""_""A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[user::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""user:""_""transfer:"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: undeclared call: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[account::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""account:""_""user:"" (0.00s)
+--- FAIL: TestOracleHardTransfer (0.00s)"
+C-key,H3,t4,build,0,,,,logs/C-key/H3/t4/build.log.gz,
+C-key,H3,t4,check,0,,,,logs/C-key/H3/t4/check.log.gz,
+C-key,H3,t4,mutation,0,,ErrKeyReacquired,,logs/C-key/H3/t4/mutation.log.gz,    mutation_test.go:9: expected ErrKeyReacquired: hertasdk: serialize key reacquired: main::transfer -> main::debit; elapsed=31.8µs
+C-key,H3,t4,oracle2,1,,ErrKeyReacquired,"TestOracleTransfer/completes;TestOracleTransfer/concurrent;TestOracleTransfer/empty_account;TestOracleTransfer/declined;TestOracleTransfer;TestOracleHardTransfer/opposite_directions;TestOracleHardTransfer/accounts_""""_""B"";TestOracleHardTransfer/accounts_""A""_"""";TestOracleHardTransfer/accounts_""A""_""transfer:A"";TestOracleHardTransfer/accounts_""A""_""account:A"";TestOracleHardTransfer/accounts_""A""_""user:A"";TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"";TestOracleHardTransfer/accounts_""transfer:A""_""A"";TestOracleHardTransfer/accounts_""user:""_""transfer:"";TestOracleHardTransfer/accounts_""account:""_""user:"";TestOracleHardTransfer",logs/C-key/H3/t4/oracle2.log.gz,"    oracle_test.go:49: transfer did not complete correctly: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:100]}
+--- FAIL: TestOracleTransfer/completes (0.00s)
+    oracle_test.go:74: concurrent transfers: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[alice:1000]}
+--- FAIL: TestOracleTransfer/concurrent (0.00s)
+    oracle_test.go:88: empty account or zero transfer: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:10]}
+--- FAIL: TestOracleTransfer/empty_account (0.00s)
+    oracle_test.go:97: debit rejection: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleTransfer/declined (0.00s)
+--- FAIL: TestOracleTransfer (0.00s)
+    harder_test.go:65: opposite transfers: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:1000 B:1000]}
+--- FAIL: TestOracleHardTransfer/opposite_directions (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""""_""B"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_"""" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""transfer:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""account:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""user:A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""\x00transfer\x00A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[transfer:A:100]}
+--- FAIL: TestOracleHardTransfer/accounts_""transfer:A""_""A"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[user::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""user:""_""transfer:"" (0.00s)
+    harder_test.go:77: arbitrary account transfer: hertasdk: serialize key reacquired: main::transfer -> main::debit {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[account::100]}
+--- FAIL: TestOracleHardTransfer/accounts_""account:""_""user:"" (0.00s)
+--- FAIL: TestOracleHardTransfer (0.00s)"
+C-order,H1,t3,build,0,,,,logs/C-order/H1/t3/build.log.gz,
+C-order,H1,t3,check,0,,,,logs/C-order/H1/t3/check.log.gz,
+C-order,H1,t3,oracle2,0,,,,logs/C-order/H1/t3/oracle2.log.gz,
+C-order,H2,t1,build,0,,,,logs/C-order/H2/t1/build.log.gz,
+C-order,H2,t1,check,0,,,,logs/C-order/H2/t1/check.log.gz,
+C-order,H2,t1,oracle2,0,,,,logs/C-order/H2/t1/oracle2.log.gz,
+C-order,H2,t3,build,0,,,,logs/C-order/H2/t3/build.log.gz,
+C-order,H2,t3,check,0,,,,logs/C-order/H2/t3/check.log.gz,
+C-order,H2,t3,oracle2,0,,,,logs/C-order/H2/t3/oracle2.log.gz,
+C-order,H3,t3,build,0,,,,logs/C-order/H3/t3/build.log.gz,
+C-order,H3,t3,check,0,,,,logs/C-order/H3/t3/check.log.gz,
+C-order,H3,t3,oracle2,0,,,,logs/C-order/H3/t3/oracle2.log.gz,
+C-order,R,t1,build,0,,,,logs/C-order/R/t1/build.log.gz,
+C-order,R,t1,check,0,,,,logs/C-order/R/t1/check.log.gz,
+C-order,R,t1,oracle2,0,,,,logs/C-order/R/t1/oracle2.log.gz,
+C-order,R,t3,build,0,,,,logs/C-order/R/t3/build.log.gz,
+C-order,R,t3,check,0,,,,logs/C-order/R/t3/check.log.gz,
+C-order,R,t3,oracle2,1,,,TestOracleHardCheckout/uncertain_inventory;TestOracleHardCheckout/uncertain_inventory_exhausted;TestOracleHardCheckout,logs/C-order/R/t3/oracle2.log.gz,"    harder_test.go:30: idempotent inventory recovery: inventory: request timed out {Charges:0 ChargeCalls:0 ReserveCalls:1 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory (0.00s)
+    harder_test.go:39: idempotent inventory limit: request timed out {Charges:0 ChargeCalls:0 ReserveCalls:1 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory_exhausted (0.00s)
+--- FAIL: TestOracleHardCheckout (0.00s)"
+C-order,R2,t3,build,0,,,,logs/C-order/R2/t3/build.log.gz,
+C-order,R2,t3,check,0,,,,logs/C-order/R2/t3/check.log.gz,
+C-order,R2,t3,oracle2,0,,,,logs/C-order/R2/t3/oracle2.log.gz,
+baseline,H1,t1,oracle,0,,,,logs/baseline/H1/t1/oracle.log.gz,
+baseline,H1,t1,oracle2,0,,,,logs/baseline/H1/t1/oracle2.log.gz,
+baseline,H1,t1,own,0,,,,logs/baseline/H1/t1/own.log.gz,
+baseline,H1,t2,oracle,0,,,,logs/baseline/H1/t2/oracle.log.gz,
+baseline,H1,t2,oracle2,0,,,,logs/baseline/H1/t2/oracle2.log.gz,
+baseline,H1,t2,own,0,,,,logs/baseline/H1/t2/own.log.gz,
+baseline,H1,t3,oracle,0,,,,logs/baseline/H1/t3/oracle.log.gz,
+baseline,H1,t3,oracle2,0,,,,logs/baseline/H1/t3/oracle2.log.gz,
+baseline,H1,t3,own,0,,,,logs/baseline/H1/t3/own.log.gz,
+baseline,H1,t4,oracle,0,,,,logs/baseline/H1/t4/oracle.log.gz,
+baseline,H1,t4,oracle2,0,,,,logs/baseline/H1/t4/oracle2.log.gz,
+baseline,H1,t4,own,0,,,,logs/baseline/H1/t4/own.log.gz,
+baseline,H2,t1,oracle,0,,,,logs/baseline/H2/t1/oracle.log.gz,
+baseline,H2,t1,oracle2,1,,,TestOracleHardCharge/joined_unavailable;TestOracleHardCharge,logs/baseline/H2/t1/oracle2.log.gz,"    harder_test.go:38: uncertain charge repeated/misreported: err=<nil> outcome=Success charges=2 calls=2
+--- FAIL: TestOracleHardCharge/joined_unavailable (0.00s)
+--- FAIL: TestOracleHardCharge (0.03s)"
+baseline,H2,t1,own,0,,,,logs/baseline/H2/t1/own.log.gz,
+baseline,H2,t2,oracle,0,,,,logs/baseline/H2/t2/oracle.log.gz,
+baseline,H2,t2,oracle2,0,,,,logs/baseline/H2/t2/oracle2.log.gz,
+baseline,H2,t2,own,0,,,,logs/baseline/H2/t2/own.log.gz,
+baseline,H2,t3,oracle,0,,,,logs/baseline/H2/t3/oracle.log.gz,
+baseline,H2,t3,oracle2,0,,,,logs/baseline/H2/t3/oracle2.log.gz,
+baseline,H2,t3,own,0,,,,logs/baseline/H2/t3/own.log.gz,
+baseline,H2,t4,oracle,0,,,,logs/baseline/H2/t4/oracle.log.gz,
+baseline,H2,t4,oracle2,0,,,,logs/baseline/H2/t4/oracle2.log.gz,
+baseline,H2,t4,own,0,,,,logs/baseline/H2/t4/own.log.gz,
+baseline,H3,t1,oracle,0,,,,logs/baseline/H3/t1/oracle.log.gz,
+baseline,H3,t1,oracle2,0,,,,logs/baseline/H3/t1/oracle2.log.gz,
+baseline,H3,t1,own,0,,,,logs/baseline/H3/t1/own.log.gz,
+baseline,H3,t2,oracle,0,,,,logs/baseline/H3/t2/oracle.log.gz,
+baseline,H3,t2,oracle2,0,,,,logs/baseline/H3/t2/oracle2.log.gz,
+baseline,H3,t2,own,0,,,,logs/baseline/H3/t2/own.log.gz,
+baseline,H3,t3,oracle,0,,,,logs/baseline/H3/t3/oracle.log.gz,
+baseline,H3,t3,oracle2,0,,,,logs/baseline/H3/t3/oracle2.log.gz,
+baseline,H3,t3,own,0,,,,logs/baseline/H3/t3/own.log.gz,
+baseline,H3,t4,oracle,0,,,,logs/baseline/H3/t4/oracle.log.gz,
+baseline,H3,t4,oracle2,0,,,,logs/baseline/H3/t4/oracle2.log.gz,
+baseline,H3,t4,own,0,,,,logs/baseline/H3/t4/own.log.gz,
+baseline,R,t1,oracle,0,,,,logs/baseline/R/t1/oracle.log.gz,
+baseline,R,t1,oracle2,1,,,TestOracleHardCharge/joined_unavailable;TestOracleHardCharge,logs/baseline/R/t1/oracle2.log.gz,"    harder_test.go:38: uncertain charge repeated/misreported: err=<nil> outcome=Success charges=2 calls=2
+--- FAIL: TestOracleHardCharge/joined_unavailable (0.00s)
+--- FAIL: TestOracleHardCharge (0.03s)"
+baseline,R,t1,own,0,,,,logs/baseline/R/t1/own.log.gz,
+baseline,R,t2,oracle,0,,,,logs/baseline/R/t2/oracle.log.gz,
+baseline,R,t2,oracle2,0,,,,logs/baseline/R/t2/oracle2.log.gz,
+baseline,R,t2,own,0,,,,logs/baseline/R/t2/own.log.gz,
+baseline,R,t3,oracle,0,,,,logs/baseline/R/t3/oracle.log.gz,
+baseline,R,t3,oracle2,1,,,TestOracleHardCheckout/uncertain_inventory;TestOracleHardCheckout/uncertain_inventory_exhausted;TestOracleHardCheckout,logs/baseline/R/t3/oracle2.log.gz,"    harder_test.go:30: idempotent inventory recovery: inventory: request timed out {Charges:0 ChargeCalls:0 ReserveCalls:1 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory (0.00s)
+    harder_test.go:39: idempotent inventory limit: request timed out {Charges:0 ChargeCalls:0 ReserveCalls:1 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:0 CreditCalls:0 Balances:map[]}
+--- FAIL: TestOracleHardCheckout/uncertain_inventory_exhausted (0.00s)
+--- FAIL: TestOracleHardCheckout (0.00s)"
+baseline,R,t3,own,0,,,,logs/baseline/R/t3/own.log.gz,
+baseline,R,t4,oracle,0,,,,logs/baseline/R/t4/oracle.log.gz,
+baseline,R,t4,oracle2,1,,,"TestOracleHardTransfer/accounts_""A""_""transfer:A"";TestOracleHardTransfer",logs/baseline/R/t4/oracle2.log.gz,"    harder_test.go:77: arbitrary account transfer: context deadline exceeded {Charges:0 ChargeCalls:0 ReserveCalls:0 Refunds:0 RefundOverlap:false MaxRefundActive:0 DebitCalls:1 CreditCalls:0 Balances:map[A:90]}
+--- FAIL: TestOracleHardTransfer/accounts_""A""_""transfer:A"" (0.40s)
+--- FAIL: TestOracleHardTransfer (0.40s)"
+baseline,R,t4,own,0,,,,logs/baseline/R/t4/own.log.gz,
+baseline,R2,t1,oracle,0,,,,logs/baseline/R2/t1/oracle.log.gz,
+baseline,R2,t1,oracle2,0,,,,logs/baseline/R2/t1/oracle2.log.gz,
+baseline,R2,t1,own,0,,,,logs/baseline/R2/t1/own.log.gz,
+baseline,R2,t2,oracle,0,,,,logs/baseline/R2/t2/oracle.log.gz,
+baseline,R2,t2,oracle2,0,,,,logs/baseline/R2/t2/oracle2.log.gz,
+baseline,R2,t2,own,0,,,,logs/baseline/R2/t2/own.log.gz,
+baseline,R2,t3,oracle,0,,,,logs/baseline/R2/t3/oracle.log.gz,
+baseline,R2,t3,oracle2,0,,,,logs/baseline/R2/t3/oracle2.log.gz,
+baseline,R2,t3,own,0,,,,logs/baseline/R2/t3/own.log.gz,
+baseline,R2,t4,oracle,0,,,,logs/baseline/R2/t4/oracle.log.gz,
+baseline,R2,t4,oracle2,0,,,,logs/baseline/R2/t4/oracle2.log.gz,
+baseline,R2,t4,own,0,,,,logs/baseline/R2/t4/own.log.gz,
