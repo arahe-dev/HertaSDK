@@ -1,0 +1,35 @@
+name: herta-lang
+
+# The Herta language suite: separate from the hertasdk CI gates on purpose, and
+# capped so agent iterations cannot grow it into a slow suite. It only runs
+# when herta/** changes.
+
+on:
+  push:
+    paths: ['herta/**']
+  pull_request:
+    paths: ['herta/**']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: herta-lang-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  hertatest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3 # outer guard; the runner's own cap is much lower
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - run: gofmt -l ./herta | tee /dev/stderr | test -z "$(cat)"
+      - run: go vet ./herta/...
+      - run: go test -count=1 ./herta/...
+      - run: go build -o /tmp/herta ./herta/cmd/herta
+      - name: golden suite (capped)
+        run: go run ./herta/cmd/hertatest -cases herta/testdata/cases -exec "/tmp/herta check {file}"
