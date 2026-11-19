@@ -193,6 +193,7 @@ func execCase(ctx context.Context, c Case, tmpl string, lim Limits) ([]byte, err
 			continue
 		}
 		f = strings.ReplaceAll(f, "{file}", c.Input)
+		f = strings.ReplaceAll(f, "{args}", strings.Join(c.Args, " "))
 		expanded = append(expanded, f)
 	}
 	cmd := exec.CommandContext(cctx, expanded[0], expanded[1:]...)
