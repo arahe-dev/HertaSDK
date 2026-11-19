@@ -1,0 +1,20 @@
+// fail statements at top level, inside inline blocks, on a case arm, and
+// closing their block on the same line; timeout with a leading zero.
+runtime main {
+    resource r capacity 1
+}
+
+op main::flaky(n: int) -> int {
+    effect pure
+    resources { r units 1 }
+    timeout 010ms
+}
+handler main::flaky(n: int) -> (int, error) {
+    if n < 0 {
+        fail permanent, errors_new("negative") }
+    if n == 0 { fail throttled, errors_new("zero") }
+    switch n {
+    case 1: fail uncertain, errors_new("one")
+    }
+    fail uncertain, errors_new("always")
+}
