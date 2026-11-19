@@ -19,6 +19,11 @@ type opSpec struct {
 	key    func(int) string // nil: unkeyed
 }
 
+// outcomeUntagged marks a handler error with no *Failure in its chain.
+// The runtime classifies it (§5 step 4) and may promote it to Uncertain
+// (Δ3), so the tracer cannot treat it as plainly Permanent.
+const outcomeUntagged = impl.Outcome(-1)
+
 // retryable reports whether the op may retry an attempt that returned o
 // (§5 step 5): requested by Retry.On, and safe for the Effect.
 func (o opSpec) retryable(oc impl.Outcome) bool {
@@ -27,6 +32,13 @@ func (o opSpec) retryable(oc impl.Outcome) bool {
 		return o.policy.On[impl.Transient]
 	case impl.Uncertain:
 		return o.policy.On[impl.Uncertain] && o.policy.Effect != impl.NonIdempotent
+	case outcomeUntagged:
+		// Δ3: an untagged error promotes to Uncertain when the attempt
+		// deadline expired before Do classified it while the caller's
+		// context was still live. Whether that race resolved for
+		// promotion is not observable here, so an op with a Timeout may
+		// retry it iff an Uncertain attempt would be retryable.
+		return o.policy.Timeout > 0 && o.policy.On[impl.Uncertain] && o.policy.Effect != impl.NonIdempotent
 	}
 	return false
 }
