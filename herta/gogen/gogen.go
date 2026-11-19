@@ -197,7 +197,7 @@ func rewriteFails(text, result string) []string {
 				for prev >= 0 && (text[prev] == ' ' || text[prev] == '\t') {
 					prev--
 				}
-				boundary = prev < 0 || text[prev] == '{' || text[prev] == ';'
+				boundary = prev < 0 || text[prev] == '{' || text[prev] == ';' || text[prev] == ':'
 			}
 			if boundary {
 				i = rewriteOneFail(&out, text, i, result)
@@ -351,10 +351,16 @@ func durationExpr(d string) (string, error) {
 	default:
 		return "", fmt.Errorf("invalid duration unit in %q", d)
 	}
-	if n == "1" {
+	// Strip leading zeros so e.g. "010ms" emits decimal 10, not an octal
+	// literal.
+	num := strings.TrimLeft(n, "0")
+	if num == "" {
+		num = "0"
+	}
+	if num == "1" {
 		return "time." + u, nil
 	}
-	return n + " * time." + u, nil
+	return num + " * time." + u, nil
 }
 
 // export renders an identifier as an exported Go name: each
